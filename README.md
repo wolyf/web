@@ -1,6 +1,6 @@
 # web
 
-Sitio personal WR, publicado con GitHub Pages en https://wolyf.github.io/web/
+Sitio personal de Wolfgang Resendiz, publicado con GitHub Pages en https://wolyf.github.io/web/
 
 El sitio se divide en proyectos, uno por carpeta (`proyectos.json`). Cada proyecto tiene su `CLAUDE.md` y se trabaja desde su propio entorno de Claude Code (`WEB_PROYECTO=<id>`); lo compartido (portada, estilos base, herramientas) es la zona general. Detalles en `CLAUDE.md`.
 
@@ -12,6 +12,7 @@ El sitio se divide en proyectos, uno por carpeta (`proyectos.json`). Cada proyec
 ```bash
 npm test                      # pruebas de todo el sitio
 npm run proyectos -- listar   # proyectos y zonas
+npm run proyectos -- portada  # regenera la portada desde proyectos.json
 npm run catalogo -- ayuda     # gestión del catálogo
 npm run capturas              # revisión visual del catálogo con datos ficticios (Playwright)
 ```

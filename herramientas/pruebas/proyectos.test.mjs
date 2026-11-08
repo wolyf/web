@@ -2,8 +2,10 @@
 
 import { test } from "node:test";
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import path from "node:path";
-import { zonaDe, motivoBloqueo, revisarCambio, leerRegistro, GENERAL } from "../proyectos.mjs";
+import { fileURLToPath } from "node:url";
+import { zonaDe, motivoBloqueo, revisarCambio, leerRegistro, leerSitio, actualizarPortada, tarjetaProyecto, GENERAL } from "../proyectos.mjs";
 
 const proyectos = {
   calculadoras: { nombre: "Calculadoras", carpetas: ["calculadoras"] },
@@ -75,4 +77,53 @@ test("una rama con prefijo de zona solo toca esa zona", () => {
 test("el entorno local solo puede cambiar su zona", () => {
   const { errores } = revisarCambio(["catalogo/js/app.js"], proyectos, { zona: "calculadoras" });
   assert.match(errores.join("\n"), /Este entorno es «calculadoras»/);
+});
+
+// ---- Portada generada desde proyectos.json ----
+
+const RAIZ_REAL = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
+const BASE = [
+  "<nav>",
+  "  <!-- proyectos:menu -->",
+  "  <!-- /proyectos:menu -->",
+  "</nav>",
+  "<span><!-- proyectos:total --><!-- /proyectos:total --></span>",
+  "<div>",
+  "    <!-- proyectos:tarjetas -->",
+  "    <!-- /proyectos:tarjetas -->",
+  "</div>",
+].join("\n");
+
+test("la portada genera menú, tarjetas y total con la sangría del marcador", () => {
+  const html = actualizarPortada(BASE, proyectos, { repositorio: "https://github.com/x/web" });
+  assert.match(html, /\n {2}<a href="calculadoras\/">.*Calculadoras<\/a>\n/);
+  assert.match(html, /<!-- proyectos:total -->2 proyectos<!-- \/proyectos:total -->/);
+  assert.match(html, /\n {4}<article class="proyecto">\n {6}<p class="proyecto__meta">/);
+  assert.match(html, /href="https:\/\/github.com\/x\/web\/tree\/main\/catalogo">Código</);
+  // Es idempotente
+  assert.equal(actualizarPortada(html, proyectos, { repositorio: "https://github.com/x/web" }), html);
+});
+
+test("la portada respeta inicio, privado, codigo y oculto, y escapa el HTML", () => {
+  const varios = {
+    a: { nombre: "A <b>", carpetas: ["a"], inicio: "a/x.html", privado: true, etiquetas: ["t&t"] },
+    b: { nombre: "B", carpetas: ["b"], codigo: false },
+    c: { nombre: "C", carpetas: ["c"], oculto: true },
+  };
+  const html = actualizarPortada(BASE, varios, { repositorio: "https://r" });
+  assert.match(html, /2 proyectos/);
+  assert.doesNotMatch(html, /href="c\/"/);
+  assert.match(html, /href="a\/x.html">A &#60;b&#62;</);
+  assert.match(html, /#t&#38;t/);
+  assert.match(html, /privado/);
+  assert.equal(tarjetaProyecto("b", varios.b, { repositorio: "https://r" }).join("").includes("Código"), false);
+});
+
+test("sin marcadores la portada avisa en vez de escribir mal", () => {
+  assert.throws(() => actualizarPortada("<html></html>", proyectos), /marcadores/);
+});
+
+test("index.html está al día con proyectos.json", () => {
+  const html = fs.readFileSync(path.join(RAIZ_REAL, "index.html"), "utf8");
+  assert.equal(actualizarPortada(html, leerRegistro(), leerSitio()), html, "Corre «npm run proyectos -- portada».");
 });

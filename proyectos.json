@@ -1,13 +1,30 @@
 {
-  "descripcion": "Proyectos del sitio. Cada uno solo edita sus carpetas; lo que no pertenece a ningún proyecto es de la zona general. Lo usan herramientas/proyectos.mjs, el hook de .claude/settings.json y la revisión de GitHub.",
+  "descripcion": "Proyectos del sitio. Cada uno solo edita sus carpetas; lo que no pertenece a ningún proyecto es de la zona general. Lo usan herramientas/proyectos.mjs (zonas y portada), el hook de .claude/settings.json y la revisión de GitHub. La portada (index.html) muestra los proyectos en este orden: tras cambiar algo aquí, corre «npm run proyectos -- portada».",
+  "sitio": {
+    "nombre": "Wolfgang Resendiz",
+    "repositorio": "https://github.com/wolyf/web"
+  },
   "proyectos": {
     "calculadoras": {
       "nombre": "Calculadoras de ingeniería",
-      "carpetas": ["calculadoras"]
+      "carpetas": ["calculadoras"],
+      "corto": "Calculadoras",
+      "inicio": "calculadoras/caudal.html",
+      "descripcion": "Caudal en tuberías con unidades configurables, ecuación en LaTeX y gráfica interactiva con límites de velocidad.",
+      "anio": 2026,
+      "icono": "🧮",
+      "etiquetas": ["hidráulica", "calculadora"]
     },
     "catalogo": {
       "nombre": "Catálogo de cotizaciones de agua potable",
-      "carpetas": ["catalogo", ".catalogo"]
+      "carpetas": ["catalogo", ".catalogo"],
+      "corto": "Catálogo",
+      "inicio": "catalogo/",
+      "descripcion": "Proveedores, productos y cotizaciones de piezas y servicios de agua potable. Requiere usuario y contraseña; los datos se publican cifrados.",
+      "anio": 2026,
+      "icono": "💧",
+      "etiquetas": ["agua-potable", "cotizaciones"],
+      "privado": true
     }
   }
 }
