@@ -1,32 +1,93 @@
-/* Variables de color y diseño */
+/* ==========================================================================
+   Estilos base del sitio de Wolfgang Resendiz (zona general)
+
+   Lo usan la portada y los proyectos que enlazan ../css/styles.css.
+   Inspiración gráfica: papel beige y grises cálidos, un color de acento,
+   títulos en Outfit y detalles en tipografía monoespaciada.
+
+   Tema:   claro u oscuro según el sistema; js/tema.js permite fijarlo con
+           <html data-tema="claro|oscuro">.
+   Acento: rosa por defecto; <html data-acento="azul|verde|lavanda|ambar">.
+   ========================================================================== */
+
+/* Tipografía: Inter (texto), Outfit (títulos) y Google Sans Code (detalles) */
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap");
+
+/* ---- Variables: tema claro ---- */
 :root {
-  --bg: #f6f7fb;
-  --bg-gradient: radial-gradient(1200px 600px at 50% -10%, #eef1ff 0%, var(--bg) 55%);
-  --surface: #ffffff;
-  --text: #1a1c22;
-  --muted: #6b7280;
-  --border: #e6e8ef;
-  --accent: #4f46e5;
-  --accent-soft: #eef0ff;
-  --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.06);
-  --shadow-hover: 0 4px 8px rgba(16, 24, 40, 0.06), 0 16px 40px rgba(79, 70, 229, 0.12);
-  --radius: 16px;
+  color-scheme: light;
+
+  /* Colores de acento (claro / oscuro); se eligen con data-acento */
+  --acento-claro: #b12d6c;
+  --acento-oscuro: #f2777a;
+
+  --bg: #f8f4e6;
+  --bg-gradient: linear-gradient(var(--bg), var(--bg));
+  --surface: #f1ead5;          /* tarjetas y formularios */
+  --surface-2: #ece4ca;        /* etiquetas, botones secundarios, hover */
+  --text: #28282e;
+  --text-strong: #1d1d22;      /* títulos y texto enfatizado */
+  --muted: #5a5a61;
+  --border: #e5dcbd;
+  --border-card: #ded4b2;
+  --border-strong: #c6ba93;
+  --accent: var(--acento-claro);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  --sobre-acento: #ffffff;     /* texto encima del acento */
+  --shadow: 0 4px 4px hsla(47, 43%, 82%, 0.1), 0 2px 2px hsla(47, 43%, 82%, 0.1), 0 1px 1px hsla(47, 43%, 82%, 0.1);
+  --shadow-hover: rgba(124, 114, 76, 0.35) 0 5px 15px 0;
+
+  --radius: 8px;
+  --ancho-lateral: 280px;
+  --ancho-contenido: 760px;
+
+  --font-texto: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-titulo: "Outfit", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Google Sans Code", ui-monospace, Menlo, Consolas, monospace;
 }
 
-/* Modo oscuro automático */
+/* Paletas de acento */
+:root[data-acento="azul"] { --acento-claro: #2a67a5; --acento-oscuro: #6db3f5; }
+:root[data-acento="verde"] { --acento-claro: #2b7f66; --acento-oscuro: #94d294; }
+:root[data-acento="lavanda"] { --acento-claro: #6a3eba; --acento-oscuro: #e5aaf5; }
+:root[data-acento="ambar"] { --acento-claro: #a35f2c; --acento-oscuro: #fede91; }
+
+/* ---- Variables: tema oscuro (del sistema o elegido) ----
+   El bloque se repite: una vez para el sistema y otra para la elección manual. */
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0d0f16;
-    --bg-gradient: radial-gradient(1200px 600px at 50% -10%, #1a1d2e 0%, var(--bg) 55%);
-    --surface: #161925;
-    --text: #f2f3f7;
-    --muted: #9aa1b1;
-    --border: #262a3a;
-    --accent: #818cf8;
-    --accent-soft: #1e2135;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
-    --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.3), 0 16px 40px rgba(0, 0, 0, 0.5);
+  :root:not([data-tema="claro"]) {
+    color-scheme: dark;
+    --bg: #202025;
+    --surface: #28282e;
+    --surface-2: #323239;
+    --text: #d4d4d8;
+    --text-strong: #fbfbfb;
+    --muted: #a1a1a8;
+    --border: #323239;
+    --border-card: #323239;
+    --border-strong: #4e4e55;
+    --accent: var(--acento-oscuro);
+    --sobre-acento: #1d1d22;
+    --shadow: 0 4px 7px rgba(0, 1, 2, 0.3), 0 2px 2px rgba(0, 1, 2, 0.3), 0 1px 1px rgba(0, 1, 2, 0.3);
+    --shadow-hover: 0 6px 18px rgba(0, 1, 2, 0.5);
   }
+}
+
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --bg: #202025;
+  --surface: #28282e;
+  --surface-2: #323239;
+  --text: #d4d4d8;
+  --text-strong: #fbfbfb;
+  --muted: #a1a1a8;
+  --border: #323239;
+  --border-card: #323239;
+  --border-strong: #4e4e55;
+  --accent: var(--acento-oscuro);
+  --sobre-acento: #1d1d22;
+  --shadow: 0 4px 7px rgba(0, 1, 2, 0.3), 0 2px 2px rgba(0, 1, 2, 0.3), 0 1px 1px rgba(0, 1, 2, 0.3);
+  --shadow-hover: 0 6px 18px rgba(0, 1, 2, 0.5);
 }
 
 /* Incluye bordes en el tamaño */
@@ -36,97 +97,228 @@
   box-sizing: border-box;
 }
 
-/* Estilos generales */
+/* ---- Base ----
+   Páginas de proyecto: columna centrada de ancho --ancho (480 px; con
+   <body class="ancho">, el ancho de lectura). La portada usa .con-lateral. */
 body {
+  --ancho: 480px;
   margin: 0;
   min-height: 100vh;
-  padding: 28px 20px 120px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  padding: 0 20px 120px;
+  font-family: var(--font-texto);
+  font-size: 1rem;
   line-height: 1.6;
   color: var(--text);
-  background: var(--bg-gradient), var(--bg);
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 
-/* Encabezado con la marca del sitio */
-.site-header {
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto 32px;
-  display: flex;
-  align-items: center;
-}
-
-.brand {
-  display: inline-flex;
-  align-items: center;
-  padding: 6px 12px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  text-decoration: none;
-  background: var(--accent-soft);
-  border-radius: 10px;
-  transition: transform 0.18s ease, filter 0.18s ease;
-}
-
-.brand:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
-}
-
-/* Contenedor principal */
-main {
-  width: 100%;
-  max-width: 480px;
-  margin: 0 auto;
-}
-
-/* Jerarquía de títulos */
-h1 {
-  margin: 0 0 24px;
-  font-size: 1.4rem;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  line-height: 1.25;
-}
-
-/* Título grande solo para la portada */
-.hero {
-  margin-bottom: 28px;
-  font-size: clamp(1.6rem, 5vw, 2rem);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-}
-
-/* Lista de enlaces */
-nav {
-  display: grid;
-  gap: 14px;
+body.ancho {
+  --ancho: var(--ancho-contenido);
 }
 
 a {
   color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
 }
 
-/* Enlace tipo tarjeta */
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  color: var(--sobre-acento);
+  background: var(--accent);
+}
+
+code,
+kbd,
+samp,
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* ---- Encabezado de las páginas de proyecto ---- */
+.site-header {
+  width: 100%;
+  max-width: var(--ancho);
+  min-height: 60px;
+  margin: 0 auto 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Marca del sitio: Darwin y el nombre en monoespaciada */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text-strong);
+  text-decoration: none;
+}
+
+.brand::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  background: url("../img/darwin-cara.svg") center / contain no-repeat;
+  image-rendering: pixelated;
+  transition: transform 0.18s ease;
+}
+
+.brand:hover {
+  color: var(--text-strong);
+}
+
+.brand:hover::before {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+/* ---- Botones de tema y acento (js/tema.js) ---- */
+.ajustes {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ajuste {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.ajuste:hover {
+  filter: none;
+  color: var(--text-strong);
+  background: var(--surface-2);
+}
+
+.ajuste:active {
+  transform: none;
+}
+
+.ajuste svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* El punto de color muestra el acento actual */
+.ajuste__punto {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* Sol en tema oscuro (para pasar a claro) y luna en tema claro */
+.ajuste .icono-sol { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .ajuste .icono-sol { display: block; }
+  :root:not([data-tema="claro"]) .ajuste .icono-luna { display: none; }
+}
+:root[data-tema="oscuro"] .ajuste .icono-sol { display: block; }
+:root[data-tema="oscuro"] .ajuste .icono-luna { display: none; }
+
+/* Si el JavaScript no corre, los botones no sirven: se ocultan */
+html:not(.con-js) .ajustes {
+  display: none;
+}
+
+/* ---- Contenedor principal de las páginas de proyecto ---- */
+main {
+  width: 100%;
+  max-width: var(--ancho);
+  margin: 0 auto;
+}
+
+/* ---- Títulos ---- */
+h1,
+h2,
+h3 {
+  font-family: var(--font-titulo);
+  color: var(--text-strong);
+  letter-spacing: -0.01em;
+}
+
+h1 {
+  margin: 0 0 24px;
+  font-size: clamp(1.6rem, 4.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+h2 {
+  margin: 0 0 12px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+h3 {
+  margin: 0 0 6px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+/* Título grande de portada */
+.hero {
+  margin: 0 0 8px;
+  font-size: clamp(2.2rem, 6vw, 2.9rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.subtitulo {
+  margin: 0 0 32px;
+  font-size: 1.25rem;
+  color: var(--text);
+}
+
+/* ---- Enlace tipo tarjeta (lista de enlaces) ---- */
+nav {
+  display: grid;
+  gap: 12px;
+}
+
 .card {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 20px 22px;
-  font-size: 1.05rem;
-  font-weight: 500;
-  color: var(--text);
+  padding: 16px 18px;
+  font-weight: 600;
+  color: var(--text-strong);
   text-decoration: none;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
@@ -136,13 +328,12 @@ a {
   content: "→";
   margin-left: auto;
   color: var(--accent);
-  font-weight: 600;
   transition: transform 0.18s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  border-color: var(--accent);
+  border-color: var(--border-strong);
   box-shadow: var(--shadow-hover);
 }
 
@@ -150,16 +341,14 @@ a {
   transform: translateX(4px);
 }
 
-.card:active {
-  transform: translateY(0);
-}
-
-/* Enlace de regreso */
+/* ---- Enlace de regreso ---- */
 .back {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
   font-weight: 500;
   text-decoration: none;
   color: var(--muted);
@@ -170,13 +359,46 @@ a {
   color: var(--accent);
 }
 
-/* Tarjeta que envuelve el formulario */
+/* ---- Pastilla y etiquetas ---- */
+.pastilla {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 9px;
+  font-family: var(--font-texto);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.4;
+  color: var(--text-strong);
+  text-decoration: none;
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  vertical-align: middle;
+}
+
+a.pastilla:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+
+/* ---- Formularios ---- */
 form {
   display: grid;
   gap: 14px;
-  padding: 28px;
+  padding: 24px;
   background: var(--surface);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-card);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -197,12 +419,13 @@ form label {
 
 /* Indicador de la unidad seleccionada, junto al input */
 .label-unidad {
-  font-size: 0.78rem;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
   color: var(--accent);
   background: var(--accent-soft);
-  padding: 2px 9px;
-  border-radius: 999px;
+  padding: 2px 8px;
+  border-radius: 6px;
 }
 
 .label-unidad:empty {
@@ -215,7 +438,7 @@ var {
   font-style: italic;
 }
 
-/* Descripción y ecuación de la calculadora */
+/* Descripción y ecuación de una calculadora */
 .info {
   margin-bottom: 24px;
 }
@@ -223,7 +446,7 @@ var {
 .info__texto {
   margin: 0 0 14px;
   font-size: 0.95rem;
-  color: var(--muted);
+  color: var(--text);
 }
 
 .info__ecuacion {
@@ -231,10 +454,10 @@ var {
   padding: 14px 16px;
   text-align: center;
   font-size: 1.2rem;
-  color: var(--text);
+  color: var(--text-strong);
   background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
 }
 
 .info__ecuacion sup {
@@ -249,29 +472,33 @@ var {
 input,
 button {
   width: 100%;
-  min-height: 50px;
+  min-height: 48px;
   padding: 12px 14px;
   font: inherit;
-  border-radius: 12px;
+  border-radius: var(--radius);
 }
 
 input {
-  color: var(--text);
+  color: var(--text-strong);
   background: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+input:hover {
+  border-color: var(--muted);
 }
 
 input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 4px var(--accent-soft);
+  box-shadow: 0 0 0 3px var(--accent-soft);
 }
 
 button {
   margin-top: 8px;
   font-weight: 600;
-  color: #fff;
+  color: var(--sobre-acento);
   background: var(--accent);
   border: 0;
   cursor: pointer;
@@ -290,11 +517,478 @@ button:active {
 #resultado {
   min-height: 24px;
   margin-top: 24px;
-  font-size: 1.1rem;
-  font-weight: 700;
+  font-family: var(--font-titulo);
+  font-size: 1.25rem;
+  font-weight: 600;
   text-align: center;
   color: var(--accent);
 }
+
+/* ==========================================================================
+   Portada: barra lateral + contenido (body.con-lateral)
+   ========================================================================== */
+
+body.con-lateral {
+  padding: 0;
+}
+
+.marco {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+/* ---- Barra lateral ---- */
+.lateral {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  width: var(--ancho-lateral);
+  min-width: var(--ancho-lateral);
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  background: var(--bg);
+  border-right: 1px solid var(--border);
+}
+
+.lateral__seccion {
+  margin: 0 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.lateral__seccion:last-child {
+  border-bottom: 0;
+}
+
+.lateral__cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 60px;
+  padding: 0;
+}
+
+.lateral__cabeza .brand {
+  min-width: 0;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.lateral__intro p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.lateral__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.lateral__titulo {
+  margin: 12px 0 4px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.lateral__nav a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 -8px;
+  padding: 5px 8px;
+  font-size: 0.95rem;
+  color: var(--text);
+  text-decoration: none;
+  border-radius: var(--radius);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.lateral__nav a:hover {
+  color: var(--text-strong);
+  background: var(--surface-2);
+}
+
+.lateral__icono {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  font-size: 1rem;
+  line-height: 1;
+  color: var(--muted);
+}
+
+.lateral__icono svg {
+  width: 18px;
+  height: 18px;
+}
+
+.lateral__pie {
+  margin-top: auto;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.lateral__pie a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.lateral__pie a:hover {
+  color: var(--accent);
+}
+
+/* ---- Contenido de la portada ---- */
+.contenido {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.contenido > main {
+  max-width: none;
+  margin: 0;
+  padding: 0 clamp(20px, 5vw, 64px);
+}
+
+.seccion {
+  max-width: var(--ancho-contenido);
+  padding: 48px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.seccion:last-child {
+  border-bottom: 0;
+}
+
+.seccion__cabeza {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  margin-bottom: 4px;
+}
+
+.seccion__cabeza h2 {
+  margin: 0;
+}
+
+.seccion__desc {
+  margin: 0 0 24px;
+  color: var(--muted);
+}
+
+/* ---- Presentación: texto + retrato de Darwin ---- */
+.presentacion {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 48px;
+  align-items: start;
+  padding-top: 56px;
+}
+
+.presentacion h3 {
+  margin: 0 0 18px;
+  font-size: 1.15rem;
+}
+
+.retrato {
+  margin: 8px 0 0;
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+}
+
+.retrato__circulo {
+  display: grid;
+  place-items: center;
+  width: 170px;
+  height: 170px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+.retrato__circulo img {
+  width: 112px;
+  height: 112px;
+  image-rendering: pixelated;
+}
+
+/* Globo de texto debajo del retrato */
+.retrato figcaption {
+  position: relative;
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.82rem;
+  line-height: 1.45;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.retrato figcaption::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--surface);
+  border-top: 1px solid var(--border-card);
+  border-left: 1px solid var(--border-card);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* ---- Bitácora (línea de tiempo) ---- */
+.bitacora {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.bitacora li {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 14px;
+  align-items: baseline;
+  font-size: 1.02rem;
+}
+
+.bitacora time {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+/* ---- Tarjetas de proyecto (las genera herramientas/proyectos.mjs) ---- */
+.proyectos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: 16px;
+}
+
+.proyecto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 18px;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.proyecto:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-2px);
+}
+
+.proyecto__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.proyecto__icono {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.proyecto__titulo {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.proyecto__titulo a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.proyecto__titulo a:hover {
+  text-decoration: underline;
+}
+
+.proyecto__desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text);
+}
+
+.proyecto__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 4px 0 0;
+}
+
+.proyecto__enlaces {
+  display: flex;
+  gap: 16px;
+  margin: auto 0 0;
+  padding-top: 10px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ---- Pie de página ---- */
+.pie {
+  margin-top: auto;
+  padding: 28px clamp(20px, 5vw, 64px) 120px;
+  font-size: 0.85rem;
+  color: var(--muted);
+  border-top: 1px solid var(--border);
+}
+
+.pie__enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin: 0 0 12px;
+  padding: 0;
+  list-style: none;
+}
+
+.pie a {
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.pie a:hover {
+  color: var(--accent);
+}
+
+.pie p {
+  margin: 0;
+}
+
+.corazon {
+  color: var(--accent);
+}
+
+/* ---- Portada en pantallas medianas: el retrato pasa abajo ---- */
+@media (max-width: 1100px) {
+  .presentacion {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .retrato {
+    grid-auto-flow: column;
+    justify-content: start;
+    align-items: center;
+    max-width: 460px;
+  }
+
+  .retrato__circulo {
+    width: 120px;
+    height: 120px;
+  }
+
+  .retrato__circulo img {
+    width: 80px;
+    height: 80px;
+  }
+
+  .retrato figcaption::before {
+    top: 50%;
+    left: -7px;
+    transform: translateY(-50%) rotate(-45deg);
+  }
+}
+
+/* ---- Portada en celular: la barra lateral se vuelve barra superior ---- */
+@media (max-width: 800px) {
+  .marco {
+    display: block;
+  }
+
+  .lateral {
+    position: sticky;
+    z-index: 20;
+    width: auto;
+    min-width: 0;
+    height: auto;
+    overflow: visible;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .lateral__seccion {
+    margin: 0 20px;
+    border-bottom: 0;
+  }
+
+  .lateral__intro,
+  .lateral__pie,
+  .lateral__titulo {
+    display: none;
+  }
+
+  /* Menú en una fila desplazable */
+  .lateral__nav {
+    flex-direction: row;
+    gap: 4px;
+    margin: 0;
+    padding: 0 14px 10px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .lateral__nav a {
+    flex: 0 0 auto;
+    margin: 0;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    background: var(--surface);
+    border: 1px solid var(--border-card);
+  }
+
+  .presentacion {
+    padding-top: 36px;
+  }
+
+  .seccion {
+    padding: 36px 0;
+  }
+
+  .bitacora li {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 2px;
+  }
+}
+
+/* ==========================================================================
+   Componentes de las calculadoras (gráfica, notas y barra de unidades)
+   ========================================================================== */
 
 /* La gráfica y las notas se ensanchan más allá de la columna del formulario
    (que es angosta) y se centran respecto a la ventana. */
@@ -310,23 +1004,24 @@ button:active {
   margin-top: 24px;
   padding: 18px;
   color: #1a1c22;
-  background: #ffffff;
-  border: 1px solid #e6e8ef;
+  background: #fffdf8;
+  border: 1px solid #e5dcbd;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
 
 .grafica__titulo {
   margin: 0 0 4px;
-  font-size: 1rem;
-  font-weight: 700;
+  font-family: var(--font-titulo);
+  font-size: 1.05rem;
+  font-weight: 600;
   color: #1a1c22;
 }
 
 .grafica__sub {
   margin: 0 0 12px;
   font-size: 0.85rem;
-  color: #6b7280;
+  color: #5a5a61;
 }
 
 /* En columnas angostas se puede desplazar horizontalmente sin deformarse */
@@ -342,10 +1037,10 @@ button:active {
 }
 
 /* Trazos de la gráfica */
-.g-rejilla { stroke: #eef0f5; stroke-width: 1; }
-.g-eje { stroke: #b8becc; stroke-width: 1.5; }
+.g-rejilla { stroke: #efeadb; stroke-width: 1; }
+.g-eje { stroke: #b8b29c; stroke-width: 1.5; }
 .g-recta { stroke: #16a34a; stroke-width: 2.5; }
-.g-ref { stroke: #c3c8d4; stroke-width: 1.5; stroke-dasharray: 4 4; }
+.g-ref { stroke: #c9c3ae; stroke-width: 1.5; stroke-dasharray: 4 4; }
 .g-ref--azul { stroke: #2563eb; stroke-dasharray: 3 3; opacity: 0.55; }
 .g-punto-ref { fill: #6b7280; }
 .g-punto { fill: #2563eb; stroke: #ffffff; stroke-width: 2.5; }
@@ -353,7 +1048,7 @@ button:active {
 /* Capa de interacción: línea guía + tooltip */
 .g-hover-linea { stroke: #2563eb; stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.6; }
 .g-hover-pt { fill: #2563eb; opacity: 0.75; }
-.g-hover-caja { fill: #1a1c22; opacity: 0.92; }
+.g-hover-caja { fill: #1d1d22; opacity: 0.92; }
 .g-hover-txt { fill: #ffffff; font-size: 11px; }
 
 /* Control (slider) de la gráfica */
@@ -374,20 +1069,23 @@ button:active {
 .grafica__control input[type="range"] {
   flex: 1 1 auto;
   min-width: 0;
+  min-height: 0;
+  padding: 0;
   accent-color: #2563eb;
   cursor: pointer;
 }
 
 .grafica__control output {
   min-width: 84px;
-  font-weight: 700;
+  font-family: var(--font-mono);
+  font-weight: 600;
   color: #2563eb;
   text-align: right;
   white-space: nowrap;
 }
 
 /* Textos de la gráfica */
-.g-tick { fill: #9aa1b1; font-size: 11px; }
+.g-tick { fill: #9a968a; font-size: 11px; }
 .g-tick--y { text-anchor: end; }
 .g-tick--x { text-anchor: middle; }
 .g-eje-titulo { fill: #4b5563; font-size: 12px; font-weight: 600; text-anchor: middle; }
@@ -401,8 +1099,8 @@ button:active {
   margin-top: 16px;
   padding: 16px;
   color: #374151;
-  background: #ffffff;
-  border: 1px solid #e6e8ef;
+  background: #fffdf8;
+  border: 1px solid #e5dcbd;
   border-radius: var(--radius);
   box-shadow: var(--shadow);
 }
@@ -435,7 +1133,7 @@ button:active {
 
 .notas h3 {
   margin: 0 0 8px;
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: #1a1c22;
 }
 
@@ -467,12 +1165,12 @@ button:active {
   max-width: calc(100% - 24px);
   padding: 8px;
   background: var(--surface);
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-card);
   border-radius: 999px;
-  box-shadow: var(--shadow);
+  box-shadow: var(--shadow-hover);
 }
 
 /* Botón minimizar / expandir */
@@ -483,13 +1181,14 @@ button:active {
   flex: 0 0 auto;
   width: auto; /* anula el "button { width: 100% }" global del formulario */
   min-height: 40px;
+  margin-top: 0;
   padding: 8px 16px;
   font: inherit;
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-strong);
   background: var(--bg);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: 999px;
   cursor: pointer;
   white-space: nowrap;
@@ -497,6 +1196,7 @@ button:active {
 }
 
 .unit-bar__toggle:hover {
+  filter: none;
   border-color: var(--accent);
 }
 
@@ -533,10 +1233,10 @@ button:active {
   padding: 4px 10px;
   font: inherit;
   font-weight: 600;
-  color: var(--text);
+  color: var(--text-strong);
   background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
   cursor: pointer;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
@@ -592,5 +1292,18 @@ button:active {
     left: auto;
     right: 12px;
     border-radius: 999px;
+  }
+}
+
+/* Al imprimir no hacen falta la barra lateral ni los botones */
+@media print {
+  .lateral,
+  .ajustes,
+  .unit-bar {
+    display: none !important;
+  }
+
+  .marco {
+    display: block;
   }
 }

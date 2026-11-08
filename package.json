@@ -2,7 +2,7 @@
   "name": "web-wr",
   "private": true,
   "type": "module",
-  "description": "Sitio WR: calculadoras y catálogo de cotizaciones de agua potable",
+  "description": "Sitio de Wolfgang Resendiz: calculadoras, catálogo de cotizaciones de agua potable y proyectos futuros",
   "engines": {
     "node": ">=20"
   },

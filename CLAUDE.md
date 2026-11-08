@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Sitio personal **WR** (GitHub Pages, se publica desde `main`): https://wolyf.github.io/web/
+Sitio personal de **Wolfgang Resendiz** (GitHub Pages, se publica desde `main`): https://wolyf.github.io/web/
 
 Preferencias del dueño: responder en español; no usar el guion largo (U+2014) en textos, interfaz ni mensajes; notación formal cuando aporte.
 
@@ -16,7 +16,7 @@ El sitio se divide en **proyectos**, uno por carpeta, registrados en `proyectos.
 
 | Zona | Carpetas | Instrucciones |
 |---|---|---|
-| `general` | `index.html`, `css/`, `js/`, `herramientas/`, `.claude/`, `.github/`, `proyectos.json`, `package.json`, `README.md` | Este archivo |
+| `general` | `index.html`, `css/`, `js/`, `img/`, `herramientas/`, `.claude/`, `.github/`, `proyectos.json`, `package.json`, `README.md` | Este archivo |
 | `calculadoras` | `calculadoras/` | `calculadoras/CLAUDE.md` |
 | `catalogo` | `catalogo/`, `.catalogo/` (privada) | `catalogo/CLAUDE.md` |
 
@@ -36,28 +36,62 @@ npm run proyectos -- listar                      # proyectos y sus carpetas
 npm run proyectos -- zona <ruta>                 # a qué zona pertenece una ruta
 npm run proyectos -- revisar                     # zonas que toca la copia de trabajo frente a origin/main
 npm run proyectos -- nuevo <id> --nombre "…"     # crea un proyecto (solo desde el entorno general)
+npm run proyectos -- portada [--revisar]         # regenera (o revisa) las tarjetas y el menú de la portada
 ```
 
 ### Agregar un proyecto (entorno general)
 
-1. `npm run proyectos -- nuevo <id> --nombre "Nombre"`: copia `herramientas/plantilla/` a `<id>/` (`CLAUDE.md` e `index.html`), lo registra en `proyectos.json` y agrega su tarjeta a la portada.
-2. Commit y PR con la etiqueta `varias-zonas`.
-3. El usuario crea en Claude Code un entorno con `WEB_PROYECTO=<id>`. Desde ahí se desarrolla el proyecto y se completa su `CLAUDE.md`.
+1. `npm run proyectos -- nuevo <id> --nombre "Nombre" [--corto "Nombre corto"] [--icono "🧪"] [--descripcion "…"]`: copia `herramientas/plantilla/` a `<id>/` (`CLAUDE.md` e `index.html`, ya con el diseño del sitio), lo registra en `proyectos.json` y agrega su tarjeta y su enlace a la portada.
+2. Completa en `proyectos.json` la descripción, el icono y las etiquetas, y corre `npm run proyectos -- portada`.
+3. Commit y PR con la etiqueta `varias-zonas`.
+4. El usuario crea en Claude Code un entorno con `WEB_PROYECTO=<id>`. Desde ahí se desarrolla el proyecto y se completa su `CLAUDE.md`.
 
-Para quitar o renombrar un proyecto, edita `proyectos.json` y la portada, y mueve la carpeta (cambio de varias zonas).
+Para quitar o renombrar un proyecto, edita `proyectos.json`, corre `npm run proyectos -- portada` y mueve la carpeta (cambio de varias zonas).
+
+### La portada sale de `proyectos.json`
+
+En `index.html`, el menú lateral, las tarjetas de la sección «Proyectos» y el total están entre marcadores (`<!-- proyectos:menu -->`, `<!-- proyectos:tarjetas -->`, `<!-- proyectos:total -->`) y **no se editan a mano**: se generan con `npm run proyectos -- portada`. Una prueba (`npm test`, también en la revisión «Pruebas» de GitHub) falla si la portada no está al día.
+
+Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la portada):
+
+| Campo | Uso |
+|---|---|
+| `nombre`, `carpetas` | Obligatorios. Título de la tarjeta y carpetas de la zona. |
+| `corto` | Nombre en el menú lateral (si no, `nombre`). |
+| `inicio` | Página a la que lleva la tarjeta (por defecto `<carpeta>/`). |
+| `descripcion`, `anio`, `icono`, `etiquetas` | Texto, año, emoji y etiquetas de la tarjeta. |
+| `privado` | Marca la tarjeta como privada (p. ej. requiere contraseña). |
+| `codigo: false` | Quita el enlace «Código» a GitHub. |
+| `oculto: true` | Deja el proyecto fuera de la portada (en construcción). |
+
+`sitio.nombre` y `sitio.repositorio` son los datos generales (el repositorio arma los enlaces «Código»).
 
 ## Estructura de la zona general
 
 | Ruta | Qué es |
 |---|---|
-| `index.html` | Portada: una tarjeta por sección. |
-| `css/styles.css` | Estilos base del sitio (tipografía, encabezado, tarjetas, formularios). |
+| `index.html` | Portada: barra lateral (en celular, barra superior), presentación con bitácora y retrato de Darwin, y tarjetas de proyectos (generadas). |
+| `css/styles.css` | Estilos base del sitio: variables de tema y acento, tipografía, encabezado, formularios, portada y componentes de las calculadoras. |
+| `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`). |
 | `js/darwin.js` | Darwin, la gatita del sitio: aparece en cada página, responde a clics y lleva accesorios de temporada. |
-| `proyectos.json` | Registro de proyectos y sus carpetas. |
-| `herramientas/proyectos.mjs` | Zonas: comandos de arriba, hook y revisión de GitHub. Pruebas en `herramientas/pruebas/`. |
-| `herramientas/plantilla/` | Plantilla de proyecto nuevo (`{{ID}}`, `{{NOMBRE}}`). |
+| `img/darwin.svg`, `img/darwin-cara.svg` | Retrato de Darwin y su cara (marca y favicon), sacados de su sprite de `js/darwin.js`. |
+| `proyectos.json` | Registro de proyectos: carpetas (zonas) y datos de su tarjeta en la portada. |
+| `herramientas/proyectos.mjs` | Zonas y portada: comandos de arriba, hook y revisión de GitHub. Pruebas en `herramientas/pruebas/`. |
+| `herramientas/plantilla/` | Plantilla de proyecto nuevo (`{{ID}}`, `{{NOMBRE}}`), con el diseño del sitio. |
 | `.claude/settings.json` | Hooks de zona (`SessionStart` y `PreToolUse`). |
 | `.github/workflows/zonas.yml` | Revisión de zonas en cada PR. |
+| `.github/workflows/pruebas.yml` | `npm test` en cada PR y en `main`. |
+
+## Diseño
+
+Inspirado gráficamente en un jardín digital: papel beige y grises cálidos, un solo color de acento, títulos en **Outfit**, texto en **Inter** y detalles (marca, fechas, etiquetas) en **Google Sans Code**. Las fuentes las importa `css/styles.css`, así que basta enlazarlo.
+
+- **Tema**: sigue al sistema; `js/tema.js` permite fijarlo (`<html data-tema="claro|oscuro">`). El bloque oscuro de variables está dos veces en el CSS (sistema y elección manual): si cambias un color, cambia ambos.
+- **Acento**: rosa por defecto; `data-acento="azul|verde|lavanda|ambar"`. Cada acento tiene versión clara y oscura (`--acento-claro`, `--acento-oscuro`); el resto del sitio usa `--accent`.
+- **Variables** que deben usar los proyectos: `--bg`, `--surface`, `--surface-2`, `--text`, `--text-strong`, `--muted`, `--border`, `--border-card`, `--border-strong`, `--accent`, `--accent-soft`, `--sobre-acento`, `--radius`, `--font-texto`, `--font-titulo`, `--font-mono`.
+- **Páginas de proyecto**: `.site-header` con `.brand` (la cara de Darwin se agrega sola con CSS) y `.ajustes` (botones de tema y acento); columna de 480 px o, con `<body class="ancho">`, de 760 px.
+- **Componentes**: `.card`, `.back`, `form`, `.pastilla`, `.etiqueta`, `.proyectos` + `.proyecto`, `.bitacora`.
+- La gráfica de las calculadoras se queda siempre en tema claro (es técnica).
 
 ## Código del sitio
 
@@ -69,7 +103,7 @@ Para quitar o renombrar un proyecto, edita `proyectos.json` y la portada, y muev
 
 `js/darwin.js` dibuja a Darwin (pixel art) en la orilla inferior de cada página. Es autocontenido: inyecta su propio estilo, no usa librerías y solo su cuerpo recibe clics.
 
-- **Cada página HTML del sitio la incluye** con una línea en el `<head>`: `<script src="../js/darwin.js" defer></script>` (desde la raíz, `js/darwin.js`). La plantilla de proyectos ya la trae.
+- **Cada página HTML del sitio la incluye** con una línea en el `<head>`: `<script src="../js/darwin.js" defer></script>` (desde la raíz, `js/darwin.js`). La plantilla de proyectos ya la trae, junto con `js/tema.js`.
 - Si debajo de ella hay una barra fija pegada a la orilla (como la de unidades de las calculadoras), se para encima para no tapar sus controles.
 - Comportamiento: se sienta, pasea, se duerme tras 75 s sin actividad; al hacer clic en la página voltea o camina hacia ahí; al acariciarla ronronea y saluda (cada 5 caricias salta); se puede arrastrar. Recuerda su lugar entre páginas de la misma sesión.
 - Accesorios por fecha en `TEMPORADAS` (Reyes, invierno, San Valentín, primavera, verano, fiestas patrias, otoño, Halloween, Día de Muertos, Navidad). Para verlos: `?darwin=<id>` (p. ej. `?darwin=navidad`).

@@ -15,7 +15,11 @@
 //   revisar [--base ref] [--cabeza ref] [--rama nombre] [--varias]
 //                                  Qué zonas toca un cambio (por defecto, la
 //                                  copia de trabajo frente a origin/main)
-//   nuevo <id> --nombre "Nombre"   Crea un proyecto desde herramientas/plantilla/
+//   nuevo <id> --nombre "Nombre" [--descripcion "…"] [--icono "🧪"] [--corto "Nombre corto"]
+//                                  Crea un proyecto desde herramientas/plantilla/
+//   portada [--revisar]            Regenera las tarjetas y el menú de proyectos de
+//                                  index.html desde proyectos.json (--revisar solo
+//                                  comprueba que estén al día)
 //   hook | inicio                  Los usa .claude/settings.json (no a mano)
 //
 // Esto previene accidentes; no es una barrera de seguridad (Bash puede
@@ -35,8 +39,15 @@ const RESERVADOS = new Set([GENERAL, "css", "js", "herramientas", "node_modules"
 
 // ---- Lógica pura (probada en herramientas/pruebas/) ----
 
+const PORTADA = path.join(RAIZ, "index.html");
+
 export function leerRegistro(archivo = REGISTRO) {
   return JSON.parse(fs.readFileSync(archivo, "utf8")).proyectos ?? {};
+}
+
+// Datos generales del sitio (nombre y repositorio), en "sitio" de proyectos.json.
+export function leerSitio(archivo = REGISTRO) {
+  return JSON.parse(fs.readFileSync(archivo, "utf8")).sitio ?? {};
 }
 
 // Ruta relativa a la raíz del repo, con "/" como separador.
@@ -102,6 +113,68 @@ export function revisarCambio(archivos, proyectos, { rama = "", varias = false, 
   return { zonas, errores: [...new Set(errores)] };
 }
 
+// ---- Portada: tarjetas y menú de proyectos ----
+//
+// index.html marca con comentarios las partes que se generan:
+//   <!-- proyectos:menu --> … <!-- /proyectos:menu -->          enlaces de la barra lateral
+//   <!-- proyectos:tarjetas --> … <!-- /proyectos:tarjetas -->  tarjetas de la sección Proyectos
+//   <!-- proyectos:total -->…<!-- /proyectos:total -->          «N proyectos»
+// Campos de cada proyecto (además de nombre y carpetas): corto, inicio,
+// descripcion, anio, icono, etiquetas, privado, codigo (false oculta el
+// enlace al código) y oculto (true lo deja fuera de la portada).
+
+export const escaparHTML = (texto) => String(texto).replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
+
+const visibles = (proyectos) => Object.entries(proyectos).filter(([, p]) => !p.oculto);
+const inicioDe = (id, p) => p.inicio || `${(p.carpetas ?? [id])[0]}/`;
+
+export function tarjetaProyecto(id, p, { repositorio = "" } = {}) {
+  const e = escaparHTML;
+  const meta = [p.anio, p.privado ? "privado" : ""].filter(Boolean).map(e).join(" · ");
+  const etiquetas = (p.etiquetas ?? []).map((t) => `<span class="etiqueta">#${e(t)}</span>`).join(" ");
+  const enlaces = [`<a href="${e(inicioDe(id, p))}">Abrir</a>`];
+  if (repositorio && p.codigo !== false) enlaces.push(`<a href="${e(`${repositorio}/tree/main/${(p.carpetas ?? [id])[0]}`)}">Código</a>`);
+  return [
+    `<article class="proyecto">`,
+    `  <p class="proyecto__meta"><span>${meta}</span><span class="proyecto__icono" aria-hidden="true">${e(p.icono || "📁")}</span></p>`,
+    `  <h3 class="proyecto__titulo"><a href="${e(inicioDe(id, p))}">${e(p.nombre)}</a></h3>`,
+    ...(p.descripcion ? [`  <p class="proyecto__desc">${e(p.descripcion)}</p>`] : []),
+    ...(etiquetas ? [`  <p class="proyecto__etiquetas">${etiquetas}</p>`] : []),
+    `  <p class="proyecto__enlaces">${enlaces.join(" ")}</p>`,
+    `</article>`,
+  ];
+}
+
+export function enlaceMenu(id, p) {
+  const e = escaparHTML;
+  return `<a href="${e(inicioDe(id, p))}"><span class="lateral__icono" aria-hidden="true">${e(p.icono || "📁")}</span>${e(p.corto || p.nombre)}</a>`;
+}
+
+// Sustituye lo que hay entre <!-- proyectos:nombre --> y <!-- /proyectos:nombre -->.
+// Si `contenido` es una lista de líneas, las pone en bloque con la sangría del marcador.
+function reemplazarMarcador(html, nombre, contenido) {
+  const inicio = `<!-- proyectos:${nombre} -->`;
+  const fin = `<!-- /proyectos:${nombre} -->`;
+  const a = html.indexOf(inicio);
+  const b = html.indexOf(fin, a);
+  if (a < 0 || b < 0) throw new Error(`index.html no tiene los marcadores ${inicio} … ${fin}.`);
+  let medio = contenido;
+  if (Array.isArray(contenido)) {
+    const sangria = html.slice(html.lastIndexOf("\n", a) + 1, a).match(/^\s*/)[0];
+    medio = `\n${contenido.map((l) => (l ? sangria + l : l)).join("\n")}\n${sangria}`;
+  }
+  return html.slice(0, a + inicio.length) + medio + html.slice(b);
+}
+
+// Devuelve la portada con las partes generadas al día.
+export function actualizarPortada(html, proyectos, sitio = {}) {
+  const lista = visibles(proyectos);
+  let nuevo = reemplazarMarcador(html, "menu", lista.map(([id, p]) => enlaceMenu(id, p)));
+  nuevo = reemplazarMarcador(nuevo, "tarjetas", lista.flatMap(([id, p]) => tarjetaProyecto(id, p, sitio)));
+  nuevo = reemplazarMarcador(nuevo, "total", `${lista.length} ${lista.length === 1 ? "proyecto" : "proyectos"}`);
+  return nuevo;
+}
+
 // ---- Línea de comandos ----
 
 function argumentos(argv) {
@@ -115,8 +188,6 @@ function argumentos(argv) {
   }
   return { posicionales, opciones };
 }
-
-const escaparHTML = (texto) => texto.replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
 
 const git = (...args) =>
   execFileSync("git", args, { cwd: RAIZ, encoding: "utf8" })
@@ -181,22 +252,46 @@ const comandos = {
     };
     copiar(PLANTILLA, destino);
 
-    registro.proyectos[id] = { nombre, carpetas: [id] };
+    const texto = (clave) => (typeof opciones[clave] === "string" ? opciones[clave].trim() : "");
+    registro.proyectos[id] = {
+      nombre,
+      carpetas: [id],
+      ...(texto("corto") ? { corto: texto("corto") } : {}),
+      inicio: `${id}/`,
+      descripcion: texto("descripcion") || "En construcción.",
+      anio: new Date().getFullYear(),
+      icono: texto("icono") || "🧪",
+      etiquetas: [],
+    };
     fs.writeFileSync(REGISTRO, `${JSON.stringify(registro, null, 2)}\n`);
 
-    // Tarjeta en la portada, al final de la lista de secciones
-    const portada = path.join(RAIZ, "index.html");
-    const html = fs.readFileSync(portada, "utf8");
-    const cierre = html.indexOf("    </nav>");
-    if (cierre >= 0) {
-      const tarjeta = `      <a class="card" href="${id}/">\n        ${escaparHTML(nombre)}\n      </a>\n`;
-      fs.writeFileSync(portada, html.slice(0, cierre) + tarjeta + html.slice(cierre));
-    } else console.log("Aviso: no encontré la lista de secciones en index.html; agrega la tarjeta a mano.");
+    // Tarjeta y enlace en la portada
+    try {
+      fs.writeFileSync(PORTADA, actualizarPortada(fs.readFileSync(PORTADA, "utf8"), registro.proyectos, registro.sitio));
+    } catch (error) {
+      console.log(`Aviso: ${error.message} Agrega la tarjeta a mano.`);
+    }
 
     console.log(`Proyecto «${id}» creado: ${id}/ (CLAUDE.md, index.html), registrado en proyectos.json y enlazado en index.html.`);
+    console.log("Completa su descripción, icono y etiquetas en proyectos.json y corre «npm run proyectos -- portada».");
     console.log("Siguientes pasos:");
     console.log(`  1. Commit y PR con la etiqueta «varias-zonas» (toca general y ${id}).`);
     console.log(`  2. En Claude Code, crea un entorno con WEB_PROYECTO=${id}.`);
+  },
+
+  portada(_, opciones) {
+    const html = fs.readFileSync(PORTADA, "utf8");
+    const nuevo = actualizarPortada(html, leerRegistro(), leerSitio());
+    if (opciones.revisar) {
+      if (nuevo !== html) {
+        console.error("✗ index.html no está al día con proyectos.json. Corre «npm run proyectos -- portada».");
+        process.exitCode = 1;
+      } else console.log("✓ La portada está al día con proyectos.json.");
+    } else if (nuevo === html) console.log("La portada ya estaba al día.");
+    else {
+      fs.writeFileSync(PORTADA, nuevo);
+      console.log("Portada actualizada desde proyectos.json.");
+    }
   },
 
   // PreToolUse (Edit, Write…): bloquea con código 2 lo que no es de esta zona.
@@ -239,7 +334,7 @@ if (ejecutadoDirecto) {
   const [comando = "listar", ...resto] = process.argv.slice(2);
   const { posicionales, opciones } = argumentos(resto);
   if (!comandos[comando]) {
-    console.error(`Comando desconocido: ${comando}. Usa listar, zona, revisar o nuevo.`);
+    console.error(`Comando desconocido: ${comando}. Usa listar, zona, revisar, nuevo o portada.`);
     process.exit(1);
   }
   try {

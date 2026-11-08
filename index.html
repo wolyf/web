@@ -7,48 +7,160 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Título del navegador -->
-  <title>WR · Calculadoras</title>
+  <title>Wolfgang Resendiz</title>
 
   <!-- Descripción para buscadores -->
   <meta
     name="description"
-    content="Calculadoras de ingeniería, simples y modernas."
+    content="Sitio de Wolfgang Resendiz: herramientas de ingeniería, proyectos personales y una gatita llamada Darwin."
   >
 
-  <!-- Tipografía -->
+  <!-- Color de la barra del navegador en celular -->
+  <meta name="theme-color" content="#f8f4e6" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#202025" media="(prefers-color-scheme: dark)">
+
+  <!-- Ícono: la cara de Darwin -->
+  <link rel="icon" href="img/darwin-cara.svg" type="image/svg+xml">
+
+  <!-- Tipografía (los estilos la importan; esto adelanta la conexión) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
 
   <!-- Archivo de estilos -->
   <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Tema y color de acento: sin defer, para aplicarlos antes de pintar -->
+  <script src="js/tema.js"></script>
 
   <!-- Darwin, la gatita del sitio (js/darwin.js) -->
   <script src="js/darwin.js" defer></script>
 </head>
 
-<body>
-  <!-- Encabezado con la marca del sitio -->
-  <header class="site-header">
-    <a class="brand" href="index.html">WR</a>
-  </header>
+<body class="con-lateral">
+  <div class="marco">
+    <!-- Barra lateral (en celular, barra superior) -->
+    <aside class="lateral">
+      <div class="lateral__seccion lateral__cabeza">
+        <a class="brand" href="index.html">Wolfgang Resendiz</a>
 
-  <!-- Contenido principal -->
-  <main>
-    <h1 class="hero">Hola :)</h1>
+        <!-- Color de acento y tema claro/oscuro (js/tema.js) -->
+        <div class="ajustes">
+          <button class="ajuste" type="button" data-tema-accion="acento" aria-label="Cambiar color de acento">
+            <span class="ajuste__punto"></span>
+          </button>
+          <button class="ajuste" type="button" data-tema-accion="tema" aria-label="Cambiar tema">
+            <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          </button>
+        </div>
+      </div>
 
-    <!-- Secciones del sitio -->
-    <nav aria-label="Secciones del sitio">
-      <a class="card" href="calculadoras/caudal.html">
-        Calculadora de caudal en tuberías
-      </a>
-      <a class="card" href="catalogo/">
-        Catálogo de cotizaciones de agua potable
-      </a>
-    </nav>
-  </main>
+      <div class="lateral__seccion lateral__intro">
+        <p>Soy <a href="#inicio">Wolfgang</a>. Este es mi rincón en la web: herramientas, proyectos y experimentos.</p>
+      </div>
+
+      <nav class="lateral__seccion lateral__nav" aria-label="Secciones del sitio">
+        <a href="#proyectos">
+          <span class="lateral__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+          </span>Proyectos
+        </a>
+        <a href="#bitacora">
+          <span class="lateral__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </span>Bitácora
+        </a>
+
+        <p class="lateral__titulo">Proyectos</p>
+        <!-- Generado desde proyectos.json: npm run proyectos -- portada -->
+        <!-- proyectos:menu -->
+        <a href="calculadoras/caudal.html"><span class="lateral__icono" aria-hidden="true">🧮</span>Calculadoras</a>
+        <a href="catalogo/"><span class="lateral__icono" aria-hidden="true">💧</span>Catálogo</a>
+        <!-- /proyectos:menu -->
+      </nav>
+
+      <div class="lateral__seccion lateral__pie">
+        <a href="https://github.com/wolyf/web">Código del sitio</a>
+      </div>
+    </aside>
+
+    <div class="contenido">
+      <main id="inicio">
+        <!-- Presentación y bitácora -->
+        <section class="seccion presentacion" aria-labelledby="titulo-inicio">
+          <div>
+            <h1 class="hero" id="titulo-inicio">Hola, soy Wolfgang.</h1>
+            <p class="subtitulo">Herramientas de ingeniería, proyectos personales y una gatita llamada Darwin.</p>
+
+            <h3 id="bitacora">Bitácora breve</h3>
+            <ol class="bitacora" reversed>
+              <li>
+                <time datetime="2026-11">nov 2026</time>
+                <span>El sitio se organiza por proyectos, llega Darwin y estrena este diseño.</span>
+              </li>
+              <li>
+                <time datetime="2026-10">oct 2026</time>
+                <span><a href="catalogo/">Catálogo de cotizaciones</a> de agua potable: privado y con los datos cifrados.</span>
+              </li>
+              <li>
+                <time datetime="2026-07">jul 2026</time>
+                <span><a href="calculadoras/caudal.html">Calculadora de caudal</a> con unidades configurables, ecuación en LaTeX y gráfica interactiva.</span>
+              </li>
+              <li>
+                <time datetime="2022-05">may 2022</time>
+                <span>Primera versión del sitio, hecha a mano en HTML y CSS.</span>
+              </li>
+            </ol>
+          </div>
+
+          <!-- Retrato de Darwin (img/darwin.svg sale de su sprite en js/darwin.js) -->
+          <figure class="retrato">
+            <div class="retrato__circulo">
+              <img src="img/darwin.svg" alt="Darwin, una gatita naranja en pixel art" width="112" height="112">
+            </div>
+            <figcaption>¿Ya conoces a Darwin? Vive en la orilla de cada página. Acaríciala.</figcaption>
+          </figure>
+        </section>
+
+        <!-- Proyectos -->
+        <section class="seccion" id="proyectos" aria-labelledby="titulo-proyectos">
+          <div class="seccion__cabeza">
+            <h2 id="titulo-proyectos">Proyectos</h2>
+            <span class="pastilla"><!-- proyectos:total -->2 proyectos<!-- /proyectos:total --></span>
+          </div>
+          <p class="seccion__desc">Herramientas y experimentos publicados en este sitio.</p>
+
+          <!-- Generado desde proyectos.json: npm run proyectos -- portada -->
+          <div class="proyectos">
+            <!-- proyectos:tarjetas -->
+            <article class="proyecto">
+              <p class="proyecto__meta"><span>2026</span><span class="proyecto__icono" aria-hidden="true">🧮</span></p>
+              <h3 class="proyecto__titulo"><a href="calculadoras/caudal.html">Calculadoras de ingeniería</a></h3>
+              <p class="proyecto__desc">Caudal en tuberías con unidades configurables, ecuación en LaTeX y gráfica interactiva con límites de velocidad.</p>
+              <p class="proyecto__etiquetas"><span class="etiqueta">#hidráulica</span> <span class="etiqueta">#calculadora</span></p>
+              <p class="proyecto__enlaces"><a href="calculadoras/caudal.html">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/calculadoras">Código</a></p>
+            </article>
+            <article class="proyecto">
+              <p class="proyecto__meta"><span>2026 · privado</span><span class="proyecto__icono" aria-hidden="true">💧</span></p>
+              <h3 class="proyecto__titulo"><a href="catalogo/">Catálogo de cotizaciones de agua potable</a></h3>
+              <p class="proyecto__desc">Proveedores, productos y cotizaciones de piezas y servicios de agua potable. Requiere usuario y contraseña; los datos se publican cifrados.</p>
+              <p class="proyecto__etiquetas"><span class="etiqueta">#agua-potable</span> <span class="etiqueta">#cotizaciones</span></p>
+              <p class="proyecto__enlaces"><a href="catalogo/">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/catalogo">Código</a></p>
+            </article>
+            <!-- /proyectos:tarjetas -->
+          </div>
+        </section>
+      </main>
+
+      <footer class="pie">
+        <ul class="pie__enlaces">
+          <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#bitacora">Bitácora</a></li>
+          <li><a href="https://github.com/wolyf/web">Código en GitHub</a></li>
+        </ul>
+        <p>Hecho a mano con HTML, CSS y JavaScript, sin dependencias. Con <span class="corazon" aria-label="cariño">♥</span> por Wolfgang Resendiz.</p>
+      </footer>
+    </div>
+  </div>
 </body>
 </html>
