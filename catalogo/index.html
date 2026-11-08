@@ -6,21 +6,23 @@
   <!-- Ajuste para celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Catálogo de cotizaciones · WR</title>
+  <title>Catálogo de cotizaciones · Wolfgang Resendiz</title>
 
   <!-- Catálogo privado: que los buscadores no lo indexen -->
   <meta name="robots" content="noindex, nofollow">
   <meta name="description" content="Catálogo privado de cotizaciones de piezas y servicios de agua potable.">
 
-  <!-- Tipografía -->
+  <!-- Ícono: la cara de Darwin (zona general) -->
+  <link rel="icon" href="../img/darwin-cara.svg" type="image/svg+xml">
+
+  <!-- Tipografía (catalogo.css la importa; esto adelanta la conexión) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
 
   <link rel="stylesheet" href="css/catalogo.css">
+
+  <!-- Tema y color de acento (zona general): sin defer, para aplicarlos antes de pintar -->
+  <script src="../js/tema.js"></script>
 
   <!-- La app descifra datos/catalogo.enc en el navegador tras iniciar sesión -->
   <script type="module" src="js/app.js"></script>
