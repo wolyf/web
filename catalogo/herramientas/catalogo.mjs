@@ -599,7 +599,7 @@ const comandos = {
         return relativo !== "datos" && relativo !== "herramientas";
       },
     });
-    for (const archivo of ["index.html", "css/styles.css", "js/darwin.js"]) {
+    for (const archivo of ["index.html", "css/styles.css", "js/darwin.js", "js/tema.js", "img/darwin-cara.svg", "img/darwin.svg"]) {
       fs.mkdirSync(path.dirname(path.join(destino, archivo)), { recursive: true });
       fs.copyFileSync(path.join(RAIZ, archivo), path.join(destino, archivo));
     }

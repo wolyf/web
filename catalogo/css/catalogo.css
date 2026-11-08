@@ -1,35 +1,62 @@
 /* ============================================================
    Catálogo de cotizaciones
-   Mismo lenguaje visual que el resto del sitio WR (Inter, acento
-   índigo, superficies suaves) pero con densidad de catálogo técnico:
-   tablas compactas, cifras tabulares y mucha información por pantalla.
+   Mismo lenguaje visual que el resto del sitio de Wolfgang Resendiz
+   (css/styles.css: papel beige y grises cálidos, un color de acento,
+   títulos en Outfit, texto en Inter y detalles en Google Sans Code)
+   pero con densidad de catálogo técnico: tablas compactas, cifras
+   tabulares y mucha información por pantalla.
+
+   El catálogo no enlaza css/styles.css: copia aquí su paleta y su
+   esquema de tema. Si cambia un color allá, cámbialo también aquí.
+   Tema:   claro u oscuro según el sistema; ../js/tema.js permite fijarlo
+           con <html data-tema="claro|oscuro">.
+   Acento: rosa por defecto; <html data-acento="azul|verde|lavanda|ambar">.
    ============================================================ */
 
+/* Tipografía: Inter (texto), Outfit (títulos) y Google Sans Code (detalles) */
+@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap");
+
+/* ---- Variables: tema claro ---- */
 :root {
   color-scheme: light;
-  --bg: #f6f7fb;
-  --bg-gradient: radial-gradient(1200px 600px at 50% -10%, #eef1ff 0%, var(--bg) 55%);
-  --surface: #ffffff;
-  --surface-2: #f8f9fc;
-  --hover: #f3f4fa;
-  --text: #1a1c22;
-  --text-2: #3f4350;
-  --muted: #6b7280;
-  --border: #e6e8ef;
-  --border-strong: #d4d8e2;
-  --accent: #4f46e5;
-  --accent-soft: #eef0ff;
-  --ok: #0b7a3e;
-  --ok-soft: #e6f5ec;
+
+  /* Colores de acento (claro / oscuro); se eligen con data-acento */
+  --acento-claro: #b12d6c;
+  --acento-oscuro: #f2777a;
+
+  --bg: #f8f4e6;
+  --surface: #f1ead5;          /* tarjetas, paneles y formularios */
+  --surface-2: #ece4ca;        /* cabeceras de tabla, etiquetas, hover */
+  --hover: #ece4ca;
+  --text: #28282e;
+  --text-strong: #1d1d22;      /* títulos y texto enfatizado */
+  --text-2: #3d3d44;           /* texto secundario */
+  --muted: #5a5a61;
+  --border: #e5dcbd;
+  --border-card: #ded4b2;
+  --border-strong: #c6ba93;
+  --accent: var(--acento-claro);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  --sobre-acento: #ffffff;     /* texto encima del acento */
+  --velo: rgba(40, 36, 20, 0.3);  /* fondo detrás del menú lateral en celular */
+
+  --ok: #1f7a4a;
+  --ok-soft: color-mix(in srgb, var(--ok) 12%, var(--bg));
   --warn: #8a5a00;
-  --warn-soft: #fff5de;
+  --warn-soft: color-mix(in srgb, var(--warn) 13%, var(--bg));
   --bad: #b42318;
-  --bad-soft: #fdeceb;
-  --shadow: 0 1px 2px rgba(16, 24, 40, 0.04), 0 8px 24px rgba(16, 24, 40, 0.06);
-  --shadow-pop: 0 4px 10px rgba(16, 24, 40, 0.08), 0 18px 40px rgba(16, 24, 40, 0.14);
-  --radius: 14px;
-  --radius-sm: 9px;
-  --mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
+  --bad-soft: color-mix(in srgb, var(--bad) 11%, var(--bg));
+
+  --shadow: 0 4px 4px hsla(47, 43%, 82%, 0.1), 0 2px 2px hsla(47, 43%, 82%, 0.1), 0 1px 1px hsla(47, 43%, 82%, 0.1);
+  --shadow-pop: rgba(124, 114, 76, 0.35) 0 5px 15px 0;
+
+  --radius: 8px;
+  --radius-sm: 6px;
+
+  --font-texto: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-titulo: "Outfit", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Google Sans Code", ui-monospace, Menlo, Consolas, monospace;
+  --mono: var(--font-mono);
 
   /* Series de la gráfica: paleta categórica validada (orden fijo). */
   --serie-1: #2a78d6;
@@ -40,33 +67,40 @@
   --serie-6: #008300;
   --serie-7: #6250d6;
   --serie-8: #e34948;
-  --gh-rejilla: #eef0f5;
-  --gh-base: #c9cdd8;
+  --gh-rejilla: #e9e0c4;
+  --gh-base: #c6ba93;
 }
 
+/* Paletas de acento (las mismas de css/styles.css) */
+:root[data-acento="azul"] { --acento-claro: #2a67a5; --acento-oscuro: #6db3f5; }
+:root[data-acento="verde"] { --acento-claro: #2b7f66; --acento-oscuro: #94d294; }
+:root[data-acento="lavanda"] { --acento-claro: #6a3eba; --acento-oscuro: #e5aaf5; }
+:root[data-acento="ambar"] { --acento-claro: #a35f2c; --acento-oscuro: #fede91; }
+
+/* ---- Variables: tema oscuro (del sistema o elegido) ----
+   El bloque se repite: una vez para el sistema y otra para la elección manual. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-tema="claro"]) {
     color-scheme: dark;
-    --bg: #0d0f16;
-    --bg-gradient: radial-gradient(1200px 600px at 50% -10%, #1a1d2e 0%, var(--bg) 55%);
-    --surface: #161925;
-    --surface-2: #1b1f2d;
-    --hover: #1f2333;
-    --text: #f2f3f7;
-    --text-2: #cfd3de;
-    --muted: #9aa1b1;
-    --border: #262a3a;
-    --border-strong: #343a4f;
-    --accent: #818cf8;
-    --accent-soft: #1e2135;
-    --ok: #4ade80;
-    --ok-soft: #12291c;
-    --warn: #f5b942;
-    --warn-soft: #2b2312;
-    --bad: #f87171;
-    --bad-soft: #2d1719;
-    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
-    --shadow-pop: 0 4px 10px rgba(0, 0, 0, 0.35), 0 18px 40px rgba(0, 0, 0, 0.55);
+    --bg: #202025;
+    --surface: #28282e;
+    --surface-2: #323239;
+    --hover: #323239;
+    --text: #d4d4d8;
+    --text-strong: #fbfbfb;
+    --text-2: #c2c2c8;
+    --muted: #a1a1a8;
+    --border: #323239;
+    --border-card: #323239;
+    --border-strong: #4e4e55;
+    --accent: var(--acento-oscuro);
+    --sobre-acento: #1d1d22;
+    --velo: rgba(0, 1, 2, 0.5);
+    --ok: #6fcf97;
+    --warn: #f0c060;
+    --bad: #f28b82;
+    --shadow: 0 4px 7px rgba(0, 1, 2, 0.3), 0 2px 2px rgba(0, 1, 2, 0.3), 0 1px 1px rgba(0, 1, 2, 0.3);
+    --shadow-pop: 0 6px 18px rgba(0, 1, 2, 0.5);
 
     --serie-1: #3987e5;
     --serie-2: #d95926;
@@ -76,9 +110,43 @@
     --serie-6: #008300;
     --serie-7: #9085e9;
     --serie-8: #e66767;
-    --gh-rejilla: #23283a;
-    --gh-base: #3a4058;
+    --gh-rejilla: #2e2e35;
+    --gh-base: #4e4e55;
   }
+}
+
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --bg: #202025;
+  --surface: #28282e;
+  --surface-2: #323239;
+  --hover: #323239;
+  --text: #d4d4d8;
+  --text-strong: #fbfbfb;
+  --text-2: #c2c2c8;
+  --muted: #a1a1a8;
+  --border: #323239;
+  --border-card: #323239;
+  --border-strong: #4e4e55;
+  --accent: var(--acento-oscuro);
+  --sobre-acento: #1d1d22;
+  --velo: rgba(0, 1, 2, 0.5);
+  --ok: #6fcf97;
+  --warn: #f0c060;
+  --bad: #f28b82;
+  --shadow: 0 4px 7px rgba(0, 1, 2, 0.3), 0 2px 2px rgba(0, 1, 2, 0.3), 0 1px 1px rgba(0, 1, 2, 0.3);
+  --shadow-pop: 0 6px 18px rgba(0, 1, 2, 0.5);
+
+  --serie-1: #3987e5;
+  --serie-2: #d95926;
+  --serie-3: #199e70;
+  --serie-4: #c98500;
+  --serie-5: #d55181;
+  --serie-6: #008300;
+  --serie-7: #9085e9;
+  --serie-8: #e66767;
+  --gh-rejilla: #2e2e35;
+  --gh-base: #4e4e55;
 }
 
 *,
@@ -94,12 +162,11 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: var(--font-texto);
   font-size: 15px;
   line-height: 1.5;
   color: var(--text);
-  background: var(--bg-gradient), var(--bg);
-  background-attachment: fixed;
+  background: var(--bg);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -123,8 +190,16 @@ a:hover {
 h1,
 h2,
 h3 {
+  font-family: var(--font-titulo);
+  font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.25;
+  color: var(--text-strong);
+}
+
+::selection {
+  color: var(--sobre-acento);
+  background: var(--accent);
 }
 
 kbd {
@@ -171,25 +246,119 @@ kbd {
   color: var(--muted);
 }
 
-/* ---- Marca (igual que en el resto del sitio) ---- */
+/* ---- Marca del sitio: Darwin y el nombre en monoespaciada (como .brand) ---- */
 .marca {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
+  gap: 10px;
+  font-family: var(--font-mono);
   font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--accent);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text-strong);
   text-decoration: none;
-  background: var(--accent-soft);
-  border-radius: 10px;
-  transition: transform 0.18s ease, filter 0.18s ease;
+}
+
+.marca::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  background: url("../../img/darwin-cara.svg") center / contain no-repeat;
+  image-rendering: pixelated;
+  transition: transform 0.18s ease;
 }
 
 .marca:hover {
+  color: var(--text-strong);
   text-decoration: none;
-  transform: translateY(-1px);
-  filter: brightness(1.05);
+}
+
+.marca:hover::before {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+/* ---- Botones de tema y acento (../js/tema.js, como en css/styles.css) ---- */
+.ajustes {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ajuste {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.ajuste:hover {
+  color: var(--text-strong);
+  background: var(--surface-2);
+}
+
+.ajuste svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* El punto de color muestra el acento actual */
+.ajuste__punto {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* Sol en tema oscuro (para pasar a claro) y luna en tema claro */
+.ajuste .icono-sol { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .ajuste .icono-sol { display: block; }
+  :root:not([data-tema="claro"]) .ajuste .icono-luna { display: none; }
+}
+:root[data-tema="oscuro"] .ajuste .icono-sol { display: block; }
+:root[data-tema="oscuro"] .ajuste .icono-luna { display: none; }
+
+/* Si ../js/tema.js no cargó, los botones no sirven: se ocultan */
+html:not(.con-js) .ajustes {
+  display: none;
+}
+
+/* ---- Tipografía de detalle ----
+   Títulos que no son h1-h3 en Outfit; cifras, fechas, folios y etiquetas
+   en Google Sans Code. */
+.barra__titulo,
+.vacio__titulo {
+  font-family: var(--font-titulo);
+}
+
+.cifra dd,
+.tile__valor,
+.cuenta,
+.filtros__contador,
+.tabla thead th,
+.tabla .num,
+.sugerencia__tipo,
+.arbol__titulo,
+.insignia,
+.encabezado__sup,
+.comunes__etiqueta,
+.bitacora__fecha,
+.grafica-historial__fecha,
+.grafica-historial__fila strong,
+.gh-tick,
+.gh-final {
+  font-family: var(--font-mono);
 }
 
 /* ---- Botones ---- */
@@ -207,10 +376,10 @@ button,
   min-height: 44px;
   padding: 10px 18px;
   font-weight: 600;
-  color: #fff;
+  color: var(--sobre-acento);
   background: var(--accent);
   border: 0;
-  border-radius: 11px;
+  border-radius: var(--radius);
   text-decoration: none;
   transition: filter 0.18s ease, transform 0.1s ease;
 }
@@ -243,12 +412,31 @@ button,
   padding: 30px 28px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: calc(var(--radius) * 1.5);
   box-shadow: var(--shadow);
 }
 
-.acceso__tarjeta .marca {
-  justify-self: start;
+/* Los botones de tema no llevan el estilo del botón «Entrar» */
+.acceso .ajuste {
+  width: 32px;
+  min-height: 0;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  filter: none;
+}
+
+.acceso .ajuste:hover {
+  color: var(--text-strong);
+  background: var(--surface-2);
+  filter: none;
+}
+
+.acceso__cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
   margin-bottom: 10px;
 }
 
@@ -278,7 +466,7 @@ button,
   color: var(--text);
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 11px;
+  border-radius: var(--radius);
 }
 
 .acceso input:focus {
@@ -302,7 +490,7 @@ button,
   font-size: 0.88rem;
   color: var(--bad);
   background: var(--bad-soft);
-  border-radius: 10px;
+  border-radius: var(--radius);
 }
 
 /* ============================================================
@@ -356,7 +544,7 @@ button,
   color: var(--text);
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 11px;
+  border-radius: var(--radius);
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -388,7 +576,7 @@ button,
   padding: 6px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 13px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow-pop);
 }
 
@@ -398,7 +586,7 @@ button,
   gap: 0 10px;
   padding: 8px 10px;
   color: var(--text);
-  border-radius: 9px;
+  border-radius: var(--radius-sm);
 }
 
 .sugerencia:hover,
@@ -441,7 +629,7 @@ button,
   font-weight: 600;
   color: var(--accent);
   border-top: 1px solid var(--border);
-  border-radius: 0 0 9px 9px;
+  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
 }
 
 .sugerencias__vacio {
@@ -451,9 +639,18 @@ button,
   color: var(--muted);
 }
 
+/* Botones de tema a la derecha de la barra, junto al usuario */
+.barra .ajustes {
+  margin-left: auto;
+}
+
 .usuario {
   position: relative;
   margin-left: auto;
+}
+
+.ajustes + .usuario {
+  margin-left: 0;
 }
 
 .usuario__boton {
@@ -481,7 +678,7 @@ button,
   display: grid;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 13px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow-pop);
 }
 
@@ -759,7 +956,7 @@ body.con-lateral .lateral {
 .encabezado__acciones .enlace-pdf {
   padding: 10px 16px;
   font-size: 0.92rem;
-  color: #fff;
+  color: var(--sobre-acento);
   background: var(--accent);
   border-color: var(--accent);
 }
@@ -798,7 +995,7 @@ body.con-lateral .lateral {
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
 }
 
 .cifra:hover {
@@ -903,7 +1100,7 @@ body.con-lateral .lateral {
   color: var(--text);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
 
@@ -1001,7 +1198,7 @@ body.con-lateral .lateral {
 }
 
 .panel .tabla-envoltura {
-  border-radius: 10px;
+  border-radius: var(--radius);
 }
 
 .rejilla-2 {
@@ -1020,7 +1217,7 @@ body.con-lateral .lateral {
   padding: 12px 14px;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
 }
 
 .filtros__campo {
@@ -1046,7 +1243,7 @@ body.con-lateral .lateral {
   color: var(--text);
   background: var(--bg);
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: var(--radius-sm);
 }
 
 .filtros input[type="search"] {
@@ -1082,7 +1279,7 @@ body.con-lateral .lateral {
   overflow-x: auto;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius);
 }
 
 .tabla {
@@ -1339,7 +1536,7 @@ th[aria-sort="descending"]::after {
   color: var(--text-2);
   background: var(--warn-soft);
   border: 1px solid color-mix(in srgb, var(--warn) 25%, transparent);
-  border-radius: 11px;
+  border-radius: var(--radius);
 }
 
 .aviso__titulo {
@@ -1595,7 +1792,7 @@ th[aria-sort="descending"]::after {
   padding: 12px 14px;
   background: var(--surface-2);
   border: 1px solid var(--border);
-  border-radius: 11px;
+  border-radius: var(--radius);
 }
 
 .contacto__nombre {
@@ -1761,7 +1958,7 @@ th[aria-sort="descending"]::after {
   pointer-events: none;
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius);
   box-shadow: var(--shadow-pop);
 }
 
@@ -1841,13 +2038,19 @@ th[aria-sort="descending"]::after {
     position: fixed;
     inset: 0;
     z-index: 45;
-    background: rgba(10, 12, 20, 0.35);
+    background: var(--velo);
   }
 }
 
 @media (max-width: 680px) {
   body {
     font-size: 14.5px;
+  }
+
+  /* En la barra solo cabe la cara de Darwin; el nombre sigue para lectores de pantalla */
+  .barra .marca {
+    gap: 0;
+    font-size: 0;
   }
 
   .barra__fila {

@@ -68,13 +68,29 @@ async function descargar(archivo, tipo) {
   return tipo === "json" ? respuesta.json() : new Uint8Array(await respuesta.arrayBuffer());
 }
 
+// ---- Botones de tema y acento ----
+// ../js/tema.js (zona general) los atiende por data-tema-accion con un solo
+// escucha en document, así que funcionan aunque se rendericen después.
+const AJUSTES = html`<div class="ajustes">
+  <button class="ajuste" type="button" data-tema-accion="acento" aria-label="Cambiar color de acento" title="Cambiar color de acento">
+    <span class="ajuste__punto"></span>
+  </button>
+  <button class="ajuste" type="button" data-tema-accion="tema" aria-label="Cambiar tema" title="Cambiar tema">
+    <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  </button>
+</div>`;
+
 // ---- Pantalla de acceso ----
 
 function mostrarAcceso(mensaje = "") {
   document.title = "Entrar · Catálogo de cotizaciones";
   raiz.innerHTML = String(html`<main class="acceso">
     <form class="acceso__tarjeta" autocomplete="on">
-      <a class="marca" href="../index.html">WR</a>
+      <div class="acceso__cabeza">
+        <a class="marca" href="../index.html">Wolfgang Resendiz</a>
+        ${AJUSTES}
+      </div>
       <h1>Catálogo de cotizaciones</h1>
       <p class="acceso__sub">Piezas y servicios de agua potable. Entra con tu usuario y contraseña.</p>
       <label for="acceso-usuario">Usuario</label>
@@ -146,7 +162,7 @@ function montarMarco() {
     .toUpperCase();
   raiz.innerHTML = String(html`<header class="barra">
       <div class="barra__fila">
-        <a class="marca" href="../index.html" title="Inicio del sitio">WR</a>
+        <a class="marca" href="../index.html" title="Inicio del sitio">Wolfgang Resendiz</a>
         <a class="barra__titulo" href="#/">Catálogo</a>
         <div class="buscador" role="search">
           <input id="buscador" class="buscador__entrada" type="search" placeholder="Buscar producto, medida, marca, proveedor o folio"
@@ -155,6 +171,7 @@ function montarMarco() {
           <kbd class="buscador__atajo" aria-hidden="true">/</kbd>
           <div id="sugerencias" class="sugerencias" role="listbox" hidden></div>
         </div>
+        ${AJUSTES}
         <div class="usuario">
           <button class="usuario__boton" type="button" aria-haspopup="true" aria-expanded="false" title="${estado.nombre}">${iniciales}</button>
           <div class="usuario__menu" hidden>
