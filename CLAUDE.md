@@ -82,7 +82,7 @@ Meta: que al buscar «Wolfgang Reséndiz» o «Wolfgang Resendiz» salga primero
 |---|---|
 | `index.html` | Portada: barra lateral (en celular, barra superior), presentación con bitácora y retrato de Darwin, y tarjetas de proyectos (generadas). |
 | `css/styles.css` | Estilos base del sitio: variables de tema y acento, tipografía, encabezado, formularios, portada y componentes de las calculadoras. |
-| `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`). |
+| `js/tema.js` | Tema claro/oscuro (por defecto el del sistema; la elección manual dura solo la visita, en `sessionStorage`) y color de acento (se guarda en `localStorage`). |
 | `js/darwin.js` | Darwin, la gatita del sitio: aparece en cada página, responde a clics y lleva accesorios de temporada. |
 | `img/darwin.svg`, `img/darwin-cara.svg` | Retrato de Darwin y su cara (marca y favicon), sacados de su sprite de `js/darwin.js`. |
 | `proyectos.json` | Registro de proyectos: carpetas (zonas) y datos de su tarjeta en la portada. |
@@ -96,7 +96,7 @@ Meta: que al buscar «Wolfgang Reséndiz» o «Wolfgang Resendiz» salga primero
 
 Inspirado gráficamente en un jardín digital: papel beige y grises cálidos, un solo color de acento, títulos en **Outfit**, texto en **Inter** y detalles (marca, fechas, etiquetas) en **Google Sans Code**. Las fuentes las importa `css/styles.css`, así que basta enlazarlo.
 
-- **Tema**: sigue al sistema; `js/tema.js` permite fijarlo (`<html data-tema="claro|oscuro">`). El bloque oscuro de variables está dos veces en el CSS (sistema y elección manual): si cambias un color, cambia ambos.
+- **Tema**: siempre arranca con el del sistema (día o noche); `js/tema.js` permite cambiarlo durante la visita (`<html data-tema="claro|oscuro">`). El bloque oscuro de variables está dos veces en el CSS (sistema y elección manual): si cambias un color, cambia ambos.
 - **Acento**: rosa por defecto; `data-acento="azul|verde|lavanda|ambar"`. Cada acento tiene versión clara y oscura (`--acento-claro`, `--acento-oscuro`); el resto del sitio usa `--accent`.
 - **Variables** que deben usar los proyectos: `--bg`, `--surface`, `--surface-2`, `--text`, `--text-strong`, `--muted`, `--border`, `--border-card`, `--border-strong`, `--accent`, `--accent-soft`, `--sobre-acento`, `--radius`, `--font-texto`, `--font-titulo`, `--font-mono`.
 - **Páginas de proyecto**: `.site-header` con `.brand` (la cara de Darwin se agrega sola con CSS) y `.ajustes` (botones de tema y acento); columna de 480 px o, con `<body class="ancho">`, de 760 px.

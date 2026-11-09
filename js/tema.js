@@ -10,9 +10,15 @@
  *   <button class="ajuste" data-tema-accion="tema">…</button>     claro ⇄ oscuro
  *   <button class="ajuste" data-tema-accion="acento">…</button>   siguiente color
  *
- * Sin elección guardada se sigue el tema del sistema y el acento rosa.
- * Las preferencias viven en localStorage de este navegador; si no está
- * disponible (modo privado estricto), los botones funcionan solo en la página.
+ * Tema: por defecto sigue SIEMPRE al del sistema (día o noche). El botón lo
+ * cambia a voluntad, pero la elección solo dura la visita (sessionStorage,
+ * para que no se pierda al pasar de una página a otra): al volver otro día,
+ * o si el sistema cambia de tema, manda de nuevo el del sistema. Si quien
+ * visita elige justo el tema del sistema, la elección se borra.
+ *
+ * Acento: rosa por defecto; el elegido se recuerda en localStorage.
+ * Si el almacenamiento no está disponible (modo privado estricto), los
+ * botones funcionan solo en la página.
  */
 (() => {
   "use strict";
@@ -23,29 +29,46 @@
   const CLAVE_TEMA = "web-tema";
   const CLAVE_ACENTO = "web-acento";
 
-  const leer = (clave) => {
+  // Acceso seguro al almacenamiento (puede estar bloqueado)
+  const almacen = (tipo) => {
     try {
-      return localStorage.getItem(clave);
+      return window[tipo];
     } catch {
       return null;
     }
   };
-  const guardar = (clave, valor) => {
+  const local = almacen("localStorage");
+  const sesion = almacen("sessionStorage");
+  const leer = (donde, clave) => {
     try {
-      localStorage.setItem(clave, valor);
+      return donde?.getItem(clave) ?? null;
+    } catch {
+      return null;
+    }
+  };
+  const guardar = (donde, clave, valor) => {
+    try {
+      if (valor === null) donde?.removeItem(clave);
+      else donde?.setItem(clave, valor);
     } catch {
       /* sin almacenamiento: solo cambia en esta página */
     }
   };
 
-  // Aplica la preferencia guardada (o la del sistema) al <html>
-  const tema = leer(CLAVE_TEMA);
-  if (tema === "claro" || tema === "oscuro") raiz.dataset.tema = tema;
-  const acento = leer(CLAVE_ACENTO);
+  // Versiones anteriores guardaban el tema para siempre: se descarta
+  guardar(local, CLAVE_TEMA, null);
+
+  const sistemaOscuro = window.matchMedia("(prefers-color-scheme: dark)");
+  const temaSistema = () => (sistemaOscuro.matches ? "oscuro" : "claro");
+
+  // Aplica al <html> la elección de esta visita (si difiere del sistema) y el acento
+  const tema = leer(sesion, CLAVE_TEMA);
+  if ((tema === "claro" || tema === "oscuro") && tema !== temaSistema()) raiz.dataset.tema = tema;
+  else guardar(sesion, CLAVE_TEMA, null);
+  const acento = leer(local, CLAVE_ACENTO);
   if (ACENTOS.includes(acento) && acento !== "rosa") raiz.dataset.acento = acento;
   raiz.classList.add("con-js");
 
-  const sistemaOscuro = window.matchMedia("(prefers-color-scheme: dark)");
   const esOscuro = () => (raiz.dataset.tema ? raiz.dataset.tema === "oscuro" : sistemaOscuro.matches);
   const acentoActual = () => raiz.dataset.acento || "rosa";
 
@@ -68,19 +91,29 @@
     if (!boton) return;
     if (boton.dataset.temaAccion === "tema") {
       const nuevo = esOscuro() ? "claro" : "oscuro";
-      raiz.dataset.tema = nuevo;
-      guardar(CLAVE_TEMA, nuevo);
+      if (nuevo === temaSistema()) {
+        // Volver al tema del sistema: se deja de forzar
+        delete raiz.dataset.tema;
+        guardar(sesion, CLAVE_TEMA, null);
+      } else {
+        raiz.dataset.tema = nuevo;
+        guardar(sesion, CLAVE_TEMA, nuevo);
+      }
     } else if (boton.dataset.temaAccion === "acento") {
       const siguiente = ACENTOS[(ACENTOS.indexOf(acentoActual()) + 1) % ACENTOS.length];
       if (siguiente === "rosa") delete raiz.dataset.acento;
       else raiz.dataset.acento = siguiente;
-      guardar(CLAVE_ACENTO, siguiente);
+      guardar(local, CLAVE_ACENTO, siguiente);
     }
     rotular();
   });
 
-  // Si cambia el tema del sistema y no hay elección guardada, actualiza las etiquetas
-  sistemaOscuro.addEventListener?.("change", rotular);
+  // Si cambia el tema del sistema (p. ej. al anochecer), manda el del sistema
+  sistemaOscuro.addEventListener?.("change", () => {
+    delete raiz.dataset.tema;
+    guardar(sesion, CLAVE_TEMA, null);
+    rotular();
+  });
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", rotular);
   else rotular();
