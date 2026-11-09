@@ -22,10 +22,18 @@ Usa los estilos comunes: papel beige y grises cálidos, un color de acento, tít
 
 Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneamiento* (MAPAS) de la Conagua, convertidos de PDF a HTML. Son documentos públicos del gobierno federal.
 
-- Cada libro es un HTML autocontenido (su propio CSS; algunas páginas del original van como imagen JPEG en base64). Se conservan tal como se convirtieron; el sitio solo les agrega en el `<head>` el ícono y `darwin.js`, una barra de navegación al inicio del `<body>`, y cambia el guion largo del `<title>` por «·».
-- Falta el **Libro 35** (no venía en la conversión). Para agregarlo: copiar el HTML como `libros/libro-35.html`, aplicar los mismos agregados y sumarlo a la lista y al grupo correspondiente en `index.html`.
+- Cada libro es un HTML autocontenido (su propio CSS; algunas páginas del original van como imagen JPEG en base64). Se conservan tal como se convirtieron; el sitio solo les agrega en el `<head>` el ícono, `darwin.js` y `<script type="module" src="../js/libro.js">` (búsqueda dentro del libro), una barra de navegación al inicio del `<body>`, y cambia el guion largo del `<title>` por «·».
+- Falta el **Libro 35** (no venía en la conversión). Para agregarlo: copiar el HTML como `libros/libro-35.html`, aplicar los mismos agregados, sumarlo a la lista y al grupo correspondiente en `index.html` y regenerar el índice de búsqueda (`node manuales-conagua/herramientas/indice.mjs`).
 - El cuerpo de los libros conserva el guion largo de la transcripción (fidelidad al texto); la interfaz propia del proyecto no lo usa.
-- `index.html` agrupa los libros por tema y tiene una búsqueda (por número exacto o por palabras, sin acentos).
+- `index.html` agrupa los libros por tema y tiene la búsqueda (ver abajo).
+
+## Búsqueda
+
+- **En el índice** (`js/buscador.js`): filtra la lista por título y busca en el texto completo de todos los libros. Cada resultado enlaza al párrafo exacto: `libros/libro-NN.html?q=<búsqueda>&b=<bloque>`.
+- **Dentro del libro** (`js/libro.js`): con `?q=` resalta las coincidencias, lleva al bloque `b` (o al más cercano que coincida) y muestra una barra con anterior/siguiente (Intro, Mayús+Intro), «Todos» (vuelve al índice con la búsqueda) y cerrar (Esc). Sin `?q=`, un botón y la tecla «/» abren la barra.
+- **Lenguaje** (`js/consulta.js`, compartido): palabras en el mismo bloque, desde el inicio de palabra y sin acentos; `"frase exacta"`; `a|b`; `-excluir`; `libro:20,26`. Los números van completos; un número solo, sin comillas, busca el libro con ese número.
+- **Bloques** (`js/texto.js`): párrafo, renglón de tabla, encabezado, elemento de lista, etc., numerados en postorden y saltando los vacíos. `herramientas/bloques.mjs` (lector de HTML sin dependencias) y `bloquesDOM()` de `js/libro.js` aplican las mismas reglas: si cambias una, cambia la otra y comprueba en Chromium que coincidan los 54 libros.
+- **Datos** (`datos/`, generados, no se editan a mano): `vocabulario.json` (palabra → libros, para descargar solo los libros que pueden coincidir) y `libros/libro-NN.json` (bloques y encabezados). Tras cambiar un libro o las reglas: `node manuales-conagua/herramientas/indice.mjs`. La prueba `herramientas/pruebas/busqueda.test.mjs` (en `npm test`) falla si no están al día.
 
 ## Estructura
 
@@ -34,3 +42,6 @@ Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneam
 | `manuales-conagua/index.html` | Índice de libros por tema, con búsqueda |
 | `manuales-conagua/css/manuales-conagua.css` | Estilos del índice (usa las variables comunes) |
 | `manuales-conagua/libros/libro-NN.html` | Cada libro convertido (NN = número de libro, dos dígitos) |
+| `manuales-conagua/js/` | Búsqueda: `texto.js` (reglas de texto y bloques), `consulta.js` (lenguaje), `buscador.js` (índice), `libro.js` (dentro del libro) |
+| `manuales-conagua/datos/` | Índice de búsqueda generado |
+| `manuales-conagua/herramientas/` | `indice.mjs` (genera `datos/`), `bloques.mjs` y pruebas |
