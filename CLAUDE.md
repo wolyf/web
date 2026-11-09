@@ -76,13 +76,32 @@ Meta: que al buscar «Wolfgang Reséndiz» o «Wolfgang Resendiz» salga primero
 - Si el sitio cambia de dominio, cambia `sitio.url`, el `canonical`, `og:url`, `og:image` y los `@id`/`url` del JSON-LD, y regenera la imagen de vista previa.
 - Cada página de proyecto debería enlazar a la portada con el nombre completo (eso se hace desde el entorno del proyecto).
 
+## Sesión y partes privadas
+
+El sitio es estático y el repositorio público: no hay servidor que revise contraseñas. «Iniciar sesión» es obtener la **llave del sitio** $K$ (32 bytes) y lo privado se publica **cifrado** con ella. Ocultar con CSS o JavaScript no protege nada: todo lo que esté en claro en el repo es público.
+
+- $\mathrm{KEK}_u = \mathrm{PBKDF2\text{-}SHA256}(\text{contraseña}_u, \text{sal}_u, 600\,000)$; `datos/acceso.json` guarda $\mathrm{AES\text{-}GCM}_{\mathrm{KEK}_u}(K)$ por usuario (con el nombre solo como resumen SHA-256) y una huella de $K$.
+- Fragmentos: `"WRF1" ‖ iv ‖ AES-256-GCM(HKDF(K, "wr-fragmentos"), gzip(html))`. Llave propia de un proyecto: $K_p = \mathrm{HKDF}(K, \texttt{"wr-proyecto:"} \| id)$.
+- **Interfaz**: `js/tema.js` importa `js/sesion.mjs` en todas las páginas, que pone un botón con punto de estado (○ sin sesión, ● con sesión) al principio de cada `.ajustes`, o con texto en un `[data-sesion-lugar]` (la portada en escritorio, esquina superior derecha). La sesión dura la pestaña; «Recordarme» la guarda en `localStorage`. Marca `<html data-sesion="activa|inactiva">`.
+- **En las páginas** (cualquier proyecto, sin JavaScript propio):
+  - `<div data-privado="notas.enc" data-lineas="4"></div>`: sin sesión se ve tachado con un botón para entrar; con sesión se descifra e inserta (evento `wr:privado`; los `<script>` del fragmento no corren).
+  - `data-solo-sesion` / `data-sin-sesion`: mostrar u ocultar según la sesión. Solo cosmético.
+- **Desde JavaScript**: `import { sesion } from "../js/sesion.mjs"` (o `window.WRSesion`, evento `wr:sesion`): `activa()`, `usuario()`, `llaveProyecto(id)`, `descifrar(bytes)`, `alCambiar(fn)`, `abrir()`, `cerrar()`.
+- **Texto en claro** en `.privado/` (en `.gitignore`), con la misma ruta que el `.enc`: `.privado/calculadoras/notas.html` → `calculadoras/notas.enc`. Cada entorno sella solo su carpeta: `npm run sesion -- sellar <carpeta>`; `abrir <carpeta>` recupera el texto.
+- **Credenciales**: `SITIO_USUARIO` y `SITIO_CONTRASENA` (y `SITIO_NUEVA_CONTRASENA` para `agregar`/`contrasena`) como variables del entorno de Claude Code; en una terminal se preguntan sin mostrarse. Nunca en el chat ni impresas.
+- Quitar un usuario no revoca lo que ya descifró: para eso habría que cambiar $K$ y volver a sellar todo.
+- Una prueba revisa que cada `data-privado` apunte a un `.enc` existente y que `.privado/` esté ignorado.
+
 ## Estructura de la zona general
 
 | Ruta | Qué es |
 |---|---|
 | `index.html` | Portada: barra lateral (en celular, barra superior), presentación con bitácora y retrato de Darwin, y tarjetas de proyectos (generadas). |
 | `css/styles.css` | Estilos base del sitio: variables de tema y acento, tipografía, encabezado, formularios, portada y componentes de las calculadoras. |
-| `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`). |
+| `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`). También carga la sesión. |
+| `js/sesion.mjs`, `js/llaves.mjs` | Sesión del sitio: botón de inicio de sesión y partes privadas (ver «Sesión y partes privadas»). |
+| `datos/acceso.json` | Público: la llave del sitio envuelta con la contraseña de cada usuario. |
+| `herramientas/sesion.mjs` | Usuarios y fragmentos cifrados (`npm run sesion -- ayuda`). |
 | `js/darwin.js` | Darwin, la gatita del sitio: aparece en cada página, responde a clics y lleva accesorios de temporada. |
 | `img/darwin.svg`, `img/darwin-cara.svg` | Retrato de Darwin y su cara (marca y favicon), sacados de su sprite de `js/darwin.js`. |
 | `proyectos.json` | Registro de proyectos: carpetas (zonas) y datos de su tarjeta en la portada. |
@@ -100,7 +119,7 @@ Inspirado gráficamente en un jardín digital: papel beige y grises cálidos, un
 - **Acento**: rosa por defecto; `data-acento="azul|verde|lavanda|ambar"`. Cada acento tiene versión clara y oscura (`--acento-claro`, `--acento-oscuro`); el resto del sitio usa `--accent`.
 - **Variables** que deben usar los proyectos: `--bg`, `--surface`, `--surface-2`, `--text`, `--text-strong`, `--muted`, `--border`, `--border-card`, `--border-strong`, `--accent`, `--accent-soft`, `--sobre-acento`, `--radius`, `--font-texto`, `--font-titulo`, `--font-mono`.
 - **Páginas de proyecto**: `.site-header` con `.brand` (la cara de Darwin se agrega sola con CSS) y `.ajustes` (botones de tema y acento); columna de 480 px o, con `<body class="ancho">`, de 760 px.
-- **Componentes**: `.card`, `.back`, `form`, `.pastilla`, `.etiqueta`, `.proyectos` + `.proyecto`, `.bitacora`.
+- **Componentes**: `.card`, `.back`, `form`, `.pastilla`, `.etiqueta`, `.proyectos` + `.proyecto`, `.bitacora`, `.censura` (partes privadas).
 - La gráfica de las calculadoras se queda siempre en tema claro (es técnica).
 
 ## Código del sitio

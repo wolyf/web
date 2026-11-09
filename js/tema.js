@@ -13,6 +13,11 @@
  * Sin elección guardada se sigue el tema del sistema y el acento rosa.
  * Las preferencias viven en localStorage de este navegador; si no está
  * disponible (modo privado estricto), los botones funcionan solo en la página.
+ *
+ * También carga la sesión del sitio (js/sesion.mjs: botón de inicio de sesión
+ * en cada `.ajustes` y partes privadas). Antes de pintar marca
+ * <html data-sesion="activa|inactiva"> según la sesión guardada, para que las
+ * partes con data-solo-sesion o data-sin-sesion no parpadeen.
  */
 (() => {
   "use strict";
@@ -44,6 +49,19 @@
   const acento = leer(CLAVE_ACENTO);
   if (ACENTOS.includes(acento) && acento !== "rosa") raiz.dataset.acento = acento;
   raiz.classList.add("con-js");
+
+  // Sesión del sitio: estado guardado (sin validar) y módulo completo
+  let guardada = null;
+  for (const nombre of ["sessionStorage", "localStorage"]) {
+    try {
+      guardada = guardada || window[nombre].getItem("wr-sesion");
+    } catch {
+      /* almacenamiento bloqueado */
+    }
+  }
+  raiz.dataset.sesion = guardada ? "activa" : "inactiva";
+  const origen = document.currentScript?.src;
+  if (origen) import(new URL("sesion.mjs", origen).href).catch((e) => console.warn("Sesión no disponible", e));
 
   const sistemaOscuro = window.matchMedia("(prefers-color-scheme: dark)");
   const esOscuro = () => (raiz.dataset.tema ? raiz.dataset.tema === "oscuro" : sistemaOscuro.matches);

@@ -251,6 +251,266 @@ html:not(.con-js) .ajustes {
   display: none;
 }
 
+/* ---- Sesión del sitio (js/sesion.mjs) ----
+   Botón discreto en .ajustes con un punto de estado: hueco sin sesión,
+   lleno (acento) con sesión. El panel flota sobre la página. */
+.sesion-boton {
+  position: relative;
+}
+
+.sesion-boton__estado {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1.5px var(--muted);
+  transition: background 0.18s ease, box-shadow 0.18s ease;
+}
+
+:root[data-sesion="activa"] .sesion-boton__estado {
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+/* Variante con texto (portada en escritorio: esquina superior derecha) */
+.sesion-esquina {
+  display: none;
+}
+
+@media (min-width: 801px) {
+  .sesion-esquina {
+    position: absolute;
+    top: 14px;
+    right: 24px;
+    z-index: 10;
+    display: block;
+  }
+
+  .lateral .sesion-boton {
+    display: none;
+  }
+}
+
+.sesion-boton--texto {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.sesion-boton--texto:hover {
+  filter: none;
+  color: var(--text-strong);
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+.sesion-boton--texto:active {
+  transform: none;
+}
+
+.sesion-boton--texto .sesion-boton__estado {
+  position: static;
+  flex: 0 0 auto;
+}
+
+:root[data-sesion="activa"] .sesion-boton--texto {
+  color: var(--text-strong);
+}
+
+.sesion-panel {
+  position: fixed;
+  z-index: 1000;
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-hover);
+  font-size: 0.9rem;
+}
+
+.sesion-panel[hidden] {
+  display: none;
+}
+
+.sesion-panel p {
+  margin: 0;
+}
+
+.sesion-panel__titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.sesion-panel__punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--muted);
+}
+
+:root[data-sesion="activa"] .sesion-panel__punto {
+  background: var(--accent);
+  box-shadow: none;
+}
+
+.sesion-panel__nota {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.sesion-panel__form {
+  gap: 10px;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.sesion-panel label {
+  display: grid;
+  justify-content: stretch;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+
+.sesion-panel input:not([type="checkbox"]) {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.sesion-panel .sesion-panel__recordar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.sesion-panel__recordar input {
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.sesion-panel__error:empty {
+  display: none;
+}
+
+.sesion-panel__error {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.sesion-panel button {
+  min-height: 38px;
+  margin-top: 2px;
+  padding: 8px 12px;
+}
+
+.sesion-panel .sesion-panel__salir {
+  color: var(--text-strong);
+  background: var(--surface-2);
+}
+
+.sesion-panel button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+/* Partes que dependen de la sesión (cosmético: el texto sigue en el HTML) */
+:root:not([data-sesion="activa"]) [data-solo-sesion],
+:root[data-sesion="activa"] [data-sin-sesion] {
+  display: none !important;
+}
+
+/* Partes privadas sin sesión: renglones tachados y un aviso */
+.censura {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  margin: 1em 0;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.censura__lineas {
+  display: grid;
+  gap: 9px;
+}
+
+.censura__linea {
+  display: block;
+  height: 0.8em;
+  border-radius: 3px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--border-strong) 0 6px,
+    color-mix(in srgb, var(--border-strong) 70%, var(--surface)) 6px 12px
+  );
+}
+
+.censura .censura__boton {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  min-height: 0;
+  margin: 4px 0 0;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  background: var(--surface-2);
+  border: 1px solid var(--border-card);
+  border-radius: 999px;
+}
+
+.censura__boton svg {
+  width: 14px;
+  height: 14px;
+}
+
+.censura__boton:hover {
+  filter: none;
+  border-color: var(--accent);
+}
+
+.censura__falla {
+  color: var(--muted);
+  font-style: italic;
+}
+
 /* ---- Contenedor principal de las páginas de proyecto ---- */
 main {
   width: 100%;
@@ -655,6 +915,7 @@ body.con-lateral {
 
 /* ---- Contenido de la portada ---- */
 .contenido {
+  position: relative;
   flex: 1 1 auto;
   min-width: 0;
   display: flex;
@@ -1356,6 +1617,7 @@ body.con-lateral {
 @media print {
   .lateral,
   .ajustes,
+  .sesion-panel,
   .unit-bar {
     display: none !important;
   }

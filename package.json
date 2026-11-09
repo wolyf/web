@@ -11,6 +11,7 @@
     "demo": "node catalogo/herramientas/catalogo.mjs demo",
     "capturas": "node catalogo/herramientas/capturas.mjs",
     "proyectos": "node herramientas/proyectos.mjs",
+    "sesion": "node herramientas/sesion.mjs",
     "test": "node --test \"herramientas/pruebas/*.test.mjs\" \"*/herramientas/pruebas/*.test.mjs\""
   }
 }
