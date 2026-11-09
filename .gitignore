@@ -1,5 +1,8 @@
 # Copia de trabajo en claro del catálogo y su llavero: NUNCA al repositorio (es público)
 .catalogo/
 
+# Texto en claro de las partes privadas del sitio (npm run sesion -- abrir/sellar): NUNCA al repositorio
+.privado/
+
 node_modules/
 .DS_Store
