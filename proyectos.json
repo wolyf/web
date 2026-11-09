@@ -1,7 +1,8 @@
 {
-  "descripcion": "Proyectos del sitio. Cada uno solo edita sus carpetas; lo que no pertenece a ningún proyecto es de la zona general. Lo usan herramientas/proyectos.mjs (zonas y portada), el hook de .claude/settings.json y la revisión de GitHub. La portada (index.html) muestra los proyectos en este orden: tras cambiar algo aquí, corre «npm run proyectos -- portada».",
+  "descripcion": "Proyectos del sitio. Cada uno solo edita sus carpetas; lo que no pertenece a ningún proyecto es de la zona general. Lo usan herramientas/proyectos.mjs (zonas y portada), el hook de .claude/settings.json y la revisión de GitHub. La portada (index.html) muestra los proyectos en este orden y sitemap.xml enlaza los públicos: tras cambiar algo aquí, corre «npm run proyectos -- portada».",
   "sitio": {
-    "nombre": "Wolfgang Resendiz",
+    "nombre": "Wolfgang Reséndiz",
+    "url": "https://wolyf.github.io/web/",
     "repositorio": "https://github.com/wolyf/web"
   },
   "proyectos": {

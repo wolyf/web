@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { zonaDe, motivoBloqueo, revisarCambio, leerRegistro, leerSitio, actualizarPortada, tarjetaProyecto, GENERAL } from "../proyectos.mjs";
+import { zonaDe, motivoBloqueo, revisarCambio, leerRegistro, leerSitio, actualizarPortada, tarjetaProyecto, generarSitemap, GENERAL } from "../proyectos.mjs";
 
 const proyectos = {
   calculadoras: { nombre: "Calculadoras", carpetas: ["calculadoras"] },
@@ -126,4 +126,22 @@ test("sin marcadores la portada avisa en vez de escribir mal", () => {
 test("index.html está al día con proyectos.json", () => {
   const html = fs.readFileSync(path.join(RAIZ_REAL, "index.html"), "utf8");
   assert.equal(actualizarPortada(html, leerRegistro(), leerSitio()), html, "Corre «npm run proyectos -- portada».");
+});
+
+test("el sitemap lleva la portada y los proyectos públicos y visibles", () => {
+  const varios = {
+    a: { nombre: "A", carpetas: ["a"], inicio: "a/x.html" },
+    b: { nombre: "B", carpetas: ["b"], privado: true },
+    c: { nombre: "C", carpetas: ["c"], oculto: true },
+    d: { nombre: "D", carpetas: ["d"] },
+  };
+  const xml = generarSitemap(varios, { url: "https://x.github.io/web" });
+  const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
+  assert.deepEqual(urls, ["https://x.github.io/web/", "https://x.github.io/web/a/x.html", "https://x.github.io/web/d/"]);
+  assert.throws(() => generarSitemap(varios, {}), /sitio.url/);
+});
+
+test("sitemap.xml está al día con proyectos.json", () => {
+  const xml = fs.readFileSync(path.join(RAIZ_REAL, "sitemap.xml"), "utf8");
+  assert.equal(generarSitemap(leerRegistro(), leerSitio()), xml, "Corre «npm run proyectos -- portada».");
 });

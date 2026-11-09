@@ -639,6 +639,9 @@ body.con-lateral {
   margin-top: auto;
   font-size: 0.8rem;
   color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
 }
 
 .lateral__pie a {
@@ -753,6 +756,29 @@ body.con-lateral {
   border-top: 1px solid var(--border-card);
   border-left: 1px solid var(--border-card);
   transform: translateX(-50%) rotate(45deg);
+}
+
+/* ---- Sobre mí ---- */
+.sobre-mi p {
+  max-width: 68ch;
+  margin: 0 0 16px;
+}
+
+.sobre-mi h3 {
+  margin-top: 28px;
+}
+
+.sobre-mi cite {
+  font-style: italic;
+  color: var(--text-strong);
+}
+
+.sobre-mi__enlaces {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
 }
 
 /* ---- Bitácora (línea de tiempo) ---- */
