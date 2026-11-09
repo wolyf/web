@@ -17,8 +17,10 @@
 
 <!-- Tema y acento (sin defer, antes de pintar); lectura y Darwin (con defer) -->
 <script src="../../js/tema.js"></script>
-<script src="../js/libro.js" defer></script>
+<script src="../js/lectura.js" defer></script>
 <script src="../../js/darwin.js" defer></script>
+<!-- Agregado por el sitio: búsqueda dentro del libro (resalta y lleva a la coincidencia) -->
+<script type="module" src="../js/libro.js"></script>
 </head>
 <body class="ancho libro">
 <header class="site-header">
@@ -34,7 +36,9 @@
   </div>
 </header>
 
-<!-- Barra de lectura: progreso, sección actual, índice y marcas de página (la activa js/libro.js) -->
+<!-- Barra de lectura: progreso, sección actual, índice y marcas de página (la activa js/lectura.js).
+     Va en un <nav> para que la búsqueda (js/libro.js) no la cuente como texto del libro. -->
+<nav class="lectura-raiz" aria-label="Lectura">
 <div class="lectura" hidden>
   <div class="lectura__progreso" aria-hidden="true"><span></span></div>
   <div class="lectura__barra">
@@ -50,6 +54,7 @@
   </div>
   <div class="panel-indice__cuerpo"></div>
 </dialog>
+</nav>
 
 <main class="libro__texto">
 <a class="back" href="../">← Manuales de la Conagua</a>

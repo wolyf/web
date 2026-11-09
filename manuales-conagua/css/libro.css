@@ -13,6 +13,39 @@ body.libro {
 
 /* La regla común `nav { display: grid }` no aplica dentro del libro */
 .libro__texto nav { display: block; }
+nav.lectura-raiz { display: contents; }
+
+/* Barra de búsqueda (js/libro.js): baja para no tapar la de lectura, toma los
+   colores del tema y no hereda el estilo de botón grande de los formularios */
+@media (min-width: 561px) {
+  body.libro #mapas-hallazgos { top: calc(var(--alto-barra) + 10px); }
+}
+
+body.libro #mapas-hallazgos:not([data-cerrado]),
+body.libro #mapas-hallazgos .mapas-abrir {
+  color: var(--text-strong);
+  background: var(--surface);
+  border-color: var(--border-strong);
+}
+
+body.libro #mapas-hallazgos button,
+body.libro #mapas-hallazgos input {
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  background: var(--bg);
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+}
+
+body.libro #mapas-hallazgos input { width: 15em; padding: 4px 8px; }
+body.libro #mapas-hallazgos button:hover { border-color: var(--border-strong); filter: none; }
+body.libro #mapas-hallazgos .mapas-cuenta { color: var(--muted); }
+body.libro #mapas-hallazgos .mapas-volver { color: var(--accent); }
 
 /* ---- Texto corrido ---- */
 .libro__texto {

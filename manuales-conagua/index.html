@@ -51,11 +51,29 @@
     <a class="back" href="../index.html">← Inicio</a>
 
     <h1>Manuales de agua potable, alcantarillado y saneamiento</h1>
-    <p class="mapas__intro">Libros del <em>Manual de Agua Potable, Alcantarillado y Saneamiento</em> (MAPAS) de la Comisión Nacional del Agua, convertidos de PDF a HTML: texto completo, tablas como tablas y fórmulas legibles. Cada libro es una sola página; usa la búsqueda del navegador (Ctrl+F) dentro de él.</p>
+    <p class="mapas__intro">Libros del <em>Manual de Agua Potable, Alcantarillado y Saneamiento</em> (MAPAS) de la Comisión Nacional del Agua, convertidos de PDF a HTML: texto completo, tablas como tablas y fórmulas legibles. La búsqueda revisa el texto completo de todos los libros y cada resultado lleva al párrafo exacto.</p>
 
-    <input class="mapas__buscar" type="search" id="buscar" placeholder="Buscar libro por número o tema (p. ej. 20, lodos, pozos)" aria-label="Buscar libro" autocomplete="off">
+    <input class="mapas__buscar" type="search" id="buscar" placeholder="Buscar en los libros (p. ej. tubería pvc, &quot;golpe de ariete&quot;, 20)" aria-label="Buscar en los libros" autocomplete="off">
+    <details class="mapas__ayuda">
+      <summary>Cómo buscar</summary>
+      <ul>
+        <li><button type="button" data-ejemplo="tuber pvc">tuber pvc</button>: párrafos con ambas palabras; cuentan desde el inicio («tuber» encuentra «tubería»). Sin acentos ni mayúsculas.</li>
+        <li><button type="button" data-ejemplo="&quot;golpe de ariete&quot;">"golpe de ariete"</button>: frase exacta.</li>
+        <li><button type="button" data-ejemplo="lodos digestion|espesamiento">digestion|espesamiento</button>: cualquiera de las opciones.</li>
+        <li><button type="button" data-ejemplo="cloro -gas">cloro -gas</button>: excluye los párrafos con «gas».</li>
+        <li><button type="button" data-ejemplo="libro:20,19 pozo de visita">libro:20,19 pozo de visita</button>: solo en esos libros.</li>
+        <li><button type="button" data-ejemplo="20">20</button>: un número solo busca el libro con ese número.</li>
+      </ul>
+      <p>Dentro del libro se resaltan las coincidencias y una barra permite ir a la siguiente (Intro) o la anterior (Mayús+Intro). En cualquier libro, la tecla «/» abre la búsqueda.</p>
+    </details>
     <p class="mapas__cuenta" id="cuenta" aria-live="polite">54 libros</p>
-    <p class="mapas__vacio" id="vacio">Ningún libro coincide con la búsqueda.</p>
+    <p class="mapas__vacio" id="vacio">Ningún título coincide con la búsqueda.</p>
+
+    <section class="mapas__resultados" id="resultados" hidden>
+      <h2>En el texto de los libros</h2>
+      <p class="mapas__estado" id="resultados-estado" aria-live="polite"></p>
+      <div id="resultados-lista"></div>
+    </section>
 
       <section class="mapas__grupo">
         <h2>Planeación y proyectos</h2>
@@ -180,28 +198,7 @@
     <p class="mapas__nota">Fuente: Comisión Nacional del Agua (Conagua), MAPAS. Las ilustraciones del original se citan por número y título; algunas páginas se incluyen como imagen. Ante cualquier duda, consulta el PDF oficial en <a href="https://www.gob.mx/conagua">gob.mx/conagua</a>.</p>
   </main>
 
-  <script>
-    // Filtra la lista de libros por número o palabras (sin acentos ni mayúsculas)
-    (() => {
-      const normal = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-      const libros = [...document.querySelectorAll(".mapas__libro")];
-      const grupos = [...document.querySelectorAll(".mapas__grupo")];
-      const cuenta = document.getElementById("cuenta");
-      const vacio = document.getElementById("vacio");
-      for (const li of libros) li.dataset.texto = normal(li.textContent);
-      document.getElementById("buscar").addEventListener("input", (e) => {
-        const palabras = normal(e.target.value).split(/\s+/).filter(Boolean);
-        let visibles = 0;
-        for (const li of libros) {
-          const ok = palabras.every((p) => /^\d+$/.test(p) ? Number(li.querySelector(".mapas__num").textContent) === Number(p) : li.dataset.texto.includes(p));
-          li.hidden = !ok;
-          if (ok) visibles++;
-        }
-        for (const g of grupos) g.hidden = !g.querySelector(".mapas__libro:not([hidden])");
-        cuenta.textContent = visibles === 1 ? "1 libro" : `${visibles} libros`;
-        vacio.style.display = visibles ? "none" : "block";
-      });
-    })();
-  </script>
+  <!-- Búsqueda: por título y en el texto completo (datos/, generado por herramientas/indice.mjs) -->
+  <script type="module" src="js/buscador.js"></script>
 </body>
 </html>
