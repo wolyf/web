@@ -7,6 +7,7 @@
  *
  * Es autocontenida (zona general): cada página solo agrega
  *   <script src="../js/darwin.js" defer></script>
+ * y de paso carga js/notas.js (subrayados y notas de lectura).
  * No usa librerías, no toca el DOM de la página y no bloquea clics: solo su
  * cuerpo es clicable.
  *
@@ -280,6 +281,16 @@
   // ---------------------------------------------------------------------------
   // Navegador
   // ---------------------------------------------------------------------------
+
+  // Subrayados y notas (js/notas.js): viajan con Darwin porque ella está en todas
+  // las páginas. Se cargan aunque Darwin esté oculta.
+  const propio = document.currentScript && document.currentScript.src;
+  if (propio && !document.querySelector('script[src$="js/notas.js"]')) {
+    const s = document.createElement("script");
+    s.src = new URL("notas.js", propio).href;
+    s.async = true;
+    document.head.appendChild(s);
+  }
 
   const almacen = (tipo) => { try { return window[tipo]; } catch (e) { return null; } };
   const local = almacen("localStorage"), sesion = almacen("sessionStorage");

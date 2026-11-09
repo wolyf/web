@@ -122,7 +122,8 @@ export function revisarCambio(archivos, proyectos, { rama = "", varias = false, 
 //   <!-- proyectos:total -->…<!-- /proyectos:total -->          «N proyectos»
 // Campos de cada proyecto (además de nombre y carpetas): corto, inicio,
 // descripcion, anio, icono, etiquetas, privado, codigo (false oculta el
-// enlace al código) y oculto (true lo deja fuera de la portada).
+// enlace al código), oculto (true lo deja fuera de la portada) y notas
+// (false apaga los subrayados y notas de js/notas.js en sus páginas).
 
 export const escaparHTML = (texto) => String(texto).replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
 

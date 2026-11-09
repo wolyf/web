@@ -25,7 +25,8 @@
       "anio": 2026,
       "icono": "💧",
       "etiquetas": ["agua-potable", "cotizaciones"],
-      "privado": true
+      "privado": true,
+      "notas": false
     },
     "manuales-conagua": {
       "nombre": "Manuales de agua potable, alcantarillado y saneamiento",

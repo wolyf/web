@@ -63,6 +63,7 @@ Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la p
 | `privado` | Marca la tarjeta como privada (p. ej. requiere contraseña). |
 | `codigo: false` | Quita el enlace «Código» a GitHub. |
 | `oculto: true` | Deja el proyecto fuera de la portada (en construcción). |
+| `notas: false` | Apaga los subrayados y notas en sus páginas (el catálogo, por sus datos privados). |
 
 `sitio.nombre`, `sitio.url` y `sitio.repositorio` son los datos generales (la URL arma `sitemap.xml`; el repositorio, los enlaces «Código»).
 
@@ -84,6 +85,7 @@ Meta: que al buscar «Wolfgang Reséndiz» o «Wolfgang Resendiz» salga primero
 | `css/styles.css` | Estilos base del sitio: variables de tema y acento, tipografía, encabezado, formularios, portada y componentes de las calculadoras. |
 | `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`). |
 | `js/darwin.js` | Darwin, la gatita del sitio: aparece en cada página, responde a clics y lleva accesorios de temporada. |
+| `js/notas.js` | Subrayados y notas de lectura en cualquier página (locales, se exportan en Markdown). Lo carga `js/darwin.js`. |
 | `img/darwin.svg`, `img/darwin-cara.svg` | Retrato de Darwin y su cara (marca y favicon), sacados de su sprite de `js/darwin.js`. |
 | `proyectos.json` | Registro de proyectos: carpetas (zonas) y datos de su tarjeta en la portada. |
 | `herramientas/proyectos.mjs` | Zonas y portada: comandos de arriba, hook y revisión de GitHub. Pruebas en `herramientas/pruebas/`. |
@@ -120,3 +122,23 @@ Inspirado gráficamente en un jardín digital: papel beige y grises cálidos, un
 - `?darwin=no` la oculta en ese navegador; `?darwin=si` la regresa. Respeta `prefers-reduced-motion` (no camina) y no se imprime.
 - Rendimiento: repinta un canvas pequeño solo al cambiar de cuadro, usa `requestAnimationFrame` solo mientras se mueve y se detiene con la pestaña oculta.
 - Pruebas en `herramientas/pruebas/darwin.test.mjs` (temporadas, sprites y que los accesorios quepan).
+
+## Subrayados y notas de lectura
+
+`js/notas.js` deja subrayar y anotar texto en cualquier página del sitio. Todo se guarda en `localStorage` del navegador de quien lee (clave `web-notas`); nada sale de ahí hasta que se exporta.
+
+- **Carga**: no se agrega a cada página; `js/darwin.js` (que ya está en todas) lo inserta. Se apaga en una página con `<meta name="notas" content="no">` y en un proyecto con `"notas": false` en `proyectos.json` (así está el catálogo).
+- **Uso**: al seleccionar texto aparece una barrita (cuatro colores y «Nota»); un clic en un subrayado abre su nota, color y «Borrar». El botón del lápiz (en `.ajustes`, o flotante en páginas sin encabezado del sitio) abre el panel: lista de la página, exportar, respaldo e importar, y borrar.
+- **Anclaje** (al estilo de W3C Web Annotation): posición en el texto de `<main>` (o `<body>`) más la cita exacta con 40 caracteres de contexto antes y después. Si la página cambia, se busca la cita y se desempata por contexto; si ya no está, la marca se conserva y el panel la señala. Se pinta con `::highlight` (API de resaltado de CSS), sin tocar el DOM, y se vuelve a anclar si la página cambia su texto.
+- **Exportar**: alcance «Esta página», «Este proyecto» o «Todo el sitio». «Copiar para Claude» y «Descargar .md» dan Markdown agrupado por zona y archivo; «Respaldo .json» sirve para importar en otro navegador (une por id y gana la edición más reciente).
+- Pruebas en `herramientas/pruebas/notas.test.mjs` (anclaje, rutas, zonas, Markdown, respaldo).
+
+### Integrar notas exportadas
+
+Cuando el usuario pegue o adjunte una exportación (`# Notas de lectura …`, formato `notas-web v1`):
+
+1. Cada `## Zona` se integra desde el entorno de esa zona (regla de zonas). Integra solo la tuya y di qué entorno hace falta para las demás.
+2. Cada `### \`ruta\`` es el archivo del repositorio. Ubica la marca buscando la cita (`> …`); si se repite, usa el contexto («…antes **cita** después…»), la sección y el ancla (`#id` del elemento anterior).
+3. La nota dice qué quiere el usuario (corregir, ampliar, comentar, pendiente); si no queda claro qué hacer con un subrayado sin nota, pregunta.
+4. Recuerda que el repositorio es público: no subas notas con datos privados.
+
