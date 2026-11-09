@@ -1,0 +1,18 @@
+{
+  "formato": "sitio-wr-acceso",
+  "version": 1,
+  "descripcion": "Acceso a las partes privadas del sitio. Por usuario (resumen SHA-256 del nombre), la llave del sitio envuelta con su contraseña (PBKDF2-SHA256 + AES-256-GCM). Ver js/llaves.mjs.",
+  "kdf": {
+    "algoritmo": "PBKDF2-SHA256",
+    "iteraciones": 600000
+  },
+  "huella": "e9f06bebd3359006",
+  "usuarios": {
+    "b26ce7fc12498ebaa5abefc3fd1ed23dc3213d9066d55a80c61b0f278731ee12": {
+      "sal": "M6J/ydJ9JOqvE9IiTy/B/Q==",
+      "iteraciones": 600000,
+      "iv": "ezla90WdrWUfxEYg",
+      "llave": "ApETlsDTl5BxG42BWzShjoReZPKa3ccfvPnmBLKYB7Sc35lMMb2pcnsi4kK7m8NO"
+    }
+  }
+}
