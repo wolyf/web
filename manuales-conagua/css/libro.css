@@ -1,0 +1,583 @@
+/* ==========================================================================
+   Lectura de los libros MAPAS (manuales-conagua/libros/)
+
+   Se carga después de ../../css/styles.css y usa sus variables, así que
+   respeta el tema claro/oscuro y el acento que elija quien visita.
+   Lo usan los libros convertidos a lectura continua (por ahora, el Libro 1).
+   ========================================================================== */
+
+body.libro {
+  --medida: 68ch;              /* ancho cómodo de renglón */
+  --alto-barra: 44px;
+}
+
+/* La regla común `nav { display: grid }` no aplica dentro del libro */
+.libro__texto nav { display: block; }
+
+/* ---- Texto corrido ---- */
+.libro__texto {
+  font-size: 1.0625rem;
+  line-height: 1.72;
+  overflow-wrap: break-word;
+}
+
+.libro__texto > p,
+.libro__texto > ul,
+.libro__texto > .lista,
+.libro__texto > h1,
+.libro__texto > h2,
+.libro__texto > h3,
+.libro__texto > h4,
+.libro__texto > h5 {
+  max-width: var(--medida);
+}
+
+.libro__texto p { margin: 0 0 1em; }
+
+.libro__texto > ul { padding-left: 1.4em; margin: 0 0 1em; }
+.libro__texto > ul li { margin: .35em 0; }
+.libro__texto > ul li::marker { color: var(--accent); }
+
+/* Listas numeradas del original: «1. …», «a. …», «b) …» con sangría francesa */
+.libro__texto p.lista {
+  padding-left: 1.3em;
+  text-indent: -1.3em;
+  margin-bottom: .55em;
+}
+
+/* Encabezados: los capítulos abren con una línea y aire */
+.libro__texto h1,
+.libro__texto h2,
+.libro__texto h3,
+.libro__texto h4,
+.libro__texto h5 {
+  scroll-margin-top: calc(var(--alto-barra) + 16px);
+  text-wrap: balance;
+}
+
+.libro__texto h1 {
+  margin: 3.2rem 0 1.2rem;
+  padding-top: 1.4rem;
+  border-top: 2px solid var(--text-strong);
+  font-size: clamp(1.7rem, 4.5vw, 2.1rem);
+}
+
+.libro__texto h2 {
+  margin: 2.4rem 0 .8rem;
+  font-size: 1.45rem;
+}
+
+.libro__texto h3 {
+  margin: 2rem 0 .6rem;
+  font-size: 1.2rem;
+}
+
+.libro__texto h4 {
+  margin: 1.6rem 0 .5rem;
+  font-family: var(--font-titulo);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.libro__texto h5 {
+  margin: 1.4rem 0 .4rem;
+  font-family: var(--font-texto);
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--text-strong);
+}
+
+/* ---- Portada del libro ---- */
+.portada {
+  margin: 0 0 1.6rem;
+  padding: 2.2rem 1.4rem 2rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+}
+
+.portada p { margin: 0; }
+
+.portada .serie {
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  letter-spacing: .04em;
+  color: var(--muted);
+}
+
+.portada .libro-num {
+  margin-top: 1rem;
+  font-family: var(--font-mono);
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.libro__texto .portada h1 {
+  margin: .2rem 0 1rem;
+  padding: 0;
+  border: 0;
+  font-size: clamp(1.8rem, 6vw, 2.5rem);
+  letter-spacing: -.02em;
+}
+
+.portada .entidad { font-weight: 600; color: var(--text-strong); }
+.portada .web { font-family: var(--font-mono); font-size: .8rem; color: var(--muted); }
+
+/* ---- Datos legales y nota de transcripción (plegables) ---- */
+.legal,
+.nota-transcripcion {
+  margin: 0 0 .8rem;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  font-size: .92rem;
+}
+
+.legal > summary,
+.nota-transcripcion > summary {
+  padding: .7rem 1rem;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--text-strong);
+}
+
+.legal > :not(summary),
+.nota-transcripcion > :not(summary) {
+  margin: 0 1rem .8rem;
+}
+
+.legal[open] > summary,
+.nota-transcripcion[open] > summary { border-bottom: 1px solid var(--border-card); margin-bottom: .8rem; }
+
+/* ---- Índice (dentro del libro y en el panel) ---- */
+.indice {
+  margin: 1.6rem 0 0;
+  padding: 1rem 1.2rem;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+}
+
+.libro__texto .indice h2 { margin: 0 0 .6rem; font-size: 1.2rem; }
+
+.indice ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+.indice > ul,
+.panel-indice__cuerpo > ul { padding-left: 0; }
+
+.indice li { margin: 0; }
+
+.indice a {
+  display: flex;
+  gap: .6rem;
+  align-items: baseline;
+  padding: .22rem .4rem;
+  border-radius: 6px;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.4;
+}
+
+.indice a:hover,
+.indice a:focus-visible { background: var(--accent-soft); color: var(--text-strong); }
+
+.indice a[aria-current="true"] {
+  background: var(--accent-soft);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Puntos guía hasta el número de página */
+.indice a::after {
+  content: "";
+  flex: 1;
+  order: 1;
+  min-width: 1rem;
+  border-bottom: 1px dotted var(--border-strong);
+  transform: translateY(-.3em);
+}
+
+.indice .pag {
+  order: 2;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--muted);
+}
+
+
+/* ---- Marcas de página del original ---- */
+/* En bloque: una línea fina con el número al margen */
+div.pag {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  max-width: var(--medida);
+  margin: 1.2rem 0;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: .72rem;
+  scroll-margin-top: calc(var(--alto-barra) + 16px);
+}
+
+div.pag::before {
+  content: "";
+  flex: 1;
+  border-top: 1px dashed var(--border-strong);
+}
+
+div.pag::after { content: "p. " attr(data-p); }
+div.pag--blanco::after { content: "p. " attr(data-p) " · en blanco"; }
+
+/* En línea: una pastilla discreta dentro del párrafo */
+span.pag[data-p] {
+  scroll-margin-top: calc(var(--alto-barra) + 16px);
+}
+
+span.pag[data-p]::before {
+  content: "p. " attr(data-p);
+  display: inline-block;
+  margin: 0 .15em;
+  padding: 0 .35em;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  line-height: 1.5;
+  vertical-align: .12em;
+  text-indent: 0;
+  color: var(--muted);
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+  user-select: none;
+}
+
+.sin-paginas div.pag { display: none; }
+.sin-paginas span.pag[data-p]::before { content: none; }
+
+/* ---- Ilustraciones ---- */
+.libro__texto figure {
+  max-width: var(--medida);
+  margin: 1.4rem 0;
+  padding: .9rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  font-size: .93rem;
+  scroll-margin-top: calc(var(--alto-barra) + 16px);
+}
+
+.libro__texto figcaption {
+  font-weight: 600;
+  color: var(--text-strong);
+  line-height: 1.45;
+}
+
+.libro__texto .num {
+  font-family: var(--font-mono);
+  font-size: .85em;
+  font-weight: 600;
+  color: var(--accent);
+  margin-right: .3em;
+}
+
+.libro__texto .figdesc { margin: .4rem 0 0; color: var(--muted); }
+
+/* Rótulos de esquemas y organigramas, plegados */
+.rotulos { margin-top: .6rem; }
+
+.rotulos > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--text-strong);
+}
+
+.rotulos > summary span { color: var(--muted); }
+
+.rotulos ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+  margin: .6rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rotulos li {
+  padding: .1rem .45rem;
+  font-size: .78rem;
+  line-height: 1.4;
+  background: var(--surface-2);
+  border-radius: 4px;
+}
+
+/* ---- Tablas: se desplazan a lo ancho en pantallas chicas ---- */
+.tabla {
+  margin: 1.4rem 0;
+  overflow-x: auto;
+  scroll-margin-top: calc(var(--alto-barra) + 16px);
+}
+
+.tabla:focus-visible { outline-offset: 4px; }
+
+.libro__texto table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .88rem;
+  line-height: 1.45;
+}
+
+.libro__texto caption {
+  padding: 0 0 .5rem;
+  text-align: left;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.libro__texto th,
+.libro__texto td {
+  padding: .4rem .55rem;
+  text-align: left;
+  vertical-align: top;
+  border: 1px solid var(--border-strong);
+}
+
+.libro__texto th {
+  background: var(--surface-2);
+  color: var(--text-strong);
+  font-weight: 600;
+}
+
+.libro__texto tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--surface) 55%, transparent); }
+
+.libro__texto .nota-tabla,
+.libro__texto .nota {
+  max-width: var(--medida);
+  font-size: .85rem;
+  font-style: italic;
+  color: var(--muted);
+}
+
+/* ---- Ecuaciones ---- */
+.formula {
+  max-width: var(--medida);
+  margin: 1.2rem 0;
+  padding: .8rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  scroll-margin-top: calc(var(--alto-barra) + 16px);
+}
+
+.formula .ecuacion {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: .3rem 1rem;
+  margin: .2rem 0 .4rem;
+  font-size: 1.12rem;
+  color: var(--text-strong);
+}
+
+.formula .num-ec {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--muted);
+}
+
+.formula .donde { margin: .4rem 0 .1rem; font-weight: 600; font-size: .9rem; }
+.formula .donde-lista { margin: 0; padding-left: 1.2rem; font-size: .9rem; }
+
+/* ---- Enlaces internos a ilustraciones, tablas y ecuaciones ---- */
+a.ref {
+  color: inherit;
+  text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
+  text-decoration-style: dotted;
+}
+
+a.ref:hover { color: var(--accent); text-decoration-style: solid; }
+
+/* Destino recién visitado: un destello suave */
+:target {
+  animation: destello 1.6s ease-out;
+}
+
+@keyframes destello {
+  from { box-shadow: 0 0 0 6px var(--accent-soft); background-color: var(--accent-soft); }
+  to { box-shadow: 0 0 0 6px transparent; }
+}
+
+.fin {
+  margin-top: 2rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  color: var(--muted);
+}
+
+/* ---- Pie: volver arriba y libros vecinos ---- */
+.libro__texto .libro__pie {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .8rem;
+  margin-top: 2.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: .85rem;
+}
+
+/* ---- Barra de lectura (fija arriba al bajar por el libro) ---- */
+.lectura {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 50;
+  transform: translateY(-100%);
+  transition: transform .2s ease;
+  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--border);
+}
+
+.lectura.visible { transform: none; }
+
+.lectura__progreso {
+  position: absolute;
+  inset: auto 0 -1px;
+  height: 2px;
+}
+
+.lectura__progreso span {
+  display: block;
+  height: 100%;
+  width: 100%;
+  background: var(--accent);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+.lectura__barra {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  max-width: var(--ancho);
+  height: var(--alto-barra);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.lectura__seccion {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-family: var(--font-titulo);
+  font-size: .92rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  text-align: center;
+}
+
+.lectura__boton {
+  flex: none;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  transition: border-color .18s ease;
+  padding: .3rem .65rem;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.lectura__boton:hover { border-color: var(--border-strong); }
+.lectura__boton[aria-pressed="false"] { color: var(--muted); text-decoration: line-through; }
+
+/* ---- Panel del índice ---- */
+.panel-indice {
+  width: min(440px, 100vw);
+  max-width: 100vw;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0 0 0 auto;
+  padding: 0;
+  color: var(--text);
+  background: var(--bg);
+  border: 0;
+  border-left: 1px solid var(--border-strong);
+  box-shadow: var(--shadow-hover);
+}
+
+.panel-indice[open] { display: flex; flex-direction: column; }
+
+.panel-indice::backdrop { background: rgba(20, 20, 24, .35); }
+
+.panel-indice__cabeza {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .8rem 1rem;
+  font-family: var(--font-titulo);
+  color: var(--text-strong);
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-indice__cuerpo.indice {
+  margin: 0;
+  padding: .6rem .8rem 2rem;
+  background: none;
+  border: 0;
+  border-radius: 0;
+}
+
+.panel-indice__cuerpo {
+  flex: 1;
+  overflow-y: auto;
+  padding: .6rem .8rem 2rem;
+  font-size: .92rem;
+}
+
+/* ---- Celular ---- */
+@media (max-width: 600px) {
+  .libro__texto { font-size: 1rem; line-height: 1.68; }
+  .libro__texto figure,
+  .formula { padding: .75rem .85rem; }
+  .indice { padding: .8rem .7rem; }
+  .indice ul { padding-left: .7rem; }
+  .lectura__barra { padding: 0 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lectura { transition: none; }
+  :target { animation: none; }
+}
+
+/* ---- Impresión: sin barra ni panel, con las marcas de página ---- */
+@media print {
+  .lectura,
+  .panel-indice,
+  .libro__pie,
+  .back { display: none !important; }
+  .legal > :not(summary),
+  .nota-transcripcion > :not(summary),
+  .rotulos > ul { display: revert; }
+  .tabla { overflow: visible; }
+}

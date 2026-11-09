@@ -23,6 +23,7 @@ Usa los estilos comunes: papel beige y grises cálidos, un color de acento, tít
 Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneamiento* (MAPAS) de la Conagua, convertidos de PDF a HTML. Son documentos públicos del gobierno federal.
 
 - Cada libro es un HTML autocontenido (su propio CSS; algunas páginas del original van como imagen JPEG en base64). Se conservan tal como se convirtieron; el sitio solo les agrega en el `<head>` el ícono y `darwin.js`, una barra de navegación al inicio del `<body>`, y cambia el guion largo del `<title>` por «·».
+- **Edición de lectura continua** (por ahora, solo el **Libro 1**): usa `css/libro.css` y `js/libro.js` en lugar del CSS propio del libro. Los renglones del PDF se unieron en párrafos (sin guion de fin de renglón), las ilustraciones y tablas que cortaban una frase van al terminar el párrafo, los rótulos de esquemas y organigramas están dentro de su `<figure>` (`<details class="rotulos">`), las marcas de página son `.pag` con `data-p` (bloque `div` o en línea `span`, id `pdf-N`) y el índice y las referencias («Ilustración 2.3», «Tabla 2.9», «ecuación 2.1») son enlaces (`ilustracion-2-3`, `tabla-2-9`, `ecuacion-2-1`). La barra de lectura (progreso, sección actual, panel del índice, botón «Páginas») la arma `js/libro.js`. Las palabras del texto no cambian; la nota de transcripción del libro detalla las correcciones.
 - Falta el **Libro 35** (no venía en la conversión). Para agregarlo: copiar el HTML como `libros/libro-35.html`, aplicar los mismos agregados y sumarlo a la lista y al grupo correspondiente en `index.html`.
 - El cuerpo de los libros conserva el guion largo de la transcripción (fidelidad al texto); la interfaz propia del proyecto no lo usa.
 - `index.html` agrupa los libros por tema y tiene una búsqueda (por número exacto o por palabras, sin acentos).
@@ -33,4 +34,5 @@ Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneam
 |---|---|
 | `manuales-conagua/index.html` | Índice de libros por tema, con búsqueda |
 | `manuales-conagua/css/manuales-conagua.css` | Estilos del índice (usa las variables comunes) |
+| `manuales-conagua/css/libro.css`, `manuales-conagua/js/libro.js` | Estilos y barra de lectura de los libros en edición continua |
 | `manuales-conagua/libros/libro-NN.html` | Cada libro convertido (NN = número de libro, dos dígitos) |
