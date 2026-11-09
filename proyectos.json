@@ -25,6 +25,16 @@
       "icono": "💧",
       "etiquetas": ["agua-potable", "cotizaciones"],
       "privado": true
+    },
+    "mapas": {
+      "nombre": "Manuales MAPAS de la Conagua",
+      "carpetas": ["mapas"],
+      "corto": "MAPAS",
+      "inicio": "mapas/",
+      "descripcion": "Los libros del Manual de Agua Potable, Alcantarillado y Saneamiento (MAPAS) de la Conagua, convertidos de PDF a HTML para leerlos y buscarlos en el navegador.",
+      "anio": 2026,
+      "icono": "📚",
+      "etiquetas": ["agua-potable", "normativa", "biblioteca"]
     }
   }
 }

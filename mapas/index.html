@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <!-- Ajuste para celular -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Manuales MAPAS de la Conagua · Wolfgang Resendiz</title>
+
+  <!-- Descripción para buscadores -->
+  <meta name="description" content="Libros del Manual de Agua Potable, Alcantarillado y Saneamiento (MAPAS) de la Conagua, convertidos de PDF a HTML.">
+
+  <!-- Ícono: la cara de Darwin (zona general) -->
+  <link rel="icon" href="../img/darwin-cara.svg" type="image/svg+xml">
+
+  <!-- Tipografía (los estilos comunes la importan; esto adelanta la conexión) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Estilos comunes del sitio (zona general: no se editan desde este proyecto) -->
+  <link rel="stylesheet" href="../css/styles.css">
+  <!-- Estilos propios del proyecto: aquí van los ajustes y sobrescrituras -->
+  <link rel="stylesheet" href="css/mapas.css">
+
+  <!-- Tema y color de acento (zona general): sin defer, para aplicarlos antes de pintar -->
+  <script src="../js/tema.js"></script>
+
+  <!-- Darwin, la gatita del sitio (zona general, no se edita desde aquí) -->
+  <script src="../js/darwin.js" defer></script>
+</head>
+
+<!-- class="ancho": columna de lectura (760 px). Sin ella, columna angosta (480 px). -->
+<body class="ancho">
+  <!-- Encabezado con la marca del sitio (lleva a inicio) y los botones de tema -->
+  <header class="site-header">
+    <a class="brand" href="../index.html">Wolfgang Resendiz</a>
+
+    <div class="ajustes">
+      <button class="ajuste" type="button" data-tema-accion="acento" aria-label="Cambiar color de acento">
+        <span class="ajuste__punto"></span>
+      </button>
+      <button class="ajuste" type="button" data-tema-accion="tema" aria-label="Cambiar tema">
+        <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <a class="back" href="../index.html">← Inicio</a>
+
+    <h1>Manuales MAPAS de la Conagua</h1>
+    <p class="mapas__intro">Libros del <em>Manual de Agua Potable, Alcantarillado y Saneamiento</em> (MAPAS) de la Comisión Nacional del Agua, convertidos de PDF a HTML: texto completo, tablas como tablas y fórmulas legibles. Cada libro es una sola página; usa la búsqueda del navegador (Ctrl+F) dentro de él.</p>
+
+    <input class="mapas__buscar" type="search" id="buscar" placeholder="Buscar libro por número o tema (p. ej. 20, lodos, pozos)" aria-label="Buscar libro" autocomplete="off">
+    <p class="mapas__cuenta" id="cuenta" aria-live="polite">54 libros</p>
+    <p class="mapas__vacio" id="vacio">Ningún libro coincide con la búsqueda.</p>
+
+      <section class="mapas__grupo">
+        <h2>Planeación y proyectos</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-01.html"><span class="mapas__num">01</span><span>Integración de un organismo operador</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-02.html"><span class="mapas__num">02</span><span>Metodologías de evaluación socioeconómica y estructuración de proyectos de inversión</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-03.html"><span class="mapas__num">03</span><span>Medidas preventivas, de seguridad y diseño de obras de protección de la infraestructura de agua potable en situaciones de emergencia</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-04.html"><span class="mapas__num">04</span><span>Datos básicos para proyectos de agua potable y alcantarillado</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-14.html"><span class="mapas__num">14</span><span>Proyectos ejecutivos</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Estudios técnicos</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-05.html"><span class="mapas__num">05</span><span>Estudios técnicos: topografía y mecánica de suelos</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-06.html"><span class="mapas__num">06</span><span>Estudios técnicos: diseño estructural</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Captación, conducción y medición</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-07.html"><span class="mapas__num">07</span><span>Obras de captación superficiales</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-08.html"><span class="mapas__num">08</span><span>Captación por medio de pozos profundos</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-09.html"><span class="mapas__num">09</span><span>Sistemas de medición del agua: producción, operación y consumo</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-10.html"><span class="mapas__num">10</span><span>Conducciones</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-11.html"><span class="mapas__num">11</span><span>Fenómenos transitorios en líneas de conducción</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Distribución de agua potable</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-12.html"><span class="mapas__num">12</span><span>Diseño de redes de distribución de agua potable</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-13.html"><span class="mapas__num">13</span><span>Modelación hidráulica y de calidad del agua en redes de distribución</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Instalaciones y equipo electromecánico</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-15.html"><span class="mapas__num">15</span><span>Cálculo, estudio y diseño de instalaciones mecánicas</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-16.html"><span class="mapas__num">16</span><span>Cálculo, estudio y diseño de instalaciones eléctricas</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-17.html"><span class="mapas__num">17</span><span>Selección de equipo y materiales electromecánicos</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-18.html"><span class="mapas__num">18</span><span>Instalación y montaje de equipo electromecánico</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-43.html"><span class="mapas__num">43</span><span>Pruebas, puesta en servicio, operación y mantenimiento de equipo y materiales electromecánicos</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Alcantarillado y drenaje</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-19.html"><span class="mapas__num">19</span><span>Drenaje pluvial urbano</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-20.html"><span class="mapas__num">20</span><span>Alcantarillado sanitario</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-21.html"><span class="mapas__num">21</span><span>Sistemas alternativos de alcantarillado sanitario</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-44.html"><span class="mapas__num">44</span><span>Operación y mantenimiento de redes de alcantarillado</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Potabilización y desinfección</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-23.html"><span class="mapas__num">23</span><span>Desinfección para sistemas de agua potable y saneamiento</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-24.html"><span class="mapas__num">24</span><span>Diseño de plantas potabilizadoras de tecnología simplificada</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-45.html"><span class="mapas__num">45</span><span>Evaluación rápida de plantas potabilizadoras</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Tratamiento de aguas residuales: diseño</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-22.html"><span class="mapas__num">22</span><span>Aplicación de fuentes de energía renovable en PTARM</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-25.html"><span class="mapas__num">25</span><span>Introducción al tratamiento de aguas residuales municipales</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-26.html"><span class="mapas__num">26</span><span>Diseño de PTARM: pretratamiento y tratamiento primario</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-27.html"><span class="mapas__num">27</span><span>Diseño de PTARM: lagunas de estabilización</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-28.html"><span class="mapas__num">28</span><span>Diseño de PTARM: reactores anaerobios de flujo ascendente</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-29.html"><span class="mapas__num">29</span><span>Diseño de PTARM: filtros anaerobios de flujo ascendente</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-30.html"><span class="mapas__num">30</span><span>Diseño de PTARM: humedales artificiales</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-31.html"><span class="mapas__num">31</span><span>Diseño de PTARM: zonas rurales, periurbanas y desarrollos ecoturísticos</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-32.html"><span class="mapas__num">32</span><span>Diseño de PTARM: tratamiento y disposición de lodos</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-33.html"><span class="mapas__num">33</span><span>Diseño de PTARM: oxidación bioquímica con biomasa suspendida</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-34.html"><span class="mapas__num">34</span><span>Diseño de PTARM: oxidación bioquímica con biomasa fija</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-36.html"><span class="mapas__num">36</span><span>Diseño de PTARM: tratamientos no convencionales</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-38.html"><span class="mapas__num">38</span><span>Alternativas tecnológicas de tratamiento de aguas residuales para la recarga artificial de acuíferos</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Tratamiento de aguas residuales: operación y mantenimiento</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-46.html"><span class="mapas__num">46</span><span>Operación y mantenimiento de PTARM: pretratamiento y tratamiento primario</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-47.html"><span class="mapas__num">47</span><span>Operación y mantenimiento de PTARM: lagunas de estabilización</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-48.html"><span class="mapas__num">48</span><span>Operación y mantenimiento de PTARM: lagunas aireadas</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-49.html"><span class="mapas__num">49</span><span>Operación y mantenimiento de PTARM: procesos anaerobios</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-50.html"><span class="mapas__num">50</span><span>Operación y mantenimiento de PTARM: tratamiento y disposición de lodos</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-51.html"><span class="mapas__num">51</span><span>Operación y mantenimiento de PTARM: lodos activados</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-52.html"><span class="mapas__num">52</span><span>Operación y mantenimiento de PTARM: filtros rociadores</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Eficiencia, rehabilitación y gestión</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-39.html"><span class="mapas__num">39</span><span>Mejora de eficiencia física</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-40.html"><span class="mapas__num">40</span><span>Rehabilitación de pozos</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-41.html"><span class="mapas__num">41</span><span>Eficiencia energética, uso eficiente y ahorro de la energía</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-42.html"><span class="mapas__num">42</span><span>Mantenimiento y reparación de tuberías y piezas especiales</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-53.html"><span class="mapas__num">53</span><span>Mejora de eficiencia comercial</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-54.html"><span class="mapas__num">54</span><span>Estructuras tarifarias</span></a></li>
+        </ul>
+      </section>
+
+      <section class="mapas__grupo">
+        <h2>Saneamiento básico y cultura del agua</h2>
+        <ul class="mapas__lista">
+          <li class="mapas__libro"><a href="libros/libro-37.html"><span class="mapas__num">37</span><span>Saneamiento básico</span></a></li>
+          <li class="mapas__libro"><a href="libros/libro-55.html"><span class="mapas__num">55</span><span>Cultura del agua</span></a></li>
+        </ul>
+      </section>
+
+    <p class="mapas__nota">Fuente: Comisión Nacional del Agua (Conagua), MAPAS. Las ilustraciones del original se citan por número y título; algunas páginas se incluyen como imagen. Ante cualquier duda, consulta el PDF oficial en <a href="https://www.gob.mx/conagua">gob.mx/conagua</a>.</p>
+  </main>
+
+  <script>
+    // Filtra la lista de libros por número o palabras (sin acentos ni mayúsculas)
+    (() => {
+      const normal = (t) => t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const libros = [...document.querySelectorAll(".mapas__libro")];
+      const grupos = [...document.querySelectorAll(".mapas__grupo")];
+      const cuenta = document.getElementById("cuenta");
+      const vacio = document.getElementById("vacio");
+      for (const li of libros) li.dataset.texto = normal(li.textContent);
+      document.getElementById("buscar").addEventListener("input", (e) => {
+        const palabras = normal(e.target.value).split(/\s+/).filter(Boolean);
+        let visibles = 0;
+        for (const li of libros) {
+          const ok = palabras.every((p) => /^\d+$/.test(p) ? Number(li.querySelector(".mapas__num").textContent) === Number(p) : li.dataset.texto.includes(p));
+          li.hidden = !ok;
+          if (ok) visibles++;
+        }
+        for (const g of grupos) g.hidden = !g.querySelector(".mapas__libro:not([hidden])");
+        cuenta.textContent = visibles === 1 ? "1 libro" : `${visibles} libros`;
+        vacio.style.display = visibles ? "none" : "block";
+      });
+    })();
+  </script>
+</body>
+</html>

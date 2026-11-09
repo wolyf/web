@@ -1,0 +1,1838 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<!-- Agregado por el sitio: ícono y Darwin, la gatita (zona general) -->
+<link rel="icon" href="../../img/darwin-cara.svg" type="image/svg+xml">
+<script src="../../js/darwin.js" defer></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Libro 26 · Diseño de PTARM: Pretratamiento y Tratamiento Primario (MAPAS, CONAGUA)</title>
+<style>
+body{font-family:Georgia,'Times New Roman',serif;max-width:820px;margin:0 auto;padding:24px 20px 60px;color:#1a1a1a;background:#fff;line-height:1.55;font-size:17px}
+h1{font-size:1.7em;line-height:1.25;text-align:center;margin:.4em 0}
+h2{font-size:1.35em;border-bottom:2px solid #14532d;padding-bottom:4px;margin-top:2em;color:#14532d}
+h3{font-size:1.15em;margin-top:1.6em;color:#1f3a2d}
+h4{font-size:1.02em;margin-top:1.3em}
+p{margin:.55em 0;text-align:justify}
+ul,ol{margin:.4em 0 .8em 1.4em}
+li{margin:.25em 0}
+table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.86em}
+th,td{border:1px solid #999;padding:4px 6px;text-align:left;vertical-align:top}
+th{background:#dce8df;text-align:center}
+td.num,th.num{text-align:right}
+caption{font-weight:bold;text-align:left;margin-bottom:.4em;font-size:1em}
+.fig{border:1px solid #14532d;background:#f4f8f4;padding:12px 14px;margin:1.2em 0;border-radius:4px}
+.fig b{display:block;margin-bottom:4px}
+.fig .desc{font-size:.95em}
+.eq{background:#f7f7f0;border-left:3px solid #b58900;padding:8px 12px;margin:.8em 0;text-align:center;font-family:'Times New Roman',serif;font-size:1.05em}
+.eq .n{float:right;font-size:.85em;color:#555}
+.donde{margin-left:1.2em;font-size:.96em}
+.donde p{margin:.15em 0}
+.pag{font-size:.8em;color:#777;text-align:center;margin:1.5em 0 .5em}
+.nota{background:#fff8e1;border:1px solid #d4a017;padding:12px 14px;border-radius:4px;font-size:.95em}
+.nota h2{border:none;color:#7a5c00;margin-top:0}
+.centro{text-align:center}
+.small{font-size:.9em}
+.toc td{border:none;border-bottom:1px dotted #ccc}
+.toc td.pg{text-align:right;white-space:nowrap}
+footer{margin-top:3em;border-top:2px solid #14532d;padding-top:1em;font-size:.9em}
+code{font-family:inherit}
+sup,sub{font-size:.75em}
+</style>
+</head>
+<body>
+<nav style="font-family:system-ui,sans-serif;font-size:.9em;margin-bottom:1em"><a href="../">← Manuales MAPAS</a> · <a href="../../">Wolfgang Resendiz</a></nav>
+
+<div class="nota">
+<h2>Nota de la transcripción</h2>
+<p>Transcripción fiel y completa del Libro 26 del <i>Manual de Agua Potable, Alcantarillado y Saneamiento</i> (MAPAS), de la Comisión Nacional del Agua (CONAGUA): <b>«Diseño de Plantas de Tratamiento de Aguas Residuales Municipales: Pretratamiento y Tratamiento Primario»</b>, a partir del archivo PDF <i>Libro26.pdf</i> (74 páginas, ISBN 978-607-626-008-1).</p>
+<p>El texto se reproduce en español, en el orden del original, sin resúmenes ni recortes. Las palabras cortadas por guion al final de renglón se han unido. Las tablas se reproducen como tablas HTML con todos sus valores. Las fórmulas se presentan de forma legible, con su número de ecuación original. Las ilustraciones son imágenes en el original, por lo que no se reproducen aquí como imagen: cada una se identifica con su número y título y se describe fielmente lo que muestra, según el contenido visible en la página.</p>
+<p><b>Páginas fotográficas sin texto:</b> las páginas PDF 5, 7, 9, 11, 45, 65, 67, 69 y 71 son fotografías a página completa sin texto (instalaciones de pretratamiento: rejillas, desarenadores y equipos de cribado). No contienen texto que transcribir; se anotan en su lugar dentro del documento. La página PDF 73 está en blanco. Ninguna página con texto quedó sin transcribir.</p>
+<p><b>Erratas del original:</b> algunos valores impresos en el libro son inconsistentes entre sí (por ejemplo, en el ejemplo del canal Parshall el denominador de la velocidad V<sub>2</sub> se imprime como 0.30&nbsp;m en casos en que el resultado corresponde al tirante H<sub>a</sub> de cada paso; la Tabla&nbsp;1.11 imprime B&nbsp;=&nbsp;427.0&nbsp;cm para W&nbsp;=&nbsp;305.0&nbsp;cm; la tabla de conversión de pies y pulgadas imprime 1.176&nbsp;m para 3&nbsp;pies 8&nbsp;pulgadas; en el Objetivo general se imprime «república rexicana»). Esos valores se transcriben <b>tal como están impresos</b> y se advierten con una nota al pie de la tabla o del cálculo correspondiente. No se han corregido ni inventado cifras.</p>
+<p><b>Repetición en el original:</b> en las páginas 17–18 el texto sobre los desarenadores aireados y el funcionamiento del vórtice aparece repetido, casi literalmente, en dos lugares del libro; se transcribe tal como está impreso.</p>
+</div>
+
+<p class="pag">Portada (pág. 1 del PDF)</p>
+<p class="centro"><b>Manual de Agua Potable,<br>Alcantarillado y Saneamiento</b></p>
+<h1>Diseño de Plantas de Tratamiento de Aguas Residuales Municipales: Pretratamiento y Tratamiento Primario</h1>
+<p class="centro" style="font-size:2em;font-weight:bold">26</p>
+<p>La portada incluye, como imagen de fondo, un diagrama de la canaleta Parshall con su nomenclatura (ancho de la garganta W; longitudes A, B, F, G, M; anchos C, D, P; profundidad total E; diferencia de elevación K; profundidad de la cubeta N; radio de curvatura R; abscisa X y ordenada Y del punto de medición H<sub>b</sub>), y el pie «Comisión Nacional del Agua».</p>
+
+<p class="pag">Pág. 2 del PDF</p>
+<p class="centro"><b>Manual de Agua Potable,<br>Alcantarillado y Saneamiento</b></p>
+<p class="centro">Diseño de Plantas de Tratamiento<br>de Aguas Residuales Municipales:<br>Pretratamiento<br>y Tratamiento Primario</p>
+<p class="centro">Comisión Nacional del Agua</p>
+<p class="centro">www.conagua.gob.mx</p>
+
+<p class="pag">Pág. 3 del PDF — Datos de publicación</p>
+<p>Manual de Agua Potable, Alcantarillado y Saneamiento<br>Diseño de Plantas de Tratamiento de Aguas Residuales Municipales:<br>Pretratamiento y Tratamiento Primario</p>
+<p>ISBN: 978-607-626-008-1</p>
+<p>D.R. © Secretaría de Medio Ambiente y Recursos Naturales<br>Boulevard Adolfo Ruiz Cortines No. 4209 Col. Jardines en la Montaña<br>C.P. 14210, Tlalpan, México, D.F.</p>
+<p>Comisión Nacional del Agua<br>Insurgentes Sur No. 2416 Col. Copilco El Bajo<br>C.P. 04340, Coyoacán, México, D.F.<br>Tel. (55) 5174-4000</p>
+<p>Subdirección General de Agua Potable, Drenaje y Saneamiento</p>
+<p>Impreso y hecho en México<br>Distribución gratuita. Prohibida su venta.<br>Queda prohibido su uso para fines distintos al desarrollo social.<br>Se autoriza la reproducción sin alteraciones del material contenido en esta obra, sin fines de lucro y citando la fuente.</p>
+
+<h2>Contenido</h2>
+<table class="toc">
+<tr><td>Presentación</td><td class="pg">V</td></tr>
+<tr><td>Objetivo general</td><td class="pg">VII</td></tr>
+<tr><td>Introducción al diseño de unidades de pretratamiento y tratamiento primario</td><td class="pg">IX</td></tr>
+<tr><td><b>1. Diseño de unidades de pretratamiento</b></td><td class="pg">1</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;1.1. Cribado</td><td class="pg">1</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.1. Cribado por medio de rejas y rejillas</td><td class="pg">1</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.2. Rejillas de limpieza manual</td><td class="pg">2</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.3. Rejas y rejillas de limpieza automática</td><td class="pg">3</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.1.4. Metodología de diseño de cribas</td><td class="pg">3</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;1.2. Ejemplos de cálculo de rejas y rejillas</td><td class="pg">6</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.2.1. Rejas para sólidos gruesos</td><td class="pg">6</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.2.2. Rejillas para sólidos medios</td><td class="pg">8</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;1.3. Desarenado</td><td class="pg">11</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.3.1. Tipos de desarenadores y sus parámetros de diseño</td><td class="pg">13</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.3.2. El canal Parshall como controlador de velocidad en desarenadores horizontales</td><td class="pg">21</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.3.3. Control de velocidad con vertedores proporcionales</td><td class="pg">31</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;1.4. Remoción de arena</td><td class="pg">31</td></tr>
+<tr><td><b>2. Sedimentación primaria</b></td><td class="pg">35</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;2.1. Introducción</td><td class="pg">35</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;2.2. Conceptos de sedimentación primaria</td><td class="pg">36</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.2.1. Tipos de tanques de sedimentación primaria</td><td class="pg">36</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;2.3. Diseño de sedimentadores primarios</td><td class="pg">36</td></tr>
+<tr><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.3.1. Ejemplo de diseño</td><td class="pg">41</td></tr>
+<tr><td>Conclusiones</td><td class="pg">43</td></tr>
+<tr><td>Tabla de conversiones de unidades de medida</td><td class="pg">45</td></tr>
+<tr><td>Abreviaturas</td><td class="pg">55</td></tr>
+<tr><td>Bibliografía</td><td class="pg">57</td></tr>
+<tr><td>Ilustraciones</td><td class="pg">59</td></tr>
+<tr><td>Tablas</td><td class="pg">61</td></tr>
+</table>
+
+<p class="pag">Pág. V</p>
+<h2>Presentación</h2>
+<p>Uno de los grandes desafíos hídricos que enfrentamos a nivel global es dotar de los servicios de agua potable, alcantarillado y saneamiento a la población, debido, por un lado, al crecimiento demográfico acelerado y por otro, a las dificultades técnicas, cada vez mayores, que conlleva hacerlo.</p>
+<p>Contar con estos servicios en el hogar es un factor determinante en la calidad de vida y desarrollo integral de las familias. En México, la población beneficiada ha venido creciendo los últimos años; sin embargo, mientras más nos acercamos a la cobertura universal, la tarea se vuelve más compleja.</p>
+<p>Por ello, para responder a las nuevas necesidades hídricas, la administración del Presidente de la República, Enrique Peña Nieto, está impulsando una transformación integral del sector, y como parte fundamental de esta estrategia, el fortalecimiento de los organismos operadores y prestadores de los servicios de agua potable, drenaje y saneamiento.</p>
+<p>En este sentido, publicamos este manual: una guía técnica especializada, que contiene los más recientes avances tecnológicos en obras hidráulicas y normas de calidad, con el fin de desarrollar infraestructura más eficiente, segura y sustentable, así como formar recursos humanos más capacitados y preparados.</p>
+<p>Estamos seguros de que será de gran apoyo para orientar el quehacer cotidiano de los técnicos, especialistas y tomadores de decisiones, proporcionándoles criterios para generar ciclos virtuosos de gestión, disminuir los costos de operación, impulsar el intercambio de volúmenes de agua de primer uso por tratada en los procesos que así lo permitan, y realizar en general, un mejor aprovechamiento de las aguas superficiales y subterráneas del país, considerando las necesidades de nueva infraestructura y el cuidado y mantenimiento de la existente.</p>
+<p>El Gobierno de la República tiene el firme compromiso de sentar las bases de una cultura de la gestión integral del agua. Nuestros retos son grandes, pero más grande debe ser nuestra capacidad transformadora para contribuir desde el sector hídrico a Mover a México.</p>
+<p class="centro">Director General de la Comisión Nacional del Agua</p>
+
+<p class="pag">Pág. PDF 5 — Fotografía a página completa, sin texto</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de una instalación de pretratamiento: tres canales de concreto con rejillas inclinadas de barras, barandales amarillos y dos equipos elevados de limpieza al fondo; al fondo se ven árboles, pasto y una caseta blanca.</span></div>
+
+<p class="pag">Pág. VII</p>
+<h2>Objetivo general</h2>
+<p>El Manual de Agua Potable, Alcantarillado y Saneamiento (MAPAS) está dirigido a quienes diseñan, construyen, operan y administran los sistemas de agua potable, alcantarillado y saneamiento del país; busca ser una referencia sobre los criterios, procedimientos, normas, índices, parámetros y casos de éxito que la Comisión Nacional del Agua (Conagua), en su carácter de entidad normativa federal en materia de agua, considera recomendable utilizar, a efecto de homologarlos, para que el desarrollo, operación y administración de los sistemas se encaminen a elevar y mantener la eficiencia y la calidad de los servicios a la población.</p>
+<p>Este trabajo favorece y orienta la toma de decisiones por parte de autoridades, profesionales, administradores y técnicos de los organismos operadores de agua de la república rexicana [sic] y la labor de los centros de enseñanza.</p>
+
+<p class="pag">Pág. PDF 7 — Fotografía a página completa, sin texto (pág. VIII)</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de equipos de cribado: dos unidades metálicas inclinadas con motores azules en la parte superior, barandales amarillos y una escalera metálica de acceso, bajo cielo despejado.</span></div>
+
+<p class="pag">Pág. IX</p>
+<h2>Introducción al diseño de unidades de pretratamiento y tratamiento primario</h2>
+<p>El tratamiento preliminar prepara el afluente de aguas residuales para su posterior tratamiento, mediante la reducción o eliminación de características específicas del agua residual que, de otra manera, podrían impedir el funcionamiento o indebidamente incrementar el mantenimiento de los procesos y equipos de las unidades siguientes al pretratamiento.</p>
+<p>Las características típicas del agua residual podrían provocar problemas comunes por la inclusión de sólidos grandes, trapos, granos abrasivos, olores y en algunos casos, altas cargas hidráulicas u orgánicas inaceptables. En este libro se presentan las consideraciones de diseño para los procesos preliminares de tratamiento, es decir, rejillas y desarenadores.</p>
+<p>En el capítulo uno de este libro se presenta el diseño de unidades de pretratamiento, específicamente se aborda el cálculo de rejas y rejillas, para las cuales se considera el dimensionamiento del canal donde se ubicarán, el tipo, forma, material de construcción, la selección del espaciamiento entre barras y el ángulo de inclinación. De forma similar se presenta el diseño y selección adecuada de los desarenadores en función del tipo de planta.</p>
+<p>En lo que respecta al tratamiento primario, el capítulo dos presenta el diseño de tanques de sedimentación primaria tanto rectangulares como circulares.</p>
+
+<p class="pag">Pág. PDF 9 — Fotografía a página completa, sin texto (pág. VIII)</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de rejillas de tornillo sin fin: cuatro tornillos inclinados con motores verdes en la parte superior, barandales amarillos y, en primer plano, un volante azul de compuerta; al fondo, cerros.</span></div>
+
+<p class="pag">Pág. PDF 11 — Fotografía a página completa, sin texto</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de una instalación exterior de pretratamiento: una tubería de gran diámetro, una estructura metálica techada, tableros eléctricos y un contenedor verde, con pasto y cerros al fondo.</span></div>
+
+<p class="pag">Pág. 1</p>
+<h2>1. Diseño de unidades de pretratamiento</h2>
+
+<h3>1.1. Cribado</h3>
+<p>El pretratamiento con rejillas es uno de los procesos más antiguos. En las plantas de tratamiento de aguas residuales, las rejillas remueven los contaminantes gruesos procedentes de la corriente para proteger de posibles daños la operación y al equipo de las unidades siguientes.</p>
+<p>Algunas de las instalaciones de tratamiento de aguas residuales modernas emplean rejas, rejillas gruesas y rejillas finas. Las rejas (hasta 15 cm de paso) y las rejillas gruesas (6 mm a 2.5 cm de apertura) eliminan sólidos grandes, trapos y sólidos de gran tamaño de las aguas residuales. Las rejillas finas (1.5 a 6 mm de apertura) se pueden utilizar en los sistemas sin tratamiento primario para eliminar el material que puede alterar significativamente el funcionamiento y el mantenimiento de las unidades de proceso del tren de agua y del tren de lodos de los procesos siguientes. Las rejillas muy finas con aperturas de 0.2 a 1.5 mm pueden reducir los sólidos en suspensión cerca del nivel del tratamiento primario. Existen rejillas muy finas con aperturas de 1 µm a 0.3 mm que se pueden utilizar para pulir el efluente, esto es, mejorar el efluente del tratamiento secundario cuando se tienen normas más estrictas.</p>
+<p>Las rejillas gruesas, normalmente utilizadas como la primera operación unitaria de la unidad, quitan los sólidos y basura que de lo contrario podrían dañar o interferir con las operaciones de los equipos de los procesos que siguen en la planta de tratamiento, tales como bombas, válvulas, aireadores mecánicos y filtros biológicos. Se incluyen en la categoría de malla gruesa las rejas de limpieza manual y mecánica, incluyendo bastidores de basura. Las rejillas consisten en barras de acero verticales o inclinadas, espaciadas a intervalos iguales a través de un canal por el que fluye el agua residual. Los criterios utilizados en su diseño incluyen: el tamaño de la barra, el espaciado y el ángulo desde la vertical, así como la anchura del cauce y la velocidad de aproximación de las aguas residuales. Las rejillas gruesas más comúnmente utilizadas se limpian mecánicamente. La Tabla 1.1 muestra los rangos de tamaño típicos y criterios de diseño.</p>
+
+<h4>1.1.1. Cribado por medio de rejas y rejillas</h4>
+<p>Las rejas gruesas cuentan con aperturas grandes, que van de 38 a 150 mm y están diseñadas para evitar que los troncos, maderas y residuos pesados grandes entren en los procesos de tratamiento. Las rejas retienen la basura y normalmente van seguidas de rejillas con aperturas más pequeñas. Se utilizan principalmente en sistemas combinados que llevan grandes cantidades de residuos de gran tamaño, especialmente durante las tormentas. Las rejas para basura se pueden limpiar mecánica o manualmente. Cuando el espacio es limitado, las plantas a veces tienen rejas retenedoras de basura tipo cesta que se izan para limpiarse manualmente. En la tabla 1.1 se presentan las principales recomendaciones para el diseño de estas unidades.</p>
+
+<p class="pag">Pág. 2</p>
+<table>
+<caption>Tabla 1.1 Tamaño de apertura de rejas y rejillas</caption>
+<tr><th>Concepto</th><th>Rango</th><th>Comentarios</th></tr>
+<tr><td>Aperturas de rejas retenedoras de basura</td><td>38 – 150 mm</td><td>Se usa frecuentemente en combinación con otros sistemas, el tamaño de las aperturas depende del equipo</td></tr>
+<tr><td>Apertura de rejillas manuales</td><td>25 – 50 mm</td><td>Se usan en plantas pequeñas o en canales bypass</td></tr>
+<tr><td>Velocidad de aproximación</td><td>0.30 – 0.60 m/s</td><td></td></tr>
+<tr><td>Rejillas de limpieza mecánica</td><td>6 – 38 mm</td><td>La apertura de 18 mm se considera satisfactoria para la protección de los equipos de los procesos siguientes</td></tr>
+<tr><td>Velocidad de aproximación máxima</td><td>0.60 – 1.20 m/s</td><td></td></tr>
+<tr><td>Velocidad de aproximación mínima</td><td>0.30 – 0.60 m/s</td><td>Velocidad necesaria para evitar la acumulación de arenas</td></tr>
+<tr><td>Rejillas continuas</td><td>6 – 38 mm</td><td>Este tipo de rejilla es conveniente con aperturas de 6 a 18 mm</td></tr>
+<tr><td>Velocidad de aproximación máxima</td><td>0.30 – 1.20 m/s</td><td></td></tr>
+<tr><td>Velocidad de aproximación mínima</td><td>0.30 – 0.60 m/s</td><td></td></tr>
+<tr><td>Pérdida de carga admisible</td><td>0.15 – 0.60 m</td><td></td></tr>
+<tr><td>Triturador (reducción de tamaño solamente)</td><td>6 – 13 mm</td><td>Apertura de una función de la capacidad hidráulica de la unidad</td></tr>
+<tr><td>Molino (reducción de tamaño solamente)</td><td>6 – 13 mm</td><td>En canal abierto</td></tr>
+<tr><td>Pérdidas típicas</td><td>300 – 450 mm</td><td></td></tr>
+<tr><td>Tamiz fijo estático (rejilla fina)</td><td>2.3 a 6.4 mm</td><td>Aperturas menores a 2.3 mm son usadas en pretratamiento o tratamiento primario</td></tr>
+<tr><td>Tamiz ajustable</td><td>0.02 a 0.3 mm</td><td>Poco utilizado en plantas municipales, solo en el efluente secundario</td></tr>
+</table>
+<p class="small">Fuente: WEF y ASCE, MOP No. 8, 1991.</p>
+
+<h4>1.1.2. Rejillas de limpieza manual</h4>
+<p>Para facilitar la extracción de basura y reducir la tendencia a obstrucciones, las rejillas de limpieza manual tienen inclinaciones de 45 a 60 grados con respecto a la horizontal y de 75 a 90 grados para el caso de las rejillas de limpieza automática.</p>
+<p>Las barras de las rejillas de limpieza manual suelen tener de 25 a 50 mm de paso y la inclinación de las barras suele estar entre 30 y 45 grados respecto a la vertical para facilitar la limpieza. Las rejillas se rastrillan manualmente hacia una placa perforada donde drenan los desechos antes de ser retirados para su eliminación. Si las rejillas se limpian con poca frecuencia, cuando el remanso causado por la acumulación de sólidos finalmente se libera por la limpieza, puede provocar oscilaciones bruscas de flujo. Estas oleadas de alta velocidad pueden reducir la eficiencia de captura de sólidos, los cuales pasan a las unidades de los sistemas siguientes.</p>
+
+<p class="pag">Pág. 3</p>
+<p>Aunque las rejillas de limpieza manual requieren poco o ningún mantenimiento, exigen rastrillar frecuentemente para evitar la obstrucción. Normalmente se colocan rejillas de limpieza manual en las instalaciones pequeñas de tratamiento y en donde se han colocado trituradores y cribas que se limpian mecánicamente (Ilustración 1.1).</p>
+<div class="fig"><b>Ilustración 1.1 Rejilla de limpieza manual</b><span class="desc">Fotografía en color, solo imagen: vista superior de un canal con una rejilla de limpieza manual; se distingue un volante de accionamiento y la rejilla metálica con residuos retenidos.</span></div>
+
+<h4>1.1.3. Rejas y rejillas de limpieza automática</h4>
+<p>Las rejillas de limpieza mecánica tienen aperturas que normalmente oscilan entre 6 y 38 mm, con barras establecidas en ángulos de 0 a 30 grados respecto a la vertical. La limpieza mecánica, en comparación con la limpieza manual, tiende a reducir los costos laborales, mejorar las condiciones de flujo y de captura de cribado y reducir las molestias de malos olores. En los sistemas combinados que manejan aguas pluviales mejoran la operación de limpieza de grandes cantidades de sólidos. Las rejillas de limpieza mecánica son, por lo tanto, casi siempre especificadas en plantas nuevas para todos los tamaños. Se fabrican muchos tipos de rejillas de limpieza mecánica, como las de cadena o cable accionadas con el frente hacia atrás o de limpieza con movimiento alternativo o continuo. En la Ilustración 1.2 se presenta un ejemplo de este tipo de rejillas.</p>
+<p>En el mercado existen diferentes modelos de rejillas automáticas para diferentes caudales, con diferente espacio entre barras y variedad de profundidades y anchos de canal de colocación, tal como se muestra en la Tabla 1.2.</p>
+<p>El diseñador seleccionará la rejilla de limpieza automática que mejor se adecúe a su proyecto, entre las muchas marcas y tipos que existen en el mercado, y presentará las especificaciones técnicas del equipo seleccionado.</p>
+<p>Las rejillas estáticas (Ilustración 1.3) se seleccionan de las existentes en el mercado que cumplan con las especificaciones para aguas residuales, en este caso municipales. Pueden remover diferentes tamaños de partículas. Se selecciona el tamaño de partícula y con el gasto de diseño se selecciona el largo de la rejilla. El fabricante dará las especificaciones completas que serán utilizadas para justificar la selección de este equipo que puede servir inclusive como sedimentador primario.</p>
+
+<h4>1.1.4. Metodología de diseño de cribas</h4>
+<p>El análisis asociado con el uso de unidades de cribado o rejillas involucra el cálculo de pérdida de energía a través de la unidad. El cálculo de pérdidas se realiza por separado para la unidad de rejas y el de rejillas.</p>
+
+<p class="pag">Pág. 4</p>
+<div class="fig"><b>Ilustración 1.2 Rejillas automáticas de limpieza mecánica</b><span class="desc">Fotografía en color, solo imagen: instalación exterior con varias rejillas automáticas metálicas de limpieza mecánica, tuberías de gran diámetro y estructuras de concreto, en una planta de tratamiento.</span></div>
+<table>
+<caption>Tabla 1.2 Rejas automáticas para diferentes condiciones de instalación</caption>
+<tr><th rowspan="2">Tipo de rejilla</th><th colspan="4">Condiciones de utilización de rejillas automáticas</th></tr>
+<tr><th>Caudal (m<sup>3</sup>/h)</th><th>Profundidad del canal (m)</th><th>Ancho del canal (m)</th><th>Espacio entre barras (mm)</th></tr>
+<tr><td>Reja curva</td><td>10 a 5 000</td><td>0.43 a 1.68</td><td>0.30 a 2.00</td><td>12 a 80<br>especial 3 a 10</td></tr>
+<tr><td>Reja de cremallera</td><td>100 a 10 000</td><td>1.50 a 5.00</td><td>0.60 a 2.00</td><td>12 a 80</td></tr>
+<tr><td>Reja de cables con rastrillo</td><td>100 a 15 000</td><td>2.50 a 10.00</td><td>0.60 a 4.50</td><td>12 a 80</td></tr>
+<tr><td>Reja de cables con garfio</td><td>1 000 a 40 000</td><td>2.50 a 10.00</td><td>1.50 a 5.50</td><td>12 a 100</td></tr>
+<tr><td>Reja con escobilla sobre cadena sin fin</td><td>100 a 15 000</td><td>1.50 a 8.00</td><td>0.80 a 3.00</td><td>12 a 25<br>especial 3 a 10</td></tr>
+<tr><td>Reja de peines sobre cadena sin fin</td><td>500 a 30 000</td><td>1.50 a 6.00</td><td>0.80 a 4.00</td><td>10 a 60</td></tr>
+<tr><td>Reja de rastrillos sobre cadena sin fin</td><td>1 000 a 30 000</td><td>2.00 a 6.00</td><td>1.00 a 4.00</td><td>50 a 100</td></tr>
+</table>
+<p><b>Rejas</b></p>
+<p>Las pérdidas hidráulicas a través de las barras están en función de la velocidad de aproximación y de la velocidad a través de las barras. La pérdida de carga a través de las barras puede calcularse mediante la siguiente ecuación:</p>
+<div class="eq">h<sub>L</sub> = (1 / 0.7) · ((V<sup>2</sup> − v<sup>2</sup>) / 2g) <span class="n">Ecuación 1.1</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>h<sub>L</sub> = pérdida de carga (m)</p>
+<p>0.7 = coeficiente de descarga empírico que considera las pérdidas por turbulencias y remolinos</p>
+<p>V = velocidad de flujo a través de la apertura de las rejas (m/s)</p>
+<p>v = velocidad de acercamiento en el canal aguas arriba (m/s)</p>
+<p>g = aceleración debida a la gravedad (m/s<sup>2</sup>)</p>
+</div>
+<p>Las pérdidas se calculan con las barras limpias. El ensuciamiento de estas provoca un aumento en la pérdida de carga.</p>
+<p><b>Rejillas finas</b></p>
+<p>La pérdida de carga a través de las rejillas puede obtenerse con las tablas emitidas por el fabricante, o puede calcularse por medio de la fórmula común para orificios:</p>
+<div class="eq">h<sub>L</sub> = (1 / C<sup>2</sup>) · (Q / (√(2g) · A))<sup>2</sup> <span class="n">Ecuación 1.2</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>h<sub>L</sub> = pérdida de carga (m)</p>
+<p>C = coeficiente de descarga de la malla</p>
+<p>g = aceleración debida a la gravedad (m/s<sup>2</sup>)</p>
+<p>Q = descarga a través de la malla (m<sup>3</sup>/s)</p>
+<p>A = área abierta efectiva de la malla sumergida (m<sup>2</sup>)</p>
+</div>
+<p>Los valores C y A dependen de los valores de diseño de la malla, así como el tamaño y apertura de las ranuras; tanto el diámetro de la armadura como el porcentaje del área abierta deberán determinarse experimentalmente. Un valor típico de C para una malla limpia es de 0.6. La pérdida de carga en una malla limpia es prácticamente insignificante. En la Tabla 1.3 se presentan los principales criterios de diseño para este tipo de unidades.</p>
+<p>El criterio más utilizado para calcular la pérdida de carga en estas unidades es mediante la fórmula de Kirschmer, cuando se conoce la forma de las barras y la altura o la energía de velocidad del flujo entre las barras.</p>
+<div class="eq">h<sub>L</sub> = β · (W / b)<sup>4/3</sup> · h<sub>v</sub> · sen θ <span class="n">Ecuación 1.3</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>h<sub>L</sub> = pérdida de carga (m)</p>
+<p>β = 2.42 para barras rectangulares de cara recta</p>
+<p>β = 1.67 para barras rectangulares con cara semicircular aguas arriba y abajo</p>
+<p>β = 1.83 para barras rectangulares con cara semicircular aguas arriba</p>
+</div>
+
+<p class="pag">Pág. 5</p>
+<div class="donde">
+<p>β = 1.79 para barras circulares</p>
+<p>W = ancho máximo de la sección transversal de las barras (m)</p>
+<p>b = espaciamiento o separación mínima entre las barras (m)</p>
+<p>h<sub>v</sub> = altura o energía de velocidad de flujo de aproximación (m)</p>
+<p>θ = ángulo de la rejilla horizontal</p>
+</div>
+<div class="fig"><b>Ilustración 1.3 Rejillas estáticas</b><span class="desc">Dos fotografías en color, solo imagen: a) detalle de una rejilla estática inclinada, con la superficie cubierta de material retenido; b) vista general de una estructura metálica amarilla con escaleras y pasarelas sobre un tanque con rejillas estáticas.</span></div>
+<table>
+<caption>Tabla 1.3 Criterios de diseño de rejas y rejillas (Metcalf &amp; Eddy, Inc., 2003)</caption>
+<tr><th>Característica</th><th>Limpieza manual</th><th>Limpieza mecánica</th></tr>
+<tr><td colspan="3"><b>Tamaño de barra</b></td></tr>
+<tr><td>Ancho (mm)</td><td>5.08 – 15.24</td><td>5.08 – 15.24</td></tr>
+<tr><td>Profundidad (mm)</td><td>25.4 – 38.1</td><td>25.4 – 38.1</td></tr>
+<tr><td>Espacio entre barras (mm)</td><td>25.4 – 50.8</td><td>15.24 – 76.2</td></tr>
+<tr><td>Inclinación sobre la vertical (grados)</td><td>30 – 45</td><td>0 – 30</td></tr>
+<tr><td>Velocidad de acercamiento (m/s)</td><td>0.3048 – 0.6096</td><td>0.6096 – 0.9906</td></tr>
+<tr><td>Pérdida de carga permisible (mm)</td><td>152.4</td><td>152.4</td></tr>
+</table>
+
+<h3>1.2. Ejemplos de cálculo de rejas y rejillas</h3>
+
+<h4>1.2.1. Rejas para sólidos gruesos</h4>
+<p>Una reja de barras rectangulares de 2.00 cm de espesor, instalada con una inclinación de 45º con la horizontal y espaciamiento libre entre barras (C) de 3.80 cm (el arreglo se presenta de la Ilustración 1.4 a la Ilustración 1.6), recibe un caudal máximo de 200.00 L/s. La limpieza de la reja es de forma manual. El canal desarenador tiene un tirante hidráulico (h) de 0.67 m, 1.00 m de ancho (W) y un bordo libre (h<sub>b</sub>) de 0.30 m. Determinar los siguientes conceptos:</p>
+<p><b>Área del canal:</b></p>
+<div class="eq">A = W · h <span class="n">Ecuación 1.4</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A = área de canal (m<sup>2</sup>)</p>
+<p>W = ancho del canal (m)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>A = 1.00 m × 0.67 m = 0.67 m<sup>2</sup></p>
+</div>
+<p><b>Velocidad antes de la reja:</b></p>
+<div class="eq">V = Q / A <span class="n">Ecuación 1.5</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V = velocidad antes de la reja (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área de canal (m<sup>2</sup>)</p>
+<p>V = Q / A = (0.20 m<sup>3</sup>/s) / (0.67 m<sup>2</sup>) = 0.30 m/s</p>
+</div>
+<p><b>Longitud de la reja:</b></p>
+<div class="eq">L = (h + h<sub>b</sub>) / sen θ <span class="n">Ecuación 1.6</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>L = longitud de la reja (m)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>h<sub>b</sub> = bordo libre (m)</p>
+<p>θ = ángulo de inclinación</p>
+<p>L = (0.67 m + 0.30 m) / sen 45º = 1.37 m</p>
+</div>
+<p><b>Número de barras:</b></p>
+<div class="eq">C = (W − n·d<sub>b</sub>) / (n + 1) ; n = (W − C) / (C + d<sub>b</sub>) <span class="n">Ecuación 1.7</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>C = claro de barras (apertura) (m)</p>
+<p>W = ancho del canal (m)</p>
+<p>n = número de espacios</p>
+<p>n + 1 = número de barras</p>
+<p>d<sub>b</sub> = espesor de la barra (m)</p>
+<p>n = (1.00 m − 0.038 m) / (0.038 m + 0.02 m) = 16.59 ≈ 17 espacios</p>
+<p>n − 1 = 16 barras</p>
+</div>
+
+<p class="pag">Pág. 7</p>
+<p><b>Velocidad de acercamiento, aguas arriba:</b></p>
+<div class="eq">V<sub>a</sub> = Q / [(W − d<sub>b</sub>) · h] <span class="n">Ecuación 1.8</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>a</sub> = velocidad de acercamiento (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>W = ancho del canal (m)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>d<sub>b</sub> = espesor de la barra (m)</p>
+<p>V<sub>a</sub> = (0.2 m<sup>3</sup>/s) / [(1.00 m − 0.02 m) · 0.67 m] = 0.31 m/s</p>
+</div>
+<p><b>Velocidad a través de la reja:</b></p>
+<div class="eq">A<sub>r</sub> = n · d<sub>b</sub> · h = 16 × 0.020 m × 0.67 m = 0.21 m<sup>2</sup> <span class="n">Ecuación 1.9</span></div>
+<div class="eq">V<sub>r</sub> = Q / (A − A<sub>r</sub>) <span class="n">Ecuación 1.10</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>r</sub> = velocidad a través de la reja (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área del canal (m<sup>2</sup>)</p>
+<p>A<sub>r</sub> = área de las rejas (m<sup>2</sup>)</p>
+<p>n = número de espacios</p>
+<p>h = tirante hidráulico (m)</p>
+<p>d<sub>b</sub> = espesor de la barra (m)</p>
+<p>V<sub>r</sub> = Q / (A − A<sub>r</sub>) = (0.20 m<sup>3</sup>/s) / (0.67 m<sup>2</sup> − 0.21 m<sup>2</sup>) = 0.43 m/s</p>
+</div>
+<p><b>Pérdida hidráulica:</b></p>
+<div class="eq">h<sub>L</sub> = (1 / 0.7) · ((V<sub>r</sub><sup>2</sup> − V<sub>a</sub><sup>2</sup>) / 2g) <span class="n">Ecuación 1.11</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>h<sub>L</sub> = pérdida hidráulica (m)</p>
+<p>V<sub>r</sub> = velocidad a través de la reja (m/s)</p>
+<p>V<sub>a</sub> = velocidad de acercamiento (m/s)</p>
+<p>g = gravedad (9.81 m/s<sup>2</sup>)</p>
+<p>h<sub>L</sub> = (1 / 0.7) · [((0.43 m/s)<sup>2</sup> − (0.31 m/s)<sup>2</sup>) / (2 × 9.81 m/s<sup>2</sup>)] = 0.0065 m</p>
+<p>h<sub>L</sub> = 0.65 cm = 6.5 mm</p>
+</div>
+<p><b>Arreglo de barras:</b></p>
+<ul>
+<li>Ancho del canal = 1.00 m</li>
+<li>16 barras de 0.02 m de espesor = 0.32 m</li>
+<li>17 espacios de 0.038 m = 0.64 m</li>
+<li>∑ = 0.97 m &lt; 1.00 m</li>
+</ul>
+<p><b>Alternativas para el arreglo:</b></p>
+<ul>
+<li>Asignar 1.5 cm a cada lado</li>
+<li>Reducir el espacio entre barras</li>
+</ul>
+<p>Aumentando el espacio entre barras a 0.037 m y considerando que el número de barras (n − 1) = 17, el número de espacios entre barras = 18.</p>
+<ul>
+<li>17 barras de 0.02 m de espesor = 0.34 m</li>
+<li>18 espacios de 0.037 m = 0.66 m</li>
+<li>∑ = 1.00 m = ancho del canal</li>
+</ul>
+<p>Recalculando la pérdida hidráulica:</p>
+<p>V<sub>a</sub> = 0.31 m/s</p>
+<p>A<sub>r</sub> = n·d<sub>b</sub>·h = 17 × (0.02 m) × (0.67 m) = 0.23 m<sup>2</sup></p>
+
+<p class="pag">Pág. 8</p>
+<p>V<sub>r</sub> = Q / (A − A<sub>r</sub>) = (0.2 m<sup>3</sup>/s) / (0.67 m<sup>2</sup> − 0.23 m<sup>2</sup>) = 0.45 m/s</p>
+<p>h<sub>L</sub> = (1 / 0.7) · ((V<sub>r</sub><sup>2</sup> − V<sub>a</sub><sup>2</sup>) / 2g) = (1 / 0.7) · [((0.45 m/s)<sup>2</sup> − (0.31 m/s)<sup>2</sup>) / (2 × 9.81 m/s<sup>2</sup>)] = 0.008 m</p>
+<div class="eq">h<sub>L</sub> = 0.0080 m = 8.00 mm <span class="n">Ecuación 1.12</span></div>
+<p>El resumen se presenta en la Tabla 1.4.</p>
+
+<h4>1.2.2. Rejillas para sólidos medios</h4>
+<p>Una rejilla de barras circulares de 2.00 cm de diámetro, instalada con una inclinación de 30º con la horizontal y espaciamiento libre entre barras de 1.80 cm, recibe un caudal máximo de 200 L/s. La limpieza de la rejilla es mecánica, la velocidad de acercamiento es de 0.35 m/s. El canal desarenador tiene un tirante hidráulico (h) de 0.66 m, 1.00 m de ancho (W) y un bordo libre (h<sub>b</sub>) de 0.30 m. Determinar los siguientes conceptos:</p>
+<p><b>Área del canal:</b></p>
+<div class="eq">A = W × h <span class="n">Ecuación 1.13</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A = área de canal (m<sup>2</sup>)</p>
+<p>W = ancho del canal (m)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>A = 1.00 m × 0.66 m = 0.66 m<sup>2</sup></p>
+</div>
+<p><b>Velocidad antes de la rejilla:</b></p>
+<div class="eq">V = Q / A <span class="n">Ecuación 1.14</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V = velocidad antes de la reja (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área de canal (m<sup>2</sup>)</p>
+<p>V = (0.20 m<sup>3</sup>/s) / (0.66 m<sup>2</sup>) = 0.30 m/s</p>
+</div>
+<table>
+<caption>Tabla 1.4 Resumen de los valores del ejemplo</caption>
+<tr><th>Concepto</th><th>Valor</th><th>Unidad</th></tr>
+<tr><td>Ancho del canal (W)</td><td class="num">1</td><td>m</td></tr>
+<tr><td>Tirante hidráulico (h)</td><td class="num">0.67</td><td>m</td></tr>
+<tr><td>Bordo libre (h<sub>b</sub>)</td><td class="num">0.3</td><td>m</td></tr>
+<tr><td>Número de espacios (n)</td><td class="num">18</td><td></td></tr>
+<tr><td>Número de barras (n−1)</td><td class="num">17</td><td></td></tr>
+<tr><td>Espesor de la barra (d<sub>b</sub>)</td><td class="num">0.02</td><td>m</td></tr>
+<tr><td>Claro de barras, apertura (C)</td><td class="num">0.037</td><td>m</td></tr>
+<tr><td>Inclinación de la reja</td><td class="num">45</td><td>º</td></tr>
+<tr><td>Pérdida hidráulica, h<sub>L</sub></td><td class="num">8</td><td>mm</td></tr>
+<tr><td>Velocidad de acercamiento, V<sub>a</sub></td><td class="num">0.31</td><td>m/s</td></tr>
+<tr><td>Velocidad a través de la reja, V<sub>r</sub></td><td class="num">0.45</td><td>m/s</td></tr>
+</table>
+<p class="small">Nota: en el original, la Tabla 1.4 no indica unidad para el número de espacios (n), el número de barras (n−1) ni el espesor de la barra (d<sub>b</sub>); se transcribe tal como está impresa.</p>
+
+<p class="pag">Pág. 9</p>
+<div class="fig"><b>Ilustración 1.4 Arreglo de la reja</b><span class="desc">Esquema tridimensional, solo imagen: vista en perspectiva de las barras verticales de la reja, con un detalle ampliado que rotula el claro entre barras C y el espesor de barra d<sub>b</sub>.</span></div>
+<div class="fig"><b>Ilustración 1.5 Corte de la reja</b><span class="desc">Diagrama de corte longitudinal del canal, solo imagen: se ven el tirante h, el bordo libre h<sub>b</sub>, la pérdida de carga h<sub>L</sub>, las velocidades V<sub>canal</sub>, V<sub>a</sub> y V<sub>r</sub>, y la reja inclinada a 45º sobre el fondo del canal.</span></div>
+<div class="fig"><b>Ilustración 1.6 Planta de la reja</b><span class="desc">Diagrama en planta, solo imagen: vista superior del canal con la rejilla en el centro, acotada con el claro C.</span></div>
+
+<p class="pag">Pág. 10</p>
+<p><b>Longitud de la rejilla:</b></p>
+<div class="eq">L = (h + h<sub>b</sub>) / sen θ <span class="n">Ecuación 1.15</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>L = longitud de la reja (m)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>h<sub>b</sub> = bordo libre (m)</p>
+<p>θ = ángulo de inclinación</p>
+<p>L = (0.66 m + 0.30 m) / sen 45º = 1.92 m</p>
+</div>
+<p class="small">Nota: en el original, el cálculo de la longitud de la rejilla del ejemplo 1.2.2 (rejilla a 30º) se presenta dividido entre sen 45º; se transcribe tal como está impreso.</p>
+<p><b>Número de barras:</b></p>
+<div class="eq">C = (W − n·d<sub>b</sub>) / (n + 1) ; n = (W − C) / (C + d<sub>b</sub>) <span class="n">Ecuación 1.16</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>C = claro de barras (apertura) (m)</p>
+<p>W = ancho del canal (m)</p>
+<p>n = número de espacios</p>
+<p>n − 1 = número de barras</p>
+<p>d<sub>b</sub> = espesor de la barra (m)</p>
+<p>n = (1.00 m − 0.018 m) / (0.018 m + 0.02 m) = 25.8 ≈ 26 espacios</p>
+<p>n − 1 = 25 barras</p>
+</div>
+<p><b>Arreglo de barras:</b></p>
+<ul>
+<li>Ancho del canal = 1.00 m</li>
+<li>25 barras de 0.02 m de espesor = 0.50 m</li>
+<li>26 espacios de 0.018 m = 0.47 m</li>
+<li>∑ = 0.97 m &lt; 1.00 m</li>
+</ul>
+<p><b>Alternativas para el arreglo:</b></p>
+<ul>
+<li>Asignar 1.50 cm a cada lado</li>
+<li>Aumentar el espacio entre barras</li>
+</ul>
+<p>Aumentando el espacio entre barras a 0.019 m, considerando el número de barras (n−1) = 25 y el número de espacios entre barras = 26, tenemos:</p>
+<ul>
+<li>25 barras de 0.02 m de espesor = 0.50 m</li>
+<li>26 espacios de 0.019 m = 0.49 m</li>
+<li>∑ = 0.99 m (se asignan 5 mm de cada lado)</li>
+</ul>
+<p><b>Pérdida hidráulica (Kirschmer):</b></p>
+<div class="eq">h<sub>L</sub> = β · (d<sub>b</sub> / C)<sup>4/3</sup> · h<sub>v</sub> · sen θ <span class="n">Ecuación 1.17</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>h<sub>L</sub> = pérdida hidráulica (m)</p>
+<p>β = 1.79 para barras circulares</p>
+<p>d<sub>b</sub> = espesor de la barra (m)</p>
+<p>C = claro de barras (apertura) (m)</p>
+<p>h<sub>v</sub> = altura o energía de velocidad de flujo de aproximación (m)</p>
+<p>θ = ángulo de la rejilla horizontal</p>
+</div>
+<div class="eq">h<sub>v</sub> = V<sub>a</sub><sup>2</sup> / 2g = ((0.35 m/s)<sup>2</sup>) / (2 × 9.81 m/s<sup>2</sup>) = 6.24 × 10<sup>−3</sup> m <span class="n">Ecuación 1.18</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>h<sub>v</sub> = altura o energía de velocidad de flujo de aproximación (m)</p>
+<p>V<sub>a</sub> = velocidad de acercamiento (0.30 m/s – 0.60 m/s), de 0.35 m/s</p>
+<p>g = gravedad (9.81 m/s<sup>2</sup>)</p>
+<p>h<sub>L</sub> = 1.79 × (0.02 m / 0.019 m)<sup>4/3</sup> × (6.24 × 10<sup>−3</sup> m) × sen 30º = 0.006 m = 6.00 mm</p>
+</div>
+
+<p class="pag">Pág. 11</p>
+<p><b>Velocidad a través de la reja:</b></p>
+<div class="eq">A<sub>r</sub> = n·d<sub>b</sub>·h = 26 × (0.020 m) × (0.66 m) = 0.34 m<sup>2</sup> <span class="n">Ecuación 1.19</span></div>
+<div class="eq">V<sub>r</sub> = Q / (A − A<sub>r</sub>) = (0.20 m<sup>3</sup>/s) / (0.66 m<sup>2</sup> − 0.34 m<sup>2</sup>) = 0.63 m/s <span class="n">Ecuación 1.20</span></div>
+<p>El resumen se presenta en la Tabla 1.5.</p>
+<table>
+<caption>Tabla 1.5 Resumen de los valores del ejemplo 1.2.2</caption>
+<tr><th>Concepto</th><th>Valor</th><th>Unidad</th></tr>
+<tr><td>Ancho del canal (W)</td><td class="num">1</td><td>m</td></tr>
+<tr><td>Tirante hidráulico (h)</td><td class="num">0.66</td><td>m</td></tr>
+<tr><td>Bordo libre (h<sub>b</sub>)</td><td class="num">0.3</td><td>m</td></tr>
+<tr><td>Número de espacios (n)</td><td class="num">26</td><td></td></tr>
+<tr><td>Número de barras (n−1)</td><td class="num">25</td><td></td></tr>
+<tr><td>Diámetro de la barra (d<sub>b</sub>)</td><td class="num">0.02</td><td>m</td></tr>
+<tr><td>Claro de barras, apertura (C)</td><td class="num">0.019</td><td>m</td></tr>
+<tr><td>Inclinación de la reja</td><td class="num">30</td><td>º</td></tr>
+<tr><td>Pérdida hidráulica, h<sub>L</sub></td><td class="num">6</td><td>mm</td></tr>
+<tr><td>Velocidad de acercamiento, V<sub>a</sub></td><td class="num">0.35</td><td>m/s</td></tr>
+<tr><td>Velocidad a través de la reja, V<sub>r</sub></td><td class="num">0.63</td><td>m/s</td></tr>
+</table>
+<p class="small">Nota: en el original, la Tabla 1.5 no indica unidad para el número de espacios (n) ni el número de barras (n−1); se transcribe tal como está impresa.</p>
+
+<h3>1.3. Desarenado</h3>
+<p>El desarenado es una parte importante del tratamiento de aguas residuales, evita la abrasión innecesaria y el desgaste de los equipos mecánicos, la deposición de arena en tuberías y canales, y la acumulación de arena en digestores anaerobios y tanques de aireación. Además, reduce la frecuencia de limpieza del digestor causada por la acumulación excesiva de arena. La experiencia en la operación de plantas ha demostrado que la arena está presente en las aguas residuales, normalmente transmitida por los sistemas de alcantarillado separados o combinados, sobre todo por el segundo. Sin el desarenado, la arena sería eliminada en los clarificadores primarios o, si la planta carece de tratamiento primario, en tanques de aireación y clarificadores secundarios. La instalación de un sistema de desarenado es ahora una práctica común para las plantas de tratamiento con equipos mecánicos y procesos del manejo de lodos, ya que la retención de las arenas evita que los equipos se deterioren.</p>
+<p>Hay tres tipos generales de desarenadores:</p>
+<ul>
+<li>De flujo horizontal, ya sea de configuración rectangular o cuadrada, aireado y de tipo vórtice. En el tipo de flujo horizontal, el flujo pasa a través de la cámara en una dirección horizontal y la velocidad es controlada por las dimensiones de la unidad, una buena distribución del afluente y un vertedor de control en el extremo efluente ayudan mucho al funcionamiento de la unidad.</li>
+<li>El desarenador aireado consiste en un tanque de aireación en espiral donde la velocidad de flujo en espiral es inducida y controlada por las dimensiones del tanque y la cantidad de aire suministrada a la unidad.</li>
+<li>El tipo vórtice consiste en un tanque cilíndrico en el que el flujo entra tangencialmente creando un patrón de flujo en vórtice; fuerzas centrífugas y gravitacionales provocan que la arena se separe.</li>
+</ul>
+<p>El diseño de desarenadores se basa normalmente en la eliminación de partículas de arena que tienen un peso específico de 2.65, una temperatura de aguas residuales de 15.5° C y un tamaño de partícula de 0.21 mm; sin embargo, los datos encontrados para la eliminación de arena en cuanto a gravedad específica están en el rango de 1.3 – 2.7 (WPCF, 1985).</p>
+<p>Dependiendo del tipo de operación que se utilice, el grano eliminado se concentra a menudo en un ciclón, clasificador, y se lava para eliminar el material orgánico más ligero capturado con la arena.</p>
+<p>Los materiales de grano encontrados en las aguas residuales en general se caracterizan como imputrescibles y tienen una velocidad de asentamiento mayor que la de los sólidos orgánicos putrescibles; las partículas de arena son discretas y no floculantes. Los materiales de grano incluyen partículas de arena, grava, materiales minerales y orgánicos mínimamente putrescibles, como granos de café, cáscaras de huevo, cáscaras de frutas y semillas.</p>
+<p>El primer uso de sistemas de eliminación de arenas fue de afluentes de plantas de alcantarillados combinados. El uso de estos sistemas ha demostrado que si un sistema de alcantarillado está separado, combinado, grande o pequeño, la operación de la planta de tratamiento se beneficia con la eliminación de arenilla del flujo entrante. El desarenado es fundamental para la protección de bombas centrífugas de deshidratación de lodos y de alta presión, bombas de cavidad progresiva y de diafragma; todo se daña fácilmente con la arena.</p>
+<p>Los desarenadores de flujo horizontal rectangulares y cuadrados se han utilizado durante muchos años. Sin embargo, su uso en las nuevas instalaciones se ha limitado a favor de las cámaras de tipo aireado y vórtice, principalmente en plantas medianas y grandes.</p>
+<p><b>Desarenadores de flujo horizontal rectangulares.</b> El tipo más antiguo de desarenador utilizado es el de flujo horizontal de velocidad controlada. Estas unidades se han diseñado para mantener una velocidad del orden de 0.3 m/s que proporciona tiempo suficiente para que las partículas de arena puedan asentarse en el fondo del canal. La velocidad de diseño llevará la mayoría de las partículas orgánicas a través de la cámara y tenderá a volver a suspender las partículas orgánicas que se depositen, pero permitiendo que la arena más pesada se estabilice.</p>
+<p>El diseño básico de los desarenadores de flujo horizontal rectangulares es que, en las condiciones más adversas, la partícula más ligera del grano llegará a la cama del canal antes del extremo de salida. Normalmente, los desarenadores están diseñados para eliminar todas las partículas de arena que se retienen en una malla de 0.21 mm de diámetro, aunque muchas cámaras se diseñan para eliminar las partículas de arena que se retienen en una malla de 0.15 mm de diámetro. La longitud del canal se regirá por la profundidad requerida por la velocidad de sedimentación y la sección de control y el área de la sección transversal se regirá por la tasa de flujo y por el número de canales. Además se debe tomar en cuenta una longitud adicional por turbulencia en la entrada y salida de la unidad.</p>
+
+<p class="pag">Pág. 13</p>
+<p>El retiro de la arena en desarenadores de flujo horizontal se realiza generalmente por un sistema de rastras. Las cadenas y cangilones se utilizan para elevar la arena removida y para la eliminación o lavado. En plantas pequeñas, los desarenadores se limpian manualmente.</p>
+<p><b>Desarenadores de flujo horizontal cuadrados.</b> Los desarenadores de flujo horizontal cuadrados han estado en uso durante más de 60 años. El afluente a las unidades se distribuye sobre la sección transversal del tanque por una serie de álabes fijos. El agua residual fluye distribuida en líneas rectas a través del tanque y rebosa con descarga libre. Cuando se utilizan desarenadores cuadrados, generalmente es aconsejable utilizar al menos dos unidades. Estos tipos de desarenadores están diseñados sobre la base de las tasas de desbordamiento que dependen del tamaño de las partículas y la temperatura de las aguas residuales. Están diseñados para eliminar nominalmente 95 por ciento de las partículas de 0.15 mm de diámetro (malla 100) con el flujo máximo.</p>
+<p>En desarenadores cuadrados, los sólidos se separan por un mecanismo giratorio de rastras con brazo colector de grasas en un lado del tanque. La arena puede ser arrastrada con una pendiente por un mecanismo de rastras de vaivén, las arenas pueden ser bombeadas desde el tanque a través de un desarenador ciclónico para separar el material orgánico y concentrarse. El concentrado de la arena se puede lavar de nuevo en un clasificador utilizando un rastrillo de vaivén sumergible o un transportador de tornillo inclinado. Por cualquiera de los métodos, los sólidos orgánicos se separan de la arena.</p>
+
+<h4>1.3.1. Tipos de desarenadores y sus parámetros de diseño</h4>
+<p>La cantidad y la composición de la arena y su efecto en las unidades del tratamiento son las principales consideraciones en la selección de los métodos y equipo de remoción. Los métodos se eligen con base en la pérdida de carga, requerimientos de espacio, topografía, tipo de equipo utilizado en la planta y consideraciones económicas.</p>
+<p>Algunos desarenadores se emplean para controlar la velocidad del agua residual que entra en la planta. Estos se pueden dividir básicamente en tres tipos: de velocidad controlada, aireados y de nivel constante.</p>
+
+<h4>1.3.1.1. Desarenadores horizontales con control de velocidad</h4>
+<p>La arena en el agua residual tiene una gravedad específica entre 1.5 y 2.7, mientras que la correspondiente a la materia orgánica es de 1.02. Por ello, la sedimentación diferencial es un mecanismo seguro para la separación de la materia orgánica.</p>
+<p>Los desarenadores con control de velocidad son canales de sedimentación largos y estrechos, generalmente se cuenta con un mínimo de dos canales para fines de limpieza. En ocasiones, se emplean varios canales para el control de la velocidad, pero se puede lograr un arreglo más económico y eficiente usando un panel de control a la entrada y salida del mismo. Las secciones de control incluyen vertedores proporcionales tipo Sutro, canales Parshall, canal parabólico. Estas secciones mantienen la velocidad constante del canal a grandes intervalos de flujo.</p>
+
+<p class="pag">Pág. 14</p>
+<p>Los vertedores proporcionales tipo Sutro, mantienen una velocidad constante al variar la profundidad, pero como requieren una descarga libre, están sujetos a grandes pérdidas de carga. No cuentan con cámara para el depósito de arena o espacio para equipo colector de ésta. Se localizan a 150 o 300 mm al final del desarenador. Sus principales ventajas son: mantener una velocidad promedio y la posibilidad de utilizar desarenadores sencillos.</p>
+<p>Si el desarenador se localiza antes de un canal Parshall, este deberá instalarse a 150 o 300 mm al final del desarenador, previendo el depósito, arrastre y suspensión de las partículas de arena. Un canal Parshall ofrece una velocidad transversal uniforme, medición de flujo y fácil instalación al usar equipo prefabricado. Sus desventajas consisten en pérdidas de carga alta con descarga libre. Normalmente, los desarenadores con control de velocidad son de limpieza manual, pero se recomienda la limpieza mecánica para flujos mayores de 3 800 m<sup>3</sup>/d (50 L/s).</p>
+<div class="fig"><b>Ilustración 1.7 Desarenadores horizontales</b><span class="desc">Dos fotografías en color, solo imagen: a) canal desarenador rectangular de muros de piedra, con compuertas y agua en el fondo; b) vista de canales desarenadores exteriores rodeados de vegetación y pasto.</span></div>
+<table>
+<caption>Tabla 1.6 Criterios de diseño para desarenadores horizontales</caption>
+<tr><th>Componente</th><th>Rango</th><th>Comentario</th></tr>
+<tr><td colspan="3"><b>Dimensiones</b></td></tr>
+<tr><td>Profundidad del agua (m)</td><td>0.6 – 1.5</td><td>Depende del área del canal y del gasto</td></tr>
+<tr><td>Longitud (m)</td><td>3 – 25</td><td>En función de la profundidad del canal y de la velocidad de sedimentación de la arena</td></tr>
+<tr><td>% adicional por entrada y turbulencia</td><td>25 – 50</td><td>Basado en la longitud teórica</td></tr>
+<tr><td>Tiempo de retención a gasto pico (s)</td><td>15 – 90</td><td>En función de la velocidad y la longitud del canal</td></tr>
+<tr><td>Velocidad horizontal (m/s)</td><td>0.15 – 0.4</td><td>Velocidad óptima, 0.3 m/s</td></tr>
+</table>
+<p class="small">Fuente: Design of Municipal Wastewater Treatment Plants, Volume I (1992)</p>
+
+<p class="pag">Pág. 15</p>
+<p>Los equipos mecánicos para la extracción de la arena sedimentada son:</p>
+<ul>
+<li>Transportador de cangilones o rascadores (plantas pequeñas)</li>
+<li>Elevadores de cadena continua con cangilones o transportador de tornillo helicoidal (plantas grandes)</li>
+</ul>
+
+<h4>1.3.1.2. Desarenadores aireados</h4>
+<p>Desarenadores de este tipo (Ilustración 1.8) se emplean para la remoción selectiva de arena. Son similares a los tanques de aeración con flujo en espiral. La corriente en espiral se genera por la acción de difusores de aire instalados en uno de los lados del tanque, a una altura de 0.6 a 0.9 m a partir del fondo.</p>
+<p>Las partículas de arena presentes en el agua residual al entrar al desarenador sedimentan con diferente velocidad ya que esta depende del tamaño, gravedad específica y la velocidad de rotación o agitación en el tanque. La rapidez de difusión del aire y la forma del tanque son parámetros importantes que deben ser considerados ya que gobiernan la agitación y la sedimentación de las partículas. La rapidez del aire se ajusta para crear una velocidad cercana al fondo lo suficientemente baja para que sedimente la arena, mientras tanto, las partículas orgánicas, que son menos pesadas, son arrastradas fuera del tanque.</p>
+<p>Generalmente, los desarenadores aireados se diseñan para eliminar partículas de arena con gravedad específica de 2.5, retenidas en un tamiz de malla 65 (diámetro de 0.21 mm). Asimismo pueden eliminar eficientemente partículas más pequeñas al reducir la velocidad del aire.</p>
+<p>El sistema debe estar controlado hidráulicamente ya que de no estarlo, la operación será deficiente. Este problema se soluciona colocando una mampara longitudinal cerca de la cámara de colección de arena.</p>
+<div class="fig"><b>Ilustración 1.8 Desarenador aireado</b><span class="desc">Fotografía en color, solo imagen: tanque rectangular alargado de desarenación aireada con agua oscura, tuberías blancas de aire y una pasarela metálica con barandales a lo largo del tanque.</span></div>
+
+<p class="pag">Pág. 16</p>
+<p>En los sistemas de desarenación aireados, el aire introducido a lo largo del tanque con un sistema de aireación colocado en la parte inferior, provoca una espiral patrón de velocidad, perpendicular al flujo, a lo largo del tanque. Las partículas más pesadas, con velocidades de sedimentación mayores, caen al fondo, mientras que el aire suspende las partículas orgánicas más ligeras, que más tarde serán llevadas fuera del tanque. La acción de balanceo inducido por los difusores de aire es independiente del flujo a través del tanque. Las partículas más pesadas que se depositan en el fondo del tanque se mueven por el flujo en espiral del agua en la parte inferior del tanque y luego en una tolva para depositar la arena. La cadena y cangilones, colectoras, tornillos sinfines, cucharones de almeja, bombas de impulsor o bombas de aire empotradas conducen la arena recogida de la tolva del tanque.</p>
+<p>Criterios de diseño típicos para desarenadores aireados que evitan problemas de operación:</p>
+<ul>
+<li>Las tasas de aire suelen oscilar desde 4.6 hasta 12.4 L/(s m) de longitud del tanque. Las tasas tan bajas como 1.5 L/(s m) se han utilizado en tanques poco profundos y estrechos. Tasas mayores de 7.7 L/(s m) se utilizan a menudo para tanques profundos y anchos, colocando válvulas y medidores de flujo para el monitoreo y el control de la velocidad del flujo de aire en cada banco de difusores. La aireación es preferible con la burbuja de difusores de banda ancha, la cual es cónica y permite incluso la eliminación de la arena a lo largo de la longitud de la cámara y puede tomarse el suministro de aire del proceso de la planta para la cámara de arena, pero se prefiere utilizar sopladores exclusivos para el desarenador.</li>
+<li>Como buena práctica, un tiempo mínimo de retención hidráulica es de 3 minutos, a caudales máximos instantáneos; así se capturará de forma confiable 95 por ciento de la arena de 0.21 mm de diámetro. Los tiempos de retención más largos mejoran la remoción de arena y puede ser necesario preaerear para capturar partículas de arena más pequeñas. El tiempo de retención, sin embargo, es un criterio menos importante que el deflector y la ubicación del difusor.</li>
+<li>La relación apropiada longitud-ancho de la cámara oscila entre 2.5:1 y 5:1. Sin embargo, se han utilizado con éxito los tanques cuadrados cuando la ubicación del difusor de aire es adecuada (perpendicular al flujo a través del tanque) y cuando se colocan deflectores para evitar los cortocircuitos.</li>
+<li>En la entrada y la salida del tanque se colocan deflectores de manera que el flujo a través del tanque sea perpendicular al patrón de la espiral. Los deflectores de entrada y de salida servirán para disipar la energía y reducir al mínimo los cortocircuitos. Un buen diseño debe incluir deflectores intermedios a través del ancho del tanque para evitar cortocircuitos a través del centro del movimiento del agua.</li>
+<li>Se recomienda colocar un deflector longitudinal aproximadamente a 1 m de la pared a lo largo de los difusores de aire para ayudar a controlar el patrón de movimiento.</li>
+</ul>
+<p>La Ilustración 1.9 muestra la sección transversal de un desarenador aireado.</p>
+
+<p class="pag">Pág. 17</p>
+<p>Con un ajuste apropiado de la cámara aireada de arena, a un nivel de 150 mm por debajo de la parte superior del agua, se debe producir una velocidad de giro de 0.6 m/s cerca de la entrada del tanque y 0.4 m/s en la salida del tanque.</p>
+<p>Debido a las altas fuerzas centrífugas cerca de la apertura de descarga, algunas de las partículas, dependiendo de su tamaño, la densidad y la resistencia, son retenidas dentro del cuerpo del vórtice libre, mientras que otras partículas son barridas fuera de la unidad. Las partículas de arena y la arena se mantendrán, mientras que las partículas orgánicas son retiradas de la unidad. Las partículas orgánicas que tienen la misma velocidad de sedimentación que la arena serán típicamente de cuatro a ocho veces más grandes. Las correspondientes fuerzas de arrastre de estas partículas orgánicas serán 16 a 64 veces mayores. Como resultado, las partículas orgánicas tienden a moverse con el fluido y se transportan fuera de la unidad. Las partículas retenidas en el vórtice libre se asientan en última instancia en la parte inferior de la unidad, por gravedad. Las partículas orgánicas que a veces se retienen consisten, en general, en aceite y grasa adheridos a partículas de arenilla o arena.</p>
+<p>Este tipo de desarenadores se emplean para una remoción selectiva de arena. Son similares a los tanques de aeración con flujo en espiral. La corriente en espiral se genera por la acción de difusores de aire instalados en uno de los lados del tanque, a una altura de 0.6 a 0.9 m a partir del fondo.</p>
+<p>Las partículas de arena presentes en el agua residual, al entrar al desarenador sedimentan con diferente velocidad ya que esta depende del tamaño, gravedad específica y la velocidad de rotación o agitación en el tanque. La rapidez de difusión en el aire y la forma del tanque son parámetros importantes que deben ser considerados ya que gobiernan la agitación y la sedimentación de partículas. La rapidez del aire se ajusta para crear una velocidad, cercana al fondo, lo suficientemente baja para que sedimente la arena: mientras tanto, las partículas orgánicas, que son menos pesadas, son arrastradas fuera del tanque.</p>
+<p>Generalmente, los desarenadores aireados se diseñan para eliminar partículas de arena con gravedad específica de 2.5, retenidas en un tamiz de malla 0.65 (diámetro de 0.21 mm). Asimismo pueden eliminar, eficientemente, partículas más pequeñas al reducir la velocidad del aire. El sistema debe estar controlado hidráulicamente ya que de no hacerlo la operación será deficiente. Este problema se soluciona colocando una mampara longitudinal cerca de la cámara de colección de arena. La Tabla 1.7 presenta las características comunes para desarenadores aireados.</p>
+<div class="fig"><b>Ilustración 1.9 Sección transversal de un desarenador aireado</b><span class="desc">Diagrama de sección transversal, solo imagen: corte de un tanque con agua (en azul) que muestra los barandales de aluminio para tuberías, el tubo principal de aire, el tubo difusor, el ensamble de conjunto del difusor, el tubo superior, el cople de conexión, el tubo inferior, el cabezal, el nivel máximo del agua, el soporte del monorriel y la base de concreto bajo los equipos.</span></div>
+
+<p class="pag">Pág. 18</p>
+<p>La velocidad de la rotación transversal o la agitación determinan el tamaño de las partículas de un peso específico dado que serán eliminadas. Si la velocidad es excesivamente elevada, se arrastrará arena fuera del tanque, mientras que si la velocidad es demasiado pequeña se producirá la sedimentación de una parte de la materia orgánica junto con la arena. Con un ajuste adecuado, se puede alcanzar un porcentaje de eliminación cercano a 100 por ciento y la arena estará bien limpia (las arenas que no están bien limpias y contienen una fracción de materia orgánica provocan problemas de olores y atraen insectos). El agua residual circula por el tanque siguiendo una trayectoria helicoidal (Ilustración 1.10) y pasará dos o tres veces por el fondo del tanque en condiciones de caudal punta, incrementándose el número de pasadas por la parte inferior del tanque cuanto menor sea el caudal.</p>
+<div class="fig"><b>Ilustración 1.10 Modelo de flujo en un desarenador aireado</b><span class="desc">Diagrama esquemático, solo imagen: vista en planta del tanque que muestra el flujo helicoidal del líquido, la entrada, el rebosadero y la trayectoria de las partículas de arena.</span></div>
+
+<h4>1.3.1.3. Desarenadores de vórtice</h4>
+<p>Este tipo de desarenadores trabaja con un flujo tipo vórtice y aprovecha las fuerzas centrífuga y gravitacional. La Ilustración 1.11 muestra un desarenador de estas características. El agua a tratar se introduce de forma tangencial cerca del fondo y sale de forma tangencial a través de la apertura en la parte superior del tanque. Dentro de la unidad se crea un vórtice libre en el cual el producto de la velocidad tangencial por el radio es constante. La fuerza centrífuga a la que es sometida una partícula en este campo de flujo es igual al cuadrado de la velocidad dividida entre el radio; cuando la fuerza centrífuga es inversamente proporcional al radio, se traduce en un incremento de 125 veces la fuerza centrífuga. La Ilustración 1.12 presenta de forma esquemática el funcionamiento de un desarenador de vórtice.</p>
+<p>Dada la magnitud de la fuerza centrífuga cerca del punto de descarga, algunas de las partículas, de acuerdo con su tamaño, densidad y fuerza de arrastre, son retenidas dentro del vórtice, mientras que otras son arrastradas fuera de la unidad. En resumen, la arena se queda en la unidad y las partículas orgánicas salen con el efluente. La arena se extrae por la apertura del fondo de las unidades o bien, se succiona mediante una bomba de aire. La Tabla 1.8 presenta las características comunes para desarenadores de vórtice.</p>
+
+<p class="pag">Pág. 19</p>
+<table>
+<caption>Tabla 1.7 Información típica para desarenadores aireados</caption>
+<tr><th>Elemento</th><th>Intervalo</th><th>Típico</th></tr>
+<tr><td>Tiempo de detención a caudal punta, (min)</td><td>2 – 5</td><td>3</td></tr>
+<tr><td colspan="3"><b>Dimensiones</b></td></tr>
+<tr><td>Profundidad (m)</td><td>2.0 – 5.0</td><td></td></tr>
+<tr><td>Longitud (m)</td><td>7.5 – 20.0</td><td></td></tr>
+<tr><td>Anchura (m)</td><td>2.5 – 7.0</td><td></td></tr>
+<tr><td>Relación anchura-profundidad</td><td>1:1 a 5:1</td><td>1.5:1</td></tr>
+<tr><td>Relación longitud-anchura</td><td>3:1 a 5:1</td><td>4:1</td></tr>
+<tr><td>Suministro de aire (m<sup>3</sup>/min·m de longitud)</td><td>0.18 – 0.45</td><td>0.3</td></tr>
+<tr><td>Cantidad de arena (m<sup>3</sup>/10<sup>6</sup> m<sup>3</sup>)</td><td>4.0 – 195</td><td>15.0</td></tr>
+</table>
+<p class="small">FUENTE: Metcalf &amp; Eddy, Inc., Ingeniería de aguas residuales, Tratamiento, vertido y reutilización, 2003</p>
+<table>
+<caption>Tabla 1.8 Información típica para el diseño de desarenadores de vórtice</caption>
+<tr><th>Elemento</th><th>Intervalo</th><th>Típico</th></tr>
+<tr><td>Tiempo de detención a caudal medio (s)</td><td></td><td>30</td></tr>
+<tr><td colspan="3"><b>Dimensiones</b></td></tr>
+<tr><td>Diámetro (m)</td><td></td><td></td></tr>
+<tr><td>Cámara superior (m)</td><td>1.25 – 7.0</td><td></td></tr>
+<tr><td>Cámara inferior (m)</td><td>0.90 – 1.80</td><td></td></tr>
+<tr><td>Altura (m)</td><td>2.70 – 5.0</td><td></td></tr>
+<tr><td colspan="3"><b>Rendimientos de eliminación (%)</b></td></tr>
+<tr><td>Malla 50 (0.30 mm)</td><td></td><td>95+</td></tr>
+<tr><td>Malla 70 (0.24 mm)</td><td></td><td>85+</td></tr>
+<tr><td>Malla 100 (0.15 mm)</td><td></td><td>65+</td></tr>
+</table>
+<p class="small">Fuente: Metcalf &amp; Eddy, Inc. (2003). Ingeniería de aguas residuales, tratamiento, vertido y reutilización.</p>
+
+<p class="pag">Pág. 20</p>
+<div class="fig"><b>Ilustración 1.11 Desarenador de vórtice</b><span class="desc">Fotografía en color, solo imagen: vista superior de un tanque circular de desarenación de vórtice en operación, con agua en movimiento, barandales metálicos y personal de la planta al fondo.</span></div>
+<div class="fig"><b>Ilustración 1.12 Desarenadores de vórtice a) Sistema PISTA b) Sistema Teacup</b><span class="desc">Dos esquemas, solo imagen: a) corte del sistema PISTA con la unidad de accionamiento, la entrada, el cabezal de aire y flechas que indican el movimiento de la arena dentro de la unidad; b) vista tridimensional del sistema Teacup con la entrada de flujo, el orificio de descarga, la salida de flujo, la pared de flujo vórtice y el movimiento de la arena.</span></div>
+
+<h4>1.3.1.4. Desarenadores rectangulares de nivel constante</h4>
+<p>Estos desarenadores son propiamente tanques de sedimentación, donde la arena y la materia orgánica sedimentan conjuntamente. Este tipo de sedimentadores se controla mediante deflectores ajustables que aseguran una velocidad uniforme transversal al tanque. La pérdida de carga es menor que la correspondiente a los desarenadores aireados.</p>
+<p>La materia orgánica ligera puede eliminarse antes, durante o después de la remoción de la materia sedimentable.</p>
+<p>Las ventajas de los desarenadores de nivel constante son:</p>
+<ul>
+<li>Debido a la formación del tanque se puede eliminar 95 por ciento de la arena siempre que se maneje la concentración y el flujo de diseño</li>
+<li>La arena eliminada del tanque puede ser lavada y drenada con no más de 3 por ciento del peso de la materia putrescible</li>
+<li>No es necesaria una velocidad uniforme del flujo que ingresa</li>
+<li>El equipo no sufre deterioro por abrasión ya que las partes mecánicas se encuentran por arriba del nivel del agua</li>
+</ul>
+<p>La principal desventaja radica en la dificultad para obtener una distribución uniforme del flujo cuando se usan deflectores de paleta.</p>
+<p>La Tabla 1.9, presenta la velocidad teórica máxima de derrame para tanques desarenadores en función del tamaño de partícula.</p>
+
+<p class="pag">Pág. 21</p>
+<table>
+<caption>Tabla 1.9 Velocidad teórica máxima de derrame para tanques desarenadores</caption>
+<tr><th>Tamaño de la partícula<br>Diámetro (mm)</th><th>Malla núm.</th><th>V<sub>s</sub> cm/min (ft/s)</th><th colspan="2">Velocidad teórica de derrame requerida</th></tr>
+<tr><th></th><th></th><th></th><th>m<sup>2</sup>/1 000 m<sup>3</sup>/d</th><th>gpd/sq ft</th></tr>
+<tr><td>0.83</td><td>20</td><td>494 (0.27)</td><td>7 120</td><td>174 500</td></tr>
+<tr><td>0.59</td><td>28</td><td>363 (0.20)</td><td>5 200</td><td>128 000</td></tr>
+<tr><td>0.46</td><td>35</td><td>247 (0.14)</td><td>3 550</td><td>87 000</td></tr>
+<tr><td>0.33</td><td>48</td><td>186 (0.10)</td><td>2 670</td><td>65 500</td></tr>
+<tr><td>0.25</td><td>60</td><td>165 (0.09)</td><td>2 370</td><td>58 000</td></tr>
+<tr><td>0.21</td><td>65</td><td>131 (0.072)</td><td>1 890</td><td>46 300</td></tr>
+<tr><td>0.18</td><td>80</td><td>116 (0.063)</td><td>1 670</td><td>40 900</td></tr>
+<tr><td>0.15</td><td>100</td><td>91 (0.050)</td><td>1 320</td><td>32 300</td></tr>
+</table>
+<p class="small">a Basada en temperatura líquida de 15.5°C (60°F) y gravedad específica de 2.65<br>b Factor de seguridad de 2 para velocidades derrame contadas para entrada y salida de turbulencia e ineficiencia hidráulica<br>Fuente: Design of Municipal Wastewater Treatment Plants, MOP No.8 volume 1 (1992)</p>
+
+<h4>1.3.2. El canal Parshall como controlador de velocidad en desarenadores horizontales</h4>
+<p>Cuando las plantas de tratamiento de aguas residuales tienen desarenadores horizontales tipo gravedad, consistentes en al menos dos canales desarenadores, se requiere controlar la velocidad del flujo que pasa a través de ellos.</p>
+<p>Normalmente, los flujos de entrada a las plantas de tratamiento de aguas son muy variables. A pesar de estas variaciones en gasto, la velocidad del flujo debe permanecer constante o casi constante en el desarenador, con un valor recomendado (generalmente 0.3 m/s); para lograr mantener esta velocidad constante, a flujos variables, se debe colocar un dispositivo de control hidráulico en cada canal, que puede ser un vertedor proporcional (que se estudiará posteriormente) o por medio de canales Parshall colocados al final de cada canal desarenador.</p>
+<p>El canal Parshall se selecciona con el criterio ya mencionado, para manejar los gastos mínimo, medio y máximo. El procedimiento que se da a continuación sirve para dimensionar el ancho de los canales desarenadores y calcular los tirantes que manejará el canal Parshall, según sea el gasto que pase por él.</p>
+<p>Una ventaja del uso de canales Parshall como dispositivo de control de velocidad, es que la pérdida de carga, suponiendo que trabaja con la sumergencia recomendada, es mucho menor que la pérdida de carga con vertedores proporcionales (Ilustración 1.13), ya que estos vertedores requieren caída libre y un espacio mínimo por debajo de la cresta para que funcionen adecuadamente.</p>
+<p><b>Ejemplo</b></p>
+<p>Diseñar dos cámaras desarenadoras de flujo horizontal, con sección de control constituida por cuatro canaletas Parshall colocadas en el extremo efluente de la cámara, para un caudal promedio de 150 L/s y un caudal pico de 340 L/s. En la Ilustración 1.14 se muestra la cámara.</p>
+<p>Generalmente, la sección rectangular tiene una profundidad de 1.0 a 1.5 veces el ancho, y la profundidad de la cámara de almacenamiento de arena es de 15 a 30 cm. Las dimensiones y las fórmulas para el cálculo de la canaleta Parshall se incluyen en las Tabla 1.10, Tabla 1.11, y en la Ilustración 1.13.</p>
+<p>Se supone una canaleta con garganta (W) de 30.5 cm, velocidad horizontal de flujo de 0.30 m/s, velocidad de asentamiento del material que se va a remover de 25 mm/s y pérdidas de energía iguales a 10 por ciento de la diferencia en alturas de velocidad. Se debe determinar la altura del agua sobre la canaleta, la sección de cálculo y de diseño, el tiempo de sedimentación y la longitud de la cámara.</p>
+<p><b>Ecuación de descarga</b></p>
+<p>Para una canaleta Parshall de 30.5 cm según la Tabla 1.10 es:</p>
+<div class="eq">Q = 0.690 · H<sub>a</sub><sup>1.522</sup> <span class="n">Ecuación 1.21</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>H<sub>a</sub> = tirante en 2/3 de A (m)</p>
+</div>
+<p>Para el caudal pico y una sola cámara en funcionamiento se tiene:</p>
+<p>Q = 0.34 m<sup>3</sup>/s</p>
+<p>H<sub>a</sub> = (0.34 m<sup>3</sup>/s / 0.690)<sup>1/1.522</sup> = 0.628 m</p>
+<p>De acuerdo con las dimensiones de la Tabla 1.11, el ancho del canal en el sitio de localización de la cámara del flotador, se determina por el ancho (W) de 30.5 cm y el ancho (D) al inicio del Parshall de 84.5 cm, el valor en 2/3 A resulta de 66.5 centímetros.</p>
+<p>La velocidad en el punto de medida de H<sub>a</sub> es:</p>
+<div class="eq">V<sub>2</sub> = Q / A = Q / (W<sub>a</sub> · H<sub>a</sub>) <span class="n">Ecuación 1.22</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>2</sub> = velocidad en el punto de medida de H<sub>a</sub> (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>W<sub>a</sub> = ancho de la canaleta en 2/3 de A (m)</p>
+<p>H<sub>a</sub> = tirante en 2/3 de A (m)</p>
+<p>V<sub>2</sub> = (0.34 m<sup>3</sup>/s) / [(0.665 m) × (0.628 m)] = 0.8141 m/s</p>
+</div>
+<p>Escribiendo la ecuación de Bernoulli entre el nivel del agua en el extremo aguas abajo del desarenador y el punto de medida de H<sub>a</sub> se tiene:</p>
+<div class="eq">V<sub>1</sub><sup>2</sup> / 2g + h = V<sub>2</sub><sup>2</sup> / 2g + H<sub>a</sub> + h<sub>L</sub> <span class="n">Ecuación 1.23</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>1</sub> = velocidad horizontal de flujo (m/s)</p>
+<p>V<sub>2</sub> = velocidad en el punto de medida de H<sub>a</sub> (m/s)</p>
+<p>g = gravedad (9.81 m/s<sup>2</sup>)</p>
+<p>h = tirante hidráulico en el canal desarenador (m)</p>
+<p>h<sub>L</sub> = altura del agua sobre la canaleta (m)</p>
+<p>H<sub>a</sub> = tirante en 2/3 A (m)</p>
+</div>
+
+<p class="pag">Pág. 23</p>
+<table>
+<caption>Tabla 1.10 Fórmulas para canales Parshall</caption>
+<tr><th>Ancho de la garganta (W) (cm)</th><th></th><th>Ecuación*</th><th>Capacidad (L/s)</th></tr>
+<tr><td>2.5</td><td>(1”)</td><td>Q = 0.055 H<sub>a</sub><sup>1.5</sup></td><td>0.3 – 5</td></tr>
+<tr><td>5</td><td>(2”)</td><td>Q = 0.110 H<sub>a</sub><sup>1.5</sup></td><td>0.6 – 13</td></tr>
+<tr><td>7.6</td><td>(3”)</td><td>Q = 0.176 H<sub>a</sub><sup>1.547</sup></td><td>0.8 – 55</td></tr>
+<tr><td>15.2</td><td>(6”)</td><td>Q = 0.381 H<sub>a</sub><sup>1.58</sup></td><td>1.5 – 110</td></tr>
+<tr><td>22.9</td><td>(9”)</td><td>Q = 0.535 H<sub>a</sub><sup>1.53</sup></td><td>2.5 – 250</td></tr>
+<tr><td>30.5</td><td>(12”)</td><td>Q = 0.690 H<sub>a</sub><sup>1.522</sup></td><td>3.1 – 455</td></tr>
+<tr><td>45.7</td><td>(18”)</td><td>Q = 1.054 H<sub>a</sub><sup>1.538</sup></td><td>4.3 – 700</td></tr>
+<tr><td>61.0</td><td>(24”)</td><td>Q = 1.426 H<sub>a</sub><sup>1.55</sup></td><td>12 – 950</td></tr>
+<tr><td>91.4</td><td>(36”)</td><td>Q = 2.182 H<sub>a</sub><sup>1.566</sup></td><td>17 – 1 400</td></tr>
+<tr><td>121.9</td><td>(48”)</td><td>Q = 2.935 H<sub>a</sub><sup>1.578</sup></td><td>37 – 1 900</td></tr>
+<tr><td>152.4</td><td>(60”)</td><td>Q = 3.728 H<sub>a</sub><sup>1.587</sup></td><td>60 – 2 400</td></tr>
+<tr><td>182.8</td><td>(72”)</td><td>Q = 4.515 H<sub>a</sub><sup>1.595</sup></td><td>70 – 2 900</td></tr>
+<tr><td>213.4</td><td>(84”)</td><td>Q = 5.306 H<sub>a</sub><sup>1.601</sup></td><td>115 – 3 450</td></tr>
+<tr><td>243.8</td><td>(96”)</td><td>Q = 6.101 H<sub>a</sub><sup>1.606</sup></td><td>130 – 3 950</td></tr>
+<tr><td>305.0</td><td>(120”)</td><td>Q = 7.463 H<sub>a</sub><sup>1.6</sup></td><td>250 – 5 660</td></tr>
+</table>
+<p class="small">*Q en m<sup>3</sup>/s; H<sub>a</sub> en m</p>
+<table>
+<caption>Tabla 1.11 Dimensiones de la canaleta Parshall, de acuerdo con la configuración de la Ilustración 1.13</caption>
+<tr><th>W (cm)</th><th>A (cm)</th><th>B (cm)</th><th>C (cm)</th><th>D (cm)</th><th>E (cm)</th><th>F (cm)</th><th>G (cm)</th><th>K (cm)</th><th>N (cm)</th><th>R (cm)</th><th>M (cm)</th><th>P (cm)</th><th>X (cm)</th><th>Y (cm)</th></tr>
+<tr><td>2.5</td><td>36.3</td><td>35.6</td><td>9.3</td><td>16.8</td><td>22.9</td><td>7.6</td><td>20.3</td><td>1.9</td><td>2.9</td><td>–</td><td>–</td><td>50.0</td><td>0.8</td><td>1.3</td></tr>
+<tr><td>5.1</td><td>41.4</td><td>40.6</td><td>13.5</td><td>21.4</td><td>35.6</td><td>11.4</td><td>25.4</td><td>2.2</td><td>4.3</td><td>–</td><td>–</td><td>70.0</td><td>1.6</td><td>2.5</td></tr>
+<tr><td>7.6</td><td>46.6</td><td>45.7</td><td>17.8</td><td>25.9</td><td>38.1</td><td>15.2</td><td>30.5</td><td>2.5</td><td>5.7</td><td>40.6</td><td>30.5</td><td>76.8</td><td>2.5</td><td>3.8</td></tr>
+<tr><td>15.2</td><td>62.1</td><td>61.0</td><td>39.4</td><td>40.3</td><td>45.7</td><td>30.5</td><td>61.0</td><td>7.6</td><td>11.4</td><td>40.6</td><td>30.5</td><td>90.2</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>22.9</td><td>88.0</td><td>86.4</td><td>38.0</td><td>57.5</td><td>61.0</td><td>30.5</td><td>45.7</td><td>7.6</td><td>11.4</td><td>40.6</td><td>30.5</td><td>108.0</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>30.5</td><td>137.2</td><td>134.4</td><td>61.0</td><td>84.5</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>50.8</td><td>38.1</td><td>149.2</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>45.7</td><td>144.9</td><td>142.0</td><td>76.2</td><td>102.6</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>50.8</td><td>38.1</td><td>167.6</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>61.0</td><td>152.5</td><td>149.6</td><td>91.5</td><td>120.7</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>50.8</td><td>38.1</td><td>185.4</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>91.5</td><td>167.7</td><td>164.5</td><td>122.0</td><td>157.2</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>61.0</td><td>38.1</td><td>222.3</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>122.0</td><td>183.0</td><td>179.5</td><td>152.5</td><td>193.8</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>61.0</td><td>45.7</td><td>271.1</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>152.5</td><td>198.3</td><td>194.1</td><td>183.0</td><td>230.3</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>61.0</td><td>45.7</td><td>308.0</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>182.8</td><td>213.5</td><td>209.0</td><td>213.5</td><td>266.7</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>61.0</td><td>45.7</td><td>344.2</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>213.5</td><td>228.8</td><td>224.0</td><td>244.0</td><td>303.0</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>61.0</td><td>45.7</td><td>381.0</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>244.0</td><td>244.0</td><td>239.2</td><td>274.5</td><td>340.0</td><td>91.5</td><td>61.0</td><td>91.5</td><td>7.6</td><td>22.9</td><td>61.0</td><td>45.7</td><td>417.2</td><td>5.1</td><td>7.6</td></tr>
+<tr><td>305.0</td><td>274.5</td><td>427.0</td><td>366.0</td><td>475.9</td><td>122.0</td><td>91.5</td><td>183.0</td><td>15.3</td><td>34.3</td><td>–</td><td>–</td><td>–</td><td>30.5</td><td>22.9</td></tr>
+</table>
+<p class="small">Nota: en el original, la fila W = 305.0 cm imprime B = 427.0 cm, valor que rompe la secuencia de la columna; se transcribe tal como está impreso.</p>
+
+<p class="pag">Pág. 24</p>
+<div class="fig"><b>Ilustración 1.13 Configuración de la canaleta Parshall</b><span class="desc">Diagrama, solo imagen, en dos vistas: en planta, la canaleta con su sección convergente, garganta y sección divergente, acotada con las letras de la nomenclatura y los ángulos de 45º en la entrada; en elevación, el perfil del flujo con el desarenador, la canaleta Parshall, los niveles H<sub>a</sub> y H<sub>b</sub>, la diferencia K y las cotas h, M, N, X, Y, indicando flujo libre y flujo sumergido. Nomenclatura: W Ancho de la garganta; A Longitud de las paredes de la sección convergente; B Longitud de la sección convergente; C Ancho de la salida; D Ancho de la entrada de la sección convergente; E Profundidad total; F Longitud de la garganta; G Longitud de la sección divergente; H Longitud de las paredes de la sección divergente; K Diferencia de la elevación entre la salida y la cresta; M Longitud de la transición de entrada; N Profundidad de la cubeta; P Ancho de la entrada de la transición; R Radio de curvatura; X Abscisa del punto de medición H<sub>b</sub>; Y Ordenada del punto de medición.</span></div>
+<div class="fig"><b>Ilustración 1.14 Desarenador del ejemplo</b><span class="desc">Diagrama en planta, solo imagen: el flujo Q entra por la izquierda, pasa por una compuerta, atraviesa la zona de almacenamiento de arena (en tono naranja) y sale por la derecha a través de la canaleta Parshall.</span></div>
+
+<p class="pag">Pág. 25</p>
+<p>Con la ecuación de Bernoulli, y con pérdidas de energía iguales al 10 por ciento de la diferencia en alturas de velocidad, se tiene:</p>
+<p>((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + h = ((0.8141 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + 0.628 m + 0.10 × [((0.8141 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) − ((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>))]</p>
+<p>El tirante hidráulico del agua en el canal desarenador es:</p>
+<p><b>h = 0.660 m = 66.0 cm</b></p>
+<p>El área de la sección transversal del desarenador es:</p>
+<div class="eq">A = Q / V<sub>1</sub> <span class="n">Ecuación 1.24</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>V<sub>1</sub> = velocidad horizontal de flujo (m/s)</p>
+<p>A = (0.34 m<sup>3</sup>/s) / (0.30 m/s) = 1.13 m<sup>2</sup></p>
+</div>
+<p>El ancho del techo de una sección parabólica sería:</p>
+<div class="eq">T = 3A / 2h <span class="n">Ecuación 1.25</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>T = ancho del techo de una sección parabólica (m)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>h = tirante hidráulico en el canal desarenador (m)</p>
+<p>T = (3 × 1.13 m<sup>2</sup>) / (2 × 0.66 m) = 2.57 m</p>
+</div>
+<p>Para una altura de agua H<sub>a</sub> = 0.229 m, de acuerdo con la fórmula de la tabla 1.10, el caudal en la garganta es:</p>
+<div class="eq">Q = 0.690 · H<sub>a</sub><sup>1.522</sup> <span class="n">Ecuación 1.26</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>H<sub>a</sub> = tirante en 2/3 de A (m)</p>
+<p>Q = 0.690 × (0.229 m)<sup>1.522</sup> = 0.0732 m<sup>3</sup>/s = 73.20 L/s</p>
+</div>
+<p>La velocidad en H<sub>a</sub> sería:</p>
+<div class="eq">V<sub>2</sub> = Q / A = Q / (W<sub>a</sub> · H<sub>a</sub>) <span class="n">Ecuación 1.27</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>2</sub> = velocidad en el punto de medida de H<sub>a</sub> (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>W<sub>a</sub> = ancho de la canaleta en 2/3 de A (m)</p>
+<p>H<sub>a</sub> = tirante en 2/3 de A (m)</p>
+<p>V<sub>2</sub> = (0.0732 m<sup>3</sup>/s) / [(0.665 m) × (0.229 m)] = 0.481 m/s</p>
+</div>
+
+<p class="pag">Pág. 26</p>
+<p>Volviendo a escribir la ecuación de Bernoulli, se obtiene:</p>
+<p>((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + h = ((0.481 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + 0.229 m + 0.10 × [((0.481 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) − ((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>))]</p>
+<p>El tirante hidráulico en el canal desarenador es:</p>
+<p><b>h = 0.237 m = 23.7 cm</b></p>
+<p>El área de la sección transversal del desarenador es:</p>
+<div class="eq">A = Q / V<sub>1</sub> <span class="n">Ecuación 1.28</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>V<sub>1</sub> = velocidad horizontal de flujo (m/s)</p>
+<p>A = (0.0732 m<sup>3</sup>/s) / (0.30 m/s) = 0.244 m<sup>2</sup></p>
+</div>
+<p>El ancho del techo en la parte superior de una sección parabólica sería:</p>
+<div class="eq">T = 3A / 2h <span class="n">Ecuación 1.29</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>T = ancho del techo de una sección parabólica (m)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>h = altura del agua en el canal desarenador (m)</p>
+<p>T = (3 × 0.244 m<sup>2</sup>) / (2 × 0.237 m) = 1.54 m</p>
+</div>
+<p>Para una altura de agua H<sub>a</sub> = 0.30 m, de acuerdo con la fórmula de la tabla 1.10, el caudal en la garganta es:</p>
+<div class="eq">Q = 0.690 · H<sub>a</sub><sup>1.522</sup> <span class="n">Ecuación 1.30</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>H<sub>a</sub> = Tirante en 2/3 A (m)</p>
+<p>Q = 0.690 × (0.30 m)<sup>1.522</sup> = 0.11 m<sup>3</sup>/s = 110.41 L/s</p>
+</div>
+<p>La velocidad en H<sub>a</sub> sería:</p>
+<div class="eq">V<sub>2</sub> = Q / A = Q / (W<sub>a</sub> · H<sub>a</sub>) <span class="n">Ecuación 1.31</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>2</sub> = velocidad en el punto de medida de H<sub>a</sub> (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>W<sub>a</sub> = ancho de la canaleta en 2/3 de A (m)</p>
+<p>H<sub>a</sub> = tirante en 2/3 A (m)</p>
+<p>V<sub>2</sub> = (0.110 m<sup>3</sup>/s) / [(0.665 m) × (0.30 m)] = 0.55 m/s</p>
+</div>
+<p>Volviendo a escribir la ecuación de Bernoulli, se obtiene:</p>
+<p>((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + h = ((0.55 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + 0.30 m + 0.10 × [((0.55 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) − ((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>))]</p>
+
+<p class="pag">Pág. 27</p>
+<p>El tirante hidráulico del agua en el canal desarenador es:</p>
+<p><b>h = 0.32 m = 32 cm</b></p>
+<p>El área de la sección transversal del desarenador es:</p>
+<div class="eq">A = Q / V<sub>1</sub> <span class="n">Ecuación 1.32</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>V<sub>1</sub> = velocidad horizontal de flujo (m/s)</p>
+<p>A = (0.110 m<sup>3</sup>/s) / (0.30 m/s) = 0.367 m<sup>2</sup></p>
+</div>
+<p>El ancho del techo en la parte superior de una sección parabólica sería:</p>
+<div class="eq">T = 3A / 2h <span class="n">Ecuación 1.33</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>T = ancho del techo de una sección parabólica (m)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>h = tirante hidráulico en el canal desarenador (m)</p>
+<p>T = (3 × 0.367 m<sup>2</sup>) / (2 × 0.320 m) = 1.72 m</p>
+</div>
+<p>Para una altura de agua H<sub>a</sub> = 0.458 m, de acuerdo con la fórmula de la tabla 1.10, el caudal en la garganta es:</p>
+<div class="eq">Q = 0.690 · H<sub>a</sub><sup>1.522</sup> <span class="n">Ecuación 1.34</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>H<sub>a</sub> = tirante en 2/3 de A (m)</p>
+<p>Q<sub>b</sub> = 0.690 × (0.458 m)<sup>1.522</sup> = 0.21 m<sup>3</sup>/s = 210.22 L/s</p>
+</div>
+<p>La velocidad en H<sub>a</sub> sería:</p>
+<div class="eq">V<sub>2</sub> = Q / A = Q / (W<sub>a</sub> · H<sub>a</sub>) <span class="n">Ecuación 1.35</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>2</sub> = velocidad en el punto de medida de H<sub>a</sub> (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>W<sub>a</sub> = ancho de la canaleta en 2/3 de A (m)</p>
+<p>H<sub>a</sub> = tirante en 2/3 de A (m)</p>
+<p>V<sub>2</sub> = (0.210 m<sup>3</sup>/s) / [(0.665 m) × (0.30 m)] = 0.69 m/s</p>
+</div>
+<p class="small">Nota: el original imprime aquí (0.665 m) × (0.30 m) en el denominador, pero ese cociente no da 0.69 m/s; el resultado 0.69 m/s corresponde a usar H<sub>a</sub> = 0.458 m en el denominador. Se transcribe tal como está impreso. La misma situación se repite en las Ecuaciones 1.39 y 1.43.</p>
+<p>Volviendo a escribir la ecuación de Bernoulli, se obtiene:</p>
+<p>((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + h = ((0.69 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + 0.458 m + 0.10 × [((0.69 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) − ((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>))]</p>
+<p>El tirante hidráulico del agua en el canal desarenador es:</p>
+<p><b>h = 0.48 m</b></p>
+<p>El área de la sección transversal del desarenador es:</p>
+<div class="eq">A = Q / V<sub>1</sub> <span class="n">Ecuación 1.36</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>V<sub>1</sub> = velocidad horizontal de flujo (m/s)</p>
+<p>A = (0.210 m<sup>3</sup>/s) / (0.30 m/s) = 0.70 m<sup>2</sup></p>
+</div>
+<p>El ancho del techo en la parte superior de una sección parabólica sería:</p>
+<div class="eq">T = 3A / 2h <span class="n">Ecuación 1.37</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>T = ancho del techo de una sección parabólica (m)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>h = tirante hidráulico en el canal desarenador (m)</p>
+<p>T = (3 × 0.70 m<sup>2</sup>) / (2 × 0.48 m) = 2.19 m</p>
+</div>
+<p>Para una altura de agua H<sub>a</sub> = 0.60 m, de acuerdo con la fórmula de la tabla 1.10, el caudal en la garganta es:</p>
+<div class="eq">Q = 0.690 · H<sub>a</sub><sup>1.522</sup> <span class="n">Ecuación 1.38</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>H<sub>a</sub> = tirante en 2/3 de A (m)</p>
+<p>Q<sub>b</sub> = 0.690 × (0.60 m)<sup>1.522</sup> = 0.317 m<sup>3</sup>/s = 317.10 L/s</p>
+</div>
+
+<p class="pag">Pág. 28</p>
+<p>La velocidad en H<sub>a</sub> sería:</p>
+<div class="eq">V<sub>2</sub> = Q / A = Q / (W<sub>a</sub> · H<sub>a</sub>) <span class="n">Ecuación 1.39</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>2</sub> = velocidad en el punto de medida de H<sub>a</sub> (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>W<sub>a</sub> = ancho de la canaleta en 2/3 de A (m)</p>
+<p>H<sub>a</sub> = Tirante en 2/3 A (m)</p>
+<p>V<sub>2</sub> = (0.317 m<sup>3</sup>/s) / [(0.665 m) × (0.30 m)] = 0.79 m/s</p>
+</div>
+<p class="small">Nota: como en la Ecuación 1.35, el original imprime (0.30 m) en el denominador; el resultado 0.79 m/s corresponde a usar H<sub>a</sub> = 0.60 m.</p>
+<p>Volviendo a escribir la ecuación de Bernoulli, se obtiene:</p>
+<p>((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + h = ((0.79 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + 0.60 m + 0.10 × [((0.79 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) − ((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>))]</p>
+<p>El tirante hidráulico del agua en el canal desarenador es:</p>
+<p><b>h = 0.63 m</b></p>
+<p>El área de la sección transversal del desarenador es:</p>
+<div class="eq">A = Q / V<sub>1</sub> <span class="n">Ecuación 1.40</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>V<sub>1</sub> = velocidad horizontal de flujo (m/s)</p>
+<p>A = (0.317 m<sup>3</sup>/s) / (0.30 m/s) = 1.06 m<sup>2</sup></p>
+</div>
+<p>El ancho del techo en la parte superior de una sección parabólica sería:</p>
+<div class="eq">T = 3A / 2h <span class="n">Ecuación 1.41</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>T = ancho del techo de una sección parabólica (m)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>h = tirante hidráulico en el canal desarenador (m)</p>
+<p>T = (3 × 1.06 m<sup>2</sup>) / (2 × 0.63 m) = 2.52 m</p>
+</div>
+<p>Para una altura de agua H<sub>a</sub> = 0.687 m, de acuerdo con la fórmula de la tabla 1.10, el caudal en la garganta es:</p>
+<div class="eq">Q = 0.690 · H<sub>a</sub><sup>1.522</sup> <span class="n">Ecuación 1.42</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>H<sub>a</sub> = Tirante en 2/3 A (m)</p>
+<p>Q<sub>b</sub> = 0.690 × (0.687 m)<sup>1.522</sup> = 0.39 m<sup>3</sup>/s = 389.67 L/s</p>
+</div>
+
+<p class="pag">Pág. 29</p>
+<p>La velocidad en H<sub>a</sub> sería:</p>
+<div class="eq">V<sub>2</sub> = Q / A = Q / (W<sub>a</sub> · H<sub>a</sub>) <span class="n">Ecuación 1.43</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>2</sub> = velocidad en el punto de medida de H<sub>a</sub> (m/s)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>W<sub>a</sub> = ancho de la canaleta en 2/3 de A (m)</p>
+<p>H<sub>a</sub> = Tirante en 2/3 A (m)</p>
+<p>V<sub>2</sub> = (0.39 m<sup>3</sup>/s) / [(0.665 m) × (0.30 m)] = 0.85 m/s</p>
+</div>
+<p class="small">Nota: como en las Ecuaciones 1.35 y 1.39, el original imprime (0.30 m) en el denominador; el resultado 0.85 m/s corresponde a usar H<sub>a</sub> = 0.687 m.</p>
+<p>Volviendo a escribir la ecuación de Bernoulli, se obtiene:</p>
+<p>((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + h = ((0.85 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) + 0.687 m + 0.10 × [((0.85 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>)) − ((0.30 m/s)<sup>2</sup> / (2 × 9.81 m/s<sup>2</sup>))]</p>
+<p>El tirante hidráulico del agua en el canal desarenador es:</p>
+<p><b>h = 0.72 m = 72 cm</b></p>
+<p>El área de la sección transversal del desarenador es:</p>
+<div class="eq">A = Q / V<sub>1</sub> <span class="n">Ecuación 1.44</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>Q = caudal (m<sup>3</sup>/s)</p>
+<p>V<sub>1</sub> = velocidad horizontal de flujo (m/s)</p>
+<p>A = (0.39 m<sup>3</sup>/s) / (0.30 m/s) = 1.30 m<sup>2</sup></p>
+</div>
+<p>El ancho del techo en la parte superior de una sección parabólica sería:</p>
+<div class="eq">T = 3A / 2h <span class="n">Ecuación 1.45</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>T = ancho del techo de una sección parabólica (m)</p>
+<p>A = área de sección transversal del desarenador (m<sup>2</sup>)</p>
+<p>h = tirante hidráulico en el canal desarenador (m)</p>
+<p>T = (3 × 1.30 m<sup>2</sup>) / (2 × 0.72 m) = 2.71 m</p>
+</div>
+<table>
+<caption>Valores de h y T obtenidos en el ejemplo (para trazar la curva de la Ilustración 1.15)</caption>
+<tr><th>H<sub>a</sub> (m)</th><th>Q (L/s)</th><th>h (m)</th><th>T (m)</th></tr>
+<tr><td>0.628</td><td>340</td><td>0.66</td><td>2.57</td></tr>
+<tr><td>0.229</td><td>73.20</td><td>0.237</td><td>1.54</td></tr>
+<tr><td>0.30</td><td>110.41</td><td>0.32</td><td>1.72</td></tr>
+<tr><td>0.458</td><td>210.22</td><td>0.48</td><td>2.19</td></tr>
+<tr><td>0.60</td><td>317.10</td><td>0.63</td><td>2.52</td></tr>
+<tr><td>0.687</td><td>389.67</td><td>0.72</td><td>2.71</td></tr>
+</table>
+
+<p class="pag">Pág. 30</p>
+<div class="fig"><b>Ilustración 1.15 Sección del desarenador con canaleta Parshall</b><span class="desc">Diagrama de corte, solo imagen: sección transversal del canal desarenador con el nivel del agua (NA), la zona de almacenamiento de arena en el fondo, y dos flechas rojas que señalan la sección parabólica y la sección de diseño.</span></div>
+<p>Se dibujan los valores de h contra T y se traza una curva como la de la Ilustración 1.15. Se adopta un ancho de canal con fondo de 50 cm y se ajusta.</p>
+<p>Se calcula el tiempo de sedimentación:</p>
+<div class="eq">t = h / V<sub>s</sub> <span class="n">Ecuación 1.46</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>t = tiempo de sedimentación (s)</p>
+<p>h = altura del agua en el canal desarenador en el caudal máximo (m)</p>
+<p>V<sub>s</sub> = velocidad de asentamiento del material (m/s)</p>
+<p>t = (0.628 m) / (0.025 m/s) = 25.12 s</p>
+</div>
+<p>Se calcula la longitud del desarenador.</p>
+<div class="eq">L = (h / V<sub>s</sub>) · V<sub>1</sub> <span class="n">Ecuación 1.47</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>L = longitud del desarenador (m)</p>
+<p>H<sub>v</sub> = carga sobre el vertedor (m)</p>
+<p>h = tirante hidráulico en el canal desarenador con el caudal máximo (m)</p>
+<p>V<sub>1</sub> = velocidad horizontal de flujo (m/s)</p>
+<p>V<sub>s</sub> = velocidad de asentamiento del material (m/s)</p>
+<p>L = (0.66 m / 0.025 m/s) × (0.3 m/s) = 7.92 m</p>
+</div>
+<p>La longitud mínima adicional recomendada es de:</p>
+<div class="eq">ΔL<sub>mín</sub> = 2 · h<sub>máx</sub> <span class="n">Ecuación 1.48</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>ΔL<sub>mín</sub> = longitud mínima (m)</p>
+<p>h<sub>máx</sub> = altura del agua en el canal desarenador máxima (m)</p>
+<p>ΔL<sub>mín</sub> = 2 × (0.66 m) = 1.32 m</p>
+</div>
+<p>La longitud máxima adicional es de:</p>
+<p>ΔL<sub>máx</sub> = 0.5 · L</p>
+<div class="donde">
+<p>donde:</p>
+<p>ΔL<sub>máx</sub> = longitud máxima (m)</p>
+<p>L = longitud del desarenador (m)</p>
+<p>ΔL<sub>máx</sub> = 0.5 × (7.92 m) = 3.96 m</p>
+</div>
+<p>Se adopta una longitud del desarenador (L) de:</p>
+<div class="eq">L<sub>T</sub> = L + ΔL<sub>máx</sub> <span class="n">Ecuación 1.49</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>L<sub>T</sub> = Longitud total (m)</p>
+<p>ΔL<sub>máx</sub> = Longitud máxima (m)</p>
+<p>L = longitud de desarenador (m)</p>
+<p>L<sub>T</sub> = 7.92 m + 3.96 m = 11.88 m</p>
+</div>
+
+<p class="pag">Pág. 31</p>
+<h4>1.3.3. Control de velocidad con vertedores proporcionales</h4>
+<p>Su aplicación en plantas de tratamiento de aguas residuales es común cuando se tienen desarenadores horizontales tipo gravedad. Este tipo de unidades de pretratamiento funcionan con canales desarenadores cuya velocidad no debe ser mayor a un valor recomendado (generalmente 0.30 m/s). En el extremo final de cada canal desarenador se coloca un vertedor proporcional que cumple con dos objetivos: el primero es el control de la velocidad en el canal y el segundo es la medición del gasto de entrada a la planta (después del pretratamiento y antes del tratamiento primario).</p>
+
+<h3>1.4. Remoción de arena</h3>
+<p>La eliminación de la arena de las aguas residuales puede llevarse a cabo en desarenadores o por la separación centrífuga de sólidos. Los desarenadores están diseñados para eliminar los sólidos pesados, que consisten en arena, grava, cenizas u otros materiales que tienen velocidades de asentamiento o gravedades específicas sustancialmente mayores a las de los sólidos orgánicos putrescibles en las aguas residuales. Los desarenadores se encuentran con mayor frecuencia después de las rejillas y antes de los tanques de sedimentación primaria. Los tanques de sedimentación primaria funcionan para la eliminación de los sólidos inorgánicos y orgánicos pesados. En algunas instalaciones, los desarenadores preceden a las instalaciones de bombeo.</p>
+<p>Es conveniente localizar los desarenadores antes de las bombas de aguas residuales, aunque en alcantarillados muy profundos se puede considerar bombear el agua incluyendo la arena, pues podría ser más económico, siempre reconociendo que las bombas en estos casos pueden requerir mayor mantenimiento.</p>
+<p><b>Ejemplo</b></p>
+<p>Diseñar una cámara desarenadora aireada para tratar agua residual municipal con caudal medio de 0.6 m<sup>3</sup>/s y con cantidad de arena de 0.06 m<sup>3</sup> por cada mil metros cúbicos de agua residual. Se requerirán dos cámaras para limpieza, mientras que otra está en operación. Cada cámara tiene una relación ancho-profundidad de 1.5:1, recibirá la mitad del gasto y cuenta con un factor pico (F<sub>p</sub>) de 2.5, tirante hidráulico (h) de 3 m y tiempo de retención (t<sub>r</sub>) de 3 minutos.</p>
+<p><b>Cálculo del gasto pico</b></p>
+<div class="eq">Q<sub>p</sub> = Q<sub>m</sub> × F<sub>p</sub> <span class="n">Ecuación 1.50</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>Q<sub>p</sub> = caudal pico (m<sup>3</sup>/s)</p>
+<p>Q<sub>m</sub> = caudal medio (m<sup>3</sup>/s)</p>
+<p>F<sub>p</sub> = factor pico</p>
+<p>Q<sub>p</sub> = 0.60 m<sup>3</sup>/s × 2.50 = 1.50 m<sup>3</sup>/s</p>
+</div>
+<p><b>Obtención del volumen de cada cámara</b></p>
+<div class="eq">V = Q<sub>p</sub> × t<sub>r</sub> / n <span class="n">Ecuación 1.51</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V = volumen de cada cámara (m<sup>3</sup>)</p>
+<p>Q<sub>p</sub> = caudal pico (m<sup>3</sup>/s)</p>
+<p>t<sub>r</sub> = tiempo de retención (s)</p>
+<p>n = número de cámaras</p>
+<p>V = (1.50 m<sup>3</sup>/s × 180.00 s) / 2 = 135.00 m<sup>3</sup></p>
+</div>
+<p><b>Cálculo de las dimensiones de la cámara</b></p>
+<div class="eq">W = (W/h) × h <span class="n">Ecuación 1.52</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>W = ancho del canal (m)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>W = 1.50 × 3.00 m = 4.50 m</p>
+</div>
+
+<p class="pag">Pág. 32</p>
+<div class="eq">L = V / (W × h) <span class="n">Ecuación 1.53</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>L = longitud (m)</p>
+<p>V = volumen de cada cámara (m<sup>3</sup>)</p>
+<p>W = ancho del canal (m)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>L = (135.00 m<sup>3</sup>) / [(4.50 m) × (3.00 m)] = 10.00 m</p>
+</div>
+<p><b>Cálculo del tiempo de retención a gasto promedio</b></p>
+<div class="eq">t<sub>p</sub> = V / (Q<sub>m</sub> / n) <span class="n">Ecuación 1.54</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>t<sub>p</sub> = tiempo de retención a gasto promedio (s)</p>
+<p>V = volumen de cada cámara (m<sup>3</sup>)</p>
+<p>Q<sub>m</sub> = caudal medio (m<sup>3</sup>/s)</p>
+<p>n = número de cámaras</p>
+<p>t<sub>p</sub> = (135.00 m<sup>3</sup>) / [(0.60 m<sup>3</sup>/s) / 2] = 450.00 s = 7.50 min</p>
+</div>
+<p><b>Cálculo del suministro de aire</b></p>
+<div class="eq">S<sub>a</sub> = L × A<sub>e</sub> × n <span class="n">Ecuación 1.55</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>S<sub>a</sub> = suministro de aire (m<sup>3</sup>/min)</p>
+<p>L = longitud (m)</p>
+<p>A<sub>e</sub> = tasa de suministro de aire</p>
+<p>n = número de cámaras</p>
+<p>S<sub>a</sub> = 10.00 m × 0.30 m<sup>3</sup>/(min·m) × 2 = 6.00 m<sup>3</sup>/min</p>
+</div>
+
+<p class="pag">Pág. 33</p>
+<p><b>Estimación del volumen de arena</b></p>
+<div class="eq">V<sub>a</sub> = [a] × Q<sub>m</sub> × F<sub>p</sub> / 1 000 <span class="n">Ecuación 1.56</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>a</sub> = arena producida (m<sup>3</sup>/s)</p>
+<p>[a] = concentración de arena en agua (m<sup>3</sup>/1 000 m<sup>3</sup>)</p>
+<p>Q<sub>p</sub> = caudal pico (m<sup>3</sup>/s)</p>
+<p>Q<sub>m</sub> = caudal medio (m<sup>3</sup>/s)</p>
+<p>F<sub>p</sub> = factor pico</p>
+<p>V<sub>a</sub> = (0.06 m<sup>3</sup> / 1 000.00 m<sup>3</sup>) × (0.60 m<sup>3</sup>/s) × (2.50) = 9 × 10<sup>−5</sup> m<sup>3</sup>/s = 7.78 m<sup>3</sup>/d</p>
+</div>
+
+<p class="pag">Pág. 34 (pág. PDF 45) — Fotografía a página completa, sin texto</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de un vertedero de concreto con agua cayendo en lámina, muros pintados de azul claro y un camino de grava; al fondo, cerros bajo cielo despejado.</span></div>
+
+<p class="pag">Pág. 35</p>
+<h2>2. Sedimentación primaria</h2>
+
+<h3>2.1. Introducción</h3>
+<p>Se denominan tanques de sedimentación primaria aquellos que reciben aguas residuales crudas, antes del tratamiento biológico (Ilustración 2.1). Estos tanques pueden ser rectangulares o circulares. En el rectangular, el agua residual cruda ingresa por una serie de aperturas, cerca de la superficie del extremo de la entrada del tanque y avanza moviéndose a lo largo de este, con velocidad muy baja, hasta descargar por el extremo opuesto sobre un vertedero.</p>
+<div class="fig"><b>Ilustración 2.1 Ubicación del clarificador primario en una planta de tratamiento</b><span class="desc">Fotografía en color, solo imagen: vista de un clarificador primario circular con agua, barandal metálico en primer plano y las instalaciones de la planta con cerros al fondo.</span></div>
+
+<p class="pag">Pág. 36</p>
+<h3>2.2. Conceptos de sedimentación primaria</h3>
+<p><b>La carga superficial</b></p>
+<p>Es una medida del gasto en relación con el área de la superficie total disponible para el proceso. Un tiempo de retención más largo y una menor carga superficial implican mayor eficiencia en la remoción de sólidos.</p>
+<div class="eq">C<sub>HS</sub> = Gasto (m<sup>3</sup>/d) / Área del tanque (m<sup>2</sup>) <span class="n">Ecuación 2.1</span></div>
+<p><b>Carga hidráulica sobre vertedores</b></p>
+<p>Es un parámetro relevante para el diseño y se calcula de la siguiente manera:</p>
+<div class="eq">C<sub>VS</sub> = Gasto (m<sup>3</sup>/d) / Longitud del vertedor (m) <span class="n">Ecuación 2.2</span></div>
+<p><b>Tiempo de retención</b></p>
+<p>Relaciona el volumen con el gasto, de la siguiente manera:</p>
+<div class="eq">T<sub>r</sub> (h) = [Volumen (m<sup>3</sup>) / Gasto (m<sup>3</sup>/d)] × 24 <span class="n">Ecuación 2.3</span></div>
+<p><b>Carga de sólidos</b></p>
+<p>La carga de sólidos describe cuántos kilos de sólidos por metro cuadrado entran al sedimentador al día.</p>
+<div class="eq">C<sub>S</sub> = Sólidos en el clarificador (kg/d) / Área de la superficie (m<sup>2</sup>) <span class="n">Ecuación 2.4</span></div>
+<p><b>Eficiencia de remoción de sólidos</b></p>
+<div class="eq">η (%) = [(Sólidos entrada (mg/L) − Sólidos salida (mg/L)) / Sólidos entrada (mg/L)] × 100 <span class="n">Ecuación 2.5</span></div>
+
+<h4>2.2.1. Tipos de tanques de sedimentación primaria</h4>
+<p>Los clarificadores primarios pueden ser rectangulares o circulares (Ilustración 2.2) y por lo general están diseñados para proporcionar de una a tres horas de tiempo de retención. En un tanque de dos horas de retención se puede eliminar de 50 a 70 por ciento de sólidos en suspensión por sedimentación o flotación. La eliminación de estos sólidos reduce la demanda bioquímica de oxígeno.</p>
+
+<h3>2.3. Diseño de sedimentadores primarios</h3>
+<p>En el tanque circular (Ilustración 2.3b) el agua residual entra a través de aperturas en la parte superior de una tubería vertical central y fluye radialmente hacia el vertedero perimetral de salida. Por lo general, el tanque está dotado de una barredora de lodos que dirige los sólidos sedimentables hacia la tolva colocada en el centro del mismo. Los sólidos flotantes migran hacia el borde del tanque y son retenidos mediante una pantalla colocada enfrente del vertedero de salida. Un desnatador adherido a los brazos de la barredora de lodos puede recoger la espuma superficial y las natas para drenarlas por el canal de espumas.</p>
+
+<p class="pag">Pág. 37</p>
+<div class="fig"><b>Ilustración 2.2 Sedimentador primario a) circular b) rectangular</b><span class="desc">Dos fotografías en color, solo imagen: a) tanque circular con su barredora giratoria; b) tanques rectangulares alargados con agua.</span></div>
+<p>En tanques rectangulares (Ilustración 2.3b) la relación longitud-ancho varía entre 3:1 y 5:1, con profundidades de agua mayores a dos metros, longitud menor de 90 m, ancho de tres a 24 m y pendiente suave (uno a dos por ciento) en el fondo hacia la tolva de lodos. Cuando el ancho es mayor de seis metros se prefiere usar equipo de limpieza múltiple con varias tolvas de lodos, permitiéndose así el uso de anchos iguales o mayores a 24 m. En tanques circulares el diámetro es generalmente menor de 60 m, con profundidades de agua de dos a cuatro metros y pendientes en el fondo de 8 por ciento.</p>
+<p>Estos tanques son los más usados porque la barredora de lodos requiere menos partes móviles que el mecanismo de arrastre de un sedimentador rectangular y porque los muros pueden ser más delgados que los de los tanques rectangulares. Aunque la turbulencia a la entrada, debajo del pozo del afluente, es grande en un sedimentador circular, a medida que el agua fluye hacia el vertedero de salida su velocidad disminuye apropiadamente gracias a la mayor longitud del vertedero perimetral.</p>
+<p>El lodo primario puede bombearse a tanques de espesamiento o a digestores, según el caso, junto con la nata y espuma removidas. Cuando los tanques primarios de sedimentación son de extracción de lodos mecánica, es recomendable desocuparlos una vez al año para mantenimiento.</p>
+<p>Los parámetros básicos de diseño de tanques de sedimentación primaria de aguas residuales se incluyen en las Tabla 2.1 y Tabla 2.2.</p>
+
+<p class="pag">Pág. 38</p>
+<div class="fig"><b>Ilustración 2.3 Sedimentadores primarios a) Rastras b) Sedimentador circular c) Sedimentador rectangular d) Vertedores triangulares</b><span class="desc">Cuatro fotografías en color, solo imagen: a) rastras o puente barredor sobre un tanque rectangular; b) vista aérea de un sedimentador circular; c) tanques rectangulares con puentes barredores; d) vertedores triangulares con barandal naranja.</span></div>
+<table>
+<caption>Tabla 2.1 Criterios de diseño de sedimentadores primarios</caption>
+<tr><th rowspan="2">Tipo de tratamiento</th><th colspan="2">Carga superficial m/d</th><th rowspan="2">Profundidad m</th><th rowspan="2">Carga sobre el vertedero L/(s m)</th><th rowspan="2">Tiempo de retención h</th><th colspan="2">% remoción</th></tr>
+<tr><th>Caudal promedio</th><th>Caudal pico</th><th>DBO</th><th>SS</th></tr>
+<tr><td rowspan="6">Primario, seguido de tratamiento secundario</td><td>32 – 49</td><td>80 – 122</td><td>3 – 5</td><td>1.4 – 4.3</td><td>1.5 – 2.5</td><td></td><td>50 – 70</td></tr>
+<tr><td>33 – 49</td><td>81 – 122</td><td></td><td>&lt; 5.8</td><td></td><td>35 – 45</td><td>50 – 60</td></tr>
+<tr><td>32 – 49</td><td>81 – 122</td><td>3 – 3.7</td><td>1.4 – 5.7</td><td>1.5 – 2.5</td><td></td><td></td></tr>
+<tr><td>24 – 33</td><td>48 – 70</td><td>3 – 5</td><td>1.4 – 4.3</td><td>1.5 – 2.5</td><td></td><td>50 – 70</td></tr>
+<tr><td>24 – 33</td><td>49 – 69</td><td></td><td>&lt; 5.8</td><td></td><td>35 – 45</td><td>50 – 60</td></tr>
+<tr><td>24 – 32</td><td>49 – 61</td><td>3.7 – 4.6</td><td>1.4 – 5.7</td><td>1.5 – 2.5</td><td></td><td></td></tr>
+<tr><td rowspan="2">Primario</td><td>30</td><td>45</td><td>&gt; 1.5</td><td>&lt; 5.2</td><td>2</td><td>35 – 40</td><td>50 – 70</td></tr>
+<tr><td>24 – 33</td><td></td><td>2.1 – 3.6</td><td>1.4 – 2.2</td><td>1 – 2</td><td></td><td></td></tr>
+</table>
+<p class="small">Fuente: Romero Rojas, 2001</p>
+
+<p class="pag">Pág. 39</p>
+<table>
+<caption>Tabla 2.2 Criterios de diseño de sedimentadores primarios</caption>
+<tr><th>Referencias</th><th>Carga superficial m/d</th><th>Tiempo de retención h</th><th>Profundidad m</th><th>Carga sobre el vertedero L/(s m)</th></tr>
+<tr><td>Metcalf &amp; Eddy, Inc.</td><td>32 – 48</td><td>1.5 – 2.5</td><td>3 – 5</td><td>1.4 – 5.8</td></tr>
+<tr><td>Normas de los diez estados</td><td>41</td><td>—</td><td>&gt; 2.1</td><td>&lt; 2.2</td></tr>
+<tr><td>Manual de diseño naval</td><td>49</td><td>—</td><td>3</td><td>&lt; 14</td></tr>
+<tr><td>Ejército Estados Unidos de América</td><td>12 – 41</td><td>2.5</td><td>2.5 – 4.5</td><td>0.7 – 1.7</td></tr>
+<tr><td>Steel y McGhee</td><td>24 – 60</td><td>1 – 2</td><td>1 – 5</td><td>—</td></tr>
+<tr><td>Fair et al.</td><td>—</td><td>2</td><td>3</td><td>—</td></tr>
+<tr><td>Sundstrom y Klei</td><td>—</td><td>1 – 4</td><td>—</td><td>—</td></tr>
+<tr><td>USEPA</td><td>24 – 49</td><td>—</td><td>3 – 5</td><td>—</td></tr>
+<tr><td>Tchobanoglous y Schroeder</td><td>30 – 60</td><td>—</td><td>3 – 5</td><td>—</td></tr>
+<tr><td>IWPC</td><td>30 – 45</td><td>2</td><td>&gt; 1.5</td><td>1.2 – 5.2</td></tr>
+</table>
+<p class="small">Fuente: Romero Rojas, 2001</p>
+<p>En aguas frías se debe usar una carga superficial menor porque debido al aumento de viscosidad del agua se retarda el asentamiento de las partículas y se reduce la eficiencia del sedimentador.</p>
+<p>El efecto de la carga superficial y del tiempo de retención sobre la remoción de DBO y SS varía mucho, según las características del agua residual, la proporción de sólidos sedimentables, la concentración de sólidos y otros factores. Hay que tener en cuenta que las cargas superficiales deben ser lo suficientemente pequeñas como para asegurar una operación satisfactoria del sedimentador con caudales máximos. Las cargas superficiales usadas generalmente permiten tiempos nominales de retención de dos a tres horas para caudal promedio. Como los caudales de diseño son, en todos los casos, para condiciones futuras, los periodos de retención reales, durante los primeros años de operación de la planta, son mayores.</p>
+<p>Según Metcalf &amp; Eddy, Inc., la carga de rebose sobre el vertedero tiene poco efecto sobre la eficiencia del tanque de sedimentación primaria, siendo más importante mantener una velocidad de flujo mínima que no arrastre el lodo sedimentado y disponer de una colocación apropiada de los vertedores de rebose.</p>
+<p>La velocidad de flujo debe ser menor de 1.5 m/min para prevenir la suspensión de sólidos; la velocidad crítica de arrastre se puede calcular por la ecuación de Camp y Shields.</p>
+<div class="eq">V<sub>c</sub> = [8 · k · (s − 1) · g · d / f]<sup>0.5</sup> <span class="n">Ecuación 2.6</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>c</sub> = velocidad crítica de arrastre (m/s)</p>
+<p>k = 0.04 para material unigranular</p>
+<p>k = 0.06 para material viscoso</p>
+<p>f = 0.02 – 0.03, factor de fricción de Darcy-Weisbach</p>
+<p>s = densidad relativa de las partículas</p>
+<p>g = aceleración gravitacional (9.81 m/s<sup>2</sup>)</p>
+<p>d = diámetro de las partículas (m)</p>
+</div>
+<p>Otros autores, para prevenir el arrastre del lodo, recomiendan velocidades de flujo menores que quince veces la velocidad crítica de sedimentación. La velocidad en los canales de entrada de los sedimentadores primarios debe ser mayor de 0.3 m/s para un 50 por ciento del caudal de diseño. Se recomienda instalar pantallas de disipación de velocidad a una distancia de 0.6 a 0.9 m del extremo de entrada, con una sumergencia de 46 a 61 cm. La parte superior de la pantalla debe permitir el paso de espuma sobre ella. Para la unidad de entrada se pueden usar vertederos, orificios sumergidos con velocidades de flujo de 3 a 9 m/min y válvulas de compuerta o pantallas perforadas. En tanques circulares, el pozo central de entrada tiene un diámetro de 15 a 20 por ciento el diámetro del tanque y, típicamente, una sumergencia igual a la mitad de la profundidad del tanque.</p>
+
+<p class="pag">Pág. 40</p>
+<p>En tanques de sedimentación primaria rectangulares la tolva de lodos se coloca generalmente en el centro del tanque. La tolva puede tener hasta tres metros de profundidad, con pendientes mayores de 1.7/1 en las paredes laterales y ancho máximo en el fondo de 0.6 m.</p>
+<p>Las tuberías de lodos deben de ser lo más cortas posible, de por lo menos 15 cm de diámetro y con velocidad de flujo autolimpiante de 1.2 m/s. En cada cambio de dirección debe colocarse un pozo de inspección. Al calcular pérdidas por fricción en tuberías de lodos, debe tenerse en cuenta que dichas pérdidas son tres a cuatro veces mayores que para agua.</p>
+<p>En tanques de extracción de lodos manual, se debe proveer un almacenamiento adecuado de lodos para asegurar que el incremento del caudal producido al sacar un tanque de servicio para extracción de lodos, no genere un aumento en la concentración de sólidos suspendidos de los otros tanques. En estos tanques la pendiente del piso, para facilitar su limpieza, puede ser de 2.5 por ciento hacia un canal central longitudinal y con una caída de uno por ciento hacia el pozo de lodos en el extremo de entrada.</p>
+<p>Un tanque de extracción de lodos manual debe desocuparse en periodos de flujo mínimo y dejarse fuera de servicio por lo menos una hora antes de la extracción de lodos para permitir la sedimentación de los mismos. El sobrenadante se extrae mediante una válvula telescópica o un brazo flotante de extracción, hasta dejar sólo el lodo en el tanque, sin alterarlo. A continuación, se empuja el lodo manualmente hacia la tolva de salida, usando escobas barredoras de caucho. Por último se lava el piso con agua o efluente. El proceso debe hacerse por lo menos una vez a la semana en tanques de sedimentación primaria de limpieza manual.</p>
+<p>En tanques de limpieza mecánica de lodos la extracción de lodos se hace con frecuencias muy variables, generalmente una vez al día o cada dos días; sin embargo, en muchos tanques la barredora de lodos funciona en forma continua y se extraen lodos permanentemente. Este sistema permite dosificar sin interrupción los digestores de lodos, pero puede producir taponamiento de la tubería de lodos por la baja velocidad de flujo; por ello, se prefiere que se haga con una frecuencia no mayor de 8 horas.</p>
+<p>En tanques de extracción de lodos manual se debe colocar, a una distancia del vertedero de salida de 0.6 a 1.5 m, una pantalla de retención de espuma con una sumergencia de 0.3 a 0.6 m, para prevenir la salida de espuma con el efluente.</p>
+<p>Según Tebbut, la eficiencia en remoción de sólidos suspendidos en un tanque de sedimentación primaria puede calcularse por la ecuación 2.7.</p>
+<div class="eq">E = 0.955 · e<sup>−(265 / S<sub>0</sub> + 0.021 · Q/A)</sup> <span class="n">Ecuación 2.7</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>E = eficiencia fraccional del sedimentador primario</p>
+<p>S<sub>0</sub> = sólidos suspendidos del afluente (mg/L)</p>
+<p>Q/A = carga superficial (m/d)</p>
+</div>
+<p>A continuación se presenta el desarrollo de un ejemplo de diseño para sedimentadores rectangulares.</p>
+
+<h4>2.3.1. Ejemplo de diseño</h4>
+<p>Diseñar un tanque sedimentador de sección rectangular para un caudal medio (Q<sub>m</sub>) de 150.00 L/s, un coeficiente de Harmon (M) de 2.17, una carga superficial (H<sub>a</sub>) de 45 m<sup>3</sup>/m<sup>2</sup>d, un tirante hidráulico (h) de 4.00 m, un bordo libre de 0.50 m y considerando que el largo es 5 veces el ancho.</p>
+<p><b>Caudal máximo instantáneo (Q<sub>máx</sub>)</b></p>
+<div class="eq">Q<sub>máx</sub> = M · Q<sub>m</sub> <span class="n">Ecuación 2.8</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>Q<sub>máx</sub> = caudal máximo instantáneo (m<sup>3</sup>/s)</p>
+<p>M = coeficiente de Harmon</p>
+<p>Q<sub>m</sub> = caudal medio (m<sup>3</sup>/s)</p>
+<p>Q<sub>máx</sub> = 2.17 × (150.00 L/s) = 325 L/s = 0.325 m<sup>3</sup>/s</p>
+</div>
+<p><b>Área superficial (m<sup>2</sup>)</b></p>
+<div class="eq">A<sub>s</sub> = Q<sub>m</sub> / H<sub>a</sub> <span class="n">Ecuación 2.9</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A<sub>s</sub> = área superficial (m<sup>2</sup>)</p>
+<p>Q<sub>m</sub> = caudal medio (m<sup>3</sup>/s)</p>
+<p>H<sub>a</sub> = carga superficial (m<sup>3</sup>/m<sup>2</sup>d)</p>
+<p>Q<sub>m</sub> = 150.00 L/s = 12 960.00 m<sup>3</sup>/d</p>
+<p>A<sub>s</sub> = (12 960.00 m<sup>3</sup>/d) / (45.00 m<sup>3</sup>/m<sup>2</sup>d) = 288.00 m<sup>2</sup></p>
+</div>
+<p><b>Ancho del tanque sedimentador (m)</b></p>
+<div class="eq">L = 5W <span class="n">Ecuación 2.10</span></div>
+<div class="eq">A<sub>s</sub> = L · W <span class="n">Ecuación 2.11</span></div>
+<div class="eq">A<sub>s</sub> = (5W) · W = 5W<sup>2</sup> <span class="n">Ecuación 2.12</span></div>
+<div class="eq">W = √(A<sub>s</sub> / s) <span class="n">Ecuación 2.13</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A<sub>s</sub> = área superficial (m<sup>2</sup>)</p>
+<p>s = relación largo ancho = 5</p>
+<p>L = largo del tanque del sedimentador (m)</p>
+<p>W = ancho del tanque del sedimentador (m)</p>
+<p>W = √(288.00 m<sup>2</sup> / 5) = 7.59 m</p>
+</div>
+<p><b>Largo del tanque sedimentador (m)</b></p>
+<div class="eq">L = 5W <span class="n">Ecuación 2.14</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>L = longitud del tanque del sedimentador (m)</p>
+<p>W = ancho del tanque del sedimentador (m)</p>
+<p>L = 5 × (7.59 m) = 37.95 m</p>
+</div>
+<p><b>Volumen del sedimentador (m<sup>3</sup>)</b></p>
+<div class="eq">V = A<sub>s</sub> · h <span class="n">Ecuación 2.15</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V = volumen (m<sup>3</sup>)</p>
+<p>A<sub>s</sub> = área superficial (m<sup>2</sup>)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>V = 288.00 m<sup>2</sup> × (4.00 m) = 1 152 m<sup>3</sup></p>
+</div>
+
+<p class="pag">Pág. 41</p>
+<p><b>Tiempo de retención hidráulica (s)</b></p>
+<div class="eq">T<sub>RH</sub> = V / Q<sub>m</sub> <span class="n">Ecuación 2.16</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>T<sub>RH</sub> = tiempo de retención hidráulica (s)</p>
+<p>V = volumen (m<sup>3</sup>)</p>
+<p>Q<sub>m</sub> = caudal medio (m<sup>3</sup>/s)</p>
+<p>T<sub>RH</sub> = (1 152 m<sup>3</sup>) / (0.15 m<sup>3</sup>/s) = 7 680 s = 2.13 h</p>
+</div>
+<p><b>Velocidad de arrastre (m/s), con la expresión de Camp-Shields</b></p>
+<div class="eq">V<sub>s</sub> = [8 · k · (s − 1.0) · g · d / f]<sup>0.5</sup> <span class="n">Ecuación 2.17</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>s</sub> = velocidad de arrastre (m/s)</p>
+<p>k = constante en material unigranular, 0.04</p>
+<p>s = densidad relativa de las partículas, 1.3</p>
+<p>g = gravedad, 9.81 m/s<sup>2</sup></p>
+<p>d = diámetro de las partículas (m), 0.0002 m</p>
+<p>f = factor de fricción de Darcy-Weisbach, 0.02</p>
+<p>V<sub>s</sub> = [8 × 0.04 × (1.3 − 1.0) × (9.81 m/s<sup>2</sup>) × (2 × 10<sup>−4</sup> m) / 0.02]<sup>0.5</sup> = 0.097 m/s</p>
+</div>
+<p><b>Velocidad horizontal a flujo máximo (m/s)</b></p>
+<div class="eq">V<sub>L</sub> = Q<sub>máx</sub> / (A<sub>t</sub> · n) <span class="n">Ecuación 2.18</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>V<sub>L</sub> = velocidad horizontal a flujo máximo (m/s)</p>
+<p>Q<sub>máx</sub> = caudal máximo instantáneo (m<sup>3</sup>/s)</p>
+<p>A<sub>t</sub> = área de la sección transversal (m<sup>2</sup>)</p>
+<p>n = número de tanques</p>
+</div>
+<div class="eq">A<sub>t</sub> = h × W <span class="n">Ecuación 2.19</span></div>
+<div class="donde">
+<p>donde:</p>
+<p>A<sub>t</sub> = área de la sección transversal (m<sup>2</sup>)</p>
+<p>h = tirante hidráulico (m)</p>
+<p>W = Ancho del tanque (m)</p>
+<p>A<sub>t</sub> = (4 m) × (7.59 m) = 30.36 m<sup>2</sup></p>
+<p>V<sub>L</sub> = (28 080 m<sup>3</sup>/d) / [(30.36 m<sup>2</sup>) × (1)] = 924 m/d = 0.0107 m/s</p>
+</div>
+<div class="eq">V<sub>L</sub> = 924 m/d = 0.0107 m/s <span class="n">Ecuación 2.20</span></div>
+<p>Se observa que la velocidad de arrastre para el tipo de partícula considerado es mayor que la velocidad horizontal a gasto máximo, por lo que el diseño del sedimentador rectangular es aceptable.</p>
+
+<p class="pag">Pág. 43</p>
+<h2>Conclusiones</h2>
+<p>El diseño de plantas de tratamiento es un arte que se logra llevar a buen término solo con el conocimiento teórico, la experiencia práctica y la habilidad del diseñador. Actualmente, el diseñador se ayuda de los fabricantes y vendedores de equipos y unidades de proceso, quienes son especialistas en su tema. Así, tenemos por ejemplo las rejillas de limpieza mecánica, disponibles a través de un gran número de fabricantes cuyos servicios incluyen el diseño de estas unidades. Lo mismo sucede con las rejillas estáticas de autolimpieza hidráulica y los tambores rotatorios para rejillas finas. El fabricante proporciona las especificaciones de sus equipos y con su ayuda y la experiencia se selecciona la mejor opción para un proyecto.</p>
+<p>En el caso de rejas y rejillas de limpieza manual es común el diseño sin la ayuda de fabricantes, ya que normalmente se construyen in situ. Para hacer el diseño se debe tomar en cuenta el dimensionamiento del canal de rejas y rejillas, la selección del tipo y forma de las rejillas, material de construcción, selección del espaciamiento entre barras, ángulo de inclinación, etcétera. Considerando todo lo anterior se llega al diseño final de la unidad. Se calculan también las pérdidas de carga para cumplir con las recomendaciones para agua limpia.</p>
+<p>Para los desarenadores la situación es similar. Existen actualmente diferentes fabricantes y tipos de desarenadores en el mercado. Primero se investiga cuál es el más adecuado para nuestra planta, para luego seleccionar con ayuda del proveedor, el que sea del tamaño requerido para el proyecto. Los desarenadores de vórtice son muy comunes en la actualidad, así como los aireados. El diseñador deberá revisar que se cumplan los parámetros de diseño específicamente para el proyecto y no seleccionar equipos muy grandes o muy pequeños que provoquen problemas de funcionamiento.</p>
+<p>Cuando se ha diseñado correctamente y se opera adecuadamente el pretratamiento, es seguro que la planta tendrá un mejor funcionamiento y conservará su apariencia estética de limpieza. Esto se logra sacando continuamente la basura y la arena que se deposita en rejas, rejillas y desarenadores, labor ardua pero necesaria.</p>
+
+<p class="pag">Pág. 44</p>
+<p>Si se mantiene adecuadamente la unidad de tratamiento primario y se opera continuamente sin permitir la acumulación excesiva de sólidos y natas, se proporcionará agua residual libre de sólidos sedimentables, lista y en buenas condiciones para los siguientes procesos, como los reactores biológicos.</p>
+
+<p class="pag">Pág. 45</p>
+<h2>Tabla de conversiones de unidades de medida</h2>
+<table>
+<tr><th>Sigla</th><th>Significado</th><th>Sigla</th><th>Significado</th></tr>
+<tr><td>mg</td><td>miligramo</td><td>kg/m<sup>3</sup></td><td>kilogramo por metro cúbico</td></tr>
+<tr><td>g</td><td>gramo</td><td>l/s</td><td>litros por segundo</td></tr>
+<tr><td>kg</td><td>kilogramo</td><td>m<sup>3</sup>/d</td><td>metros cúbicos por día</td></tr>
+<tr><td>mm</td><td>milímetro</td><td>Sm<sup>3</sup>/h</td><td>condiciones estándar de metro cúbico por hora</td></tr>
+<tr><td>cm</td><td>centímetro</td><td>Scfm</td><td>condiciones estándar de pies cúbicos por minuto</td></tr>
+<tr><td>m</td><td>metro</td><td>°C</td><td>grados Celsius</td></tr>
+<tr><td>ml</td><td>mililitro</td><td>psia</td><td>libra-fuerza por pulgada cuadrada absoluta</td></tr>
+<tr><td>l</td><td>litro</td><td>cm/s</td><td>centímetro por segundo</td></tr>
+<tr><td>m<sup>3</sup></td><td>metro cúbico</td><td>m/s</td><td>metro por segundo</td></tr>
+<tr><td>s</td><td>segundo</td><td>HP</td><td>caballo de fuerza (medida de energía)</td></tr>
+<tr><td>h</td><td>hora</td><td>kW</td><td>kilowatt</td></tr>
+<tr><td>d</td><td>día</td><td>UNT</td><td>unidades nefelométricas de turbiedad</td></tr>
+<tr><td>mg/l</td><td>miligramo por litro</td><td></td><td></td></tr>
+</table>
+
+<h3>Longitud</h3>
+<table>
+<tr><th></th><th>Sistema métrico</th><th>Sistema inglés</th><th>Siglas</th></tr>
+<tr><td>1 milímetro (mm)</td><td></td><td>0.03</td><td>in</td></tr>
+<tr><td>1 centímetro (cm) = 10 mm</td><td></td><td>0.39</td><td>in</td></tr>
+<tr><td>1 metro (m) = 100 cm</td><td></td><td>1.09</td><td>yd</td></tr>
+<tr><td>1 kilómetro (km) = 1 000 m</td><td></td><td>0.62</td><td>mi</td></tr>
+<tr><td colspan="4"><b>Sistema inglés — Sistema métrico</b></td></tr>
+<tr><td>1 pulgada (in)</td><td></td><td>2.54</td><td>cm</td></tr>
+<tr><td>1 pie (ft) = 12 pulgadas</td><td></td><td>0.30</td><td>m</td></tr>
+<tr><td>1 yarda (yd) = 3 pies</td><td></td><td>0.91</td><td>m</td></tr>
+<tr><td>1 milla (mi) = 1 760 yardas</td><td></td><td>1.60</td><td>km</td></tr>
+<tr><td>1 milla náutica (nmi) = 2 025.4 yardas</td><td></td><td>1.85</td><td>km</td></tr>
+</table>
+
+<p class="pag">Pág. 46</p>
+<h3>Superficie</h3>
+<table>
+<tr><th></th><th>Sistema métrico</th><th>Sistema inglés</th><th>Siglas</th></tr>
+<tr><td>1 cm<sup>2</sup> = 100 mm<sup>2</sup></td><td></td><td>0.15</td><td>in<sup>2</sup></td></tr>
+<tr><td>1 m<sup>2</sup> = 10 000 cm<sup>2</sup></td><td></td><td>1.19</td><td>yd<sup>2</sup></td></tr>
+<tr><td>1 hectárea (ha) = 10 000 m<sup>2</sup></td><td></td><td>2.47</td><td>acres</td></tr>
+<tr><td>1 km<sup>2</sup> = 100 ha</td><td></td><td>0.38</td><td>mi<sup>2</sup></td></tr>
+<tr><td colspan="4"><b>Sistema inglés — Sistema métrico</b></td></tr>
+<tr><td>1 in<sup>2</sup></td><td></td><td>6.45</td><td>cm<sup>2</sup></td></tr>
+<tr><td>1 ft<sup>2</sup> = 144 in<sup>2</sup></td><td></td><td>0.09</td><td>m<sup>2</sup></td></tr>
+<tr><td>1 yd<sup>2</sup> = 9 ft<sup>2</sup></td><td></td><td>0.83</td><td>m<sup>2</sup></td></tr>
+<tr><td>1 acre = 4 840 yd<sup>2</sup></td><td></td><td>4 046.90</td><td>m<sup>2</sup></td></tr>
+<tr><td>1 milla<sup>2</sup> = 640 acres</td><td></td><td>2.59</td><td>km<sup>2</sup></td></tr>
+</table>
+
+<h3>Volumen/capacidad</h3>
+<table>
+<tr><th>Sistema métrico</th><th>Sistema inglés</th><th>Siglas</th></tr>
+<tr><td>1 cm<sup>3</sup></td><td>0.06</td><td>in<sup>3</sup></td></tr>
+<tr><td>1 dm<sup>3</sup> = 1 000 cm<sup>3</sup></td><td>0.03</td><td>ft<sup>3</sup></td></tr>
+<tr><td>1 m<sup>3</sup> = 1 000 dm<sup>3</sup></td><td>1.30</td><td>yd<sup>3</sup></td></tr>
+<tr><td>1 litro (L) = 1 dm<sup>3</sup></td><td>1.76</td><td>pintas</td></tr>
+<tr><td>1 hectolitro (hL) = 100 L</td><td>21.99</td><td>galones</td></tr>
+<tr><td colspan="3"><b>Sistema inglés — Sistema métrico</b></td></tr>
+<tr><td>1 in<sup>3</sup></td><td>16.38</td><td>cm<sup>3</sup></td></tr>
+<tr><td>1 ft<sup>3</sup> = 1 728 in<sup>3</sup></td><td>0.02</td><td>m<sup>3</sup></td></tr>
+<tr><td>1 onza fluida EUA = 1.0408 onzas fluidas RU</td><td>29.57</td><td>mL</td></tr>
+<tr><td>1 pinta (16 onzas fluidas) = 0.8327 pintas RU</td><td>0.47</td><td>L</td></tr>
+<tr><td>1 galón EUA = 0.8327 galones RU</td><td>3.78</td><td>L</td></tr>
+</table>
+
+<h3>Masa/peso</h3>
+<table>
+<tr><th>Sistema métrico</th><th>Sistema inglés</th></tr>
+<tr><td>1 miligramo (mg)</td><td>0.0154 grano</td></tr>
+<tr><td>1 gramo (g) = 1 000 mg</td><td>0.0353 onza</td></tr>
+<tr><td>1 kilogramo (kg) = 1 000 g</td><td>2.2046 libras</td></tr>
+<tr><td>1 tonelada (t) = 1000 kg</td><td>0.9842 toneladas larga</td></tr>
+<tr><td colspan="2"><b>Sistema inglés — Sistema métrico</b></td></tr>
+<tr><td>1 onza (oz) = 437.5 granos</td><td>28.35 g</td></tr>
+<tr><td>1 libra (lb) = 16 oz</td><td>0.4536 kg</td></tr>
+<tr><td>1 stone = 14 lb</td><td>6.3503 kg</td></tr>
+<tr><td>1 hundredweight (cwt) = 112 lb</td><td>50.802 kg</td></tr>
+<tr><td>1 tonelada larga = 20 cwt</td><td>1.016 t</td></tr>
+</table>
+
+<p class="pag">Pág. 47</p>
+<h3>Temperatura</h3>
+<p>°C = 5/9 (°F − 32) &nbsp;&nbsp;&nbsp; °F = 9/5 °C + 32</p>
+<table>
+<tr><th>Otros sistemas de unidades</th><th>Unidad</th><th>Símbolo</th><th>Factor de conversión</th><th>Se convierte a</th><th>Sistema Internacional de Unidades (SI)</th></tr>
+<tr><td colspan="6"><b>Longitud</b></td></tr>
+<tr><td>Pie</td><td>pie, ft, '</td><td></td><td>0.30</td><td>metro</td><td>m</td></tr>
+<tr><td>Pulgada</td><td>plg, in, "</td><td></td><td>25.40</td><td>milímetro</td><td>mm</td></tr>
+<tr><td colspan="6"><b>Presión/esfuerzo</b></td></tr>
+<tr><td>Kilogramo fuerza/cm<sup>2</sup></td><td>kg f/cm<sup>2</sup></td><td></td><td>98 066.50</td><td>pascal</td><td>Pa</td></tr>
+<tr><td>Libra/pulgada<sup>2</sup></td><td>lb/ plg<sup>2</sup>, PSI</td><td></td><td>6 894.76</td><td>pascal</td><td>Pa</td></tr>
+<tr><td>atmósfera técnica</td><td>at</td><td></td><td>98 066.50</td><td>pascal</td><td>Pa</td></tr>
+<tr><td>metro de agua</td><td>m H<sub>2</sub>O (mca)</td><td></td><td>9 806.65</td><td>pascal</td><td>Pa</td></tr>
+<tr><td>mm de mercurio</td><td>mm Hg</td><td></td><td>133.32</td><td>pascal</td><td>Pa</td></tr>
+<tr><td>bar</td><td>bar</td><td></td><td>100 000.00</td><td>pascal</td><td>Pa</td></tr>
+<tr><td colspan="6"><b>Fuerza/peso</b></td></tr>
+<tr><td>kilogramo fuerza</td><td>kg f</td><td></td><td>9.80</td><td>newton</td><td>N</td></tr>
+<tr><td colspan="6"><b>Masa</b></td></tr>
+<tr><td>libra</td><td>lb</td><td></td><td>0.45</td><td>kilogramo</td><td>kg</td></tr>
+<tr><td>onza</td><td>oz</td><td></td><td>28.30</td><td>gramo</td><td>g</td></tr>
+<tr><td colspan="6"><b>Peso volumétrico</b></td></tr>
+<tr><td>kilogramo fuerza/m<sup>3</sup></td><td>kg f/m<sup>3</sup></td><td></td><td>9.80</td><td>N/m<sup>3</sup></td><td>N/m<sup>3</sup></td></tr>
+<tr><td>libra/ft<sup>3</sup></td><td>lb/ft<sup>3</sup></td><td></td><td>157.08</td><td>N/m<sup>3</sup></td><td>N/m<sup>3</sup></td></tr>
+<tr><td colspan="6"><b>Potencia</b></td></tr>
+<tr><td>caballo de potencia</td><td>CP, HP</td><td></td><td>745.69</td><td>watt</td><td>W</td></tr>
+<tr><td>caballo de vapor</td><td>CV</td><td></td><td>735.00</td><td>watt</td><td>W</td></tr>
+<tr><td colspan="6"><b>Viscosidad dinámica</b></td></tr>
+<tr><td>poise</td><td>P</td><td></td><td>0.01</td><td>pascal segundo</td><td>Pa·s</td></tr>
+<tr><td colspan="6"><b>Viscosidad cinemática</b></td></tr>
+<tr><td>viscosidad cinemática</td><td>ν</td><td></td><td>1</td><td>stoke</td><td>m<sup>2</sup>/s (St)</td></tr>
+<tr><td colspan="6"><b>Energía/Cantidad de calor</b></td></tr>
+<tr><td>caloría</td><td>cal</td><td></td><td>4.18</td><td>joule</td><td>J</td></tr>
+<tr><td>unidad térmica británica</td><td>BTU</td><td></td><td>1 055.06</td><td>joule</td><td>J</td></tr>
+<tr><td colspan="6"><b>Temperatura</b></td></tr>
+<tr><td>grado Celsius</td><td>°C</td><td></td><td>t<sub>k</sub> = t<sub>c</sub> + 273.15</td><td>grado Kelvin</td><td>K</td></tr>
+</table>
+<p class="small">Nota: El valor de la aceleración de la gravedad aceptado internacionalmente es de 9.80665 m/s<sup>2</sup></p>
+
+<p class="pag">Pág. 48</p>
+<h3>Longitud</h3>
+<table>
+<tr><th>de / a</th><th>mm</th><th>cm</th><th>m</th><th>km</th><th>mi</th><th>milla náutica (nmi)</th><th>ft</th><th>in</th></tr>
+<tr><td>mm</td><td>1.000</td><td>0.100</td><td>0.001</td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>cm</td><td>10 000</td><td>1.000</td><td>0.010</td><td></td><td></td><td></td><td>0.033</td><td>0.394</td></tr>
+<tr><td>m</td><td>1 000.000</td><td>100.000</td><td>1.000</td><td>0.001</td><td></td><td></td><td>3.281</td><td>39.370</td></tr>
+<tr><td>km</td><td></td><td></td><td>0.001</td><td>1.000</td><td>0.621</td><td>0.540</td><td>3 280.83</td><td>0.039</td></tr>
+<tr><td>mi</td><td></td><td></td><td>1 609.347</td><td>1.609</td><td>1.000</td><td>0.869</td><td>5 280.000</td><td></td></tr>
+<tr><td>nmi</td><td></td><td></td><td>1 852.000</td><td>1.852</td><td>1.151</td><td>1.000</td><td>6 076.115</td><td></td></tr>
+<tr><td>ft</td><td></td><td>30.480</td><td>0.305</td><td></td><td></td><td></td><td>1.000</td><td>12.000</td></tr>
+<tr><td>in</td><td>25.400</td><td>2.540</td><td>0.025</td><td></td><td></td><td></td><td>0.083</td><td>1.000</td></tr>
+</table>
+<p class="small">Nota: en el original, la fila km imprime 0.001 en la columna m y 0.039 en la columna in; se transcribe tal como está impreso.</p>
+
+<h3>Superficie</h3>
+<table>
+<tr><th>de / a</th><th>cm<sup>2</sup></th><th>m<sup>2</sup></th><th>km<sup>2</sup></th><th>ha</th><th>mi<sup>2</sup></th><th>acre</th><th>ft<sup>2</sup></th><th>in<sup>2</sup></th></tr>
+<tr><td>cm<sup>2</sup></td><td>1.00</td><td></td><td></td><td></td><td></td><td></td><td>0.001</td><td>0.155</td></tr>
+<tr><td>m<sup>2</sup></td><td>10 000.00</td><td>1.00</td><td></td><td></td><td></td><td></td><td>10.764</td><td>1 550.003</td></tr>
+<tr><td>km<sup>2</sup></td><td></td><td></td><td>1.000</td><td>100.000</td><td>0.386</td><td>247.097</td><td></td><td></td></tr>
+<tr><td>ha</td><td></td><td>10 000.00</td><td>0.010</td><td>1.000</td><td>0.004</td><td>2.471</td><td></td><td></td></tr>
+<tr><td>mi<sup>2</sup></td><td></td><td></td><td>2.590</td><td>259.000</td><td>1.000</td><td>640.000</td><td></td><td></td></tr>
+<tr><td>acre</td><td></td><td>4 047.00</td><td>0.004</td><td>0.405</td><td>0.002</td><td>1.000</td><td></td><td></td></tr>
+<tr><td>ft<sup>2</sup></td><td>929.03</td><td>0.09</td><td></td><td></td><td></td><td></td><td>1.000</td><td>0.007</td></tr>
+<tr><td>in<sup>2</sup></td><td>6.45</td><td></td><td></td><td></td><td></td><td></td><td>144.000</td><td>1.000</td></tr>
+</table>
+
+<h3>Volumen</h3>
+<table>
+<tr><th>de / a</th><th>cm<sup>3</sup></th><th>m<sup>3</sup></th><th>L</th><th>ft<sup>3</sup></th><th>gal. EUA</th><th>acre-ft</th><th>in<sup>3</sup></th><th>yd<sup>3</sup></th></tr>
+<tr><td>cm<sup>3</sup></td><td>1.000</td><td></td><td>0.001</td><td></td><td></td><td></td><td>0.061</td><td></td></tr>
+<tr><td>m<sup>3</sup></td><td></td><td>1.000</td><td>1 000.000</td><td>35.314</td><td>264.200</td><td></td><td></td><td>1.307</td></tr>
+<tr><td>L</td><td>1 000.000</td><td>0.001</td><td>1.000</td><td>0.035</td><td>0.264</td><td></td><td>61.023</td><td></td></tr>
+<tr><td>ft<sup>3</sup></td><td></td><td>0.028</td><td>28.317</td><td>1.000</td><td>7.481</td><td></td><td></td><td>0.037</td></tr>
+<tr><td>gal. EUA</td><td></td><td>0.004</td><td>3.785</td><td>0.134</td><td>1.000</td><td></td><td>230.974</td><td></td></tr>
+<tr><td>acre-ft</td><td></td><td>1 233.490</td><td></td><td></td><td></td><td>1.000</td><td></td><td></td></tr>
+<tr><td>in<sup>3</sup></td><td>16.387</td><td></td><td>0.016</td><td></td><td>0.004</td><td></td><td>1.000</td><td></td></tr>
+<tr><td>Yd<sup>3</sup></td><td></td><td>0.765</td><td></td><td>27.000</td><td></td><td></td><td></td><td>1.000</td></tr>
+</table>
+
+<h3>Gasto</h3>
+<table>
+<tr><th>de / a</th><th>l/s</th><th>cm<sup>3</sup>/s</th><th>gal/día</th><th>gal/min</th><th>l/min</th><th>m<sup>3</sup>/día</th><th>m<sup>3</sup>/h</th><th>ft<sup>3</sup>/s</th></tr>
+<tr><td>l/s</td><td>1.000</td><td>1 000.000</td><td></td><td>15.851</td><td>60.000</td><td>86.400</td><td>3.600</td><td>0.035</td></tr>
+<tr><td>cm<sup>3</sup>/s</td><td>0.001</td><td>1.000</td><td>22.825</td><td>0.016</td><td>0.060</td><td>0.083</td><td></td><td></td></tr>
+<tr><td>gal/día</td><td></td><td>0.044</td><td>1.000</td><td></td><td></td><td>0.004</td><td></td><td></td></tr>
+<tr><td>gal/min</td><td>0.063</td><td>63.089</td><td>1 440.000</td><td>1.000</td><td>0.000</td><td>5.451</td><td>0.227</td><td>0.002</td></tr>
+<tr><td>l/min</td><td>0.017</td><td>16.667</td><td>0.000</td><td>0.264</td><td>1.000</td><td>1.440</td><td>0.060</td><td></td></tr>
+<tr><td>m<sup>3</sup>/día</td><td>0.012</td><td>11.570</td><td>264.550</td><td>0.183</td><td>0.694</td><td>1.000</td><td>0.042</td><td></td></tr>
+<tr><td>m<sup>3</sup>/h</td><td>0.278</td><td></td><td>6 340.152</td><td>4.403</td><td>16.667</td><td>24.000</td><td>1.000</td><td>0.010</td></tr>
+<tr><td>ft<sup>3</sup>/s</td><td>28.316</td><td></td><td></td><td>448.831</td><td>1 698.960</td><td>2 446.590</td><td>101.941</td><td>1.000</td></tr>
+</table>
+
+<p class="pag">Pág. 49</p>
+<h3>Eficiencia de pozo</h3>
+<table>
+<tr><th>de</th><th>a</th><th>gal/min/pie</th><th>l/s/m</th></tr>
+<tr><td>gal/min/pie</td><td></td><td>1.000</td><td>0.206</td></tr>
+<tr><td>l/s/m</td><td></td><td>4.840</td><td>1.000</td></tr>
+</table>
+
+<h3>Permeabilidad</h3>
+<table>
+<tr><th>de</th><th>a</th><th>cm/s</th><th>gal/día/pie<sup>2</sup></th><th>millones gal/día/acre</th><th>m/día</th><th>pie/s</th><th>Darcy</th></tr>
+<tr><td>cm/s</td><td></td><td>1.000</td><td>21 204.78</td><td></td><td>864.000</td><td>0.033</td><td></td></tr>
+<tr><td>gal/día/pie<sup>2</sup></td><td></td><td></td><td>1.000</td><td></td><td>0.041</td><td></td><td>0.055</td></tr>
+<tr><td>millón gal/día/acre</td><td></td><td></td><td></td><td>1.000</td><td>0.935</td><td></td><td></td></tr>
+<tr><td>m/día</td><td></td><td>0.001</td><td>24.543</td><td>1.069</td><td>1.000</td><td></td><td>1.351</td></tr>
+<tr><td>pie/s</td><td></td><td>30.480</td><td></td><td></td><td>26 334.72</td><td>1.000</td><td></td></tr>
+<tr><td>Darcy</td><td></td><td></td><td>18.200</td><td></td><td>0.740</td><td></td><td>1.000</td></tr>
+</table>
+
+<h3>Peso</h3>
+<table>
+<tr><th>de</th><th>a</th><th>grano</th><th>gramo</th><th>kilogramo</th><th>libra</th><th>onza</th><th>tonelada corta</th><th>tonelada larga</th><th>tonelada métrica</th></tr>
+<tr><td>Grano (gr)</td><td></td><td>1.000</td><td>0.065</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Gramo (g)</td><td></td><td>15.432</td><td>1.000</td><td>0.001</td><td>0.002</td><td></td><td></td><td></td><td></td></tr>
+<tr><td>Kilogramo (kg)</td><td></td><td></td><td>1 000.000</td><td>1.000</td><td>2.205</td><td>35.273</td><td></td><td></td><td>0.001</td></tr>
+<tr><td>Libra (lb)</td><td></td><td></td><td>453.592</td><td>0.454</td><td>1.000</td><td>16.000</td><td></td><td></td><td></td></tr>
+<tr><td>Onza (oz)</td><td></td><td>437.500</td><td>28.350</td><td></td><td></td><td>1.000</td><td></td><td></td><td></td></tr>
+<tr><td>t corta</td><td></td><td></td><td></td><td>907.180</td><td>2 000.000</td><td></td><td>1.000</td><td></td><td>0.907</td></tr>
+<tr><td>t larga</td><td></td><td></td><td></td><td>1 016.000</td><td>2 240.000</td><td></td><td>1.119</td><td>1.000</td><td>1.016</td></tr>
+<tr><td>t métrica</td><td></td><td></td><td></td><td>1 000.000</td><td>2 205.000</td><td></td><td>1.101</td><td>0.986</td><td>1.000</td></tr>
+</table>
+
+<h3>Potencia</h3>
+<table>
+<tr><th>de</th><th>a</th><th>CV</th><th>HP</th><th>kW</th><th>W</th><th>ft lb/s</th><th>kg m/s</th><th>BTU/s</th><th>kcal/s</th></tr>
+<tr><td>CV</td><td></td><td>1.000</td><td>0.986</td><td>0.736</td><td>735.500</td><td>542.500</td><td>75.000</td><td>0.697</td><td>0.176</td></tr>
+<tr><td>HP</td><td></td><td>1.014</td><td>1.000</td><td>0.746</td><td>745.700</td><td>550.000</td><td>76.040</td><td>0.706</td><td>0.178</td></tr>
+<tr><td>kW</td><td></td><td>1.360</td><td>1.341</td><td>1.000</td><td>1 000.000</td><td>737.600</td><td>101.980</td><td>0.948</td><td>0.239</td></tr>
+<tr><td>W</td><td></td><td></td><td></td><td>0.001</td><td>1.000</td><td>0.738</td><td>0.102</td><td></td><td></td></tr>
+<tr><td>ft lb/s</td><td></td><td></td><td></td><td></td><td>1.356</td><td>1.000</td><td>0.138</td><td>0.001</td><td></td></tr>
+<tr><td>kg m/s</td><td></td><td>0.013</td><td>0.013</td><td>0.009</td><td>9.806</td><td>7.233</td><td>1.000</td><td>0.009</td><td>0.002</td></tr>
+<tr><td>BTU/s</td><td></td><td>1.434</td><td>1.415</td><td>1.055</td><td>1 055.000</td><td>778.100</td><td>107.580</td><td>1.000</td><td>0.252</td></tr>
+<tr><td>kcal/s</td><td></td><td>5.692</td><td>5.614</td><td>4.186</td><td>4 186.000</td><td>3 088.000</td><td>426.900</td><td>3.968</td><td>1.000</td></tr>
+</table>
+
+<p class="pag">Pág. 50</p>
+<h3>Presión</h3>
+<table>
+<tr><th>de</th><th>a</th><th>atmósfera</th><th>kg/cm<sup>2</sup></th><th>lb/in<sup>2</sup></th><th>mm de Hg</th><th>in de Hg</th><th>m de H<sub>2</sub>O</th><th>ft de H<sub>2</sub>O</th></tr>
+<tr><td>atmósfera</td><td></td><td>1.000</td><td>1.033</td><td>14.696</td><td>760.000</td><td>29.921</td><td>10.330</td><td>33.899</td></tr>
+<tr><td>kg/cm<sup>2</sup></td><td></td><td>0.968</td><td>1.000</td><td>14.220</td><td>735.560</td><td>28.970</td><td>10.000</td><td>32.810</td></tr>
+<tr><td>lb/in<sup>2</sup></td><td></td><td>0.068</td><td>0.070</td><td>1.000</td><td>51.816</td><td>2.036</td><td>0.710</td><td>2.307</td></tr>
+<tr><td>mm de Hg</td><td></td><td>0.001</td><td>0.001</td><td>0.019</td><td>1.000</td><td>0.039</td><td>0.013</td><td>0.044</td></tr>
+<tr><td>in de Hg</td><td></td><td>0.033</td><td>0.035</td><td>0.491</td><td>25.400</td><td>1.000</td><td>0.345</td><td>1.133</td></tr>
+<tr><td>m de agua</td><td></td><td>0.096</td><td>0.100</td><td>1.422</td><td>73.560</td><td>2.896</td><td>1.000</td><td>3.281</td></tr>
+<tr><td>ft de agua</td><td></td><td>0.029</td><td>0.030</td><td>0.433</td><td>22.430</td><td>0.883</td><td>0.304</td><td>1.000</td></tr>
+</table>
+
+<h3>Energía</h3>
+<table>
+<tr><th>de</th><th>a</th><th>CV hora</th><th>HP hora</th><th>kW hora</th><th>J</th><th>ft.lb</th><th>kgm</th><th>BTU</th><th>kcal</th></tr>
+<tr><td>CV hora</td><td></td><td>1.000</td><td>0.986</td><td>0.736</td><td></td><td></td><td></td><td>2 510.000</td><td>632.500</td></tr>
+<tr><td>HP hora</td><td></td><td>1.014</td><td>1.000</td><td>0.746</td><td></td><td></td><td></td><td>2 545.000</td><td>641.200</td></tr>
+<tr><td>kW hora</td><td></td><td>1.360</td><td>1.341</td><td>1.000</td><td></td><td></td><td></td><td>3 413.000</td><td>860.000</td></tr>
+<tr><td>J</td><td></td><td></td><td></td><td></td><td>1.000</td><td>0.738</td><td>0.102</td><td></td><td></td></tr>
+<tr><td>ft.lb</td><td></td><td></td><td></td><td></td><td>1.356</td><td>1.000</td><td>0.138</td><td></td><td></td></tr>
+<tr><td>kgm</td><td></td><td></td><td></td><td></td><td>9.806</td><td>7.233</td><td>1.000</td><td></td><td></td></tr>
+<tr><td>BTU</td><td></td><td></td><td></td><td></td><td>1 054.900</td><td>778.100</td><td>107.580</td><td>1.000</td><td>0.252</td></tr>
+<tr><td>kcal</td><td></td><td></td><td></td><td></td><td>4 186.000</td><td>3 087.000</td><td>426.900</td><td>426.900</td><td>1.000</td></tr>
+</table>
+<p class="small">Nota: en el original, la fila kcal imprime 426.900 tanto en la columna kgm como en la columna BTU; se transcribe tal como está impreso.</p>
+
+<h3>Transmisividad</h3>
+<table>
+<tr><th>de</th><th>a</th><th>cm<sup>2</sup>/s</th><th>gal/día/pie</th><th>m<sup>2</sup>/día</th></tr>
+<tr><td>cm<sup>2</sup>/s</td><td></td><td>1.000</td><td>695.694</td><td>8.640</td></tr>
+<tr><td>gal/día/ft</td><td></td><td>0.001</td><td>1.000</td><td>0.012</td></tr>
+<tr><td>m<sup>2</sup>/día</td><td></td><td>0.116</td><td>80.520</td><td>1.000</td></tr>
+</table>
+
+<h3>Conversión de pies y pulgadas, a metros</h3>
+<p class="pag">Pág. 51</p>
+<table><caption>Conversión de pies y pulgadas, a metros</caption>
+<tr><th>ft, in/m</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th></tr>
+<tr><th>0</th><td>0.000</td><td>0.025</td><td>0.051</td><td>0.076</td><td>0.102</td><td>0.127</td><td>0.152</td><td>0.178</td><td>0.203</td><td>0.229</td><td>0.254</td><td>0.279</td></tr>
+<tr><th>1</th><td>0.305</td><td>0.330</td><td>0.356</td><td>0.381</td><td>0.406</td><td>0.432</td><td>0.457</td><td>0.483</td><td>0.508</td><td>0.533</td><td>0.559</td><td>0.584</td></tr>
+<tr><th>2</th><td>0.610</td><td>0.635</td><td>0.660</td><td>0.686</td><td>0.711</td><td>0.737</td><td>0.762</td><td>0.787</td><td>0.813</td><td>0.838</td><td>0.864</td><td>0.889</td></tr>
+<tr><th>3</th><td>0.914</td><td>0.940</td><td>0.965</td><td>0.991</td><td>1.016</td><td>1.041</td><td>1.067</td><td>1.092</td><td>1.176</td><td>1.143</td><td>1.168</td><td>1.194</td></tr>
+<tr><th>4</th><td>1.219</td><td>1.245</td><td>1.270</td><td>1.295</td><td>1.321</td><td>1.346</td><td>1.372</td><td>1.397</td><td>1.422</td><td>1.448</td><td>1.473</td><td>1.499</td></tr>
+<tr><th>5</th><td>1.524</td><td>1.549</td><td>1.575</td><td>1.600</td><td>1.626</td><td>1.651</td><td>1.676</td><td>1.702</td><td>1.727</td><td>1.753</td><td>1.778</td><td>1.803</td></tr>
+<tr><th>6</th><td>1.829</td><td>1.854</td><td>1.880</td><td>1.905</td><td>1.930</td><td>1.956</td><td>1.981</td><td>2.007</td><td>2.032</td><td>2.057</td><td>2.083</td><td>2.108</td></tr>
+<tr><th>7</th><td>2.134</td><td>2.159</td><td>2.184</td><td>2.210</td><td>2.235</td><td>2.261</td><td>2.286</td><td>2.311</td><td>2.337</td><td>2.362</td><td>2.388</td><td>2.413</td></tr>
+<tr><th>8</th><td>2.438</td><td>2.464</td><td>2.489</td><td>2.515</td><td>2.540</td><td>2.565</td><td>2.591</td><td>2.616</td><td>2.642</td><td>2.667</td><td>2.692</td><td>2.718</td></tr>
+<tr><th>9</th><td>2.743</td><td>2.769</td><td>2.794</td><td>2.819</td><td>2.845</td><td>2.870</td><td>2.896</td><td>2.921</td><td>2.946</td><td>2.972</td><td>2.997</td><td>3.023</td></tr>
+<tr><th>10</th><td>3.048</td><td>3.073</td><td>3.099</td><td>3.124</td><td>3.150</td><td>3.175</td><td>3.200</td><td>3.226</td><td>3.251</td><td>3.277</td><td>3.302</td><td>3.327</td></tr>
+<tr><th>11</th><td>3.353</td><td>3.378</td><td>3.404</td><td>3.429</td><td>3.454</td><td>3.480</td><td>3.505</td><td>3.531</td><td>3.556</td><td>3.581</td><td>3.607</td><td>3.632</td></tr>
+<tr><th>12</th><td>3.658</td><td>3.683</td><td>3.708</td><td>3.734</td><td>3.759</td><td>3.785</td><td>3.810</td><td>3.835</td><td>3.861</td><td>3.886</td><td>3.912</td><td>3.937</td></tr>
+<tr><th>13</th><td>3.962</td><td>3.988</td><td>4.013</td><td>4.039</td><td>4.064</td><td>4.089</td><td>4.115</td><td>4.140</td><td>4.166</td><td>4.191</td><td>4.216</td><td>4.242</td></tr>
+<tr><th>14</th><td>4.267</td><td>4.293</td><td>4.318</td><td>4.343</td><td>4.369</td><td>4.394</td><td>4.420</td><td>4.445</td><td>4.470</td><td>4.496</td><td>4.521</td><td>4.547</td></tr>
+<tr><th>15</th><td>4.572</td><td>4.597</td><td>4.623</td><td>4.648</td><td>4.674</td><td>4.699</td><td>4.724</td><td>4.750</td><td>4.775</td><td>4.801</td><td>4.826</td><td>4.851</td></tr>
+<tr><th>16</th><td>4.877</td><td>4.902</td><td>4.928</td><td>4.953</td><td>4.978</td><td>5.004</td><td>5.029</td><td>5.055</td><td>5.080</td><td>5.105</td><td>5.131</td><td>5.156</td></tr>
+<tr><th>17</th><td>5.182</td><td>5.207</td><td>5.232</td><td>5.258</td><td>5.283</td><td>5.309</td><td>5.334</td><td>5.359</td><td>5.385</td><td>5.410</td><td>5.436</td><td>5.461</td></tr>
+<tr><th>18</th><td>5.486</td><td>5.512</td><td>5.537</td><td>5.563</td><td>5.588</td><td>5.613</td><td>5.639</td><td>5.664</td><td>5.690</td><td>5.715</td><td>5.740</td><td>5.766</td></tr>
+<tr><th>19</th><td>5.791</td><td>5.817</td><td>5.842</td><td>5.867</td><td>5.893</td><td>5.918</td><td>5.944</td><td>5.969</td><td>5.994</td><td>6.020</td><td>6.045</td><td>6.071</td></tr>
+<tr><th>20</th><td>6.096</td><td>6.121</td><td>6.147</td><td>6.172</td><td>6.198</td><td>6.223</td><td>6.248</td><td>6.274</td><td>6.299</td><td>6.325</td><td>6.350</td><td>6.375</td></tr>
+<tr><th>21</th><td>6.401</td><td>6.426</td><td>6.452</td><td>6.477</td><td>6.502</td><td>6.528</td><td>6.553</td><td>6.579</td><td>6.604</td><td>6.629</td><td>6.655</td><td>6.680</td></tr>
+<tr><th>22</th><td>6.706</td><td>6.731</td><td>6.756</td><td>6.782</td><td>6.807</td><td>6.833</td><td>6.858</td><td>6.883</td><td>6.909</td><td>6.934</td><td>6.960</td><td>6.985</td></tr>
+<tr><th>23</th><td>7.010</td><td>7.036</td><td>7.061</td><td>7.087</td><td>7.112</td><td>7.137</td><td>7.163</td><td>7.188</td><td>7.214</td><td>7.239</td><td>7.264</td><td>7.290</td></tr>
+<tr><th>24</th><td>7.315</td><td>7.341</td><td>7.366</td><td>7.391</td><td>7.417</td><td>7.442</td><td>7.468</td><td>7.493</td><td>7.518</td><td>7.544</td><td>7.569</td><td>7.595</td></tr>
+<tr><th>25</th><td>7.620</td><td>7.645</td><td>7.671</td><td>7,696</td><td>7.722</td><td>7.747</td><td>7.772</td><td>7.798</td><td>7.823</td><td>7.849</td><td>7.874</td><td>7.899</td></tr>
+<tr><th>26</th><td>7.925</td><td>7.950</td><td>7.976</td><td>8.001</td><td>8.026</td><td>8.052</td><td>8.077</td><td>8.103</td><td>8.128</td><td>8.153</td><td>8.179</td><td>8.204</td></tr>
+<tr><th>27</th><td>8.230</td><td>8.255</td><td>8.280</td><td>8.306</td><td>8.331</td><td>8.357</td><td>8.382</td><td>8.407</td><td>8.433</td><td>8.458</td><td>8.484</td><td>8.509</td></tr>
+<tr><th>28</th><td>8.534</td><td>8.560</td><td>8.585</td><td>8.611</td><td>8.636</td><td>8.661</td><td>8.687</td><td>8.712</td><td>8.738</td><td>8.763</td><td>8.788</td><td>8.814</td></tr>
+<tr><th>29</th><td>8.839</td><td>8.865</td><td>8.890</td><td>8.915</td><td>8.941</td><td>8.966</td><td>8.992</td><td>9.017</td><td>9.042</td><td>9.068</td><td>9.093</td><td>9.119</td></tr>
+<tr><th>30</th><td>9.144</td><td>9.169</td><td>9.195</td><td>9.220</td><td>9.246</td><td>9.271</td><td>9.296</td><td>9.322</td><td>9.347</td><td>9.373</td><td>9.398</td><td>9.423</td></tr>
+<tr><th>31</th><td>9.449</td><td>9.474</td><td>9.500</td><td>9.525</td><td>9.550</td><td>9.576</td><td>9.601</td><td>9.627</td><td>9.652</td><td>9.677</td><td>9.703</td><td>9.728</td></tr>
+<tr><th>32</th><td>9.754</td><td>9.779</td><td>9.804</td><td>9.830</td><td>9.855</td><td>9.881</td><td>9.906</td><td>9.931</td><td>9.957</td><td>9.982</td><td>10.008</td><td>10.033</td></tr>
+<tr><th>33</th><td>10.058</td><td>10.084</td><td>10.109</td><td>10.135</td><td>10.160</td><td>10.185</td><td>10.211</td><td>10.236</td><td>10.262</td><td>10.287</td><td>10.312</td><td>10.338</td></tr>
+<tr><th>34</th><td>10.363</td><td>10.389</td><td>10.414</td><td>10.439</td><td>10.465</td><td>10.490</td><td>10.516</td><td>10.541</td><td>10.566</td><td>10.592</td><td>10.617</td><td>10.643</td></tr>
+<tr><th>35</th><td>10.668</td><td>10.693</td><td>10.719</td><td>10.744</td><td>10.770</td><td>10.795</td><td>10.820</td><td>10.846</td><td>10.871</td><td>10.897</td><td>10.922</td><td>10.947</td></tr>
+</table>
+<p>La segunda columna es la conversión de pies a metros; las siguientes columnas son la conversión de pulgadas a metros que se suman a la anterior conversión.</p>
+<p class="small">Nota: los valores se transcriben tal como están impresos, incluidos los que no concuerdan con el cálculo: en la fila de 3 pies, la columna de 8 pulgadas imprime 1.176&nbsp;m; en la fila de 25 pies, la columna de 3 pulgadas imprime «7,696» (con coma); en la fila de 31 pies, la columna de 6 pulgadas imprime «9.60&nbsp;1» (aquí unido como 9.601).</p>
+
+<h3>Tabla de conversión de pulgadas a milímetros</h3>
+<p class="pag">Pág. 52</p>
+<table><caption>Tabla de conversión de pulgadas a milímetros</caption>
+<tr><th>Pulgadas</th><th>0</th><th>1/8</th><th>1/4</th><th>3/8</th><th>1/2</th><th>5/8</th><th>3/4</th><th>7/8</th></tr>
+<tr><th>0</th><td>0</td><td>3.175</td><td>6.35</td><td>9.525</td><td>12.7</td><td>15.875</td><td>19.05</td><td>22.225</td></tr>
+<tr><th>1</th><td>25.4</td><td>28.575</td><td>31.75</td><td>34.925</td><td>38.1</td><td>41.275</td><td>44.45</td><td>47.625</td></tr>
+<tr><th>2</th><td>50.8</td><td>53.975</td><td>57.15</td><td>60.325</td><td>63.5</td><td>66.675</td><td>69.85</td><td>73.025</td></tr>
+<tr><th>3</th><td>76.2</td><td>79.375</td><td>82.55</td><td>85.725</td><td>88.9</td><td>92.075</td><td>95.25</td><td>98.425</td></tr>
+<tr><th>4</th><td>101.6</td><td>104.775</td><td>107.95</td><td>111.125</td><td>114.3</td><td>117.475</td><td>120.65</td><td>123.825</td></tr>
+<tr><th>5</th><td>127.0</td><td>130.175</td><td>133.35</td><td>136.525</td><td>139.7</td><td>142.875</td><td>146.05</td><td>149.225</td></tr>
+<tr><th>6</th><td>152.4</td><td>155.575</td><td>158.75</td><td>161.925</td><td>165.1</td><td>168.275</td><td>171.45</td><td>174.625</td></tr>
+<tr><th>7</th><td>177.8</td><td>180.975</td><td>184.15</td><td>187.325</td><td>190.5</td><td>193.675</td><td>196.85</td><td>200.025</td></tr>
+<tr><th>8</th><td>203.2</td><td>206.375</td><td>209.55</td><td>212.725</td><td>215.9</td><td>219.075</td><td>222.25</td><td>225.425</td></tr>
+<tr><th>9</th><td>228.6</td><td>231.775</td><td>234.95</td><td>238.125</td><td>241.3</td><td>244.475</td><td>247.65</td><td>250.825</td></tr>
+<tr><th>10</th><td>254.0</td><td>257.175</td><td>260.35</td><td>263.525</td><td>266.7</td><td>269.875</td><td>273.05</td><td>276.225</td></tr>
+<tr><th>11</th><td>279.4</td><td>282.575</td><td>285.75</td><td>288.925</td><td>292.1</td><td>295.275</td><td>298.45</td><td>301.625</td></tr>
+<tr><th>12</th><td>304.8</td><td>307.975</td><td>311.15</td><td>314.325</td><td>317.5</td><td>320.675</td><td>323.85</td><td>327.025</td></tr>
+<tr><th>13</th><td>330.2</td><td>333.375</td><td>336.55</td><td>339.725</td><td>342.9</td><td>346.075</td><td>349.25</td><td>352.425</td></tr>
+<tr><th>14</th><td>355.6</td><td>358.775</td><td>361.95</td><td>365.125</td><td>368.3</td><td>371.475</td><td>374.65</td><td>377.825</td></tr>
+<tr><th>15</th><td>381.0</td><td>384.175</td><td>387.35</td><td>390.525</td><td>393.7</td><td>396.875</td><td>400.05</td><td>403.225</td></tr>
+<tr><th>16</th><td>406.4</td><td>409.575</td><td>412.75</td><td>415.925</td><td>419.1</td><td>422.275</td><td>425.45</td><td>428.625</td></tr>
+<tr><th>17</th><td>431.8</td><td>434.975</td><td>438.15</td><td>441.325</td><td>444.5</td><td>447.675</td><td>450.85</td><td>454.025</td></tr>
+<tr><th>18</th><td>457.2</td><td>460.375</td><td>463.55</td><td>466.725</td><td>469.9</td><td>473.075</td><td>476.25</td><td>479.425</td></tr>
+<tr><th>19</th><td>482.6</td><td>485.775</td><td>488.95</td><td>492.125</td><td>495.3</td><td>498.475</td><td>501.65</td><td>504.825</td></tr>
+<tr><th>20</th><td>508.0</td><td>511.175</td><td>514.35</td><td>517.525</td><td>520.7</td><td>523.875</td><td>527.05</td><td>530.225</td></tr>
+<tr><th>21</th><td>533.4</td><td>536.575</td><td>539.75</td><td>542.925</td><td>546.1</td><td>549.275</td><td>552.45</td><td>555.625</td></tr>
+<tr><th>22</th><td>558.8</td><td>561.975</td><td>565.15</td><td>568.325</td><td>571.5</td><td>574.675</td><td>577.85</td><td>581.025</td></tr>
+<tr><th>23</th><td>584.2</td><td>587.375</td><td>590.55</td><td>593.725</td><td>596.9</td><td>600.075</td><td>603.25</td><td>606.425</td></tr>
+<tr><th>24</th><td>609.6</td><td>612.775</td><td>615.95</td><td>619.125</td><td>622.3</td><td>625.475</td><td>628.65</td><td>631.825</td></tr>
+<tr><th>25</th><td>635.0</td><td>638.175</td><td>641.35</td><td>644.525</td><td>647.7</td><td>650.875</td><td>654.05</td><td>657.225</td></tr>
+<tr><th>26</th><td>660.4</td><td>663.575</td><td>666.75</td><td>669.925</td><td>673.1</td><td>676.275</td><td>679.45</td><td>682.625</td></tr>
+<tr><th>27</th><td>685.8</td><td>688.975</td><td>692.15</td><td>695.325</td><td>698.5</td><td>701.675</td><td>704.85</td><td>708.025</td></tr>
+<tr><th>28</th><td>711.2</td><td>714.375</td><td>717.55</td><td>720.725</td><td>723.9</td><td>727.075</td><td>730.25</td><td>733.425</td></tr>
+<tr><th>29</th><td>736.6</td><td>739.775</td><td>742.95</td><td>746.125</td><td>749.3</td><td>752.475</td><td>755.65</td><td>758.825</td></tr>
+<tr><th>30</th><td>762.0</td><td>765.175</td><td>768.35</td><td>771.525</td><td>774.7</td><td>777.875</td><td>781.05</td><td>784.225</td></tr>
+</table>
+<h3>Fórmulas generales para la conversión de los diferentes sistemas</h3>
+<table>
+<tr><th>Conversión</th><th>Fórmula</th></tr>
+<tr><td>Centígrados a Fahrenheit</td><td>°F = 9/5 °C + 32</td></tr>
+<tr><td>Fahrenheit a Centígrados</td><td>°C = 5/9 (°F − 32)</td></tr>
+<tr><td>Réaumur a Centígrados</td><td>°C = 5/4 °R</td></tr>
+<tr><td>Fahrenheit a Réaumur</td><td>°R = 4/9 (°F − 32)</td></tr>
+<tr><td>Réaumur a Fahrenheit</td><td>°F = (9/4 °R) + 32</td></tr>
+<tr><td>Celsius a Kelvin</td><td>°K = 273.15 + °C</td></tr>
+<tr><td>Fahrenheit a Rankine</td><td>°Ra = 459.67 + °F</td></tr>
+<tr><td>Rankine a Kelvin</td><td>°K = 5/9 °Ra</td></tr>
+</table>
+
+<h3>Factores químicos de conversión</h3>
+<p class="pag">Pág. 53</p>
+<table><caption>Factores químicos de conversión</caption>
+<tr><th>Constituyentes</th><th>A<br>epm a ppm</th><th>B<br>ppm a epm</th><th>C<br>epm a gpg</th><th>D<br>gpg a epm</th><th>E<br>ppm a ppm CaCO<sub>3</sub></th></tr>
+<tr><td>calcio Ca<sup>+2</sup></td><td>20.04</td><td>0.04991</td><td>1.1719</td><td>0.8533</td><td>2.4970</td></tr>
+<tr><td>hierro Fe<sup>+2</sup></td><td>27.92</td><td>0.03582</td><td>1.6327</td><td>0.6125</td><td>1.7923</td></tr>
+<tr><td>magnesio Mg<sup>+2</sup></td><td>12.16</td><td>0.08224</td><td>0.7111</td><td>1.4063</td><td>4.1151</td></tr>
+<tr><td>potasio K<sup>+1</sup></td><td>39.10</td><td>0.02558</td><td>2.2865</td><td>0.4373</td><td>1.2798</td></tr>
+<tr><td>sodio Na<sup>+1</sup></td><td>23.00</td><td>0.04348</td><td>1.3450</td><td>0.7435</td><td>2.1756</td></tr>
+<tr><td>bicarbonato (HCO<sub>3</sub>)<sup>−1</sup></td><td>61.01</td><td>0.01639</td><td>3.5678</td><td>0.2803</td><td>0.8202</td></tr>
+<tr><td>carbonato (CO<sub>3</sub>)<sup>−2</sup></td><td>30.00</td><td>0.03333</td><td>1.7544</td><td>0.5700</td><td>1.6680</td></tr>
+<tr><td>cloro (Cl)<sup>−1</sup></td><td>35.46</td><td>0.02820</td><td>2.0737</td><td>0.4822</td><td>1.4112</td></tr>
+<tr><td>hidróxido (OH)<sup>−1</sup></td><td>17.07</td><td>0.05879</td><td>0.9947</td><td>1.0053</td><td>2.9263</td></tr>
+<tr><td>nitrato (NO<sub>3</sub>)<sup>−1</sup></td><td>62.01</td><td>0.01613</td><td>3.6263</td><td>0.2758</td><td>0.8070</td></tr>
+<tr><td>fosfato (PO<sub>4</sub>)<sup>−3</sup></td><td>31.67</td><td>0.03158</td><td>1.8520</td><td>0.5400</td><td>1.5800</td></tr>
+<tr><td>sulfato (SO<sub>4</sub>)<sup>−2</sup></td><td>48.04</td><td>0.02082</td><td>2.8094</td><td>0.3559</td><td>1.0416</td></tr>
+<tr><td>bicarbonato de calcio Ca(HCO<sub>3</sub>)<sub>2</sub></td><td>805.00</td><td>0.01234</td><td>4.7398</td><td>0.2120</td><td>0.6174</td></tr>
+<tr><td>carbonato de calcio (CaCO<sub>3</sub>)</td><td>50.04</td><td>0.01998</td><td>2.9263</td><td>0.3417</td><td>1.0000</td></tr>
+<tr><td>cloruro de calcio (CaCl<sub>2</sub>)</td><td>55.50</td><td>0.01802</td><td>3.2456</td><td>0.3081</td><td>0.9016</td></tr>
+<tr><td>hidróxido de calcio Ca(OH)<sub>2</sub></td><td>37.05</td><td>0.02699</td><td>2.1667</td><td>0.4615</td><td>1.3506</td></tr>
+<tr><td>sulfato de calcio (CaSO<sub>4</sub>)</td><td>68.07</td><td>0.01469</td><td>3.9807</td><td>0.2512</td><td>0.7351</td></tr>
+<tr><td>bicarbonato férrico Fe(HCO<sub>3</sub>)<sub>3</sub></td><td>88.93</td><td>0.01124</td><td>5.2006</td><td>0.1923</td><td>0.5627</td></tr>
+<tr><td>carbonato férrico Fe<sub>2</sub>(CO<sub>3</sub>)<sub>3</sub></td><td>57.92</td><td>0.01727</td><td>3.3871</td><td>0.2951</td><td>0.8640</td></tr>
+<tr><td>sulfato férrico Fe<sub>2</sub>(CO<sub>4</sub>)<sub>3</sub> [sic]</td><td>75.96</td><td>0.01316</td><td>4.4421</td><td>0.2251</td><td>0.6588</td></tr>
+<tr><td>bicarbonato magnésico Mg(HCO<sub>3</sub>)<sub>2</sub></td><td>73.17</td><td>0.01367</td><td>4.2789</td><td>0.2337</td><td>0.6839</td></tr>
+<tr><td>carbonato magnésico (MgCO<sub>3</sub>)</td><td>42.16</td><td>1.02372</td><td>2.4655</td><td>0.4056</td><td>1.1869</td></tr>
+<tr><td>cloruro de magnesio (MgCl<sub>2</sub>)</td><td>47.62</td><td>0.02100</td><td>2.7848</td><td>0.3591</td><td>1.0508</td></tr>
+<tr><td>hidróxido de magnesio Mg(OH)<sub>2</sub></td><td>29.17</td><td>0.03428</td><td>1.7058</td><td>0.5862</td><td>1.7155</td></tr>
+<tr><td>sulfato de magnesio (MgSO<sub>4</sub>)</td><td>60.20</td><td>0.01661</td><td>3.5202</td><td>0.2841</td><td>0.6312</td></tr>
+</table>
+<p>epm = equivalentes por millón<br>ppm = partes por millón<br>gpg = granos por galón<br>p.p.m. CaCO<sub>3</sub> = partes por millón de carbonato de calcio</p>
+<p class="small">Nota: los valores se transcriben tal como están impresos. En el original, el sulfato férrico se imprime como «Fe<sub>2</sub>(CO<sub>4</sub>)<sub>3</sub>»; la columna A del bicarbonato de calcio imprime 805.00; y la columna B del carbonato magnésico imprime 1.02372.</p>
+
+<p class="pag">Pág. 54 (pág. PDF 65) — Fotografía a página completa, sin texto</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de un equipo de cribado en exteriores: dos tolvas verticales metálicas con motor azul y señal amarilla de advertencia, un transportador inclinado, un contenedor verde grande y un tablero de control; al fondo, cerros y vegetación bajo cielo despejado.</span></div>
+
+<h2>Abreviaturas</h2>
+<p class="pag">Pág. 55</p>
+<table><caption>Abreviaturas</caption><tr><th>Sigla</th><th>Significado</th></tr>
+<tr><td>At</td><td>Altitud sobre el nivel del mar</td></tr>
+<tr><td>Cl</td><td>Cloro</td></tr>
+<tr><td>r</td><td>Coeficiente de transferencia de oxígeno</td></tr>
+<tr><td>CF</td><td>Coliformes fecales</td></tr>
+<tr><td>COV</td><td>Compuesto orgánico volátil</td></tr>
+<tr><td>DBO</td><td>Demanda bioquímica de oxígeno</td></tr>
+<tr><td>DBOe</td><td>Demanda bioquímica de oxígeno de entrada</td></tr>
+<tr><td>DQO</td><td>Demanda química de oxígeno</td></tr>
+<tr><td>CO<sub>2</sub></td><td>Dióxido de carbono</td></tr>
+<tr><td>P</td><td>Fósforo</td></tr>
+<tr><td>SePT</td><td>Fósforo final</td></tr>
+<tr><td>SiPT</td><td>Fósforo inicial</td></tr>
+<tr><td>PT</td><td>Fósforo total</td></tr>
+<tr><td>Q</td><td>Gasto</td></tr>
+<tr><td>Qr</td><td>Gasto de recirculación</td></tr>
+<tr><td>Qf</td><td>Gasto final</td></tr>
+<tr><td>GyA</td><td>Grasas y aceites</td></tr>
+<tr><td>NaClO</td><td>Hipoclorito de sodio</td></tr>
+<tr><td>IVL</td><td>Índice volumétrico de lodos</td></tr>
+<tr><td>Y</td><td>Metabolismo celular</td></tr>
+<tr><td>N</td><td>Nitrógeno</td></tr>
+<tr><td>NH<sub>3</sub></td><td>Nitrógeno amoniacal</td></tr>
+<tr><td>SeNH<sub>3</sub></td><td>Nitrógeno amoniacal final</td></tr>
+<tr><td>SiNH<sub>3</sub></td><td>Nitrógeno amoniacal inicial</td></tr>
+<tr><td>NO<sub>3</sub><sup>−</sup></td><td>Nitrógeno de nitratos</td></tr>
+<tr><td>NT</td><td>Nitrógeno total</td></tr>
+<tr><td>OD</td><td>Oxígeno disuelto</td></tr>
+<tr><td>pH</td><td>Potencial hidrógeno</td></tr>
+<tr><td>RLA</td><td>Recirculación de lodos activados</td></tr>
+<tr><td>A/M</td><td>Relación alimento/microorganismos</td></tr>
+<tr><td>Kd</td><td>Respiración endógena</td></tr>
+<tr><td>SS</td><td>Sólidos suspendidos</td></tr>
+<tr><td>SSLM</td><td>Sólidos suspendidos del licor mezclado</td></tr>
+<tr><td>SST</td><td>Sólidos suspendidos totales</td></tr>
+<tr><td>SSV</td><td>Sólidos suspendidos volátiles</td></tr>
+<tr><td>SSVs</td><td>Sólidos suspendidos volátiles a la salida</td></tr>
+<tr><td>SSVr</td><td>Sólidos suspendidos volátiles en el lodo de recirculación</td></tr>
+<tr><td>SSVi</td><td>Sólidos suspendidos volátiles iniciales</td></tr>
+<tr><td>SSVLM</td><td>Sólidos suspendidos volátiles en el licor mezclado</td></tr>
+<tr><td>SSVr</td><td>Sólidos suspendidos volátiles en la recirculación</td></tr>
+<tr><td>T</td><td>Temperatura</td></tr>
+<tr><td>TRCM</td><td>Tiempo de residencia celular medio</td></tr>
+<tr><td>qC</td><td>Tiempo de residencia celular medio</td></tr>
+<tr><td>Tr</td><td>Tiempo de residencia hidráulico</td></tr>
+<tr><td>K</td><td>Velocidad de consumo de sustrato</td></tr>
+<tr><td>Vr</td><td>Volumen del reactor</td></tr>
+</table>
+<p class="small">Nota: en el original la sigla SSVr aparece dos veces, con dos significados distintos («Sólidos suspendidos volátiles en el lodo de recirculación» y «Sólidos suspendidos volátiles en la recirculación»); asimismo, TRCM y qC comparten el significado «Tiempo de residencia celular medio». Se transcribe tal como está impreso.</p>
+
+<p class="pag">Pág. 56 (pág. PDF 67) — Fotografía a página completa, sin texto</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de cuatro rejillas estáticas inclinadas en batería, con tolvas, tuberías verdes y tambos azules al pie; un trabajador con sombrero camina sobre el piso mojado.</span></div>
+
+<h2>Bibliografía</h2>
+<p class="pag">Pág. 57</p>
+<ul>
+<li>Crites, R., Tchbanoglous, G. (2000). Tratamiento de aguas residuales en pequeñas poblaciones. Primera edición. Editorial McGraw-Hill. ISBN: 0-07-289087-8.</li>
+<li>EPA, 1992. (s.f.). Environmental Protection Agecy [sic] “Guidelines for Water Reuse”. EPA/628/R-92/004.</li>
+<li>EPA, 2011. (s.f.). Principles of Design and Operations of Wastewater Treatment Pond Systems for Plant Operators, Engineers, and Managers. Office of Research and Development National Risk Management Research Laboratory. EPA/600/R-11/088. United States.</li>
+<li>Grady, C. P., &amp; Lim, H. C. (1980). Biological Wastewater Treatment Theory and Applications. Marcel Dekker, New York.</li>
+<li>Metcalf &amp; Eddy. (2003). Wastewater Engineering, Treatment and Reuse. 4th edition. McGraw Hill, New York. ISBN: 0-07-041878-0.</li>
+<li>Romero Rojas, J. A. (1999). Tratamiento de aguas residuales por lagunas de estabilización. 3ra. Edición. Ed. Alfaomega. ISBN: 970-15-0403-8.</li>
+<li>Water Pollution Control Federation. Clarifier Design. Manual Of Practice FD-8 (1985). ISBN 0-943244-61-7. USA. World Composition Services, Inc.</li>
+<li>Water Pollution Control Federation. Preliminary Treatment for Wastewater Facilities. Manual Of Practice Operation &amp; Maintenance-02 (1980). Lancaster Press, Inc.</li>
+<li>Water Pollution Control Federation. Plant Maintenance Program. Manual Of Practice Operation &amp; Maintenance-3 (1982). Lancaster Press, Inc.</li>
+</ul>
+<p class="small">Nota: en el original, la referencia de la EPA de 1992 imprime «Agecy» en lugar de «Agency»; se transcribe tal como está impreso.</p>
+
+<p class="pag">Pág. 58 (pág. PDF 69) — Fotografía a página completa, sin texto</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de un tornillo transportador inclinado blanco con motor azul, una tolva cónica metálica y contenedores verdes, junto a una estructura de concreto; en primer plano, tubos negros apilados en el suelo.</span></div>
+
+<h2>Ilustraciones</h2>
+<p class="pag">Pág. 59</p>
+<table class="toc">
+<tr><td>Ilustración 1.1 Rejilla de limpieza manual</td><td class="pg">3</td></tr>
+<tr><td>Ilustración 1.2 Rejillas automáticas de limpieza mecánica</td><td class="pg">4</td></tr>
+<tr><td>Ilustración 1.3 Rejillas estáticas</td><td class="pg">5</td></tr>
+<tr><td>Ilustración 1.4 Arreglo de la reja</td><td class="pg">9</td></tr>
+<tr><td>Ilustración 1.5 Corte de la reja</td><td class="pg">9</td></tr>
+<tr><td>Ilustración 1.6 Planta de la reja</td><td class="pg">9</td></tr>
+<tr><td>Ilustración 1.7 Desarenadores horizontales</td><td class="pg">14</td></tr>
+<tr><td>Ilustración 1.8 Desarenador aireado</td><td class="pg">15</td></tr>
+<tr><td>Ilustración 1.9 Sección transversal de un desarenador aireado</td><td class="pg">17</td></tr>
+<tr><td>Ilustración 1.10 Modelo de flujo en un desarenador aireado</td><td class="pg">18</td></tr>
+<tr><td>Ilustración 1.11 Desarenador de vórtice</td><td class="pg">20</td></tr>
+<tr><td>Ilustración 1.12 Desarenadores de vórtice a) Sistema PISTA b) Sistema Teacup</td><td class="pg">20</td></tr>
+<tr><td>Ilustración 1.13 Configuración de la canaleta Parshall</td><td class="pg">24</td></tr>
+<tr><td>Ilustración 1.14 Desarenador del ejemplo</td><td class="pg">24</td></tr>
+<tr><td>Ilustración 1.15 Sección del desarenador con canaleta Parshall</td><td class="pg">30</td></tr>
+<tr><td>Ilustración 2.1 Ubicación del clarificador primario en una planta de tratamiento</td><td class="pg">35</td></tr>
+<tr><td>Ilustración 2.2 Sedimentador primario a) circular b) rectangular</td><td class="pg">37</td></tr>
+<tr><td>Ilustración 2.3 Sedimentadores primarios a) Rastras b) Sedimentador circular c) Sedimentador rectangular d) Vertedores triangulares</td><td class="pg">38</td></tr>
+</table>
+
+<p class="pag">Pág. 60 (pág. PDF 71) — Fotografía a página completa, sin texto</p>
+<div class="fig"><b>[Página fotográfica, sin texto]</b><span class="desc">Fotografía en color a página completa de una rejilla automática de limpieza mecánica: banda oscura vertical con motor azul en la parte superior, estructura metálica azul, un contenedor azul junto a ella y rejillas de piso en primer plano.</span></div>
+
+<h2>Tablas</h2>
+<p class="pag">Pág. 61</p>
+<table class="toc">
+<tr><td>Tabla 1.1 Tamaño de apertura de rejas y rejillas</td><td class="pg">2</td></tr>
+<tr><td>Tabla 1.2 Rejas automáticas para diferentes condiciones de instalación</td><td class="pg">4</td></tr>
+<tr><td>Tabla 1.3 Criterios de diseño de rejas y rejillas (Metcalf &amp; Eddy, Inc., 2003)</td><td class="pg">5</td></tr>
+<tr><td>Tabla 1.4 Resumen de los valores del ejemplo</td><td class="pg">8</td></tr>
+<tr><td>Tabla 1.5 Resumen de los valores del ejemplo 1.2.2</td><td class="pg">11</td></tr>
+<tr><td>Tabla 1.6 Criterios de diseño para desarenadores horizontales</td><td class="pg">14</td></tr>
+<tr><td>Tabla 1.7 Información típica para desarenadores aireados</td><td class="pg">19</td></tr>
+<tr><td>Tabla 1.8 Información típica para el diseño de desarenadores de vórtice</td><td class="pg">19</td></tr>
+<tr><td>Tabla 1.9 Velocidad teórica máxima de derrame para tanques desarenadores</td><td class="pg">21</td></tr>
+<tr><td>Tabla 1.10 Fórmulas para canales Parshall</td><td class="pg">23</td></tr>
+<tr><td>Tabla 1.11 Dimensiones de la canaleta Parshall, de acuerdo con la configuración de la Ilustración 1.13</td><td class="pg">23</td></tr>
+<tr><td>Tabla 2.1 Criterios de diseño de sedimentadores primarios</td><td class="pg">38</td></tr>
+<tr><td>Tabla 2.2 Criterios de diseño de sedimentadores primarios</td><td class="pg">39</td></tr>
+</table>
+
+<p class="pag">Pág. PDF 73 — Página en blanco</p>
+
+<h2>Contraportada</h2>
+
+<p class="centro">www.semarnat.gob.mx<br>www.conagua.gob.mx<br>Cuidemos y valoremos el agua que mueve a México</p>
+
+<footer><p>Fin de la transcripción del Libro 26 del MAPAS, «Diseño de Plantas de Tratamiento de Aguas Residuales Municipales: Pretratamiento y Tratamiento Primario» (CONAGUA, ISBN 978-607-626-008-1), a partir del PDF <i>Libro26.pdf</i> (74 páginas). Las ilustraciones, al ser imágenes en el original, se describen con su número, título y contenido visible; las páginas fotográficas sin texto y la página en blanco se anotan en su lugar.</p></footer>
+
+</body>
+</html>
