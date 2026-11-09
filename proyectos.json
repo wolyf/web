@@ -25,6 +25,16 @@
       "icono": "💧",
       "etiquetas": ["agua-potable", "cotizaciones"],
       "privado": true
+    },
+    "manuales-conagua": {
+      "nombre": "Manuales de agua potable, alcantarillado y saneamiento",
+      "carpetas": ["manuales-conagua"],
+      "corto": "Manuales Conagua",
+      "inicio": "manuales-conagua/",
+      "descripcion": "Los 54 libros de los manuales técnicos de la Conagua para agua potable, alcantarillado y saneamiento, convertidos de PDF a HTML para leerlos y buscarlos en el navegador.",
+      "anio": 2026,
+      "icono": "📚",
+      "etiquetas": ["agua-potable", "normativa", "biblioteca"]
     }
   }
 }
