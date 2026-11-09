@@ -40,6 +40,7 @@ const RESERVADOS = new Set([GENERAL, "css", "js", "herramientas", "node_modules"
 // ---- Lógica pura (probada en herramientas/pruebas/) ----
 
 const PORTADA = path.join(RAIZ, "index.html");
+const SITEMAP = path.join(RAIZ, "sitemap.xml");
 
 export function leerRegistro(archivo = REGISTRO) {
   return JSON.parse(fs.readFileSync(archivo, "utf8")).proyectos ?? {};
@@ -175,6 +176,23 @@ export function actualizarPortada(html, proyectos, sitio = {}) {
   return nuevo;
 }
 
+// sitemap.xml para buscadores: la portada y la página de inicio de cada proyecto
+// visible y no privado. Lo demás (p. ej. cada libro de los manuales) lo encuentra
+// Google siguiendo los enlaces de esas páginas.
+export function generarSitemap(proyectos, sitio = {}) {
+  if (!sitio.url) throw new Error("Falta sitio.url en proyectos.json (p. ej. https://wolyf.github.io/web/).");
+  const base = sitio.url.endsWith("/") ? sitio.url : `${sitio.url}/`;
+  const rutas = ["", ...visibles(proyectos).filter(([, p]) => !p.privado).map(([id, p]) => inicioDe(id, p))];
+  return [
+    `<?xml version="1.0" encoding="UTF-8"?>`,
+    `<!-- Generado desde proyectos.json: npm run proyectos -- portada -->`,
+    `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
+    ...rutas.map((r) => `  <url><loc>${escaparHTML(new URL(r, base).href)}</loc></url>`),
+    `</urlset>`,
+    ``,
+  ].join("\n");
+}
+
 // ---- Línea de comandos ----
 
 function argumentos(argv) {
@@ -280,17 +298,23 @@ const comandos = {
   },
 
   portada(_, opciones) {
-    const html = fs.readFileSync(PORTADA, "utf8");
-    const nuevo = actualizarPortada(html, leerRegistro(), leerSitio());
+    const proyectos = leerRegistro();
+    const sitio = leerSitio();
+    const archivos = [
+      [PORTADA, actualizarPortada(fs.readFileSync(PORTADA, "utf8"), proyectos, sitio)],
+      [SITEMAP, generarSitemap(proyectos, sitio)],
+    ];
+    const pendientes = archivos.filter(([archivo, nuevo]) => !fs.existsSync(archivo) || fs.readFileSync(archivo, "utf8") !== nuevo);
+    const nombres = pendientes.map(([archivo]) => path.basename(archivo)).join(" y ");
     if (opciones.revisar) {
-      if (nuevo !== html) {
-        console.error("✗ index.html no está al día con proyectos.json. Corre «npm run proyectos -- portada».");
+      if (pendientes.length) {
+        console.error(`✗ ${nombres} no está al día con proyectos.json. Corre «npm run proyectos -- portada».`);
         process.exitCode = 1;
-      } else console.log("✓ La portada está al día con proyectos.json.");
-    } else if (nuevo === html) console.log("La portada ya estaba al día.");
+      } else console.log("✓ La portada y sitemap.xml están al día con proyectos.json.");
+    } else if (!pendientes.length) console.log("La portada y sitemap.xml ya estaban al día.");
     else {
-      fs.writeFileSync(PORTADA, nuevo);
-      console.log("Portada actualizada desde proyectos.json.");
+      for (const [archivo, nuevo] of pendientes) fs.writeFileSync(archivo, nuevo);
+      console.log(`Actualizado desde proyectos.json: ${nombres}.`);
     }
   },
 

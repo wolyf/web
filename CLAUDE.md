@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-Sitio personal de **Wolfgang Resendiz** (GitHub Pages, se publica desde `main`): https://wolyf.github.io/web/
+Sitio personal de **Wolfgang Reséndiz** (también «Resendiz»; GitHub Pages, se publica desde `main`): https://wolyf.github.io/web/
 
 Preferencias del dueño: responder en español; no usar el guion largo (U+2014) en textos, interfaz ni mensajes; notación formal cuando aporte.
 
@@ -36,7 +36,7 @@ npm run proyectos -- listar                      # proyectos y sus carpetas
 npm run proyectos -- zona <ruta>                 # a qué zona pertenece una ruta
 npm run proyectos -- revisar                     # zonas que toca la copia de trabajo frente a origin/main
 npm run proyectos -- nuevo <id> --nombre "…"     # crea un proyecto (solo desde el entorno general)
-npm run proyectos -- portada [--revisar]         # regenera (o revisa) las tarjetas y el menú de la portada
+npm run proyectos -- portada [--revisar]         # regenera (o revisa) la portada y sitemap.xml
 ```
 
 ### Agregar un proyecto (entorno general)
@@ -64,7 +64,17 @@ Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la p
 | `codigo: false` | Quita el enlace «Código» a GitHub. |
 | `oculto: true` | Deja el proyecto fuera de la portada (en construcción). |
 
-`sitio.nombre` y `sitio.repositorio` son los datos generales (el repositorio arma los enlaces «Código»).
+`sitio.nombre`, `sitio.url` y `sitio.repositorio` son los datos generales (la URL arma `sitemap.xml`; el repositorio, los enlaces «Código»).
+
+## Buscadores (SEO)
+
+Meta: que al buscar «Wolfgang Reséndiz» o «Wolfgang Resendiz» salga primero este sitio, por encima de LinkedIn y de la tesis.
+
+- La portada trata de él: `<title>`, descripción, `<h1>` y la sección «Sobre mí» llevan su nombre completo (con y sin acento), profesión, UNAM y tesis. Darwin se queda, pero no en el título ni en la descripción.
+- `index.html` tiene en el `<head>` `canonical`, Open Graph (imagen `img/vista-previa.png`, 1200 × 630), `rel="me"` y un JSON-LD (`ProfilePage` + `Person` + `Thesis`) con `sameAs` a LinkedIn, ResearchGate y GitHub, y a la tesis en el Repositorio UNAM y Ptolomeo. Si hay un perfil nuevo, agrégalo en los tres lugares (JSON-LD, `rel="me"` y «Sobre mí»).
+- `sitemap.xml` se genera con `npm run proyectos -- portada` (portada y página de inicio de cada proyecto público); una prueba revisa que esté al día. `robots.txt` solo sirve en la raíz del dominio, así que no hay.
+- Si el sitio cambia de dominio, cambia `sitio.url`, el `canonical`, `og:url`, `og:image` y los `@id`/`url` del JSON-LD, y regenera la imagen de vista previa.
+- Cada página de proyecto debería enlazar a la portada con el nombre completo (eso se hace desde el entorno del proyecto).
 
 ## Estructura de la zona general
 
