@@ -140,6 +140,21 @@ npm run catalogo -- usuario listar
 
 Después, commit de `catalogo/datos/`. Para que vean los PDF, comparte la carpeta raíz de Drive (`drive.raiz`) con su correo como lector (`share_file`). Si cambia la contraseña de un administrador, debe actualizar `CATALOGO_CONTRASENA` en el entorno.
 
+## Propuesta pendiente: unificar el acceso con la sesión del sitio
+
+Estado actual (verificado): el catálogo tiene su propia sesión (`catalogo/js/app.js`, clave `catalogo-wr:sesion` en `sessionStorage`/`localStorage`) y su propio `catalogo/datos/acceso.json`. La DEK es aleatoria ($32$ bytes), cifra `catalogo.enc` directamente y se envuelve por usuario con $\mathrm{KEK}_u=\mathrm{PBKDF2\text{-}SHA256}(\text{contraseña}_u,\text{sal}_u,600\,000)$. No usa `js/sesion.mjs` ni `datos/acceso.json`, y su encabezado no tiene el bloque `.ajustes`, así que no muestra el botón de sesión del sitio.
+
+Propuesta: que la llave del catálogo sea $K_p=\mathrm{HKDF}(K,\texttt{"wr-proyecto:catalogo"})$, obtenida con `sesion.llaveProyecto("catalogo")`, de modo que iniciar sesión en el sitio abra también el catálogo.
+
+Pasos (no se han hecho):
+
+1. Desde el entorno del catálogo, con `CATALOGO_*` y `.catalogo/`: descifrar con la DEK actual y volver a cifrar `catalogo.enc` con $K_p$. Hay que resellar también el llavero de administración (`administracion` en `acceso.json`).
+2. Reemplazar `entrar`/`leerSesion` de `app.js` por `sesion.activa()`, `sesion.llaveProyecto("catalogo")` y `sesion.alCambiar(...)`. Mantener la edición solo para administradores.
+3. Adaptar la CLI (`catalogo.mjs`, `llavero.mjs`) y las pruebas; los usuarios pasarían a gestionarse con `npm run sesion`.
+4. Solo entonces, agregar `<div class="ajustes"></div>` al `.site-header` de `catalogo/index.html` para mostrar el botón de sesión.
+
+Riesgo: si se cambia la web antes de resellar los datos (o al revés), el catálogo queda sin acceso. Por eso hacerlo en un solo PR, probado con `npm run demo`, y con las credenciales del dueño.
+
 ## Código del catálogo
 
 - JavaScript sin dependencias ni build; comentarios en español, como el resto del sitio. Los datos se interpolan siempre con `html\`…\`` (escapa por defecto).
