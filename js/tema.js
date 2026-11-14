@@ -18,6 +18,10 @@
  * en cada `.ajustes` y partes privadas). Antes de pintar marca
  * <html data-sesion="activa|inactiva"> según la sesión guardada, para que las
  * partes con data-solo-sesion o data-sin-sesion no parpadeen.
+ *
+ * Y los subrayados sincronizados (js/subrayados.mjs): con sesión se puede
+ * subrayar texto en cualquier página. Marca <html data-subrayados="activos|apagados">
+ * (preferencia «subrayados-activos» de localStorage: «1» o «0»).
  */
 (() => {
   "use strict";
@@ -60,8 +64,12 @@
     }
   }
   raiz.dataset.sesion = guardada ? "activa" : "inactiva";
+  raiz.dataset.subrayados = guardada && leer("subrayados-activos") !== "0" ? "activos" : "apagados";
   const origen = document.currentScript?.src;
-  if (origen) import(new URL("sesion.mjs", origen).href).catch((e) => console.warn("Sesión no disponible", e));
+  if (origen) {
+    import(new URL("sesion.mjs", origen).href).catch((e) => console.warn("Sesión no disponible", e));
+    import(new URL("subrayados.mjs", origen).href).catch((e) => console.warn("Subrayados no disponibles", e));
+  }
 
   const sistemaOscuro = window.matchMedia("(prefers-color-scheme: dark)");
   const esOscuro = () => (raiz.dataset.tema ? raiz.dataset.tema === "oscuro" : sistemaOscuro.matches);

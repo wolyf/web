@@ -17,6 +17,10 @@
 //   fragmento.enc = "WRF1" ‖ iv (12 bytes) ‖ AES-256-GCM(K_f, gzip(texto))
 //   K_f           = HKDF-SHA256(K, info = "wr-fragmentos")
 //
+// El mismo formato sirve para otros datos cifrados del sitio, solo cambia el
+// «info» de HKDF (p. ej. los subrayados usan "wr-subrayados"; el token de
+// sincronización, "wr-token"; ver js/subrayados-sync.mjs).
+//
 // y cada proyecto puede pedir su propia llave derivada (para envolver
 // la llave de sus datos, como hace el catálogo):
 //
@@ -162,10 +166,13 @@ export async function entrar(acceso, usuario, contrasena) {
 
 export const esFragmento = (bytes) => bytes.length > MAGIA.length + LARGO_IV && MAGIA.every((b, i) => bytes[i] === b);
 
-export async function cifrarFragmento(texto, llave) {
+export const INFO_FRAGMENTOS = "wr-fragmentos";
+
+// `info` distingue el uso de la llave derivada (por defecto, fragmentos privados)
+export async function cifrarFragmento(texto, llave, info = INFO_FRAGMENTOS) {
   const iv = aleatorio(LARGO_IV);
   const plano = await comprimir(codificador.encode(texto));
-  const kf = await llaveAES(await derivar(llave, "wr-fragmentos"), ["encrypt"]);
+  const kf = await llaveAES(await derivar(llave, info), ["encrypt"]);
   const cifrado = new Uint8Array(await subtle.encrypt({ name: "AES-GCM", iv, additionalData: MAGIA }, kf, plano));
   const salida = new Uint8Array(MAGIA.length + LARGO_IV + cifrado.length);
   salida.set(MAGIA, 0);
@@ -174,15 +181,41 @@ export async function cifrarFragmento(texto, llave) {
   return salida;
 }
 
-export async function descifrarFragmento(datos, llave) {
+export async function descifrarFragmento(datos, llave, info = INFO_FRAGMENTOS) {
   const bytes = datos instanceof Uint8Array ? datos : new Uint8Array(datos);
   if (!esFragmento(bytes)) throw new Error("No es un fragmento cifrado del sitio");
   const iv = bytes.subarray(MAGIA.length, MAGIA.length + LARGO_IV);
-  const kf = await llaveAES(await derivar(llave, "wr-fragmentos"), ["decrypt"]);
+  const kf = await llaveAES(await derivar(llave, info), ["decrypt"]);
   const plano = await subtle.decrypt(
     { name: "AES-GCM", iv, additionalData: MAGIA },
     kf,
     bytes.subarray(MAGIA.length + LARGO_IV),
   );
   return decodificador.decode(await descomprimir(new Uint8Array(plano)));
+}
+
+// ---- Secretos cortos (token de sincronización) ----
+//
+//   { iv, dato } en base64; dato = AES-256-GCM(HKDF(K, info), texto),
+//   con `info` también como datos adicionales autenticados.
+
+export const INFO_TOKEN = "wr-token";
+
+export async function sellarSecreto(texto, llave, info = INFO_TOKEN) {
+  const iv = aleatorio(LARGO_IV);
+  const kf = await llaveAES(await derivar(llave, info), ["encrypt"]);
+  const dato = new Uint8Array(
+    await subtle.encrypt({ name: "AES-GCM", iv, additionalData: codificador.encode(info) }, kf, codificador.encode(texto)),
+  );
+  return { iv: aB64(iv), dato: aB64(dato) };
+}
+
+export async function abrirSecreto(sobre, llave, info = INFO_TOKEN) {
+  const kf = await llaveAES(await derivar(llave, info), ["decrypt"]);
+  const plano = await subtle.decrypt(
+    { name: "AES-GCM", iv: deB64(sobre.iv), additionalData: codificador.encode(info) },
+    kf,
+    deB64(sobre.dato),
+  );
+  return decodificador.decode(plano);
 }

@@ -234,6 +234,33 @@ samp,
 :root[data-tema="oscuro"] .ajuste .icono-sol { display: block; }
 :root[data-tema="oscuro"] .ajuste .icono-luna { display: none; }
 
+/* En pantallas angostas caben los botones de sesión, subrayados, acento, tema y Darwin */
+@media (max-width: 460px) {
+  .ajustes {
+    gap: 0;
+  }
+
+  .ajuste {
+    width: 28px;
+  }
+
+  .brand {
+    gap: 8px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 380px) {
+  .ajuste {
+    width: 26px;
+  }
+
+  .brand {
+    gap: 6px;
+    font-size: 0.8rem;
+  }
+}
+
 /* Si el JavaScript no corre, los botones no sirven: se ocultan */
 html:not(.con-js) .ajustes {
   display: none;
