@@ -599,10 +599,11 @@ const comandos = {
         return relativo !== "datos" && relativo !== "herramientas";
       },
     });
-    for (const archivo of ["index.html", "css/styles.css", "js/darwin.js", "js/tema.js", "img/darwin-cara.svg", "img/darwin.svg"]) {
+    for (const archivo of ["index.html", "css/styles.css", "css/fuentes.css", "css/base.css", "css/componentes.css", "css/portada.css", "css/calculadoras.css", "js/darwin.js", "js/tema.js", "js/sesion.mjs", "js/llaves.mjs", "img/darwin-cara.svg", "img/darwin.svg"]) {
       fs.mkdirSync(path.dirname(path.join(destino, archivo)), { recursive: true });
       fs.copyFileSync(path.join(RAIZ, archivo), path.join(destino, archivo));
     }
+    fs.cpSync(path.join(RAIZ, "css", "fuentes"), path.join(destino, "css", "fuentes"), { recursive: true });
     const dek = nuevaDEK();
     const sal = aleatorio(16);
     const contrasena = typeof opciones.contrasena === "string" ? opciones.contrasena : "demo-catalogo";
