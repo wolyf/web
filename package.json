@@ -2,7 +2,7 @@
   "name": "web-wr",
   "private": true,
   "type": "module",
-  "description": "Sitio de Wolfgang Reséndiz, ingeniero civil (hidráulico): calculadoras, catálogo de cotizaciones de agua potable y proyectos futuros",
+  "description": "Sitio de Wolfgang Reséndiz, ingeniero civil y estudiante de Filosofía: calculadoras, catálogo de cotizaciones, manuales de agua potable y proyectos futuros",
   "engines": {
     "node": ">=20"
   },

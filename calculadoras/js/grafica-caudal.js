@@ -122,7 +122,7 @@
       svg.appendChild(el("line", { x1: x, y1, x2: x, y2: y, class: "g-ref" }));
       // Punto gris (con tooltip nativo del navegador).
       const punto = el("circle", { cx: x, cy: y, r: 4, class: "g-punto-ref" });
-      punto.appendChild(el("title", {}, `${lim.etiqueta} — ${lim.v.toFixed(2)} m/s · Q = ${fmt(qRef)} L/s`));
+      punto.appendChild(el("title", {}, `${lim.etiqueta}: ${lim.v.toFixed(2)} m/s · Q = ${fmt(qRef)} L/s`));
       svg.appendChild(punto);
 
       // Caudal encima del punto. Si choca con el punto azul (misma V),
@@ -146,7 +146,7 @@
     // Punto azul del resultado (destacado, al frente).
     svg.appendChild(el("line", { x1: bx, y1, x2: bx, y2: by, class: "g-ref g-ref--azul" }));
     const azul = el("circle", { cx: bx, cy: by, r: 7, class: "g-punto" });
-    azul.appendChild(el("title", {}, `Resultado — V = ${fmt(vCalc)} m/s · Q = ${fmt(qCalc)} L/s`));
+    azul.appendChild(el("title", {}, `Resultado: V = ${fmt(vCalc)} m/s · Q = ${fmt(qCalc)} L/s`));
     svg.appendChild(azul);
     svg.appendChild(el("text", { x: bx, y: Math.max(by - 14, 14), class: "g-q-punto" }, `Q = ${fmt(qCalc)} L/s`));
 

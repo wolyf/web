@@ -1,0 +1,325 @@
+/* Componentes de las calculadoras: gráfica, notas y barra de unidades.
+   Se carga desde styles.css. */
+
+/* ==========================================================================
+   Componentes de las calculadoras (gráfica, notas y barra de unidades)
+   ========================================================================== */
+
+/* La gráfica y las notas se ensanchan más allá de la columna del formulario
+   (que es angosta) y se centran respecto a la ventana. */
+.grafica,
+.notas {
+  width: min(94vw, 720px);
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+/* ---- Gráfica velocidad–caudal (siempre en tema claro, técnico) ---- */
+.grafica {
+  margin-top: 24px;
+  padding: 18px;
+  color: #1a1c22;
+  background: #fffdf8;
+  border: 1px solid #e5dcbd;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.grafica__titulo {
+  margin: 0 0 4px;
+  font-family: var(--font-titulo);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a1c22;
+}
+
+.grafica__sub {
+  margin: 0 0 12px;
+  font-size: 0.85rem;
+  color: #5a5a61;
+}
+
+/* En columnas angostas se puede desplazar horizontalmente sin deformarse */
+.grafica__lienzo {
+  overflow-x: auto;
+}
+
+.grafica svg {
+  display: block;
+  width: 100%;
+  min-width: 560px;
+  height: auto;
+}
+
+/* Trazos de la gráfica */
+.g-rejilla { stroke: #efeadb; stroke-width: 1; }
+.g-eje { stroke: #b8b29c; stroke-width: 1.5; }
+.g-recta { stroke: #16a34a; stroke-width: 2.5; }
+.g-ref { stroke: #c9c3ae; stroke-width: 1.5; stroke-dasharray: 4 4; }
+.g-ref--azul { stroke: #2563eb; stroke-dasharray: 3 3; opacity: 0.55; }
+.g-punto-ref { fill: #6b7280; }
+.g-punto { fill: #2563eb; stroke: #ffffff; stroke-width: 2.5; }
+
+/* Capa de interacción: línea guía + tooltip */
+.g-hover-linea { stroke: #2563eb; stroke-width: 1; stroke-dasharray: 3 3; opacity: 0.6; }
+.g-hover-pt { fill: #2563eb; opacity: 0.75; }
+.g-hover-caja { fill: #1d1d22; opacity: 0.92; }
+.g-hover-txt { fill: #ffffff; font-size: 11px; }
+
+/* Control (slider) de la gráfica */
+.grafica__control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.grafica__control label {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.grafica__control input[type="range"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  padding: 0;
+  accent-color: #2563eb;
+  cursor: pointer;
+}
+
+.grafica__control output {
+  min-width: 84px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #2563eb;
+  text-align: right;
+  white-space: nowrap;
+}
+
+/* Textos de la gráfica */
+.g-tick { fill: #9a968a; font-size: 11px; }
+.g-tick--y { text-anchor: end; }
+.g-tick--x { text-anchor: middle; }
+.g-eje-titulo { fill: #4b5563; font-size: 12px; font-weight: 600; text-anchor: middle; }
+.g-q-ref { fill: #6b7280; font-size: 11px; text-anchor: middle; }
+.g-q-punto { fill: #2563eb; font-size: 12.5px; font-weight: 700; text-anchor: middle; }
+.g-lim-nombre { fill: #374151; font-size: 11px; font-weight: 600; text-anchor: middle; }
+.g-lim-valor { fill: #6b7280; font-size: 11px; text-anchor: middle; }
+
+/* Leyenda y notas técnicas */
+.notas {
+  margin-top: 16px;
+  padding: 16px;
+  color: #374151;
+  background: #fffdf8;
+  border: 1px solid #e5dcbd;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.notas__leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-bottom: 14px;
+  font-size: 0.85rem;
+  color: #374151;
+}
+
+.notas__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.notas__swatch {
+  width: 14px;
+  height: 14px;
+  flex: 0 0 auto;
+  border-radius: 4px;
+}
+
+.notas__swatch--recta { background: #16a34a; }
+.notas__swatch--punto { background: #2563eb; }
+.notas__swatch--ref { background: #6b7280; }
+
+.notas h3 {
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+  color: #1a1c22;
+}
+
+.notas p {
+  margin: 0 0 8px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+}
+
+.notas p:last-child {
+  margin-bottom: 0;
+}
+
+.notas cite {
+  color: #6b7280;
+}
+
+/* ---- Barra inferior de unidades ---- */
+.unit-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 16px;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: calc(100% - 24px);
+  padding: 8px;
+  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 90%, transparent);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-card);
+  border-radius: 999px;
+  box-shadow: var(--shadow-hover);
+}
+
+/* Botón minimizar / expandir */
+.unit-bar__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: 0 0 auto;
+  width: auto; /* anula el "button { width: 100% }" global del formulario */
+  min-height: 40px;
+  margin-top: 0;
+  padding: 8px 16px;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.18s ease, background 0.18s ease;
+}
+
+.unit-bar__toggle:hover {
+  filter: none;
+  border-color: var(--accent);
+}
+
+.unit-bar__icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+/* Contenedor de los selectores (fila; en móvil pasa a columna abajo) */
+.unit-bar__items {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+/* Minimizada: solo se ve el botón */
+.unit-bar[data-colapsada="true"] .unit-bar__items {
+  display: none;
+}
+
+.unit-bar__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.unit-bar select {
+  min-height: 34px;
+  padding: 4px 10px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--text-strong);
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.unit-bar select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* ---- Móvil: barra ancha abajo, unidades en columna, sin recortes ---- */
+@media (max-width: 560px) {
+  .unit-bar {
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    transform: none;
+    width: auto;
+    max-width: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 10px;
+    border-radius: 18px;
+  }
+
+  .unit-bar__toggle {
+    justify-content: center;
+  }
+
+  .unit-bar__items {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 10px;
+    padding-right: 0;
+    overflow-x: visible;
+    max-height: 45vh;
+    overflow-y: auto;
+  }
+
+  .unit-bar__item {
+    justify-content: space-between;
+    font-size: 1rem;
+  }
+
+  .unit-bar select {
+    min-height: 40px;
+  }
+
+  /* Minimizada en móvil: se encoge a una esquina en vez de ocupar todo el ancho */
+  .unit-bar[data-colapsada="true"] {
+    left: auto;
+    right: 12px;
+    border-radius: 999px;
+  }
+}
+
+/* Al imprimir no hacen falta la barra lateral ni los botones */
+@media print {
+  .lateral,
+  .ajustes,
+  .sesion-panel,
+  .unit-bar {
+    display: none !important;
+  }
+
+  .marco {
+    display: block;
+  }
+}

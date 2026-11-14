@@ -1,41 +1,84 @@
 {
-  "descripcion": "Proyectos del sitio. Cada uno solo edita sus carpetas; lo que no pertenece a ningún proyecto es de la zona general. Lo usan herramientas/proyectos.mjs (zonas y portada), el hook de .claude/settings.json y la revisión de GitHub. La portada (index.html) muestra los proyectos en este orden y sitemap.xml enlaza los públicos: tras cambiar algo aquí, corre «npm run proyectos -- portada».",
+  "descripcion": "Proyectos del sitio. Cada uno solo edita sus carpetas; lo que no pertenece a ningún proyecto es de la zona general. Lo usan herramientas/proyectos.mjs (zonas y portada), el hook de .claude/settings.json y la revisión de GitHub. La portada (index.html) muestra los proyectos en este orden y sitemap.xml enlaza los públicos: tras cambiar algo aquí, corre «npm run proyectos -- portada». «areas» y «tipos» agrupan las tarjetas de la portada; cada proyecto declara su «area» y su «tipo».",
   "sitio": {
     "nombre": "Wolfgang Reséndiz",
     "url": "https://wolyf.github.io/web/",
     "repositorio": "https://github.com/wolyf/web"
   },
+  "areas": {
+    "ingenieria": {
+      "nombre": "Ingeniería",
+      "orden": 1
+    },
+    "filosofia": {
+      "nombre": "Filosofía",
+      "orden": 2
+    },
+    "herramientas": {
+      "nombre": "Herramientas",
+      "orden": 3
+    }
+  },
+  "tipos": [
+    "herramienta",
+    "notas",
+    "biblioteca",
+    "app"
+  ],
   "proyectos": {
     "calculadoras": {
       "nombre": "Calculadoras de ingeniería",
-      "carpetas": ["calculadoras"],
+      "carpetas": [
+        "calculadoras"
+      ],
       "corto": "Calculadoras",
       "inicio": "calculadoras/caudal.html",
       "descripcion": "Caudal en tuberías con unidades configurables, ecuación en LaTeX y gráfica interactiva con límites de velocidad.",
       "anio": 2026,
       "icono": "🧮",
-      "etiquetas": ["hidráulica", "calculadora"]
+      "area": "ingenieria",
+      "tipo": "herramienta",
+      "etiquetas": [
+        "hidráulica",
+        "calculadora"
+      ]
     },
     "catalogo": {
       "nombre": "Catálogo de cotizaciones de agua potable",
-      "carpetas": ["catalogo", ".catalogo"],
+      "carpetas": [
+        "catalogo",
+        ".catalogo"
+      ],
       "corto": "Catálogo",
       "inicio": "catalogo/",
       "descripcion": "Proveedores, productos y cotizaciones de piezas y servicios de agua potable. Requiere usuario y contraseña; los datos se publican cifrados.",
       "anio": 2026,
       "icono": "💧",
-      "etiquetas": ["agua-potable", "cotizaciones"],
+      "area": "ingenieria",
+      "tipo": "app",
+      "etiquetas": [
+        "agua-potable",
+        "cotizaciones"
+      ],
       "privado": true
     },
     "manuales-conagua": {
       "nombre": "Manuales de agua potable, alcantarillado y saneamiento",
-      "carpetas": ["manuales-conagua"],
+      "carpetas": [
+        "manuales-conagua"
+      ],
       "corto": "Manuales Conagua",
       "inicio": "manuales-conagua/",
       "descripcion": "Los 54 libros de los manuales técnicos de la Conagua para agua potable, alcantarillado y saneamiento, convertidos de PDF a HTML para leerlos y buscarlos en el navegador.",
       "anio": 2026,
       "icono": "📚",
-      "etiquetas": ["agua-potable", "normativa", "biblioteca"]
+      "area": "ingenieria",
+      "tipo": "biblioteca",
+      "etiquetas": [
+        "agua-potable",
+        "normativa",
+        "biblioteca"
+      ]
     }
   }
 }

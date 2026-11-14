@@ -1,0 +1,500 @@
+/* Base: variables de tema y acento, tipografía, encabezado, ajustes y sesión del sitio.
+   Se carga desde styles.css. */
+
+/* ---- Variables: tema claro ---- */
+:root {
+  color-scheme: light;
+
+  /* Colores de acento (claro / oscuro); se eligen con data-acento */
+  --acento-claro: #b12d6c;
+  --acento-oscuro: #f2777a;
+
+  --bg: #f8f4e6;
+  --bg-gradient: linear-gradient(var(--bg), var(--bg));
+  --surface: #f1ead5;          /* tarjetas y formularios */
+  --surface-2: #ece4ca;        /* etiquetas, botones secundarios, hover */
+  --text: #28282e;
+  --text-strong: #1d1d22;      /* títulos y texto enfatizado */
+  --muted: #5a5a61;
+  --border: #e5dcbd;
+  --border-card: #ded4b2;
+  --border-strong: #c6ba93;
+  --accent: var(--acento-claro);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  --sobre-acento: #ffffff;     /* texto encima del acento */
+  --shadow: 0 4px 4px hsla(47, 43%, 82%, 0.1), 0 2px 2px hsla(47, 43%, 82%, 0.1), 0 1px 1px hsla(47, 43%, 82%, 0.1);
+  --shadow-hover: rgba(124, 114, 76, 0.35) 0 5px 15px 0;
+
+  --radius: 8px;
+  --ancho-lateral: 280px;
+  --ancho-contenido: 760px;
+
+  --font-texto: "Inter", system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-titulo: "Outfit", "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "Google Sans Code", ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* Paletas de acento */
+:root[data-acento="azul"] { --acento-claro: #2a67a5; --acento-oscuro: #6db3f5; }
+:root[data-acento="verde"] { --acento-claro: #2b7f66; --acento-oscuro: #94d294; }
+:root[data-acento="lavanda"] { --acento-claro: #6a3eba; --acento-oscuro: #e5aaf5; }
+:root[data-acento="ambar"] { --acento-claro: #a35f2c; --acento-oscuro: #fede91; }
+
+/* ---- Variables: tema oscuro (del sistema o elegido) ----
+   El bloque se repite: una vez para el sistema y otra para la elección manual. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    color-scheme: dark;
+    --bg: #202025;
+    --surface: #28282e;
+    --surface-2: #323239;
+    --text: #d4d4d8;
+    --text-strong: #fbfbfb;
+    --muted: #a1a1a8;
+    --border: #323239;
+    --border-card: #323239;
+    --border-strong: #4e4e55;
+    --accent: var(--acento-oscuro);
+    --sobre-acento: #1d1d22;
+    --shadow: 0 4px 7px rgba(0, 1, 2, 0.3), 0 2px 2px rgba(0, 1, 2, 0.3), 0 1px 1px rgba(0, 1, 2, 0.3);
+    --shadow-hover: 0 6px 18px rgba(0, 1, 2, 0.5);
+  }
+}
+
+:root[data-tema="oscuro"] {
+  color-scheme: dark;
+  --bg: #202025;
+  --surface: #28282e;
+  --surface-2: #323239;
+  --text: #d4d4d8;
+  --text-strong: #fbfbfb;
+  --muted: #a1a1a8;
+  --border: #323239;
+  --border-card: #323239;
+  --border-strong: #4e4e55;
+  --accent: var(--acento-oscuro);
+  --sobre-acento: #1d1d22;
+  --shadow: 0 4px 7px rgba(0, 1, 2, 0.3), 0 2px 2px rgba(0, 1, 2, 0.3), 0 1px 1px rgba(0, 1, 2, 0.3);
+  --shadow-hover: 0 6px 18px rgba(0, 1, 2, 0.5);
+}
+
+/* Incluye bordes en el tamaño */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ---- Base ----
+   Páginas de proyecto: columna centrada de ancho --ancho (480 px; con
+   <body class="ancho">, el ancho de lectura). La portada usa .con-lateral. */
+body {
+  --ancho: 480px;
+  margin: 0;
+  min-height: 100vh;
+  padding: 0 20px 120px;
+  font-family: var(--font-texto);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body.ancho {
+  --ancho: var(--ancho-contenido);
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  text-decoration-thickness: 2px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  color: var(--sobre-acento);
+  background: var(--accent);
+}
+
+code,
+kbd,
+samp,
+.mono {
+  font-family: var(--font-mono);
+}
+
+/* ---- Encabezado de las páginas de proyecto ---- */
+.site-header {
+  width: 100%;
+  max-width: var(--ancho);
+  min-height: 60px;
+  margin: 0 auto 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Marca del sitio: Darwin y el nombre en monoespaciada */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--text-strong);
+  text-decoration: none;
+}
+
+.brand::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  background: url("../img/darwin-cara.svg") center / contain no-repeat;
+  image-rendering: pixelated;
+  transition: transform 0.18s ease;
+}
+
+.brand:hover {
+  color: var(--text-strong);
+}
+
+.brand:hover::before {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+/* ---- Botones de tema y acento (js/tema.js) ---- */
+.ajustes {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.ajuste {
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: background 0.18s ease, color 0.18s ease;
+}
+
+.ajuste:hover {
+  filter: none;
+  color: var(--text-strong);
+  background: var(--surface-2);
+}
+
+.ajuste:active {
+  transform: none;
+}
+
+.ajuste svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* El punto de color muestra el acento actual */
+.ajuste__punto {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+
+/* Sol en tema oscuro (para pasar a claro) y luna en tema claro */
+.ajuste .icono-sol { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .ajuste .icono-sol { display: block; }
+  :root:not([data-tema="claro"]) .ajuste .icono-luna { display: none; }
+}
+:root[data-tema="oscuro"] .ajuste .icono-sol { display: block; }
+:root[data-tema="oscuro"] .ajuste .icono-luna { display: none; }
+
+/* Si el JavaScript no corre, los botones no sirven: se ocultan */
+html:not(.con-js) .ajustes {
+  display: none;
+}
+
+/* ---- Sesión del sitio (js/sesion.mjs) ----
+   Botón discreto en .ajustes con un punto de estado: hueco sin sesión,
+   lleno (acento) con sesión. El panel flota sobre la página. */
+.sesion-boton {
+  position: relative;
+}
+
+.sesion-boton__estado {
+  position: absolute;
+  right: 5px;
+  bottom: 5px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--bg);
+  box-shadow: inset 0 0 0 1.5px var(--muted);
+  transition: background 0.18s ease, box-shadow 0.18s ease;
+}
+
+:root[data-sesion="activa"] .sesion-boton__estado {
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--bg);
+}
+
+/* Variante con texto (portada en escritorio: esquina superior derecha) */
+.sesion-esquina {
+  display: none;
+}
+
+@media (min-width: 801px) {
+  .sesion-esquina {
+    position: absolute;
+    top: 14px;
+    right: 24px;
+    z-index: 10;
+    display: block;
+  }
+
+  .lateral .sesion-boton {
+    display: none;
+  }
+}
+
+.sesion-boton--texto {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  transition: color 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+}
+
+.sesion-boton--texto:hover {
+  filter: none;
+  color: var(--text-strong);
+  border-color: var(--border-strong);
+  background: var(--surface);
+}
+
+.sesion-boton--texto:active {
+  transform: none;
+}
+
+.sesion-boton--texto .sesion-boton__estado {
+  position: static;
+  flex: 0 0 auto;
+}
+
+:root[data-sesion="activa"] .sesion-boton--texto {
+  color: var(--text-strong);
+}
+
+.sesion-panel {
+  position: fixed;
+  z-index: 1000;
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-hover);
+  font-size: 0.9rem;
+}
+
+.sesion-panel[hidden] {
+  display: none;
+}
+
+.sesion-panel p {
+  margin: 0;
+}
+
+.sesion-panel__titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  color: var(--text-strong);
+}
+
+.sesion-panel__punto {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--muted);
+}
+
+:root[data-sesion="activa"] .sesion-panel__punto {
+  background: var(--accent);
+  box-shadow: none;
+}
+
+.sesion-panel__nota {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.sesion-panel__form {
+  gap: 10px;
+  padding: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+}
+
+.sesion-panel label {
+  display: grid;
+  justify-content: stretch;
+  gap: 4px;
+  font-size: 0.8rem;
+}
+
+.sesion-panel input:not([type="checkbox"]) {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+}
+
+.sesion-panel .sesion-panel__recordar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+}
+
+.sesion-panel__recordar input {
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.sesion-panel__error:empty {
+  display: none;
+}
+
+.sesion-panel__error {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.sesion-panel button {
+  min-height: 38px;
+  margin-top: 2px;
+  padding: 8px 12px;
+}
+
+.sesion-panel .sesion-panel__salir {
+  color: var(--text-strong);
+  background: var(--surface-2);
+}
+
+.sesion-panel button:disabled {
+  cursor: progress;
+  opacity: 0.7;
+}
+
+/* Partes que dependen de la sesión (cosmético: el texto sigue en el HTML) */
+:root:not([data-sesion="activa"]) [data-solo-sesion],
+:root[data-sesion="activa"] [data-sin-sesion] {
+  display: none !important;
+}
+
+/* Partes privadas sin sesión: renglones tachados y un aviso */
+.censura {
+  position: relative;
+  display: grid;
+  gap: 10px;
+  margin: 1em 0;
+  padding: 16px;
+  background: var(--surface);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+}
+
+.censura__lineas {
+  display: grid;
+  gap: 9px;
+}
+
+.censura__linea {
+  display: block;
+  height: 0.8em;
+  border-radius: 3px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--border-strong) 0 6px,
+    color-mix(in srgb, var(--border-strong) 70%, var(--surface)) 6px 12px
+  );
+}
+
+.censura .censura__boton {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: auto;
+  min-height: 0;
+  margin: 4px 0 0;
+  padding: 6px 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  background: var(--surface-2);
+  border: 1px solid var(--border-card);
+  border-radius: 999px;
+}
+
+.censura__boton svg {
+  width: 14px;
+  height: 14px;
+}
+
+.censura__boton:hover {
+  filter: none;
+  border-color: var(--accent);
+}
+
+.censura__falla {
+  color: var(--muted);
+  font-style: italic;
+}

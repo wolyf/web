@@ -17,7 +17,8 @@
  *
  * Parámetros de URL:
  *   ?darwin=no         la oculta en este navegador (se recuerda)
- *   ?darwin=si         la vuelve a mostrar
+ *   ?darwin=si         la muestra siempre (se recuerda); sin preferencia, solo aparece
+ *                      en pantallas anchas y sin «reducir movimiento»
  *   ?darwin=navidad    muestra un accesorio de temporada (ver TEMPORADAS)
  *
  * Rendimiento: un solo canvas pequeño que se repinta solo al cambiar de cuadro
@@ -289,12 +290,16 @@
   // ?darwin=no | si | <temporada>
   const param = new URLSearchParams(location.search).get("darwin");
   if (param === "no") guardar(local, "darwin-oculta", "1");
-  if (param === "si") guardar(local, "darwin-oculta", null);
-  if (leer(local, "darwin-oculta") === "1" || window.top !== window.self) return;
+  if (param === "si") guardar(local, "darwin-oculta", "0");
+  // Preferencia guardada: "1" la oculta, "0" la muestra. Sin preferencia, solo se muestra
+  // en pantallas anchas y sin «reducir movimiento» (js/tema.js trae el botón para cambiarla).
+  const preferencia = leer(local, "darwin-oculta");
+  const quieto = matchMedia("(prefers-reduced-motion: reduce)");
+  const porDefecto = !quieto.matches && innerWidth >= 560;
+  if (preferencia === "1" || (preferencia !== "0" && !porDefecto) || window.top !== window.self) return;
 
   const elegida = TEMPORADAS.find((t) => t.id === param) || temporada(new Date());
   const ANIM = prepararAnimaciones(elegida && ACCESORIOS[elegida.accesorio]);
-  const quieto = matchMedia("(prefers-reduced-motion: reduce)");
   const ahora = () => performance.now();
   const azar = (a, b) => a + Math.random() * (b - a);
 
