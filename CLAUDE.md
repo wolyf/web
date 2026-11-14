@@ -110,7 +110,8 @@ El sitio es estático y el repositorio público: no hay servidor que revise cont
 | Ruta | Qué es |
 |---|---|
 | `index.html` | Portada: barra lateral (en celular, barra superior), presentación con bitácora y retrato de Darwin, y tarjetas de proyectos (generadas). |
-| `css/styles.css` | Estilos base del sitio: variables de tema y acento, tipografía, encabezado, formularios, portada y componentes de las calculadoras. |
+| `css/styles.css` | Reúne con `@import` las partes: `fuentes.css`, `base.css` (variables, tipografía, encabezado, ajustes, sesión), `componentes.css`, `portada.css` y `calculadoras.css`. Los proyectos solo enlazan `styles.css`. |
+| `css/fuentes/`, `js/vendor/katex/` | Fuentes y KaTeX copiados al repo (ver «Endurecimiento del sitio»). |
 | `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`), botón para quitar a Darwin. También carga la sesión. |
 | `js/sesion.mjs`, `js/llaves.mjs` | Sesión del sitio: botón de inicio de sesión y partes privadas (ver «Sesión y partes privadas»). |
 | `datos/acceso.json` | Público: la llave del sitio envuelta con la contraseña de cada usuario. |
@@ -119,14 +120,21 @@ El sitio es estático y el repositorio público: no hay servidor que revise cont
 | `img/darwin.svg`, `img/darwin-cara.svg` | Retrato de Darwin y su cara (marca y favicon), sacados de su sprite de `js/darwin.js`. |
 | `proyectos.json` | Registro de proyectos: carpetas (zonas) y datos de su tarjeta en la portada. |
 | `herramientas/proyectos.mjs` | Zonas y portada: comandos de arriba, hook y revisión de GitHub. Pruebas en `herramientas/pruebas/`. |
-| `herramientas/plantilla/` | Plantilla de proyecto nuevo (`{{ID}}`, `{{NOMBRE}}`), con el diseño del sitio. |
+| `herramientas/plantilla/`, `herramientas/plantilla-notas/` | Plantillas de proyecto nuevo (`{{ID}}`, `{{NOMBRE}}`): la general y la de notas de estudio (`nuevo <id> --tipo notas`). |
 | `.claude/settings.json` | Hooks de zona (`SessionStart` y `PreToolUse`). |
 | `.github/workflows/zonas.yml` | Revisión de zonas en cada PR. |
 | `.github/workflows/pruebas.yml` | `npm test` en cada PR y en `main`. |
 
+## Endurecimiento del sitio
+
+- **Política de contenido** (`<meta http-equiv="Content-Security-Policy">`, GitHub Pages no permite cabeceras): cada página la lleva al principio del `<head>`; solo recursos del propio sitio (`script-src 'self'`, sin scripts en línea; estilos en línea permitidos; imágenes `self` y `data:`). Una prueba revisa todas las páginas. Para añadir un recurso externo hay que copiarlo al repo, no abrir un host en la política.
+- **Sin terceros al cargar**: KaTeX 0.16.11 está en `js/vendor/katex/` (ver su `LEEME.md`) y las fuentes (Inter, Outfit, Google Sans Code) en `css/fuentes/` con `css/fuentes.css`. No uses CDN ni Google Fonts.
+- Las acciones de GitHub (`.github/workflows/`) se fijan por SHA de commit, con la versión en un comentario.
+- `.claude/settings.json` no preautoriza herramientas externas.
+
 ## Diseño
 
-Inspirado gráficamente en un jardín digital: papel beige y grises cálidos, un solo color de acento, títulos en **Outfit**, texto en **Inter** y detalles (marca, fechas, etiquetas) en **Google Sans Code**. Las fuentes las importa `css/styles.css`, así que basta enlazarlo.
+Inspirado gráficamente en un jardín digital: papel beige y grises cálidos, un solo color de acento, títulos en **Outfit**, texto en **Inter** y detalles (marca, fechas, etiquetas) en **Google Sans Code**. Las fuentes las trae `css/fuentes.css` (autoalojadas) a través de `css/styles.css`, así que basta enlazarlo.
 
 - **Tema**: sigue al sistema; `js/tema.js` permite fijarlo (`<html data-tema="claro|oscuro">`). El bloque oscuro de variables está dos veces en el CSS (sistema y elección manual): si cambias un color, cambia ambos.
 - **Acento**: rosa por defecto; `data-acento="azul|verde|lavanda|ambar"`. Cada acento tiene versión clara y oscura (`--acento-claro`, `--acento-oscuro`); el resto del sitio usa `--accent`.

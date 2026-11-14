@@ -179,3 +179,26 @@ test("cada proyecto aparece en la tabla de zonas del CLAUDE.md raíz", () => {
     assert.ok(tabla.some((l) => l.startsWith(`| \`${id}\``)), `Falta «${id}» en la tabla de zonas de CLAUDE.md.`);
   }
 });
+
+test("cada página HTML lleva la política de contenido y no carga recursos externos", () => {
+  const paginas = [];
+  const recorrer = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if ([".git", "node_modules", ".catalogo", ".privado"].includes(e.name)) continue;
+      const ruta = path.join(dir, e.name);
+      if (e.isDirectory()) recorrer(ruta);
+      else if (e.name.endsWith(".html")) paginas.push(ruta);
+    }
+  };
+  recorrer(RAIZ_REAL);
+  assert.ok(paginas.length > 5);
+  for (const ruta of paginas) {
+    const html = fs.readFileSync(ruta, "utf8");
+    const politica = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)"/)?.[1];
+    const nombre = path.relative(RAIZ_REAL, ruta);
+    assert.ok(politica, `${nombre} no tiene la política de contenido.`);
+    assert.match(politica, /script-src 'self'(;|$)/, `${nombre}: script-src debe ser solo 'self'.`);
+    assert.doesNotMatch(politica, /https?:/, `${nombre}: la política no debe abrir hosts externos.`);
+    assert.doesNotMatch(html, /<(?:script|link)\b[^>]*(?:src|href)="https?:\/\/(?!(?:www\.)?(?:linkedin|researchgate|github))[^"]*"[^>]*(?:rel="stylesheet"|<script)/, `${nombre} carga un recurso externo.`);
+  }
+});
