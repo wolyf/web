@@ -508,6 +508,7 @@ span.pag[data-p]::before { margin-top: .15em; }
   cursor: zoom-in;
 }
 
+.figura__imagen picture { display: block; }
 .figura__imagen img {
   display: block;
   width: 100%;
