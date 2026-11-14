@@ -30,13 +30,16 @@ import {
   derivarKEK,
   aHex,
   descifrarCatalogo,
+  desenvolverConSitio,
   desenvolverDEK,
+  envolverConSitio,
   envolverDEK,
   huellaDEK,
   idUsuario,
   normalizarUsuario,
   nuevaDEK,
 } from "../js/boveda.js";
+import * as Sitio from "../../js/llaves.mjs";
 import { construirIndice, rutaNombres } from "../js/modelo.js";
 import { crearBuscador } from "../js/buscar.js";
 import { dinero, dineroDivisa, hoyISO, slug, sumarDias, diasEntre } from "../js/util.js";
@@ -49,6 +52,7 @@ const RAIZ = path.resolve(HERRAMIENTAS, "..", "..");
 const DATOS_WEB = path.join(RAIZ, "catalogo", "datos");
 const BOVEDA = path.join(DATOS_WEB, "catalogo.enc");
 const ACCESO = path.join(DATOS_WEB, "acceso.json");
+const ACCESO_SITIO = path.join(RAIZ, "datos", "acceso.json");
 const PRIVADO = path.join(RAIZ, ".catalogo");
 const LLAVERO = path.join(PRIVADO, "llavero.txt");
 const FUENTE = path.join(PRIVADO, "fuente");
@@ -122,6 +126,40 @@ async function guardarLlavero(llavero, acceso) {
     fs.writeFileSync(LLAVERO, escribirLlavero(llavero), { mode: 0o600 });
   }
   return sellado;
+}
+
+// ---- Sesión del sitio: la DEK envuelta con K_p (acceso.json → "sitio") ----
+
+const credencialesDelSitio = () => Boolean(process.env.SITIO_USUARIO && process.env.SITIO_CONTRASENA);
+
+// K_p = HKDF(K, "wr-proyecto:catalogo"), con K abierta con SITIO_USUARIO y
+// SITIO_CONTRASENA (variables del entorno). Sin ellas devuelve null.
+async function llaveProyectoSitio() {
+  if (!credencialesDelSitio()) return null;
+  if (!fs.existsSync(ACCESO_SITIO)) throw new ErrorUso("El sitio aún no tiene usuarios (falta datos/acceso.json).");
+  const accesoSitio = JSON.parse(fs.readFileSync(ACCESO_SITIO, "utf8"));
+  let K;
+  try {
+    K = await Sitio.entrar(accesoSitio, process.env.SITIO_USUARIO, process.env.SITIO_CONTRASENA);
+  } catch (e) {
+    if (e instanceof Sitio.ErrorAcceso) throw new ErrorUso("SITIO_USUARIO y SITIO_CONTRASENA no corresponden a un usuario del sitio; revisa las variables del entorno.");
+    throw e;
+  }
+  const kp = await Sitio.llaveProyecto(K, "catalogo");
+  K.fill(0);
+  return kp;
+}
+
+// Deja en acceso.json la DEK envuelta con K_p. Sin credenciales del sitio
+// quita la entrada (si no, quedaría envolviendo una DEK vieja) y avisa.
+async function vincularSitio(acceso, dek) {
+  const kp = await llaveProyectoSitio();
+  if (!kp) {
+    if (acceso.sitio) console.warn('\nAviso: sin SITIO_USUARIO y SITIO_CONTRASENA se quitó la entrada del sitio; vuelve a crearla con "sitio vincular".');
+    const { sitio: _quitada, ...resto } = acceso;
+    return resto;
+  }
+  return { ...acceso, sitio: await envolverConSitio(dek, kp) };
 }
 
 const leerAcceso = () => (fs.existsSync(ACCESO) ? JSON.parse(fs.readFileSync(ACCESO, "utf8")) : null);
@@ -198,7 +236,7 @@ async function reenvolverTodos(acceso, llavero) {
         `Restablece su contraseña con "usuario contrasena <usuario>" o quítalos antes de rotar.`,
     );
   }
-  return { ...acceso, huella: await huellaDEK(llavero.dek), usuarios: nuevos };
+  return vincularSitio({ ...acceso, huella: await huellaDEK(llavero.dek), usuarios: nuevos }, llavero.dek);
 }
 
 // Aplica un cambio al registro de usuarios (que viaja cifrado) en la bóveda
@@ -510,6 +548,18 @@ const comandos = {
     for (const admin of llavero.admins) {
       if (!acceso.administracion?.[await idUsuario(admin)]) problemas.push(`${admin}: es administrador pero no tiene llavero sellado`);
     }
+    if (acceso.sitio) {
+      const kp = await llaveProyectoSitio();
+      if (!kp) console.log("Nota: hay entrada del sitio, pero sin SITIO_USUARIO y SITIO_CONTRASENA no se pudo comprobar.");
+      else {
+        try {
+          const dek = await desenvolverConSitio(acceso.sitio, kp);
+          if (aHex(dek) !== aHex(llavero.dek)) problemas.push("sitio: la entrada abre otra llave de datos");
+        } catch {
+          problemas.push("sitio: la entrada no abre con la llave del proyecto (¿cambió la llave del sitio?)");
+        }
+      }
+    } else console.log('Nota: el acceso con la sesión del sitio no está activo (falta "sitio vincular").');
     const registrados = new Set((datos.usuarios ?? []).map((u) => u.usuario));
     for (const usuario of llavero.usuarios.keys()) if (!registrados.has(usuario)) problemas.push(`${usuario}: no está en el registro de usuarios de la bóveda`);
     if (problemas.length) {
@@ -517,6 +567,19 @@ const comandos = {
       throw new ErrorUso("La verificación encontró inconsistencias.");
     }
     console.log(`Todo concuerda: ${llavero.usuarios.size} usuario(s), ${llavero.admins.size} administrador(es), bóveda legible (${datos.productos.length} productos, ${datos.cotizaciones.length} cotizaciones).`);
+  },
+
+  async sitio([accion]) {
+    if (accion !== "vincular") throw new ErrorUso("Uso: sitio vincular   (requiere SITIO_USUARIO y SITIO_CONTRASENA además de CATALOGO_*)");
+    if (!credencialesDelSitio()) {
+      throw new ErrorUso("Faltan SITIO_USUARIO y SITIO_CONTRASENA: configúralas en el entorno de Claude Code y abre una sesión nueva.");
+    }
+    const acceso = leerAcceso();
+    const llavero = await cargarLlavero(acceso);
+    await verificarHuella(llavero, acceso);
+    guardarAcceso(await vincularSitio(acceso, llavero.dek));
+    console.log("Listo: quien inicie sesión en el sitio abre el catálogo. catalogo.enc y las contraseñas del catálogo no cambian.");
+    avisoCommit();
   },
 
   async clave([accion]) {
@@ -640,6 +703,7 @@ Acceso (requiere credenciales de administrador)
   usuario admin <u>           Le permite editar el catálogo
   usuario quitar <u>          Quita el acceso y rota la llave
   usuario listar
+  sitio vincular              Abre el catálogo con la sesión del sitio (requiere SITIO_*; no toca catalogo.enc)
   clave rotar                 Nueva llave de datos (las contraseñas no cambian)
   verificar                   Comprueba que acceso.json, llavero y bóveda concuerdan
 
