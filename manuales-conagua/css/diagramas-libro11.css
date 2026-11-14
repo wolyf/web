@@ -1,0 +1,63 @@
+/* Diagramas HTML+CSS y esquemas SVG del Libro 11 */
+
+.svg-pdf {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.diag11-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.85rem;
+  margin-top: 0.5rem;
+}
+
+.diag11-card {
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  padding: 0.7rem 0.85rem;
+  font-size: 0.86rem;
+}
+
+.diag11-card__tit {
+  font-weight: 600;
+  color: var(--text-strong);
+  margin-bottom: 0.4rem;
+}
+
+.diag11-leyenda {
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 0.82rem;
+  columns: 2;
+  column-gap: 1.5rem;
+}
+
+.diag11-leyenda ol,
+.diag11-leyenda ul {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+@media (max-width: 560px) {
+  .diag11-leyenda {
+    columns: 1;
+  }
+}
+
+.diag11-red {
+  overflow-x: auto;
+}
+
+.diag11-red svg {
+  min-width: 580px;
+  width: 100%;
+  height: auto;
+  display: block;
+}

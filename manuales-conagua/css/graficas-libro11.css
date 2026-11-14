@@ -1,0 +1,125 @@
+/* Gráficas interactivas del Libro 11 (Ilustraciones 4.1 a 4.6, 4.8 a 4.10, 4.13 a 4.16).
+   Complementa ../css/graficas.css con paleta y estilos interactivos. */
+
+.grafica-libro {
+  --grafica-serie-1: color-mix(in srgb, #2e5cb8 88%, var(--text-strong));
+  --grafica-serie-2: color-mix(in srgb, #9e6b3b 88%, var(--text-strong));
+  --grafica-serie-3: color-mix(in srgb, #d13838 88%, var(--text-strong));
+  --grafica-serie-4: color-mix(in srgb, #2b8a44 88%, var(--text-strong));
+  --grafica-serie-5: color-mix(in srgb, #555555 88%, var(--text-strong));
+}
+
+.grafica-libro .serie-1 { --c: var(--grafica-serie-1); }
+.grafica-libro .serie-2 { --c: var(--grafica-serie-2); }
+.grafica-libro .serie-3 { --c: var(--grafica-serie-3); }
+.grafica-libro .serie-4 { --c: var(--grafica-serie-4); }
+.grafica-libro .serie-5 { --c: var(--grafica-serie-5); }
+
+.grafica-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.grafica-svg .serie-linea {
+  fill: none;
+  stroke: var(--c);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.grafica-svg .serie-linea.punteada {
+  stroke-dasharray: 6 4;
+}
+
+.grafica-svg .punto-activo {
+  fill: var(--c);
+  stroke: var(--surface);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.grafica-libro .leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+}
+
+.grafica-libro .leyenda-btn {
+  width: auto;
+  margin: 0;
+  filter: none;
+  transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 30px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.grafica-libro .leyenda-btn:hover {
+  background: var(--accent-soft);
+}
+
+.grafica-libro .leyenda-btn[aria-pressed="false"] {
+  opacity: 0.45;
+}
+
+.grafica-libro .leyenda-muestra {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c);
+  flex-shrink: 0;
+}
+
+.grafica-svg .rejilla line {
+  stroke: var(--border);
+  stroke-width: 0.75;
+}
+
+.grafica-svg .ejes line {
+  stroke: var(--border-strong);
+  stroke-width: 1.1;
+}
+
+.grafica-svg .eje-tick,
+.grafica-svg .eje-titulo {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: var(--font-sans, sans-serif);
+}
+
+.grafica-svg .eje-titulo {
+  font-weight: 600;
+}
+
+.grafica-svg .guia {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.grafica-libro .grafica-globo {
+  margin-top: 0.4rem;
+  min-height: 1.4em;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-strong);
+}

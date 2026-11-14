@@ -1,0 +1,39 @@
+/* Gráficas interactivas del Libro 12 (Ilustraciones 3.9, 3.10 y 3.11).
+   Complementa ../css/graficas.css con colores de serie por gráfica
+   y el foco de teclado sobre el lienzo SVG. */
+
+.grafica-libro[data-grafica="l12-3-9"] {
+  --grafica-serie-1: color-mix(in srgb, #cc2d14 85%, var(--text-strong));
+}
+
+.grafica-libro[data-grafica="l12-3-10"] {
+  --grafica-serie-1: color-mix(in srgb, #2396d4 85%, var(--text-strong));
+}
+
+.grafica-libro[data-grafica="l12-3-11"] {
+  --grafica-serie-1: color-mix(in srgb, #1a8a4a 85%, var(--text-strong));
+}
+
+.grafica-svg .aro {
+  fill: var(--surface);
+  stroke: var(--c);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.grafica-svg .punto-activo {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.grafica-svg [hidden] {
+  display: none;
+}
