@@ -1,0 +1,18 @@
+/* Gráfica interactiva del Libro 3 (Ilustración 2.8): sucesos numerados sobre
+   la gráfica y su lista. El resto lo dan ../css/graficas.css y sus variables. */
+.grafica-svg .sucesos .suceso { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; }
+.grafica-svg .sucesos .suceso-num { fill: var(--surface); stroke: var(--border-strong); stroke-width: 1; }
+.grafica-svg .sucesos .suceso-txt { fill: var(--text-strong); font: 600 10px var(--font-mono); }
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.grafica-svg .punto-l3 { stroke: var(--surface); stroke-width: 1.5; pointer-events: none; }
+
+.grafica-sucesos {
+  margin: .5rem 0 .2rem;
+  padding-left: 1.6rem;
+  font-size: .82rem;
+  line-height: 1.45;
+  color: var(--text);
+}
+.grafica-sucesos li::marker { font-family: var(--font-mono); font-weight: 600; color: var(--muted); }
+.grafica-sucesos .hora { font-family: var(--font-mono); font-size: .76rem; color: var(--muted); }

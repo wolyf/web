@@ -1,0 +1,11 @@
+/*
+ * Gráficas interactivas del Libro 2 (js/graficas-libro02.js).
+ * Completa ../css/graficas.css: más series y líneas discontinuas.
+ */
+.grafica-libro .serie-3 { --c: color-mix(in srgb, #2a9d8f 80%, var(--text-strong)); }
+.grafica-libro .discontinua { stroke-dasharray: 6 4; }
+.grafica-libro .linea.discontinua { stroke-width: 1.6; }
+.grafica-libro rect.punto { transform-origin: center; }
+@media (max-width: 500px) {
+  .grafica-libro .grafica-svg .valor-barra { font-size: 8.5px; }
+}
