@@ -1,0 +1,342 @@
+/* Diagramas del Libro 1, segunda tanda (Ilustraciones 1.1, 3.10, 3.11, 3.14,
+   3.15 y 3.18). Complementa diagramas.css: reutiliza sus cajas, el árbol y
+   el plano, y agrega aquí solo lo nuevo. Usa las variables del sitio y los
+   matices --matiz-* (los dos nuevos se definen abajo), así que sigue el tema
+   claro/oscuro.
+
+   Piezas nuevas:
+   .caja--cielo, .caja--verde   cajas planas del esquema de 1989 (1.1)
+   .caja--partida + .caja__parte  caja dividida en dos renglones
+   .caja--elipse                caja ovalada
+   .caja--linea                 caja blanca con borde negro (3.18)
+   .rotulo                      texto suelto dentro de un plano
+   .plano--fijo                 plano con ancho mínimo: en celular se desplaza
+   .caja--lista                 caja con título y lista numerada (3.10)
+   .caja--tabla                 caja de puestos con columnas E y R (3.11)
+   .caja--bloque                bloque con índice sangrado (3.15)
+   li.espina                    hijos en columna con espina a la izquierda (3.14)
+   .caja--baja                  caja más abajo que sus hermanas (3.15) */
+
+.diagrama {
+  --matiz-verde: #6fbf5f;
+  --matiz-cielo: #45b6e0;
+}
+
+/* ---- Cajas planas (Ilustración 1.1) ---- */
+.diagrama .caja--cielo,
+.diagrama .caja--verde {
+  border-radius: 0;
+  border-color: color-mix(in srgb, var(--muted) 70%, var(--surface));
+  background: color-mix(in srgb, var(--tono) 52%, var(--surface));
+}
+
+.diagrama .caja--cielo { --tono: var(--matiz-cielo); }
+.diagrama .caja--verde { --tono: var(--matiz-verde); }
+
+.diagrama .caja--elipse { border-radius: 50%; }
+
+/* Caja dividida: cada parte ocupa --parte de la altura (la última, el resto) */
+.diagrama .caja--partida,
+.diagrama .plano > .caja--partida {
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+}
+
+.diagrama .caja__parte {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  min-height: 0;
+  padding: 0 .35em;
+}
+
+.diagrama .caja__parte[style*="--parte"] { flex: 0 0 calc(var(--parte) * 1%); }
+
+.diagrama .caja__parte + .caja__parte {
+  border-top: 1px solid var(--linea);
+}
+
+.diagrama .caja--izq .caja__parte {
+  justify-content: flex-start;
+  padding-left: .7em;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* ---- Caja blanca con borde negro (Ilustración 3.18) ---- */
+.diagrama .caja--linea {
+  border: var(--grosor) solid var(--linea);
+  border-radius: 0;
+  background: var(--surface);
+}
+
+/* ---- Plano: rótulos sueltos, puntas de flecha y trazos ---- */
+.diagrama .plano > .rotulo {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  font-size: var(--letra, clamp(.62rem, 2.1cqi, .85rem));
+  line-height: 1.15;
+  white-space: nowrap;
+  color: var(--text-strong);
+}
+
+.diagrama .plano--fijo .caja,
+.diagrama .plano--fijo .rotulo {
+  font-size: var(--letra);
+  line-height: var(--interlinea, 1.12);
+  white-space: nowrap;   /* los cortes de renglón son los del original */
+}
+
+/* Ancho mínimo para que el texto no se encoja: en celular se desplaza */
+.diagrama .plano--fijo { min-width: var(--ancho-min, 40rem); }
+
+.diagrama .plano > svg .punta {
+  fill: var(--linea);
+  stroke: none;
+}
+
+.diagrama .plano > svg .punteada { stroke-dasharray: 1.5 2.5; }
+.diagrama .plano > svg .raya-punto { stroke-dasharray: 9 4 2 4; }
+
+/* ---- Caja con título y lista numerada (Ilustración 3.10) ---- */
+.diagrama .caja--lista {
+  display: block;
+  align-self: stretch;
+  width: var(--ancho-caja, 13.5rem);
+  padding: 0;
+  text-align: left;
+  border-radius: 0;
+}
+
+.diagrama .arbol > li > .caja--lista { align-self: center; }
+
+/* Las cajas de un mismo renglón terminan a la misma altura */
+.diagrama .caja--llena { flex-grow: 1; }
+
+.diagrama .caja__titulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3.1em;
+  padding: .35em .6em;
+  text-align: center;
+  border-bottom: 1px solid color-mix(in srgb, var(--text) 55%, var(--surface));
+}
+
+.diagrama .caja--lista ol {
+  margin: 0;
+  padding: .6em .7em .9em 1.9em;
+}
+
+.diagrama .arbol .caja--lista li {
+  position: static;
+  display: list-item;
+  margin: 0 0 .75em;
+  padding: 0 0 0 .15em;
+}
+
+/* Sin los conectores que el árbol dibuja en sus propios li */
+.diagrama .arbol .caja--lista li::before,
+.diagrama .arbol .caja--lista li::after { content: none; }
+
+.diagrama .arbol .caja--lista li:last-child { margin-bottom: 0; }
+
+/* ---- Caja de puestos con columnas E y R (Ilustración 3.11) ---- */
+.diagrama .caja--tabla {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 2.3em 2.3em;
+  align-items: stretch;
+  width: var(--ancho-caja, 15.5rem);
+  min-height: 0;
+  padding: 0;
+  text-align: left;
+  border-radius: 0;
+  background: linear-gradient(to right,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--tono) calc(var(--mezcla) * .6), var(--surface)) 55%,
+    color-mix(in srgb, var(--tono) var(--mezcla), var(--surface)) 100%);
+}
+
+.diagrama .caja--tabla > span {
+  display: flex;
+  align-items: center;
+  padding: .4em .5em;
+  border-top: 1px solid color-mix(in srgb, var(--tono) 80%, var(--surface));
+}
+
+/* Primer renglón sin raya arriba: el borde de la caja ya la pone */
+.diagrama .caja--tabla > span:nth-child(-n + 4) { border-top: 0; }
+
+/* Columna del asterisco o la letra de la unidad */
+.diagrama .caja--tabla > span:nth-child(4n + 2) {
+  justify-content: flex-end;
+  padding-right: .7em;
+}
+
+/* Columnas E y R: números centrados con raya a la izquierda */
+.diagrama .caja--tabla > span:nth-child(4n + 3),
+.diagrama .caja--tabla > span:nth-child(4n) {
+  justify-content: center;
+  padding-inline: .2em;
+  border-left: 1px solid color-mix(in srgb, var(--tono) 80%, var(--surface));
+  background: color-mix(in srgb, var(--tono) calc(var(--mezcla) * .5), transparent);
+}
+
+/* Encabezado E R sobre la caja, alineado con sus columnas */
+.diagrama .caja--tabla > .tabla__er {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  display: grid;
+  grid-template-columns: 2.3em 2.3em;
+  padding-bottom: .15em;
+  text-align: center;
+  border: 0;
+}
+
+.diagrama .caja--tabla > .tabla__er > span { padding: 0; border: 0; background: none; }
+
+.diagrama--puestos { padding-top: 1.6rem; }
+.diagrama--puestos .arbol { --sep: 1.35rem; }
+
+/* Leyenda del organigrama de puestos, bajo la Dirección "A" */
+.diagrama .organigrama__leyenda {
+  align-self: flex-start;
+  margin: 4.5rem 0 0 2.5rem;
+  line-height: 1.3;
+  text-align: left;
+  white-space: nowrap;
+}
+
+/* ---- Bloque con índice sangrado (Ilustración 3.15) ---- */
+.diagrama .caja--bloque {
+  display: block;
+  width: var(--ancho-caja, 11.5rem);
+  padding: 0;
+  text-align: left;
+  border-radius: 0;
+  background: linear-gradient(to bottom left,
+    color-mix(in srgb, var(--tono) var(--mezcla), var(--surface)) 0%,
+    color-mix(in srgb, var(--tono) calc(var(--mezcla) * .45), var(--surface)) 40%,
+    var(--surface) 100%);
+}
+
+/* Franja vacía de título, como en el original */
+.diagrama .caja--bloque::before {
+  content: "";
+  display: block;
+  height: 1.3em;
+  border-bottom: 1px solid color-mix(in srgb, var(--tono) 75%, var(--surface));
+  background: color-mix(in srgb, var(--tono) calc(var(--mezcla) * 1.2), var(--surface));
+}
+
+.diagrama .bloque__indice {
+  margin: 0;
+  padding: .5em .6em .7em;
+  line-height: 1.32;
+}
+
+.diagrama .bloque__indice span { display: block; }
+.diagrama .bloque__indice .n2 { padding-left: .6em; }
+.diagrama .bloque__indice .n3 { padding-left: 1.6em; }
+.diagrama .bloque__indice .aparte { margin-top: .95em; }
+
+/* Caja que baja respecto de sus hermanas, con la línea que la alcanza */
+.diagrama .caja--baja {
+  position: relative;
+  margin-top: var(--baja, 1.6rem);
+}
+
+.diagrama .caja--baja::before {
+  content: "";
+  position: absolute;
+  bottom: calc(100% + 1px);
+  left: 50%;
+  height: var(--baja, 1.6rem);
+  border-left: var(--grosor) solid var(--linea);
+}
+
+/* ---- Hijos en columna con espina a la izquierda (Ilustración 3.14) ----
+   La caja padre queda sobre sus hijos (alineada a la derecha de su li); la
+   línea baja de su centro, gira a la izquierda hasta la espina y de ahí sale
+   un tramo a cada hijo. El relleno derecho iguala al izquierdo para que el
+   centro del li coincida con el de la caja y la barra superior caiga en él. */
+.diagrama .arbol li.espina {
+  --lado: 1.2rem;     /* de la espina a la orilla de las cajas, más aire */
+  --codo: .9rem;      /* bajada desde la caja padre hasta el codo */
+  --espacio: .65rem;  /* espacio sobre cada hijo */
+  align-items: flex-end;
+  padding-left: calc(var(--hueco) / 2 + var(--lado));
+  padding-right: calc(var(--hueco) / 2 + var(--lado));
+}
+
+.diagrama .arbol li.espina > .caja,
+.diagrama .arbol li.espina > ul .caja {
+  width: var(--ancho-caja, 5.6rem);
+}
+
+.diagrama .arbol li.espina > ul {
+  flex-direction: column;
+  align-self: stretch;
+  align-items: flex-end;
+  margin-left: calc(-1 * var(--lado));
+  padding: var(--codo) 0 0 var(--lado);
+}
+
+/* Bajada desde el centro de la caja padre y giro hasta la espina */
+.diagrama .arbol li.espina > ul::before {
+  left: calc(var(--lado) * .45);
+  right: calc(var(--ancho-caja, 5.6rem) / 2);
+  height: calc(var(--codo) * .55);
+  border-left: 0;
+  border-right: var(--grosor) solid var(--linea);
+  border-bottom: var(--grosor) solid var(--linea);
+}
+
+.diagrama .arbol li.espina > ul > li {
+  padding: var(--espacio) 0 0;
+}
+
+/* Tramo de la espina (::after) y ramal a cada hijo (::before) */
+.diagrama .arbol li.espina > ul > li::before {
+  content: "";
+  right: auto;
+  left: calc(var(--lado) * -.55);
+  top: calc(50% + var(--espacio) / 2);
+  width: calc(var(--lado) * .55);
+  height: 0;
+  border-top: var(--grosor) solid var(--linea);
+}
+
+.diagrama .arbol li.espina > ul > li::after {
+  left: calc(var(--lado) * -.55);
+  width: 0;
+  height: 100%;
+  border-top: 0;
+}
+
+.diagrama .arbol li.espina > ul > li:first-child::after {
+  top: calc(var(--codo) * -.45);
+  height: calc(100% + var(--codo) * .45);
+}
+
+.diagrama .arbol li.espina > ul > li:last-child::after {
+  height: calc(50% + var(--espacio) / 2);
+}
+
+.diagrama .arbol li.espina > ul > li:only-child::after {
+  height: calc(50% + var(--espacio) / 2 + var(--codo) * .45);
+}
+
+/* ---- Celular ---- */
+@media (max-width: 560px) {
+  .diagrama .caja--lista { width: var(--ancho-caja-movil, 11rem); }
+  .diagrama .caja--tabla { width: var(--ancho-caja-movil, 13.5rem); }
+  .diagrama .caja--bloque { width: var(--ancho-caja-movil, 10rem); }
+  .diagrama .organigrama__leyenda { margin: 3rem 0 0 1rem; }
+  .diagrama .arbol li.espina { --lado: 1.1rem; }
+}

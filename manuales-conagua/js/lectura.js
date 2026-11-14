@@ -127,3 +127,41 @@
   document.addEventListener("toggle", function () { medir(); alMover(); }, true);
   botonPaginas.addEventListener("click", function () { medir(); alMover(); });
 })();
+
+/* ---- Imágenes a pedido ----
+   Las fotos y los mapas no se descargan al leer: cada uno muestra su
+   descripción y un botón «Ver foto · N KB». Al pulsarlo se carga la versión
+   adecuada al ancho de pantalla (400 o 760 px; AVIF con respaldo WebP). */
+(function () {
+  "use strict";
+  document.addEventListener("click", function (e) {
+    var boton = e.target.closest(".a-pedido__boton");
+    if (!boton) return;
+    var caja = boton.closest(".a-pedido");
+    var base = caja.getAttribute("data-base");
+    var enlace = document.createElement("a");
+    enlace.className = "figura__imagen";
+    enlace.href = base + "-760.avif";
+    enlace.target = "_blank";
+    enlace.rel = "noopener";
+    enlace.title = "Abrir la imagen en tamaño completo";
+    var foto = document.createElement("picture");
+    var fuente = document.createElement("source");
+    fuente.type = "image/avif";
+    fuente.srcset = base + "-400.avif 400w, " + base + "-760.avif 760w";
+    fuente.sizes = "(max-width: 600px) 92vw, 715px";
+    var img = document.createElement("img");
+    img.src = base + "-760.webp";
+    img.srcset = base + "-400.webp 400w, " + base + "-760.webp 760w";
+    img.sizes = fuente.sizes;
+    img.alt = caja.getAttribute("data-alt") || "";
+    img.width = +caja.getAttribute("data-ancho");
+    img.height = +caja.getAttribute("data-alto");
+    img.decoding = "async";
+    foto.appendChild(fuente);
+    foto.appendChild(img);
+    enlace.appendChild(foto);
+    boton.replaceWith(enlace);
+    caja.classList.add("a-pedido--cargada");
+  });
+})();

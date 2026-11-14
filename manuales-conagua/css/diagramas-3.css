@@ -1,0 +1,294 @@
+/* Organigramas grandes del capítulo 3 (Ilustraciones 3.17 y 3.21).
+   Complementa a diagramas.css (cajas, matices y conectores base) y solo usa
+   variables del sitio y las --matiz-*.
+
+   En el original son árboles muy anchos; aquí se acomodan así:
+   .org__cima      eje central (consejo, dirección general) con sus órganos
+                   de apoyo a los lados, unidos al eje con un tramo horizontal.
+   .org__ramas     las direcciones, una tarjeta por dirección, colgadas de una
+                   espina a la izquierda.
+   .org__lista     dependencias como lista con sangría: espina a la izquierda y
+                   un tramo horizontal hasta cada caja.
+   .org__lista--columnas
+                   si la tarjeta es ancha, sus dependencias directas van en
+                   columnas; cada fila cuelga de una barra que sale de la
+                   espina. Cuántas columnas caben lo decide la anchura de la
+                   tarjeta (consulta de contenedor). */
+
+.diagrama--org {
+  --matiz-verde: #7fb35a;
+  --sangria: 1.15rem;   /* de la orilla de la caja padre a la de sus hijos */
+  --espina: .5rem;      /* de la orilla de la caja padre a la espina */
+  --arriba: .4rem;      /* espacio sobre cada hijo de una lista */
+  --bajada: .95rem;     /* barra y bajada sobre cada columna */
+  --entre: .55rem;      /* espacio entre columnas */
+  --orilla: 0px;        /* relleno de la tarjeta (para alargar los tramos) */
+
+  padding: .6rem 0 .2rem;
+  overflow-x: visible;
+  font-size: .72rem;
+  line-height: 1.25;
+}
+
+/* 3.21: cajas y conectores verdes claros */
+.diagrama--org-verde {
+  --matiz-linea: color-mix(in srgb, var(--matiz-verde) 70%, var(--text));
+  --linea: color-mix(in srgb, var(--matiz-linea) 75%, var(--surface));
+  --grosor: 2px;
+}
+
+.diagrama .caja--verde { --tono: var(--matiz-verde); }
+
+/* Rótulo del original (encabezado junto al logotipo) */
+.diagrama--org .org__rotulo {
+  margin: 0 0 .7rem;
+  font-family: var(--font-titulo);
+  font-size: .8rem;
+  line-height: 1.3;
+  color: var(--muted);
+  text-align: center;
+}
+
+/* ---- Cajas ---- */
+.diagrama--org .org__caja {
+  position: relative;
+  flex-direction: column;
+  gap: .12rem;
+  min-height: 2.5rem;
+  padding: .4rem .5rem;
+  overflow-wrap: anywhere;
+}
+
+.diagrama--org .org__titular {
+  display: block;
+  font-size: .92em;
+  color: var(--muted);
+}
+
+/* Niveles superiores un poco más intensos */
+.diagrama--org .org__principal,
+.diagrama--org .org__direccion { --mezcla: 58%; font-weight: 600; }
+
+.diagrama--org .org__principal .org__titular,
+.diagrama--org .org__direccion .org__titular { font-weight: 400; color: var(--text); }
+
+/* ---- Cima: eje central con órganos de apoyo ---- */
+.diagrama--org .org__cima {
+  --hueco: 1.6rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .55rem;
+  padding-bottom: var(--bajada);
+}
+
+/* Eje: baja por el centro hasta la espina de las direcciones */
+.diagrama--org .org__cima::before {
+  content: "";
+  position: absolute;
+  top: 1rem;
+  bottom: 0;
+  left: 50%;
+  border-left: var(--grosor) solid var(--linea);
+}
+
+.diagrama--org .org__principal {
+  z-index: 1;
+  width: min(100%, 15rem);
+}
+
+.diagrama--org .org__apoyos {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) var(--hueco) minmax(0, 1fr);
+  width: min(100%, 31.6rem);
+}
+
+.diagrama--org .org__apoyo--izq { grid-column: 1; }
+.diagrama--org .org__apoyo--der { grid-column: 3; }
+
+.diagrama--org .org__apoyo::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  width: calc(var(--hueco) / 2);
+  border-top: var(--grosor) solid var(--linea);
+}
+
+.diagrama--org .org__apoyo--izq::after { left: 100%; }
+.diagrama--org .org__apoyo--der::after { right: 100%; }
+
+/* ---- Listas con sangría (espina a la izquierda) ---- */
+.diagrama--org .org__lista {
+  position: relative;
+  margin: 0;
+  padding: 0 0 0 var(--sangria);
+  list-style: none;
+}
+
+.diagrama--org .org__nodo {
+  position: relative;
+  margin: 0;
+  padding: var(--arriba) 0 0;
+}
+
+/* Espina: cada nodo dibuja su tramo; el último solo hasta su caja */
+.diagrama--org .org__lista > .org__nodo::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(var(--espina) - var(--sangria));
+  height: 100%;
+  border-left: var(--grosor) solid var(--linea);
+}
+
+.diagrama--org .org__lista > .org__nodo:last-child::after { content: none; }
+
+.diagrama--org .org__lista > .org__nodo > .org__caja::before,
+.diagrama--org .org__lista > .org__nodo > .org__tarjeta > .org__caja::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(var(--espina) - var(--sangria) - var(--orilla));
+  width: calc(var(--sangria) - var(--espina) + var(--orilla));
+  border-top: var(--grosor) solid var(--linea);
+}
+
+.diagrama--org .org__lista > .org__nodo:last-child > .org__caja::after,
+.diagrama--org .org__lista > .org__nodo:last-child > .org__tarjeta > .org__caja::after {
+  content: "";
+  position: absolute;
+  top: calc(-1 * (var(--arriba) + var(--orilla)));
+  left: calc(var(--espina) - var(--sangria) - var(--orilla));
+  height: calc(50% + var(--arriba) + var(--orilla));
+  border-left: var(--grosor) solid var(--linea);
+}
+
+/* ---- Direcciones: tarjetas colgadas de la espina ---- */
+.diagrama--org .org__ramas {
+  --arriba: .8rem;
+  padding-left: calc(var(--sangria) + .1rem);
+}
+
+/* Tramo del eje central a la espina de las direcciones */
+.diagrama--org .org__ramas::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: var(--espina);
+  width: calc(50% - var(--espina));
+  border-top: var(--grosor) solid var(--linea);
+}
+
+.diagrama--org .org__ramas > .org__nodo::after { left: calc(var(--espina) - var(--sangria) - .1rem); }
+
+.diagrama--org .org__ramas > .org__nodo > .org__tarjeta > .org__caja::before {
+  left: calc(var(--espina) - var(--sangria) - .1rem - var(--orilla));
+  width: calc(var(--sangria) + .1rem - var(--espina) + var(--orilla));
+}
+
+.diagrama--org .org__ramas > .org__nodo:last-child > .org__tarjeta > .org__caja::after {
+  left: calc(var(--espina) - var(--sangria) - .1rem - var(--orilla));
+}
+
+.diagrama--org .org__tarjeta {
+  --orilla: calc(.6rem + 1px);
+  container: org / inline-size;
+  padding: .6rem;
+  background: color-mix(in srgb, var(--bg) 70%, var(--surface));
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+}
+
+/* Dentro de la tarjeta, los tramos ya no cruzan su orilla */
+.diagrama--org .org__tarjeta .org__lista { --orilla: 0px; }
+
+.diagrama--org .org__direccion { width: 100%; }
+
+/* ---- Columnas: dependencias directas de una tarjeta ancha ---- */
+@container org (min-width: 22rem) {
+  .diagrama--org .org__lista--columnas {
+    display: grid;
+    grid-template-columns: repeat(var(--columnas, 2), minmax(0, 1fr));
+    align-items: start;
+    column-gap: var(--entre);
+    padding-top: .45rem;
+  }
+
+  /* Bajada desde la caja de la dirección hasta la primera barra */
+  .diagrama--org .org__lista--columnas::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: var(--espina);
+    height: .45rem;
+    border-left: var(--grosor) solid var(--linea);
+  }
+
+  .diagrama--org .org__lista--columnas > .org__nodo {
+    align-self: stretch;
+    padding-top: var(--bajada);
+  }
+
+  /* Barra de la fila (desde el hueco anterior) y bajada a la caja */
+  .diagrama--org .org__lista--columnas > .org__nodo::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: calc(-50% - var(--entre));
+    box-sizing: border-box;
+    width: calc(100% + var(--entre) + var(--grosor) / 2);
+    height: var(--bajada);
+    border-top: var(--grosor) solid var(--linea);
+    border-right: var(--grosor) solid var(--linea);
+  }
+
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(n)::after { content: none; }
+
+  /* Sin tramos laterales (:nth-child(n) iguala la especificidad de :last-child) */
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(n) > .org__caja::before,
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(n) > .org__caja::after { content: none; }
+}
+
+/* Dos columnas */
+@container org (min-width: 22rem) and (max-width: 33.99rem) {
+  .diagrama--org .org__lista--columnas { --columnas: 2; }
+
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(2n + 1)::before {
+    left: calc(var(--espina) - var(--sangria));
+    width: calc(50% + var(--sangria) - var(--espina) + var(--grosor) / 2);
+  }
+
+  /* Espina entre filas: la dibuja el primero de cada fila, salvo la última */
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(2n + 1):not(:nth-last-child(-n + 2))::after {
+    content: "";
+    top: 0;
+    left: calc(var(--espina) - var(--sangria));
+    height: 100%;
+  }
+}
+
+/* Tres columnas */
+@container org (min-width: 34rem) {
+  .diagrama--org .org__lista--columnas { --columnas: 3; }
+
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(3n + 1)::before {
+    left: calc(var(--espina) - var(--sangria));
+    width: calc(50% + var(--sangria) - var(--espina) + var(--grosor) / 2);
+  }
+
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(3n + 1):not(:nth-last-child(-n + 3))::after {
+    content: "";
+    top: 0;
+    left: calc(var(--espina) - var(--sangria));
+    height: 100%;
+  }
+}
+
+/* ---- Celular ---- */
+@media (max-width: 560px) {
+  .diagrama--org { --sangria: .95rem; --espina: .4rem; font-size: .7rem; }
+  .diagrama--org .org__cima { --hueco: 1rem; }
+  .diagrama--org .org__tarjeta { --orilla: calc(.45rem + 1px); padding: .45rem; }
+  .diagrama--org .org__caja { padding: .35rem .4rem; min-height: 2.3rem; }
+}

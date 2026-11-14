@@ -1,0 +1,199 @@
+/* Diagrama de flujo de un procedimiento por carriles (Ilustración 3.22:
+   procedimiento de servicio a usuarios del SAPAC, tres páginas).
+   Complementa diagramas.css: usa sus matices (--matiz-*) y su --linea.
+
+   Estructura de cada página:
+   .diagrama--procedimiento
+     .procedimiento__encabezado   logotipo, organismo y datos del documento
+     .procedimiento__titulo
+     .procedimiento__lienzo        se desplaza a lo ancho si no cabe
+       .procedimiento__plano       guarda la proporción del original
+         svg                       formas y flechas (viewBox en puntos del PDF)
+         p.t                       textos colocados con --x, --y, --w, --h (%)
+
+   El tamaño de letra sigue al ancho del plano: --u es un punto del PDF en
+   unidades de contenedor, y --t el tamaño del texto en puntos. */
+
+.diagrama--procedimiento {
+  padding-inline: 0;
+}
+
+/* ---- Encabezado del documento ---- */
+.diagrama .procedimiento__encabezado {
+  display: grid;
+  grid-template-columns: minmax(5.5rem, 1fr) minmax(0, 2.4fr) minmax(8rem, 1.1fr);
+  grid-template-areas: "logo organismo datos";
+  max-width: 44rem;
+  margin: 0 auto;
+  border: var(--grosor) solid var(--linea);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.diagrama .procedimiento__encabezado > * {
+  margin: 0;
+  min-width: 0;
+}
+
+.diagrama .procedimiento__logo {
+  grid-area: logo;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: .5rem;
+  border-right: var(--grosor) solid var(--linea);
+}
+
+/* Logotipo sencillo: letras gruesas sobre franjas de agua */
+.diagrama .procedimiento__logo span {
+  padding: .5em .45em .15em;
+  font-family: var(--font-titulo);
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+  line-height: 1;
+  color: var(--matiz-azul);
+  background:
+    repeating-linear-gradient(to bottom,
+      color-mix(in srgb, var(--matiz-azul) 55%, var(--surface)) 0 2px,
+      transparent 2px 5px) top / 100% .45em no-repeat;
+  border-bottom: 3px solid color-mix(in srgb, var(--matiz-azul) 70%, var(--surface));
+  border-radius: 3px;
+}
+
+.diagrama .procedimiento__organismo {
+  grid-area: organismo;
+  padding: .45rem .6rem;
+  text-align: center;
+  font-size: .78rem;
+  line-height: 1.25;
+  color: var(--text);
+}
+
+.diagrama .procedimiento__organismo strong {
+  font-family: var(--font-titulo);
+  font-size: 1.12em;
+  color: var(--text-strong);
+}
+
+.diagrama .procedimiento__organismo .procedimiento__direccion { font-size: 1em; }
+
+.diagrama .procedimiento__datos {
+  grid-area: datos;
+  padding: 0;
+  list-style: none;
+  font-size: .72rem;
+  border-left: var(--grosor) solid var(--linea);
+}
+
+.diagrama .procedimiento__datos li {
+  margin: 0;
+  padding: .3rem .5rem;
+}
+
+.diagrama .procedimiento__datos li + li { border-top: var(--grosor) solid var(--linea); }
+
+.diagrama .procedimiento__titulo {
+  max-width: 44rem;
+  margin: .7rem auto .5rem;
+  font-family: var(--font-titulo);
+  font-size: .9rem;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  color: var(--text-strong);
+}
+
+/* ---- Plano del diagrama ---- */
+.diagrama .procedimiento__lienzo {
+  padding: 1px;   /* para que no se recorte el trazo del marco */
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.diagrama .procedimiento__plano {
+  --u: calc(100cqi / var(--ancho-pdf));
+  position: relative;
+  width: 100%;
+  min-width: 37rem;
+  max-width: 44rem;
+  margin-inline: auto;
+  aspect-ratio: var(--proporcion);
+  container-type: inline-size;
+  background: var(--surface);
+}
+
+.diagrama .procedimiento__plano > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--linea);
+  stroke-width: 1px;
+  stroke-linejoin: round;
+}
+
+.diagrama .procedimiento__plano > svg * { vector-effect: non-scaling-stroke; }
+
+/* Formas: tonos suaves de los matices, como el resto de los diagramas */
+.diagrama .procedimiento__plano .rejilla { stroke: var(--border-strong); }
+.diagrama .procedimiento__plano .flecha { fill: var(--linea); stroke: none; }
+.diagrama .procedimiento__plano .linea { fill: none; }
+.diagrama .procedimiento__plano .punteada { stroke-dasharray: 1 2; }
+.diagrama .procedimiento__plano .tiempo,
+.diagrama .procedimiento__plano .carril { fill: var(--surface-2); }
+.diagrama .procedimiento__plano .proc,
+.diagrama .procedimiento__plano .datos { fill: color-mix(in srgb, var(--matiz-azul) 16%, var(--surface)); }
+.diagrama .procedimiento__plano .num,
+.diagrama .procedimiento__plano .conector,
+.diagrama .procedimiento__plano .fuera { fill: var(--surface); }
+.diagrama .procedimiento__plano .decision { fill: color-mix(in srgb, var(--matiz-amarillo) 24%, var(--surface)); }
+.diagrama .procedimiento__plano .terminal { fill: color-mix(in srgb, var(--matiz-rosa) 22%, var(--surface)); }
+.diagrama .procedimiento__plano .documento { fill: color-mix(in srgb, var(--matiz-gris) 14%, var(--surface)); }
+.diagrama .procedimiento__plano .enlace { fill: color-mix(in srgb, var(--matiz-naranja) 18%, var(--surface)); }
+
+/* ---- Textos ---- */
+.diagrama .procedimiento__plano .t {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w) * 1%);
+  height: calc(var(--h) * 1%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: calc(var(--t, 6.1) * var(--u) * .9);
+  line-height: 1.13;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--text-strong);
+}
+
+.diagrama .procedimiento__plano .t--iz { justify-content: flex-start; text-align: left; }
+.diagrama .procedimiento__plano .t--de { justify-content: flex-end; text-align: right; }
+.diagrama .procedimiento__plano .t--n { font-weight: 700; }
+.diagrama .procedimiento__plano .t--g { line-height: 1; }
+.diagrama .procedimiento__plano .t small { font-size: .76em; }
+
+/* ---- Celular ---- */
+@media (max-width: 560px) {
+  .diagrama .procedimiento__encabezado {
+    grid-template-columns: 5.2rem minmax(0, 1fr);
+    grid-template-areas:
+      "logo datos"
+      "organismo organismo";
+  }
+
+  .diagrama .procedimiento__logo span { font-size: 1rem; }
+
+  .diagrama .procedimiento__organismo {
+    border-top: var(--grosor) solid var(--linea);
+    font-size: .74rem;
+  }
+
+  .diagrama .procedimiento__titulo { font-size: .82rem; }
+}
