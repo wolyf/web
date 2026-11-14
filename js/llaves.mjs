@@ -67,9 +67,14 @@ const descomprimir = (bytes) => transformar(bytes, new DecompressionStream("gzip
 
 const llaveAES = (bytes, usos) => subtle.importKey("raw", bytes, { name: "AES-GCM" }, false, usos);
 
-// HKDF-SHA256 de 32 bytes a partir de la llave del sitio
+// Llave HKDF no extraíble: el navegador puede derivar con ella, pero nadie
+// (ni un script de la página) puede leer los bytes de K.
+export const llaveHKDF = (llave) => subtle.importKey("raw", llave, "HKDF", false, ["deriveBits"]);
+
+// HKDF-SHA256 de 32 bytes a partir de la llave del sitio, ya sea en bytes
+// (Uint8Array) o como CryptoKey HKDF (ver llaveHKDF)
 export async function derivar(llave, info) {
-  const base = await subtle.importKey("raw", llave, "HKDF", false, ["deriveBits"]);
+  const base = llave instanceof Uint8Array ? await llaveHKDF(llave) : llave;
   const bits = await subtle.deriveBits(
     { name: "HKDF", hash: "SHA-256", salt: new Uint8Array(32), info: codificador.encode(info) },
     base,

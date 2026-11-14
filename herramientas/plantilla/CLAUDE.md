@@ -2,6 +2,10 @@
 
 Proyecto `{{ID}}` del sitio de Wolfgang Resendiz. Entorno de Claude Code: `WEB_PROYECTO={{ID}}`.
 
+## Reglas heredadas del sitio
+
+Español; sin guion largo (U+2014) en textos, interfaz, comentarios ni mensajes; repositorio **público** (nada privado en claro, nunca contraseñas en el chat); solo HTML, CSS y JavaScript sin build; `npm test` en verde. Detalle en el `CLAUDE.md` de la raíz, «Reglas que heredan todos los proyectos».
+
 ## Zona
 
 - Este proyecto solo edita `{{ID}}/`. Todo lo demás se puede leer, pero no se modifica desde aquí.

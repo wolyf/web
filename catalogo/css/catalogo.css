@@ -13,8 +13,8 @@
    Acento: rosa por defecto; <html data-acento="azul|verde|lavanda|ambar">.
    ============================================================ */
 
-/* Tipografía: Inter (texto), Outfit (títulos) y Google Sans Code (detalles) */
-@import url("https://fonts.googleapis.com/css2?family=Google+Sans+Code:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap");
+/* Tipografía autoalojada: Inter (texto), Outfit (títulos) y Google Sans Code (detalles) */
+@import url("../../css/fuentes.css");
 
 /* ---- Variables: tema claro ---- */
 :root {

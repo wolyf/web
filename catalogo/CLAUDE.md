@@ -147,3 +147,15 @@ Después, commit de `catalogo/datos/`. Para que vean los PDF, comparte la carpet
 - Demo manual: `npm run demo`, luego `npx serve .catalogo/demo` y entra a `/catalogo/` con `demo` / `demo-catalogo`.
 - Si cambias el formato de los datos, sube `ESQUEMA` en `catalogo/js/modelo.js` y adapta `catalogo/herramientas/lib/validar.mjs`.
 - Cada página HTML incluye a Darwin, la gatita del sitio, con `<script src="../js/darwin.js" defer></script>` en el `<head>` (script de la zona general, no se edita desde aquí).
+
+## Reglas heredadas del sitio
+
+- Español; no usar el guion largo (U+2014) en textos, interfaz, comentarios ni mensajes. Notación formal cuando aporte.
+- El repositorio es **público**: nada privado en claro. Nunca pidas contraseñas ni llaves en el chat.
+- Solo HTML, CSS y JavaScript sin build; `npm test` en verde antes de cada commit.
+
+## Sesión del sitio y acceso propio del catálogo
+
+Hoy el catálogo tiene su acceso propio: `catalogo/datos/acceso.json` guarda la llave de datos (DEK) envuelta por usuario y `catalogo/js/app.js` mantiene su sesión (`catalogo-wr:sesion`). Es independiente de la sesión del sitio (`../js/sesion.mjs`, `../datos/acceso.json`, que el resto de proyectos usan con `data-privado`).
+
+Propuesta de unificación (no aplicada): derivar la llave del catálogo como $K_p = \mathrm{HKDF}(K, \texttt{"wr-proyecto:catalogo"})$ con `sesion.llaveProyecto("catalogo")`, quitar el formulario propio y mostrar el botón de sesión añadiendo un bloque `.ajustes` al encabezado. Exige volver a sellar `catalogo.enc` con $K_p$ y reemplazar el llavero de `.catalogo/`, por lo que solo se hace desde este entorno, con las credenciales del dueño y con `catalogo/` y `datos/acceso.json` coordinados. Hasta entonces no mezcles ambos accesos ni resellar datos.

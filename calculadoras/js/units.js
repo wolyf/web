@@ -65,7 +65,7 @@ function renderarMatematicas() {
 }
 
 const formatear = (v) => {
-  if (!Number.isFinite(v)) return "—";
+  if (!Number.isFinite(v)) return "–";
   const abs = Math.abs(v);
   const decimales = abs >= 100 ? 1 : abs >= 1 ? 2 : 4;
   return v.toFixed(decimales);

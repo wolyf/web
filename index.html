@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+  <!-- Política de contenido: solo recursos del propio sitio (ver CLAUDE.md, «Seguridad») -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
   <meta charset="UTF-8">
 
   <!-- Ajuste para celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- Título del navegador y de los resultados de búsqueda -->
-  <title>Wolfgang Reséndiz · Ingeniero civil (hidráulico)</title>
+  <title>Wolfgang Reséndiz · Ingeniero civil y estudiante de Filosofía</title>
 
   <!-- Descripción para buscadores -->
   <meta
     name="description"
-    content="Wolfgang Reséndiz (Resendiz), ingeniero civil hidráulico egresado de la Facultad de Ingeniería de la UNAM y estudiante de Filosofía en la FFyL. Tesis premiada sobre separación de primeras lluvias, calculadoras de hidráulica y manuales de agua potable."
+    content="Wolfgang Reséndiz (Resendiz), ingeniero civil y estudiante de Filosofía en la UNAM. Egresado de la Facultad de Ingeniería (especialidad en hidráulica), con tesis premiada sobre separación de primeras lluvias. Proyectos de ingeniería, herramientas y manuales de agua potable."
   >
   <meta name="author" content="Wolfgang Reséndiz">
 
@@ -27,13 +29,13 @@
   <meta property="og:type" content="profile">
   <meta property="og:locale" content="es_MX">
   <meta property="og:site_name" content="Wolfgang Reséndiz">
-  <meta property="og:title" content="Wolfgang Reséndiz · Ingeniero civil (hidráulico)">
-  <meta property="og:description" content="Ingeniero civil hidráulico egresado de la UNAM y estudiante de Filosofía (FFyL). Proyectos, herramientas de hidráulica y agua potable.">
+  <meta property="og:title" content="Wolfgang Reséndiz · Ingeniero civil y estudiante de Filosofía">
+  <meta property="og:description" content="Ingeniero civil y estudiante de Filosofía en la UNAM. Proyectos de ingeniería, herramientas de hidráulica y manuales de agua potable.">
   <meta property="og:url" content="https://wolyf.github.io/web/">
   <meta property="og:image" content="https://wolyf.github.io/web/img/vista-previa.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Wolfgang Reséndiz, ingeniero civil (hidráulico)">
+  <meta property="og:image:alt" content="Wolfgang Reséndiz, ingeniero civil y estudiante de Filosofía">
   <meta property="profile:first_name" content="Wolfgang">
   <meta property="profile:last_name" content="Reséndiz">
   <meta name="twitter:card" content="summary_large_image">
@@ -61,7 +63,7 @@
         "@type": "ProfilePage",
         "@id": "https://wolyf.github.io/web/#pagina",
         "url": "https://wolyf.github.io/web/",
-        "name": "Wolfgang Reséndiz · Ingeniero civil (hidráulico)",
+        "name": "Wolfgang Reséndiz · Ingeniero civil y estudiante de Filosofía",
         "inLanguage": "es-MX",
         "isPartOf": { "@id": "https://wolyf.github.io/web/#sitio" },
         "mainEntity": { "@id": "https://wolyf.github.io/web/#persona" }
@@ -81,9 +83,9 @@
           "Wolfgang Antonio Resendiz Martinez"
         ],
         "url": "https://wolyf.github.io/web/",
-        "jobTitle": "Ingeniero civil (hidráulico)",
+        "jobTitle": "Ingeniero civil y estudiante de Filosofía",
         "image": "https://wolyf.github.io/web/img/wolfgang-resendiz.jpg",
-        "description": "Ingeniero civil con especialidad en hidráulica, egresado de la Facultad de Ingeniería de la UNAM, y estudiante de Filosofía en la Facultad de Filosofía y Letras de la UNAM.",
+        "description": "Ingeniero civil y estudiante de Filosofía. Egresado de la Facultad de Ingeniería de la UNAM (especialidad en hidráulica) y estudiante en la Facultad de Filosofía y Letras de la UNAM.",
         "knowsAbout": ["Ingeniería civil", "Hidráulica", "Agua potable", "Aprovechamiento de agua de lluvia", "Captación pluvial", "Filosofía"],
         "alumniOf": {
           "@type": "CollegeOrUniversity",
@@ -143,10 +145,6 @@
   <!-- Ícono: la cara de Darwin -->
   <link rel="icon" href="img/darwin-cara.svg" type="image/svg+xml">
 
-  <!-- Tipografía (los estilos la importan; esto adelanta la conexión) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
   <!-- Archivo de estilos -->
   <link rel="stylesheet" href="css/styles.css">
 
@@ -158,6 +156,7 @@
 </head>
 
 <body class="con-lateral">
+  <a class="saltar" href="#inicio">Saltar al contenido</a>
   <div class="marco">
     <!-- Barra lateral (en celular, barra superior) -->
     <aside class="lateral">
@@ -177,19 +176,19 @@
       </div>
 
       <div class="lateral__seccion lateral__intro">
-        <p>Soy <a href="#sobre-mi">Wolfgang Reséndiz</a>, ingeniero civil (hidráulico). Este es mi rincón en la web: herramientas, proyectos y experimentos.</p>
+        <p><a href="#sobre-mi">Wolfgang Reséndiz</a>. Ingeniero civil y estudiante de Filosofía. Proyectos, herramientas y notas.</p>
       </div>
 
       <nav class="lateral__seccion lateral__nav" aria-label="Secciones del sitio">
-        <a href="#sobre-mi">
-          <span class="lateral__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-          </span>Sobre mí
-        </a>
         <a href="#proyectos">
           <span class="lateral__icono" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           </span>Proyectos
+        </a>
+        <a href="#sobre-mi">
+          <span class="lateral__icono" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+          </span>Sobre mí
         </a>
         <a href="#bitacora">
           <span class="lateral__icono" aria-hidden="true">
@@ -197,9 +196,9 @@
           </span>Bitácora
         </a>
 
-        <p class="lateral__titulo">Proyectos</p>
         <!-- Generado desde proyectos.json: npm run proyectos -- portada -->
         <!-- proyectos:menu -->
+        <p class="lateral__titulo">Ingeniería</p>
         <a href="calculadoras/caudal.html"><span class="lateral__icono" aria-hidden="true">🧮</span>Calculadoras</a>
         <a href="catalogo/"><span class="lateral__icono" aria-hidden="true">💧</span>Catálogo</a>
         <a href="manuales-conagua/"><span class="lateral__icono" aria-hidden="true">📚</span>Manuales Conagua</a>
@@ -217,48 +216,49 @@
       <!-- Sesión del sitio en escritorio (js/sesion.mjs); en celular va en la barra superior -->
       <div class="sesion-esquina" data-sesion-lugar></div>
       <main id="inicio">
-        <!-- Presentación y bitácora -->
+        <!-- Presentación -->
         <section class="seccion presentacion" aria-labelledby="titulo-inicio">
-          <div>
-            <h1 class="hero" id="titulo-inicio">Hola, soy Wolfgang Reséndiz.</h1>
-            <p class="subtitulo">Ingeniero civil (hidráulico) egresado de la UNAM y estudiante de Filosofía. Aquí publico herramientas de ingeniería, proyectos personales y vive una gatita llamada Darwin.</p>
+          <h1 class="hero" id="titulo-inicio">Wolfgang Reséndiz</h1>
+          <p class="subtitulo">Ingeniero civil y estudiante de Filosofía. Egresado de la Facultad de Ingeniería de la UNAM, con especialidad en hidráulica.</p>
+        </section>
 
-            <h3 id="bitacora">Bitácora breve</h3>
-            <ol class="bitacora" reversed>
-              <li>
-                <time datetime="2026-11">nov 2026</time>
-                <span>El sitio se organiza por proyectos, llega Darwin y estrena este diseño.</span>
-              </li>
-              <li>
-                <time datetime="2026-10">oct 2026</time>
-                <span><a href="catalogo/">Catálogo de cotizaciones</a> de agua potable: privado y con los datos cifrados.</span>
-              </li>
-              <li>
-                <time datetime="2026-07">jul 2026</time>
-                <span><a href="calculadoras/caudal.html">Calculadora de caudal</a> con unidades configurables, ecuación en LaTeX y gráfica interactiva.</span>
-              </li>
-              <li>
-                <time datetime="2022-06">jun 2022</time>
-                <span>Mi tesis gana el <a href="https://www.comunicacionfi.unam.mx/mostrar_nota.php?id_noticia=2444">primer lugar del Premio Rotoplas-FUNAM</a> en licenciatura.</span>
-              </li>
-              <li>
-                <time datetime="2022-05">may 2022</time>
-                <span>Primera versión del sitio, hecha a mano en HTML y CSS.</span>
-              </li>
-              <li>
-                <time datetime="2019">2019</time>
-                <span>Me titulo de Ingeniería Civil en la Facultad de Ingeniería de la UNAM.</span>
-              </li>
-            </ol>
+        <!-- Proyectos -->
+        <section class="seccion" id="proyectos" aria-labelledby="titulo-proyectos">
+          <div class="seccion__cabeza">
+            <h2 id="titulo-proyectos">Proyectos</h2>
+            <span class="pastilla"><!-- proyectos:total -->3 proyectos<!-- /proyectos:total --></span>
           </div>
+          <p class="seccion__desc">Trabajo de ingeniería, herramientas y, más adelante, notas de estudio.</p>
 
-          <!-- Retrato de Darwin (img/darwin.svg sale de su sprite en js/darwin.js) -->
-          <figure class="retrato">
-            <div class="retrato__circulo">
-              <img src="img/darwin.svg" alt="Darwin, una gatita naranja en pixel art" width="112" height="112">
+          <!-- Generado desde proyectos.json: npm run proyectos -- portada -->
+            <!-- proyectos:tarjetas -->
+            <div class="area" data-area="ingenieria">
+              <h3 class="area__titulo">Ingeniería</h3>
+              <div class="proyectos">
+                <article class="proyecto">
+                  <p class="proyecto__meta"><span>2026</span><span class="proyecto__icono" aria-hidden="true">🧮</span></p>
+                  <h3 class="proyecto__titulo"><a href="calculadoras/caudal.html">Calculadoras de ingeniería</a></h3>
+                  <p class="proyecto__desc">Caudal en tuberías con unidades configurables, ecuación en LaTeX y gráfica interactiva con límites de velocidad.</p>
+                  <p class="proyecto__etiquetas"><span class="etiqueta">#hidráulica</span> <span class="etiqueta">#calculadora</span></p>
+                  <p class="proyecto__enlaces"><a href="calculadoras/caudal.html">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/calculadoras">Código</a></p>
+                </article>
+                <article class="proyecto">
+                  <p class="proyecto__meta"><span>2026 · privado</span><span class="proyecto__icono" aria-hidden="true">💧</span></p>
+                  <h3 class="proyecto__titulo"><a href="catalogo/">Catálogo de cotizaciones de agua potable</a></h3>
+                  <p class="proyecto__desc">Proveedores, productos y cotizaciones de piezas y servicios de agua potable. Requiere usuario y contraseña; los datos se publican cifrados.</p>
+                  <p class="proyecto__etiquetas"><span class="etiqueta">#agua-potable</span> <span class="etiqueta">#cotizaciones</span></p>
+                  <p class="proyecto__enlaces"><a href="catalogo/">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/catalogo">Código</a></p>
+                </article>
+                <article class="proyecto">
+                  <p class="proyecto__meta"><span>2026</span><span class="proyecto__icono" aria-hidden="true">📚</span></p>
+                  <h3 class="proyecto__titulo"><a href="manuales-conagua/">Manuales de agua potable, alcantarillado y saneamiento</a></h3>
+                  <p class="proyecto__desc">Los 54 libros de los manuales técnicos de la Conagua para agua potable, alcantarillado y saneamiento, convertidos de PDF a HTML para leerlos y buscarlos en el navegador.</p>
+                  <p class="proyecto__etiquetas"><span class="etiqueta">#agua-potable</span> <span class="etiqueta">#normativa</span> <span class="etiqueta">#biblioteca</span></p>
+                  <p class="proyecto__enlaces"><a href="manuales-conagua/">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/manuales-conagua">Código</a></p>
+                </article>
+              </div>
             </div>
-            <figcaption>¿Ya conoces a Darwin? Vive en la orilla de cada página. Acaríciala.</figcaption>
-          </figure>
+            <!-- /proyectos:tarjetas -->
         </section>
 
         <!-- Sobre mí: quién soy, con mi nombre completo y mis perfiles -->
@@ -298,53 +298,61 @@
           </p>
         </section>
 
-        <!-- Proyectos -->
-        <section class="seccion" id="proyectos" aria-labelledby="titulo-proyectos">
+        <!-- Bitácora: trayectoria y cambios del sitio -->
+        <section class="seccion" id="bitacora" aria-labelledby="titulo-bitacora">
           <div class="seccion__cabeza">
-            <h2 id="titulo-proyectos">Proyectos</h2>
-            <span class="pastilla"><!-- proyectos:total -->3 proyectos<!-- /proyectos:total --></span>
+            <h2 id="titulo-bitacora">Bitácora</h2>
           </div>
-          <p class="seccion__desc">Herramientas y experimentos publicados en este sitio.</p>
 
-          <!-- Generado desde proyectos.json: npm run proyectos -- portada -->
-          <div class="proyectos">
-            <!-- proyectos:tarjetas -->
-            <article class="proyecto">
-              <p class="proyecto__meta"><span>2026</span><span class="proyecto__icono" aria-hidden="true">🧮</span></p>
-              <h3 class="proyecto__titulo"><a href="calculadoras/caudal.html">Calculadoras de ingeniería</a></h3>
-              <p class="proyecto__desc">Caudal en tuberías con unidades configurables, ecuación en LaTeX y gráfica interactiva con límites de velocidad.</p>
-              <p class="proyecto__etiquetas"><span class="etiqueta">#hidráulica</span> <span class="etiqueta">#calculadora</span></p>
-              <p class="proyecto__enlaces"><a href="calculadoras/caudal.html">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/calculadoras">Código</a></p>
-            </article>
-            <article class="proyecto">
-              <p class="proyecto__meta"><span>2026 · privado</span><span class="proyecto__icono" aria-hidden="true">💧</span></p>
-              <h3 class="proyecto__titulo"><a href="catalogo/">Catálogo de cotizaciones de agua potable</a></h3>
-              <p class="proyecto__desc">Proveedores, productos y cotizaciones de piezas y servicios de agua potable. Requiere usuario y contraseña; los datos se publican cifrados.</p>
-              <p class="proyecto__etiquetas"><span class="etiqueta">#agua-potable</span> <span class="etiqueta">#cotizaciones</span></p>
-              <p class="proyecto__enlaces"><a href="catalogo/">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/catalogo">Código</a></p>
-            </article>
-            <article class="proyecto">
-              <p class="proyecto__meta"><span>2026</span><span class="proyecto__icono" aria-hidden="true">📚</span></p>
-              <h3 class="proyecto__titulo"><a href="manuales-conagua/">Manuales de agua potable, alcantarillado y saneamiento</a></h3>
-              <p class="proyecto__desc">Los 54 libros de los manuales técnicos de la Conagua para agua potable, alcantarillado y saneamiento, convertidos de PDF a HTML para leerlos y buscarlos en el navegador.</p>
-              <p class="proyecto__etiquetas"><span class="etiqueta">#agua-potable</span> <span class="etiqueta">#normativa</span> <span class="etiqueta">#biblioteca</span></p>
-              <p class="proyecto__enlaces"><a href="manuales-conagua/">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/manuales-conagua">Código</a></p>
-            </article>
-            <!-- /proyectos:tarjetas -->
-          </div>
+          <h3>Trayectoria</h3>
+          <ol class="bitacora" reversed>
+            <li>
+              <time datetime="2022-06">jun 2022</time>
+              <span>Mi tesis obtiene el <a href="https://www.comunicacionfi.unam.mx/mostrar_nota.php?id_noticia=2444">primer lugar en licenciatura del Premio Rotoplas-FUNAM</a>.</span>
+            </li>
+            <li>
+              <time datetime="2019">2019</time>
+              <span>Me titulo de Ingeniería Civil en la Facultad de Ingeniería de la UNAM.</span>
+            </li>
+          </ol>
+
+          <h3>Cambios del sitio</h3>
+          <ol class="bitacora" reversed>
+            <li>
+              <time datetime="2026-11">nov 2026</time>
+              <span>El sitio se organiza por proyectos y áreas, y estrena este diseño.</span>
+            </li>
+            <li>
+              <time datetime="2026-10">oct 2026</time>
+              <span><a href="catalogo/">Catálogo de cotizaciones</a> de agua potable: privado y con los datos cifrados.</span>
+            </li>
+            <li>
+              <time datetime="2026-07">jul 2026</time>
+              <span><a href="calculadoras/caudal.html">Calculadora de caudal</a> con unidades configurables, ecuación en LaTeX y gráfica interactiva.</span>
+            </li>
+            <li>
+              <time datetime="2022-05">may 2022</time>
+              <span>Primera versión del sitio, hecha a mano en HTML y CSS.</span>
+            </li>
+          </ol>
         </section>
       </main>
 
       <footer class="pie">
         <ul class="pie__enlaces">
-          <li><a href="#sobre-mi">Sobre mí</a></li>
           <li><a href="#proyectos">Proyectos</a></li>
+          <li><a href="#sobre-mi">Sobre mí</a></li>
           <li><a href="#bitacora">Bitácora</a></li>
           <li><a href="https://mx.linkedin.com/in/wolfgangresendiz" rel="me">LinkedIn</a></li>
           <li><a href="https://www.researchgate.net/profile/Wolfgang-Resendiz" rel="me">ResearchGate</a></li>
-          <li><a href="https://github.com/wolyf/web">Código en GitHub</a></li>
+          <li><a href="https://github.com/wolyf/web">Código del sitio</a></li>
         </ul>
-        <p>Hecho a mano con HTML, CSS y JavaScript, sin dependencias. Con <span class="corazon" aria-label="cariño">♥</span> por Wolfgang Reséndiz.</p>
+        <p>Wolfgang Reséndiz. Sitio hecho con HTML, CSS y JavaScript, sin dependencias.</p>
+        <!-- Darwin (js/darwin.js) vive en la orilla de la página; el botón de ajustes la quita -->
+        <p class="pie__darwin">
+          <img src="img/darwin-cara.svg" alt="" width="20" height="20">
+          Darwin, la gatita del sitio, vive en la orilla de la página. Se quita con el botón del gato en los ajustes.
+        </p>
       </footer>
     </div>
   </div>

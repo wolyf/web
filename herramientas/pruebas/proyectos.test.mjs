@@ -5,7 +5,7 @@ import assert from "node:assert/strict";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { zonaDe, motivoBloqueo, revisarCambio, leerRegistro, leerSitio, actualizarPortada, tarjetaProyecto, generarSitemap, GENERAL } from "../proyectos.mjs";
+import { zonaDe, motivoBloqueo, revisarCambio, leerRegistro, leerSitio, leerAreas, agruparPorArea, actualizarPortada, tarjetaProyecto, generarSitemap, GENERAL } from "../proyectos.mjs";
 
 const proyectos = {
   calculadoras: { nombre: "Calculadoras", carpetas: ["calculadoras"] },
@@ -125,7 +125,7 @@ test("sin marcadores la portada avisa en vez de escribir mal", () => {
 
 test("index.html está al día con proyectos.json", () => {
   const html = fs.readFileSync(path.join(RAIZ_REAL, "index.html"), "utf8");
-  assert.equal(actualizarPortada(html, leerRegistro(), leerSitio()), html, "Corre «npm run proyectos -- portada».");
+  assert.equal(actualizarPortada(html, leerRegistro(), leerSitio(), leerAreas()), html, "Corre «npm run proyectos -- portada».");
 });
 
 test("el sitemap lleva la portada y los proyectos públicos y visibles", () => {
@@ -144,4 +144,61 @@ test("el sitemap lleva la portada y los proyectos públicos y visibles", () => {
 test("sitemap.xml está al día con proyectos.json", () => {
   const xml = fs.readFileSync(path.join(RAIZ_REAL, "sitemap.xml"), "utf8");
   assert.equal(generarSitemap(leerRegistro(), leerSitio()), xml, "Corre «npm run proyectos -- portada».");
+});
+
+test("la portada agrupa por área en el orden declarado", () => {
+  const areas = { b: { nombre: "Segunda", orden: 2 }, a: { nombre: "Primera", orden: 1 } };
+  const varios = {
+    x: { nombre: "X", carpetas: ["x"], area: "b" },
+    y: { nombre: "Y", carpetas: ["y"], area: "a" },
+    z: { nombre: "Z", carpetas: ["z"] },
+  };
+  assert.deepEqual(agruparPorArea(varios, areas).map((g) => g.nombre), ["Primera", "Segunda", "Otros"]);
+  const html = actualizarPortada(BASE, varios, {}, areas);
+  assert.ok(html.indexOf("Primera") < html.indexOf("Segunda"));
+  assert.match(html, /<h3 class="area__titulo">Primera<\/h3>/);
+  assert.match(html, /3 proyectos/);
+  assert.equal(actualizarPortada(html, varios, {}, areas), html);
+});
+
+test("cada proyecto usa un area y un tipo declarados", () => {
+  const registro = JSON.parse(fs.readFileSync(path.join(RAIZ_REAL, "proyectos.json"), "utf8"));
+  const areas = Object.keys(registro.areas ?? {});
+  const tipos = registro.tipos ?? [];
+  assert.ok(areas.length > 0 && tipos.length > 0, "Declara «areas» y «tipos» en proyectos.json.");
+  for (const [id, p] of Object.entries(registro.proyectos)) {
+    assert.ok(areas.includes(p.area), `«${id}» usa el area «${p.area}», que no está declarada.`);
+    assert.ok(tipos.includes(p.tipo), `«${id}» usa el tipo «${p.tipo}», que no está declarado.`);
+  }
+});
+
+test("cada proyecto aparece en la tabla de zonas del CLAUDE.md raíz", () => {
+  const md = fs.readFileSync(path.join(RAIZ_REAL, "CLAUDE.md"), "utf8");
+  const tabla = md.split("\n").filter((l) => /^\|\s*`/.test(l));
+  for (const id of Object.keys(leerRegistro())) {
+    assert.ok(tabla.some((l) => l.startsWith(`| \`${id}\``)), `Falta «${id}» en la tabla de zonas de CLAUDE.md.`);
+  }
+});
+
+test("cada página HTML lleva la política de contenido y no carga recursos externos", () => {
+  const paginas = [];
+  const recorrer = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if ([".git", "node_modules", ".catalogo", ".privado"].includes(e.name)) continue;
+      const ruta = path.join(dir, e.name);
+      if (e.isDirectory()) recorrer(ruta);
+      else if (e.name.endsWith(".html")) paginas.push(ruta);
+    }
+  };
+  recorrer(RAIZ_REAL);
+  assert.ok(paginas.length > 5);
+  for (const ruta of paginas) {
+    const html = fs.readFileSync(ruta, "utf8");
+    const politica = html.match(/<meta http-equiv="Content-Security-Policy" content="([^"]+)"/)?.[1];
+    const nombre = path.relative(RAIZ_REAL, ruta);
+    assert.ok(politica, `${nombre} no tiene la política de contenido.`);
+    assert.match(politica, /script-src 'self'(;|$)/, `${nombre}: script-src debe ser solo 'self'.`);
+    assert.doesNotMatch(politica, /https?:/, `${nombre}: la política no debe abrir hosts externos.`);
+    assert.doesNotMatch(html, /<(?:script|link)\b[^>]*(?:src|href)="https?:\/\/(?!(?:www\.)?(?:linkedin|researchgate|github))[^"]*"[^>]*(?:rel="stylesheet"|<script)/, `${nombre} carga un recurso externo.`);
+  }
 });
