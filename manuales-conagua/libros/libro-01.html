@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="../../css/styles.css">
 <link rel="stylesheet" href="../css/libro.css">
 <link rel="stylesheet" href="../css/graficas.css">
+<link rel="stylesheet" href="../css/diagramas.css">
 
 <!-- Tema y acento (sin defer, antes de pintar); lectura y Darwin (con defer) -->
 <script src="../../js/tema.js"></script>
@@ -557,7 +558,29 @@
 <h3 id="s2-2-2">2.2.2 Oferta de agua</h3>
 <p>En cualquiera de los casos debe establecerse la disponibilidad del agua para extracción y su posterior distribución. Existen dos tipos de alternativas para el suministro de agua a las comunidades:</p>
 <div class="pag" id="pdf-29" data-p="18" title="Comienza la página 18 del libro impreso (página 29 del PDF)"></div>
-<figure id="ilustracion-2-1" class="figura" data-pdf="29"><figcaption><span class="num">Ilustración 2.1</span> Clasificación de usos de agua potable</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-2-1.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-2-1.webp" alt="Diagrama de árbol: el uso del agua potable se divide en doméstico (alto, medio y bajo) y no doméstico (comercial, industrial, agropecuario y servicios públicos: público urbano, oficial y uso para la asistencia social).." width="1041" height="641" loading="lazy" decoding="async"></a></figure>
+<figure id="ilustracion-2-1" class="figura" data-pdf="29"><figcaption><span class="num">Ilustración 2.1</span> Clasificación de usos de agua potable</figcaption><div class="diagrama diagrama--arbol" role="img" aria-label="Clasificación de usos del agua potable: el uso se divide en doméstico (alto, medio y bajo) y no doméstico; este último en comercial, industrial (de servicios y de producción), agropecuario y servicios públicos (público urbano, oficial y asistencia social).">
+  <ul class="arbol arbol--uniforme arbol--plegable" style="--ancho-caja: 6.6rem">
+    <li><span class="caja caja--celeste">Uso</span>
+      <ul>
+        <li class="colgante"><span class="caja caja--celeste">Doméstico</span>
+          <ul><li><span class="caja caja--celeste">Alto</span></li><li><span class="caja caja--celeste">Medio</span></li><li><span class="caja caja--celeste">Bajo</span></li></ul>
+        </li>
+        <li><span class="caja caja--celeste">No<br>Doméstico</span>
+          <ul>
+            <li><span class="caja caja--celeste">Comercial</span></li>
+            <li class="colgante"><span class="caja caja--celeste">Industrial</span>
+              <ul><li><span class="caja caja--celeste">de<br>Servicios</span></li><li><span class="caja caja--celeste">de<br>Producción</span></li></ul>
+            </li>
+            <li><span class="caja caja--celeste">agropecuario</span></li>
+            <li class="colgante"><span class="caja caja--celeste">Servicios<br>públicos</span>
+              <ul><li><span class="caja caja--celeste">público<br>urbano</span></li><li><span class="caja caja--celeste">oficial</span></li><li><span class="caja caja--celeste">asistencia<br>social</span></li></ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-2-1.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-2-1.webp" alt="Diagrama de árbol: el uso del agua potable se divide en doméstico (alto, medio y bajo) y no doméstico (comercial, industrial, agropecuario y servicios públicos: público urbano, oficial y uso para la asistencia social).." width="1041" height="641" loading="lazy" decoding="async"></a></details></figure>
 <div class="tabla" id="tabla-2-7" tabindex="0"><table>
 <caption><span class="num">Tabla 2.7</span> Tabla para registro de usuarios</caption>
 <thead><tr>
@@ -697,7 +720,7 @@
 <p>Para la estimación de las pérdidas totales en el sistema se recopila la información de los volúmenes de agua producidos durante un periodo <span class="pag" id="pdf-42" data-p="31" title="Comienza la página 31 del libro impreso (página 42 del PDF)"></span> de tiempo (en función de la cantidad e información disponible en el organismo), mismo que habrá sido suministrado a la red de agua potable. De este volumen, en el mismo periodo debe tenerse registro, en los usuarios con servicio medido, del volumen consumido. El porcentaje de pérdidas totales de agua será la diferencia entre el volumen suministrado y el volumen consumido.</p>
 <figure id="ilustracion-2-16" class="figura" data-pdf="41"><figcaption><span class="num">Ilustración 2.16</span> Macromedidor electromagnético instalado en el tren de descarga de un pozo</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-2-16.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-2-16.webp" alt="Fotografía de un macromedidor electromagnético instalado en el tren de descarga de un pozo." width="1042" height="631" loading="lazy" decoding="async"></a></figure>
 <figure id="ilustracion-2-17" class="figura" data-pdf="42"><figcaption><span class="num">Ilustración 2.17</span> Medición de gasto en pozo con equipo portátil (IMTA, 2013)</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-2-17.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-2-17.webp" alt="Fotografía de la medición de gasto en pozo con equipo portátil (IMTA, 2013)." width="497" height="377" loading="lazy" decoding="async"></a></figure>
-<figure id="ilustracion-2-19" class="figura" data-pdf="42"><figcaption><span class="num">Ilustración 2.19</span> Comparación de mediciones entre pozo y llegada a tanque</figcaption><div class="grafica-libro" data-grafica="2-19"></div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-2-19.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-2-19.webp" alt="Gráfica de gasto (L/s, eje vertical de 17.5 a 22.0) contra tiempo (minutos, eje horizontal de 0 a 45), con dos series: Pozo y Tanque." width="1041" height="677" loading="lazy" decoding="async"></a></details><details class="rotulos"><summary>Rótulos <span>(15, en el orden en que se extraen del PDF)</span></summary><ul><li>22.0</li><li>21.5</li><li>21.0</li><li>20.5</li><li>20.0</li><li>Gasto (L/s)</li><li>19.5</li><li>19.0</li><li>18.5</li><li>18.0</li><li>17.5</li><li>Pozo</li><li>Tanque</li><li>0 5 10 15 20 25 30 35 40 45</li><li>Tiempo (minutos)</li></ul></details></figure>
+<figure id="ilustracion-2-19" class="figura" data-pdf="42"><figcaption><span class="num">Ilustración 2.19</span> Comparación de mediciones entre pozo y llegada a tanque</figcaption><div class="grafica-libro" data-grafica="2-19"></div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-2-19.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-2-19.webp" alt="Gráfica de gasto (L/s, eje vertical de 17.5 a 22.0) contra tiempo (minutos, eje horizontal de 0 a 45), con dos series: Pozo y Tanque." width="1041" height="677" loading="lazy" decoding="async"></a></details></figure>
 <figure id="ilustracion-2-18" class="figura" data-pdf="42"><figcaption><span class="num">Ilustración 2.18</span> Medición de gasto en la llegada a tanque con equipo portátil (IMTA, 2013)</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-2-18.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-2-18.webp" alt="Fotografía de la medición de gasto en la llegada a tanque con equipo portátil (IMTA, 2013)." width="498" height="379" loading="lazy" decoding="async"></a></figure>
 <p>Esta situación plantea una condición ideal, en la cual se tiene cuantificado el volumen extraído y <span class="pag" id="pdf-43" data-p="32" title="Comienza la página 32 del libro impreso (página 43 del PDF)"></span> el volumen consumido por el total de los usuarios en el mismo periodo de tiempo, sin embargo, esta situación es muy difícil que se presente, ya que no existe un organismo operador que tenga cobertura del 100 por ciento de micromedición y macromedición simultáneamente, y los registros tanto de extracción como de consumo no siempre se encuentran disponibles. En el libro <em>Mejora de eficiencia física</em> de <em>MAPAS</em> se presentan alternativas para estimar estos valores.</p>
 <div class="tabla" id="tabla-2-9" tabindex="0"><table>
@@ -931,7 +954,16 @@
 <p>Esta metodología puede variar levemente de acuerdo con la ley de cada estado. En algunos casos requerirá la aprobación del congreso estatal. De forma esquemática, la <a class="ref" href="#ilustracion-3-1">Ilustración 3.1</a> muestra el proceso secuencial. A continuación se describe cada punto.</p>
 <h4 id="s3-1-1-1">3.1.1.1 Determinación de necesidades</h4>
 <p>Como se mencionó en el apartado 2.1, la creación de un organismo operador debe surgir de la necesidad de brindar el servicio de agua potable, alcantarillado y saneamiento en una comunidad <span class="pag" id="pdf-53" data-p="42" title="Comienza la página 42 del libro impreso (página 53 del PDF)"></span> donde no se preste el servicio o en la cual, por razones político-sociales, se requiera sustituir la forma en que se ofrece el servicio.</p>
-<figure id="ilustracion-3-1" class="figura" data-pdf="53"><figcaption><span class="num">Ilustración 3.1</span> Esquema de creación para organismos operadores municipales</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-1.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-1.webp" alt="Diagrama de flujo con el esquema (proceso secuencial) de creación de organismos operadores municipales." width="498" height="1096" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(11, en el orden en que se extraen del PDF)</span></summary><ul><li>Determinación de</li><li>necesidades</li><li>Solicitud de creación por</li><li>parte del Ayuntamiento</li><li>Acuerdo de creación por</li><li>parte del cabildo</li><li>Solicitud de decreto por parte del Gobierno Estatal</li><li>Solicitud de decreto por parte del Gobierno Estatal</li><li>Decreto de creación por parte del Gobierno del Estado</li><li>Puesta en marcha</li><li>Puesta en marcha</li></ul></details></figure>
+<figure id="ilustracion-3-1" class="figura" data-pdf="53"><figcaption><span class="num">Ilustración 3.1</span> Esquema de creación para organismos operadores municipales</figcaption><div class="diagrama diagrama--flujo" role="img" aria-label="Esquema de creación de un organismo operador municipal, en seis pasos: determinación de necesidades; solicitud de creación por parte del Ayuntamiento; acuerdo de creación por parte del cabildo; solicitud de decreto por parte del Gobierno Estatal; decreto de creación por parte del Gobierno del Estado; puesta en marcha.">
+  <div class="flujo">
+    <span class="caja caja--gris">Determinación de<br>necesidades</span>
+    <span class="caja caja--azul">Solicitud de creación por<br>parte del Ayuntamiento</span>
+    <span class="caja caja--gris">Acuerdo de creación por<br>parte del cabildo</span>
+    <span class="caja caja--azul">Solicitud de decreto por<br>parte del Gobierno Estatal</span>
+    <span class="caja caja--gris">Decreto de creación  por<br>parte del Gobierno del Estado</span>
+    <span class="caja caja--azul">Puesta en marcha</span>
+  </div>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-1.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-1.webp" alt="Diagrama de flujo con el esquema (proceso secuencial) de creación de organismos operadores municipales." width="498" height="1096" loading="lazy" decoding="async"></a></details></figure>
 <p>En cualquier caso debe realizarse un estudio en la comunidad, a través del cual se identifiquen las necesidades de la población y se cuantifiquen y califiquen los servicios con los que cuenta.</p>
 <p>Si la comunidad a la que se pretende dar servicio no cuenta con un organismo operador o una red de distribución de agua potable, alcantarillado o saneamiento, el estudio deberá limitarse al Diagnóstico de la comunidad presentado en el apartado 2.2. De este deberán atenderse los siguientes puntos:</p>
 <p class="lista">1. Usuarios potenciales</p>
@@ -1016,7 +1048,22 @@
 <p class="lista">5. En caso de ser creado como un organismo descentralizado del ayuntamiento y del organismo operador, deberá referirse a la ley estatal de agua que corresponda, debido a que este mecanismo es distinto de una entidad a otra y en muchos casos no está contemplado en la legislación</p>
 <p>De forma esquemática, la <a class="ref" href="#ilustracion-3-2">Ilustración 3.2</a> muestra el proceso secuencial.</p>
 <div class="pag" id="pdf-57" data-p="46" title="Comienza la página 46 del libro impreso (página 57 del PDF)"></div>
-<figure id="ilustracion-3-2" class="figura" data-pdf="57"><figcaption><span class="num">Ilustración 3.2</span> Esquema de creación para organismos operadores de pequeñas comunidades</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-2.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-2.webp" alt="Diagrama de flujo con el esquema de creación de organismos operadores de pequeñas comunidades." width="1041" height="1059" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(17, en el orden en que se extraen del PDF)</span></summary><ul><li>Determinación de</li><li>necesidades</li><li>Solicitud de creación por parte del un comité o representante</li><li>de la comunidad</li><li>Si el organismo es una extención de</li><li>un organismo operador exitente</li><li>Solicitud de extención por parte de la dirección del organismo operador</li><li>Evaluación y aceptación por parte</li><li>de la Junta de Gobienro</li><li>del organismo operador</li><li>Puesta en marcha</li><li>SI el organismo es autónomo o descentralizado del ayuntamiento</li><li>o el organismo operador</li><li>Acuerdo de creación entre el Ayuntamiento y la Comisión Estalal</li><li>de Agua respectiva</li><li>Solicitud de creación por parte del Ayuntamiento en seción de cabildo</li><li>Puesta en marcha</li></ul></details></figure>
+<figure id="ilustracion-3-2" class="figura" data-pdf="57"><figcaption><span class="num">Ilustración 3.2</span> Esquema de creación para organismos operadores de pequeñas comunidades</figcaption><div class="diagrama diagrama--flujo" role="img" aria-label="Esquema de creación de un organismo operador local. Tras la determinación de necesidades y la solicitud de un comité o representante de la comunidad, se abren dos caminos: si es una extensión de un organismo operador existente, solicitud de extensión, evaluación por la Junta de Gobierno y puesta en marcha; si es autónomo o descentralizado, acuerdo con la Comisión Estatal de Agua, solicitud del Ayuntamiento en sesión de cabildo y puesta en marcha.">
+  <div class="flujo flujo--ancho">
+    <span class="caja caja--gris">Determinación de<br>necesidades</span>
+    <span class="caja caja--azul">Solicitud de creación por<br>parte del un comité o representante<br>de la comunidad</span>
+    <div class="flujo__ramas" style="--filas: 4">
+      <span class="caja caja--gris inicio-rama">Si el organismo es una extención de <br>un organismo operador exitente</span>
+      <span class="caja caja--azul">Solicitud de extención por <br>parte de la dirección del organismo operador</span>
+      <span class="caja caja--gris">Evaluación y aceptación por parte <br>de la Junta de Gobienro <br>del organismo operador</span>
+      <span class="caja caja--azul">Puesta en marcha</span>
+      <span class="caja caja--gris inicio-rama">SI el organismo es autónomo o <br>descentralizado del ayuntamiento <br>o el organismo operador</span>
+      <span class="caja caja--azul">Acuerdo de creación entre <br>el Ayuntamiento y la Comisión Estalal <br>de Agua respectiva</span>
+      <span class="caja caja--gris">Solicitud de creación por <br>parte del Ayuntamiento en seción de cabildo</span>
+      <span class="caja caja--azul">Puesta en marcha</span>
+    </div>
+  </div>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-2.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-2.webp" alt="Diagrama de flujo con el esquema de creación de organismos operadores de pequeñas comunidades." width="1041" height="1059" loading="lazy" decoding="async"></a></details></figure>
 <h4 id="s3-2-1-1">3.2.1.1 Determinación de necesidades</h4>
 <p>Al igual que en el caso anterior, la creación de un organismo operador debe surgir de la necesidad de brindar el servicio de agua potable, alcantarillado y saneamiento en una comunidad en donde no se preste el servicio o que por razones político-sociales se requiera sustituir la forma en que se ofrece el servicio.</p>
 <p>Si la comunidad a la que se pretende dar servicio no cuenta con un organismo operador o una red de distribución de agua potable, alcantarillado o saneamiento, el estudio deberá limitarse al Diagnóstico de la comunidad, el cual se presentó en el apartado 2.2.</p>
@@ -1165,7 +1212,7 @@
 <p>En el estudio realizado, se detectaron un gran de usuarios potenciales que al momento del estudio no recibían el servicio por parte del organismo operador (predios sin color en la <a class="ref" href="#ilustracion-3-4">Ilustración 3.4</a>). De estos, los usuarios comerciales, se abastecen por medio de pipas y tienen un gasto promedio de $ 380.00 por pipa de 10 000 litros y su gasto se presenta en la <a class="ref" href="#ilustracion-3-5">Ilustración 3.5</a>, el gasto promedio de los usuarios detectados es de $ 3 000.00 pesos al mes.</p>
 <h4 id="s3-3-6-2">3.3.6.2 Propuesta de organismo operador intermunicipal</h4>
 <p>Para buscar mejorar los servicios que se brindan a los usuarios, así como homologar la calidad y costo de los mismos en toda la periferia del lago, se propuso la creación de un organismo operador intermunicipal que atienda a la población de las tres comunidades en cuestión, así como una serie de usuarios potenciales, que al momento del estudio, no cuentan con el servicio de agua potable.</p>
-<figure id="ilustracion-3-5" class="figura" data-pdf="66"><figcaption><span class="num">Ilustración 3.5</span> Gasto promedio de los usuarios fuera del área de influencia</figcaption><div class="grafica-libro" data-grafica="3-5"></div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-5.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-5.webp" alt="Gráfica del gasto promedio de los usuarios fuera del área de influencia." width="1041" height="812" loading="lazy" decoding="async"></a></details><details class="rotulos"><summary>Rótulos <span>(30, en el orden en que se extraen del PDF)</span></summary><ul><li>$10,000.00</li><li>$9 000.00</li><li>$7 000.00</li><li>$8 000.00</li><li>$7 000.00</li><li>Gasto mensual</li><li>$5 280.00</li><li>$6 000.00</li><li>$5 000.00</li><li>$2 800.00</li><li>$4 000.00</li><li>$2 000.00</li><li>$2 000.00</li><li>$3 000.00</li><li>$1 200.00</li><li>$2 000.00</li><li>$1 000.00</li><li>$9,600.00</li><li>$4 800.00</li><li>$4 800.00</li><li>$3 200.00</li><li>$1 400.00</li><li>$1 400.00</li><li>$1 400.00</li><li>$1 200.00</li><li>$1 600.00</li><li>$1 600.00</li><li>$1 200.00</li><li>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18</li><li>Usuario identiﬁcado</li></ul></details></figure>
+<figure id="ilustracion-3-5" class="figura" data-pdf="66"><figcaption><span class="num">Ilustración 3.5</span> Gasto promedio de los usuarios fuera del área de influencia</figcaption><div class="grafica-libro" data-grafica="3-5"></div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-5.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-5.webp" alt="Gráfica del gasto promedio de los usuarios fuera del área de influencia." width="1041" height="812" loading="lazy" decoding="async"></a></details></figure>
 <p>A partir del diagnóstico de los organismos operadores (capítulo 2) y tomando en consideración las recomendaciones del libro <em>Mejora de eficiencia física</em> del MAPAS, se concluyó que la disponibilidad del recurso permite brindar el servicio continuo a toda la población; para tal efecto se propusieron una serie de ampliaciones a las redes existentes, siguiendo las recomendaciones del libro <em>Diseño de redes de distribución de agua potable</em> y <em>Modelación hidráulica y de calidad del agua</em> <span class="pag" id="pdf-67" data-p="56" title="Comienza la página 56 del libro impreso (página 67 del PDF)"></span> <em>en redes de distribución</em> del MAPAS, tal como se muestra en la <a class="ref" href="#ilustracion-3-6">Ilustración 3.6</a>.</p>
 <p>Tomando en consideración el crecimiento de la población, la inversión necesaria para la construcción de la infraestructura, los costos de producción y de administración (Tal como se establece en el libro de <em>Estructuras Tarifarias</em>, del MAPAS), garantizan brindar el servicio continuo a la población con una tarifa (<a class="ref" href="#tabla-3-3">Tabla 3.3</a> y <a class="ref" href="#tabla-3-4">Tabla 3.4</a>), en un principio de cuota fija, menor a la que se paga antes de la integración y que además garantiza la autosuficiencia del organismo operador.</p>
 <p>Esto es posible debido a que al concentrar la administración del organismo operador en una sola entidad, distribuir el volumen extraído de las fuentes de forma más uniforme (ya que se puede interactuar con las tres fuentes de abastecimiento) los costos de producción disminuyen significativamente y es posible ampliar los horarios de suministro y llevar el servicio a nuevos usuarios. Esta dinámica permite generar un proceso de mejora continua, ampliando con ello la cobertura de servicio y por tanto los ingresos al organismo, si estos recursos son administrados adecuadamente es posible la disminución de pérdidas físicas y la mejora de eficiencia comercial y por tanto la disminución del costo de producción. Por otra parte al desligar la administración de la influencia de las cabeceras municipales, se tiene una mayor cercanía con los usuarios y por tanto un servicio más eficiente.</p>
@@ -1356,10 +1403,58 @@
 </ul>
 <p>Este tipo es de gran utilidad para capacitar al personal y presentar a la organización en forma general (<a class="ref" href="#ilustracion-3-10">Ilustración 3.10</a>)</p>
 <div class="pag" id="pdf-76" data-p="65" title="Comienza la página 65 del libro impreso (página 76 del PDF)"></div>
-<figure id="ilustracion-3-7" class="figura" data-pdf="76"><figcaption><span class="num">Ilustración 3.7</span> Organigrama por ámbito general</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-7.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-7.webp" alt="Organigrama por ámbito general." width="1040" height="546" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(4, en el orden en que se extraen del PDF)</span></summary><ul><li>Dirección</li><li>General</li><li>Dirección Dirección Dirección</li><li>Depto. Depto. Depto. Depto. Depto. Depto. Depto.</li></ul></details></figure>
-<figure id="ilustracion-3-8" class="figura" data-pdf="76"><figcaption><span class="num">Ilustración 3.8</span> Organigrama por ámbito específico</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-8.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-8.webp" alt="Organigrama por ámbito específico." width="1040" height="571" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(3, en el orden en que se extraen del PDF)</span></summary><ul><li>Gerencia</li><li>Depto. Depto. Depto.</li><li>Oﬁcina Oﬁcina Oﬁcina Oﬁcina Oﬁcina Oﬁcina</li></ul></details></figure>
+<figure id="ilustracion-3-7" class="figura" data-pdf="76"><figcaption><span class="num">Ilustración 3.7</span> Organigrama por ámbito general</figcaption><div class="diagrama diagrama--arbol" role="img" aria-label="Organigrama vertical: una Dirección General de la que dependen tres direcciones, con dos, dos y tres departamentos.">
+  <ul class="arbol">
+    <li><span class="caja caja--rosa">Dirección<br>General</span>
+      <ul>
+        <li><span class="caja caja--naranja">Dirección</span>
+          <ul><li><span class="caja caja--amarillo">Depto.</span></li><li><span class="caja caja--amarillo">Depto.</span></li></ul>
+        </li>
+        <li><span class="caja caja--naranja">Dirección</span>
+          <ul><li><span class="caja caja--amarillo">Depto.</span></li><li><span class="caja caja--amarillo">Depto.</span></li></ul>
+        </li>
+        <li><span class="caja caja--naranja">Dirección</span>
+          <ul><li><span class="caja caja--amarillo">Depto.</span></li><li><span class="caja caja--amarillo">Depto.</span></li><li><span class="caja caja--amarillo">Depto.</span></li></ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-7.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-7.webp" alt="Organigrama por ámbito general." width="1040" height="546" loading="lazy" decoding="async"></a></details></figure>
+<figure id="ilustracion-3-8" class="figura" data-pdf="76"><figcaption><span class="num">Ilustración 3.8</span> Organigrama por ámbito específico</figcaption><div class="diagrama diagrama--arbol" role="img" aria-label="Organigrama vertical: una gerencia de la que dependen tres departamentos, cada uno con dos oficinas.">
+  <ul class="arbol">
+    <li><span class="caja caja--rosa">Gerencia</span>
+      <ul>
+        <li><span class="caja caja--naranja">Depto.</span>
+          <ul><li><span class="caja caja--amarillo">Oficina</span></li><li><span class="caja caja--amarillo">Oficina</span></li></ul>
+        </li>
+        <li><span class="caja caja--naranja">Depto.</span>
+          <ul><li><span class="caja caja--amarillo">Oficina</span></li><li><span class="caja caja--amarillo">Oficina</span></li></ul>
+        </li>
+        <li><span class="caja caja--naranja">Depto.</span>
+          <ul><li><span class="caja caja--amarillo">Oficina</span></li><li><span class="caja caja--amarillo">Oficina</span></li></ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-8.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-8.webp" alt="Organigrama por ámbito específico." width="1040" height="571" loading="lazy" decoding="async"></a></details></figure>
 <div class="pag" id="pdf-77" data-p="66" title="Comienza la página 66 del libro impreso (página 77 del PDF)"></div>
-<figure id="ilustracion-3-9" class="figura" data-pdf="77"><figcaption><span class="num">Ilustración 3.9</span> Organigrama por contenido integral</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-9.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-9.webp" alt="Organigrama por contenido integral." width="1041" height="603" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(13, en el orden en que se extraen del PDF)</span></summary><ul><li>Dirección General 1.0</li><li>Dirección</li><li>1.1 Dirección</li><li>1.2 Dirección</li><li>1.3</li><li>1.1.1 Depto.</li><li>Depto.</li><li>1.2.3 Depto.</li><li>1.3.2 Depto.</li><li>1.2.1 Depto.</li><li>1.2.2 Depto.</li><li>1.1.2</li><li>1.3.1 Depto.</li></ul></details></figure>
+<figure id="ilustracion-3-9" class="figura" data-pdf="77"><figcaption><span class="num">Ilustración 3.9</span> Organigrama por contenido integral</figcaption><div class="diagrama diagrama--arbol" role="img" aria-label="Organigrama numerado: la Dirección General 1.0 con las direcciones 1.1, 1.2 y 1.3, y sus departamentos numerados del 1.1.1 al 1.3.2.">
+  <ul class="arbol">
+    <li><span class="caja caja--rosa">Dirección<br>General 1.0</span>
+      <ul>
+        <li><span class="caja caja--naranja">Dirección<br>1.1</span>
+          <ul><li><span class="caja caja--amarillo">Depto.<br>1.1.1</span></li><li><span class="caja caja--amarillo">Depto.<br>1.1.2</span></li></ul>
+        </li>
+        <li><span class="caja caja--naranja">Dirección<br>1.2</span>
+          <ul><li><span class="caja caja--amarillo">Depto.<br>1.2.1</span></li><li><span class="caja caja--amarillo">Depto.<br>1.2.2</span></li><li><span class="caja caja--amarillo">Depto.<br>1.2.3</span></li></ul>
+        </li>
+        <li><span class="caja caja--naranja">Dirección<br>1.3</span>
+          <ul><li><span class="caja caja--amarillo">Depto.<br>1.3.1</span></li><li><span class="caja caja--amarillo">Depto.<br>1.3.2</span></li></ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-9.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-9.webp" alt="Organigrama por contenido integral." width="1041" height="603" loading="lazy" decoding="async"></a></details></figure>
 <ul>
 <li>De puestos, plazas y unidades. Indican las necesidades en cuanto a puestos y el número de plazas existentes o necesarias para cada unidad consignada. Incluye los nombres de las personas que ocupan las plazas (<a class="ref" href="#ilustracion-3-11">Ilustración 3.11</a>)</li>
 </ul>
@@ -1378,13 +1473,92 @@
 <li>Circulares. En este tipo de diseño gráfico, la unidad organizativa de mayor jerarquía se ubica en el centro de una serie de círculos concéntricos, cada uno de los cuales representa un nivel distinto de autoridad, que decrece desde el centro hacia los extremos. El último círculo, es decir, el más extenso, indica el menor nivel de jerarquía de autoridad. Las unidades de igual jerarquía se ubican sobre un mismo círculo, y las relaciones jerárquicas están indicadas por líneas que unen las figuras (<a class="ref" href="#ilustracion-3-16">Ilustración 3.16</a>)</li>
 </ul>
 <div class="pag" id="pdf-80" data-p="69" title="Comienza la página 69 del libro impreso (página 80 del PDF)"></div>
-<figure id="ilustracion-3-12" class="figura" data-pdf="80"><figcaption><span class="num">Ilustración 3.12</span> Organigrama vertical</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-12.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-12.webp" alt="Organigrama vertical." width="1042" height="493" loading="lazy" decoding="async"></a></figure>
-<figure id="ilustracion-3-13" class="figura" data-pdf="80"><figcaption><span class="num">Ilustración 3.13</span> Organigrama horizontal</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-13.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-13.webp" alt="Organigrama horizontal." width="1040" height="877" loading="lazy" decoding="async"></a></figure>
+<figure id="ilustracion-3-12" class="figura" data-pdf="80"><figcaption><span class="num">Ilustración 3.12</span> Organigrama vertical</figcaption><div class="diagrama diagrama--arbol" role="img" aria-label="Organigrama vertical de ejemplo, sin rótulos: una caja superior, tres intermedias y siete inferiores repartidas en grupos de tres, dos y dos.">
+  <ul class="arbol">
+    <li><span class="caja caja--rosa caja--vacia"></span>
+      <ul>
+        <li><span class="caja caja--naranja caja--vacia"></span>
+          <ul><li><span class="caja caja--amarillo caja--vacia"></span></li><li><span class="caja caja--amarillo caja--vacia"></span></li><li><span class="caja caja--amarillo caja--vacia"></span></li></ul>
+        </li>
+        <li><span class="caja caja--naranja caja--vacia"></span>
+          <ul><li><span class="caja caja--amarillo caja--vacia"></span></li><li><span class="caja caja--amarillo caja--vacia"></span></li></ul>
+        </li>
+        <li><span class="caja caja--naranja caja--vacia"></span>
+          <ul><li><span class="caja caja--amarillo caja--vacia"></span></li><li><span class="caja caja--amarillo caja--vacia"></span></li></ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-12.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-12.webp" alt="Organigrama vertical." width="1042" height="493" loading="lazy" decoding="async"></a></details></figure>
+<figure id="ilustracion-3-13" class="figura" data-pdf="80"><figcaption><span class="num">Ilustración 3.13</span> Organigrama horizontal</figcaption><div class="diagrama diagrama--plano" role="img" aria-label="Organigrama horizontal de ejemplo, sin rótulos, que se lee de izquierda a derecha: una caja, cuatro intermedias y nueve a la derecha, en grupos de tres, dos, dos y dos.">
+  <div class="plano" style="--proporcion: 960 / 800; --ancho-max: 34rem">
+    <svg viewBox="40 20 960 800" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="226" y1="454" x2="292" y2="454"/>
+      <line x1="292" y1="142" x2="292" y2="733"/>
+      <line x1="292" y1="142" x2="348" y2="142"/>
+      <line x1="292" y1="368" x2="348" y2="368"/>
+      <line x1="292" y1="548" x2="348" y2="548"/>
+      <line x1="292" y1="733" x2="458" y2="733"/>
+      <line x1="515" y1="144" x2="739" y2="144"/>
+      <line x1="515" y1="368" x2="739" y2="368"/>
+      <line x1="515" y1="550" x2="739" y2="550"/>
+      <line x1="739" y1="67" x2="739" y2="221"/>
+      <line x1="739" y1="328" x2="739" y2="407"/>
+      <line x1="739" y1="509" x2="739" y2="587"/>
+      <line x1="739" y1="693" x2="739" y2="772"/>
+      <line x1="739" y1="67" x2="815" y2="67"/>
+      <line x1="739" y1="144" x2="815" y2="144"/>
+      <line x1="739" y1="221" x2="815" y2="221"/>
+      <line x1="739" y1="328" x2="815" y2="328"/>
+      <line x1="739" y1="407" x2="815" y2="407"/>
+      <line x1="739" y1="509" x2="815" y2="509"/>
+      <line x1="739" y1="587" x2="815" y2="587"/>
+      <line x1="739" y1="694" x2="815" y2="694"/>
+      <line x1="739" y1="772" x2="815" y2="772"/>
+    </svg>
+    <span class="caja caja--rosa" style="--x: 1.67; --y: 50.12; --w: 17.71; --h: 8.38"></span>
+    <span class="caja caja--naranja" style="--x: 32.08; --y: 11.12; --w: 17.4; --h: 8.38"></span>
+    <span class="caja caja--naranja" style="--x: 32.08; --y: 39.62; --w: 17.4; --h: 8.38"></span>
+    <span class="caja caja--naranja" style="--x: 32.08; --y: 61.62; --w: 17.4; --h: 8.38"></span>
+    <span class="caja caja--naranja" style="--x: 43.54; --y: 84.88; --w: 17.4; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 1.75; --w: 17.92; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 11.38; --w: 17.92; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 20.88; --w: 17.92; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 33.62; --w: 17.92; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 43.12; --w: 17.92; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 56.62; --w: 17.92; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 66.12; --w: 17.92; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 80.12; --w: 17.92; --h: 8.38"></span>
+    <span class="caja caja--amarillo" style="--x: 80.73; --y: 89.75; --w: 17.92; --h: 8.38"></span>
+  </div>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-13.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-13.webp" alt="Organigrama horizontal." width="1040" height="877" loading="lazy" decoding="async"></a></details></figure>
 <div class="pag" id="pdf-81" data-p="70" title="Comienza la página 70 del libro impreso (página 81 del PDF)"></div>
 <figure id="ilustracion-3-14" class="figura" data-pdf="81"><figcaption><span class="num">Ilustración 3.14</span> Organigrama mixto</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-14.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-14.webp" alt="Organigrama mixto." width="1041" height="674" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(17, en el orden en que se extraen del PDF)</span></summary><ul><li>Dirección</li><li>Dirección</li><li>Dirección</li><li>B</li><li>A</li><li>Depto. A</li><li>Depto. A Depto. A Depto. A Depto. A</li><li>Dirección</li><li>General</li><li>Dirección</li><li>Dirección</li><li>C</li><li>D</li><li>E</li><li>Depto. B Depto. B Depto. B Depto. B Depto. B</li><li>Depto. C Depto. C</li><li>Depto. D Depto. D Depto. D Depto. D</li></ul></details></figure>
 <figure id="ilustracion-3-15" class="figura" data-pdf="81"><figcaption><span class="num">Ilustración 3.15</span> Organigrama de bloques</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-15.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-15.webp" alt="Organigrama de bloques." width="1042" height="712" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(34, en el orden en que se extraen del PDF)</span></summary><ul><li>Secretario</li><li>Subsecretaria A Subsecretaria B</li><li>1. Dirección</li><li>3. Dirección</li><li>1.1 Departamento 3.1 Departamento</li><li>1.1.1 Oﬁcina 3.1.1 Oﬁcina</li><li>1.1.2 Oﬁcina</li><li>1.1.3 Oﬁcina 3.1.2 Oﬁcina 3.1.3 Oﬁcina</li><li>1.2 Departamento</li><li>1.2.1 Oﬁcina</li><li>4. Dirección</li><li>4.1 Departamento</li><li>1.2.2 Oﬁcina</li><li>4.1.1 Oﬁcina 4.1.2 Oﬁcina 4.1.3 Oﬁcina</li><li>1.2.3 Oﬁcina</li><li>2. Dirección 2.1 Departamento</li><li>4.2 Dirección</li><li>4.2.1 Oﬁcina 4.2.2 Oﬁcina 4.2.3 Oﬁcina</li><li>2.1.1 Oﬁcina 2.1.2 Oﬁcina 2.1.3 Oﬁcina</li><li>2.2 Departamento</li><li>2.2.1 Oﬁcina</li><li>2.2.2 Oﬁcina</li><li>2.2.3 Oﬁcina</li><li>Depto. C Depto. C Depto. C</li><li>Depto. E</li><li>Oﬁcialia Mayor</li><li>5. Dirección</li><li>5.1 Departamento 5.1.1 Oﬁcina 5.1.2 Oﬁcina 5.1.3 Oﬁcina</li><li>5.2 Dirección</li><li>5.2.1 Oﬁcina 5.2.2 Oﬁcina 5.2.3 Oﬁcina</li><li>6. Dirección</li><li>6.1 Departamento 6.1.1 Oﬁcina 6.1.2 Oﬁcina 6.1.3 Oﬁcina</li><li>6.2 Dirección</li><li>6.2.1 Oﬁcina 6.2.2 Oﬁcina 6.2.3 Oﬁcina</li></ul></details></figure>
 <div class="pag" id="pdf-82" data-p="71" title="Comienza la página 71 del libro impreso (página 82 del PDF)"></div>
-<figure id="ilustracion-3-16" class="figura" data-pdf="82"><figcaption><span class="num">Ilustración 3.16</span> Organigrama circular</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-16.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-16.webp" alt="Organigrama circular." width="1041" height="746" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(7, en el orden en que se extraen del PDF)</span></summary><ul><li>Sección 2</li><li>Dpto. A</li><li>Sección 4 Sección 1</li><li>Dpto. B</li><li>Sección 3</li><li>Dirección</li><li>Dpto. C</li></ul></details></figure>
+<figure id="ilustracion-3-16" class="figura" data-pdf="82"><figcaption><span class="num">Ilustración 3.16</span> Organigrama circular</figcaption><div class="diagrama diagrama--plano" role="img" aria-label="Organigrama circular: la Dirección al centro; en un círculo interior, los departamentos A, B y C; en un círculo exterior, las secciones 1 a 4, unidas a los departamentos A y C.">
+  <div class="plano" style="--proporcion: 860 / 690; --ancho-max: 36rem">
+    <svg viewBox="100 30 860 690" preserveAspectRatio="none" aria-hidden="true">
+      <circle cx="530" cy="377.5" r="327.5"/>
+      <circle cx="531.5" cy="377" r="200"/>
+      <line x1="521" y1="200" x2="521" y2="340"/>
+      <line x1="437" y1="383" x2="341" y2="442"/>
+      <line x1="611" y1="382" x2="720" y2="442"/>
+      <line x1="234" y1="230" x2="342" y2="442"/>
+      <line x1="820" y1="226" x2="722" y2="442"/>
+      <line x1="370" y1="494" x2="335" y2="625"/>
+      <line x1="717" y1="494" x2="717" y2="616"/>
+    </svg>
+    <span class="caja caja--amarillo caja--recta" style="--x: 4.53; --y: 21.45; --w: 20.23; --h: 7.54">Sección 2</span>
+    <span class="caja caja--naranja caja--recta" style="--x: 39.53; --y: 17.25; --w: 20.23; --h: 7.39">Dpto. B</span>
+    <span class="caja caja--amarillo caja--recta" style="--x: 72.91; --y: 20.87; --w: 20.23; --h: 7.54">Sección 3</span>
+    <span class="caja caja--rosa caja--recta" style="--x: 39.19; --y: 44.93; --w: 20.23; --h: 6.96">Dirección</span>
+    <span class="caja caja--naranja caja--recta" style="--x: 20.35; --y: 59.71; --w: 20.23; --h: 7.54">Dpto. A</span>
+    <span class="caja caja--naranja caja--recta" style="--x: 59.3; --y: 59.71; --w: 20.23; --h: 7.54">Dpto. C</span>
+    <span class="caja caja--amarillo caja--recta" style="--x: 17.56; --y: 86.23; --w: 20.23; --h: 7.54">Sección 1</span>
+    <span class="caja caja--amarillo caja--recta" style="--x: 59.88; --y: 84.93; --w: 20.23; --h: 7.54">Sección 4</span>
+  </div>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-16.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-16.webp" alt="Organigrama circular." width="1041" height="746" loading="lazy" decoding="async"></a></details></figure>
 <h4 id="s3-5-3-2">3.5.3.2 Estructura organizacional</h4>
 <p>Como se mencionó, la configuración organizacional dependerá de los alcances, tamaño de población y visión de la junta de gobierno, sin embargo, cualquier organismo operador, por modesto que sea, deberá considerar siguientes áreas:</p>
 <ul>
@@ -1411,7 +1585,25 @@
 <p>Por último, el Sistema de Agua y Saneamiento Metropolitano Veracruz, Boca del Río y Medellín, en su carácter de sistema intermunicipal, divide el área técnica en una &quot;Dirección de Proyectos y Construcción&quot; que atiende a los tres municipios y una &quot;Dirección de Operación Hi<span class="pag" id="pdf-84" data-p="73" title="Comienza la página 73 del libro impreso (página 84 del PDF)"></span> <span class="pag" id="pdf-85" data-p="74" title="Comienza la página 74 del libro impreso (página 85 del PDF)"></span> <span class="pag" id="pdf-86" data-p="75" title="Comienza la página 75 del libro impreso (página 86 del PDF)"></span> dráulica&quot; que zonifica la operación de las redes a su cargo. Es de notarse que el área de atención a usuarios esta inmersa dentro de la &quot;Dirección comercial&quot; (<a class="ref" href="#ilustracion-3-21">Ilustración 3.21</a>).</p>
 <figure id="ilustracion-3-17" class="figura" data-pdf="84"><figcaption><span class="num">Ilustración 3.17</span> Organigrama del Organismo Descentralizado de Agua Potable, Alcantarillado y Saneamiento de Ciudad Nezahualcoyotl (recuperado de http://www.odapasneza.gob.mx)</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-17.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-17.webp" alt="Organigrama del Organismo Descentralizado de Agua Potable, Alcantarillado y Saneamiento de Ciudad Nezahualcóyotl (ODAPAS Neza)." width="1400" height="945" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(141, en el orden en que se extraen del PDF)</span></summary><ul><li>GRACIELA PEREZ LERMA CONTRALORIA INTERNA</li><li>DIRECCION JURIDICA</li><li>JOSE SANTIAGO LOPEZ</li><li>DIRECCION DE FINANZAS</li><li>JOSE MIGUEL MENDOZA</li><li>COMISARIO</li><li>RICARDO XOCHICALE SANCHEZ</li><li>CONSEJO DIRECTIVO DEL</li><li>DIRECCION GENERAL</li><li>O.D.A.P.A.S.</li><li>DIRECCION DE ADMINISTRACION</li><li>COORDINACION DE ATENCION Y</li><li>RESPUESTA A LA CIUDADANIA</li><li>ADAN ZARATE OLVERA</li><li>DIRECCION DE PLANEACION Y</li><li>PROYECTOS</li><li>ORGANISMO DESCENTRALIZADO DE</li><li>AGUA POTABLE, ALCANTARILLADO</li><li>Y SANEAMIENTO DE</li><li>NEZAHUALCOYOTL</li><li>DIRECCION DE OPERACIÓN</li><li>HIDRAULICA</li><li>SERGIO ANGUIANO RODRIGUEZ</li><li>SAUCEDO SANTACRUZ</li><li>SUB CONTRALORIA</li><li>LUIS ALBERTO</li><li>INTERNA</li><li>SUBDIRECCION</li><li>REYNA LOPEZ</li><li>RAMIREZ</li><li>JURIDICA</li><li>BERENICE DE LA ROSA</li><li>SUBDIRECCION DE</li><li>CONTABILIDAD</li><li>APARICIO</li><li>CARMEN G. SANCHEZ</li><li>SUBDIRECCION DE</li><li>SANTIAGO</li><li>EGRESOS</li><li>CERVANTES</li><li>JUAN ARRIAGA MORAN</li><li>YAZMIN HERNANDEZ</li><li>COORDINACION DE</li><li>COORDINACION DE</li><li>RECAUDACION</li><li>RECEPTORIAS</li><li>SANTIAGO</li><li>SANDRA GONZALEZ CRUZ</li><li>SUBDIRECCION DE</li><li>INGRESOS</li><li>DULCE KARINA PEREZ RODRIGUEZ</li><li>MATERIALES Y ADQUISICIONES</li><li>FAUSTINO JIMENEZ MARTINEZ</li><li>SUBDIRECCION DE RECURSOS</li><li>INFORMATICA Y SISTEMAS</li><li>ADRIAN GUTIERREZ PEREZ</li><li>JUDITH ALCALA SALDAÑA</li><li>CONTROL PATRIMONIAL</li><li>JOSE ALFREDO MENDEZ</li><li>ROGELIO SANTOS LOPEZ</li><li>JESUS FERNANDO DIAZ</li><li>JESUS FERNANDO DIAZ</li><li>ISAIAS PEREZ RAMIREZ</li><li>RECURSOS HUMANOS</li><li>CONTROL VEHICULAR</li><li>ARCHIVO GENERAL</li><li>TALLER MECANICO</li><li>MONDRAGON</li><li>MONDRAGON</li><li>ALMACEN</li><li>MORALES</li><li>PLANEACION Y PROYECTOS</li><li>LAZARO ARZATE ROMAN</li><li>VICTOR DANIEL LEMUS</li><li>SUBDIRECCION DE</li><li>HERNANDEZ</li><li>DE REDES ZONA CENTRO</li><li>OPERACIÓN Y MANTO.</li><li>OPERACIÓN Y MANTO.</li><li>OPERACIÓN Y MANTO.</li><li>MARCELO HERNANDEZ</li><li>DE REDES ZONA NORTE</li><li>MTTO. DE CARCAMOS</li><li>MARIO ZECUA FLORES</li><li>MONTES RODRIGUEZ</li><li>PEDRO FRANCISCO</li><li>DE REDES ZONA</li><li>ISRAEL QUIROZ</li><li>CERVANTES</li><li>SUBDIRECCION DE</li><li>ORIENTE</li><li>ALCANTARILLADO</li><li>LOPEZ</li><li>GONZALEZ</li><li>ROBERTO</li><li>VILLEGAS</li><li>JOSE CRUZ DIAZ PEREZ</li><li>SUBDIRECCION DE CONTROL</li><li>DE CALIDAD Y CULTURA DEL</li><li>ANTONIO TLAMINTZI</li><li>FRANCISCO JAVIER SEGOVIA</li><li>ALFREDO MARTINEZ</li><li>COORDINACION DE</li><li>COORDINACION DE</li><li>COORDINACION DE</li><li>CULTURA DEL AGUA</li><li>AGUAS RESIDUALES</li><li>TRATAMIENTO DE</li><li>AGUA LIMPIA</li><li>TLAMINTZI</li><li>CRUZ</li><li>CABRERA</li><li>AGUA</li><li>PEDRO DE JESUS GARCIA</li><li>DE REDES ZONA CENTRO</li><li>FERNANDEZ RODRIGUEZ</li><li>JOSE ALBERTO JIMENEZ</li><li>OPERACIÓN Y MANTO.</li><li>OPERACIÓN Y MANTO.</li><li>OPERACIÓN Y MANTO.</li><li>DE REDES ZONA NORTE</li><li>POZOS Y FUENTES DE</li><li>HUGO JOB SANCHEZ</li><li>COORDINACION DE</li><li>COORDINACION DE</li><li>COORDINACION DE</li><li>COORDINACION DE</li><li>COORDINACION DE</li><li>PIPAS Y FUENTE DE</li><li>MANUEL ANTONIO</li><li>ABASTECIMIENTO</li><li>ABASTECIMIENTO</li><li>DE REDES ZONA</li><li>SUBDIRECCION DE</li><li>POTABLERICARDO</li><li>GUTIERREZ</li><li>VARGAS GARCIA</li><li>FUENTES</li><li>ORIENTE</li><li>CEDILLO</li><li>AGUA</li></ul></details></figure>
 <figure id="ilustracion-3-18" class="figura" data-pdf="85"><figcaption><span class="num">Ilustración 3.18</span> Organigrama de la Comisión Estatal de Agua de Querétaro (recuperado de http://www.ceaqueretaro.gob.mx)</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-18.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-18.webp" alt="Organigrama de la Comisión Estatal de Agua de Querétaro (recuperado de http://www.ceaqueretaro.gob.mx)." width="1041" height="838" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(45, en el orden en que se extraen del PDF)</span></summary><ul><li>Organigrama de la CEA</li><li>Vocalia ejecutiva</li><li>juridica Órgano interno de control</li><li>Dirección General</li><li>Dirección General</li><li>Adjunta De Operación Técnica</li><li>Adjunta de Administración y Finanzas</li><li>Dirección Divisional</li><li>De Administración</li><li>Dirección de</li><li>Dirección de Proyectos de Infraestructura</li><li>Planeación Estratégica</li><li>Dirección Divisional</li><li>De Finanzas</li><li>Dirección de Construcción</li><li>Dirección de</li><li>Dirección Divisional</li><li>Paneación Hidráulica</li><li>De Recursos</li><li>Humanos</li><li>Dirección de Producción Y Potabilización</li><li>Dirección Divisional</li><li>De Técnologias de</li><li>La Información</li><li>Dirección de</li><li>Distribución</li><li>Dirección de Saneamiento</li><li>Consejeria</li><li>Dirección General Adjunta Comercial</li><li>Dirección Divisional</li><li>Dirección Divisional</li><li>Jurídica Dirección de</li><li>Comercial</li><li>Dirección Divisional de Mercadotecnia y</li><li>Gestión de la Calidad</li><li>Relaciones Públicas</li><li>Dirección Divisional de Aministraciones</li><li>ADMINISTRACIONES</li><li>-Amealco de Bonﬁl -Cadereyta de Montes</li><li>-San Joaquín -Colón-Peñamiller</li><li>-Tolliman -Corregidora -Ezequiel Montes</li><li>-Huimilpan -Jalpan de serra -Landa de Matamoros</li><li>-Arrollo Seco</li><li>-El Marqués -Pedro Escobedo -Santa rosa jauregui</li><li>-Tequisquiapan</li></ul></details></figure>
-<figure id="ilustracion-3-19" class="figura" data-pdf="85"><figcaption><span class="num">Ilustración 3.19</span> Organigrama del Sistema de Agua Potable de Tequesquitengo, Morelos</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-19.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-19.webp" alt="Organigrama del Sistema de Agua Potable de Tequesquitengo, Morelos." width="1041" height="571" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(9, en el orden en que se extraen del PDF)</span></summary><ul><li>AsambleGeneral</li><li>del Pueblo de Tequesquitengo</li><li>Presidente</li><li>Administración</li><li>(1 persona)</li><li>Fontanero Emergente 1</li><li>Operación y Mantenimiento</li><li>(1 persona)</li><li>Fontanero Emergente 2</li></ul></details></figure>
+<figure id="ilustracion-3-19" class="figura" data-pdf="85"><figcaption><span class="num">Ilustración 3.19</span> Organigrama del Sistema de Agua Potable de Tequesquitengo, Morelos</figcaption><div class="diagrama diagrama--arbol" role="img" aria-label="Organigrama del Sistema de Agua Potable de Tequesquitengo: la Asamblea General del Pueblo de Tequesquitengo, el presidente y, bajo él, Administración (1 persona) y Operación y Mantenimiento (1 persona), de la que dependen dos fontaneros emergentes.">
+  <ul class="arbol">
+    <li><span class="caja caja--rosa">AsambleGeneral<br>del Pueblo de<br>Tequesquitengo</span>
+      <ul>
+        <li><span class="caja caja--rosa caja--ancha">Presidente</span>
+          <ul>
+            <li><span class="caja caja--naranja caja--ancha">Administración<br>(1 persona)</span></li>
+            <li><span class="caja caja--naranja caja--alta">Operación y Mantenimiento<br>(1 persona)</span>
+              <ul>
+                <li><span class="caja caja--amarillo">Fontanero<br>Emergente 1</span></li>
+                <li><span class="caja caja--amarillo">Fontanero<br>Emergente 2</span></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div><details class="original"><summary>Ver la ilustración original</summary><a class="figura__imagen" href="img/libro-01/ilustracion-3-19.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-19.webp" alt="Organigrama del Sistema de Agua Potable de Tequesquitengo, Morelos." width="1041" height="571" loading="lazy" decoding="async"></a></details></figure>
 <figure id="ilustracion-3-20" class="figura" data-pdf="86"><figcaption><span class="num">Ilustración 3.20</span> Organigrama de la empresa AGUAKAN (Desarrollos Hidráulicos de Cancún, 2014)</figcaption><a class="figura__imagen" href="img/libro-01/ilustracion-3-20.webp" target="_blank" rel="noopener" title="Abrir la imagen en tamaño completo"><img src="img/libro-01/ilustracion-3-20.webp" alt="Organigrama de la empresa AGUAKAN (Desarrollos Hidráulicos de Cancún, 2014)." width="1041" height="779" loading="lazy" decoding="async"></a><details class="rotulos"><summary>Rótulos <span>(25, en el orden en que se extraen del PDF)</span></summary><ul><li>Subgerencia de Tecnología</li><li>Subgerencia de Seguridad</li><li>e Higiene Industrial</li><li>Subgerencia de Calidad y Medioambiente</li><li>Subgerencia de</li><li>Islas Mujeres</li><li>Subgerencia Pto. Morelos, Central Vallarta</li><li>y L. Vicario</li><li>Coordinación de Comunicación</li><li>de la Información</li><li>y Relaciones con</li><li>la Comunidad</li><li>Gerencia de Recursos</li><li>Humanos</li><li>Gerencia de Control de Gestión</li><li>DIRECCIÓN</li><li>GENERAL</li><li>Contraloría</li><li>General</li><li>Gerencia</li><li>Técnica</li><li>Gerencia de Planiﬁcación,</li><li>Gerencia Comercial</li><li>Proyectos</li><li>y Obras</li></ul></details></figure>
 <p>Como puede observarse a través de estos ejemplos, de una u otra manera, puede cumplirse con la encomienda de brindar el servicio de agua potable, alcantarillado y saneamiento, a través de estas cuatro áreas (como mínimo), sin importar el tipo de organismo del que se trate.</p>
 <h3 id="s3-5-4">3.5.4 Manual organizacional y de procedimientos</h3>
