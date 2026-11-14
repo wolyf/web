@@ -6,7 +6,7 @@ Proyecto `calculadoras` del sitio Wolfgang Resendiz. Entorno de Claude Code: `WE
 
 - Este proyecto solo edita `calculadoras/`. Todo lo demás se puede leer, pero no se modifica desde aquí.
 - Lo común (`../css/styles.css`, la portada `../index.html`) es de la zona general. Si algo de ahí no sirve, se sobrescribe en un CSS propio (`calculadoras/css/`) o se le pide el cambio al entorno general.
-- Para que una calculadora nueva aparezca en la portada, pide al entorno general que agregue su tarjeta en `index.html`.
+- La tarjeta del proyecto en la portada sale de `proyectos.json` (`npm run proyectos -- portada`, entorno general): una calculadora nueva solo se enlaza desde el proyecto y no necesita tarjeta propia. Si cambia su descripción, icono o página de inicio, pídele el cambio al entorno general.
 
 ## Estructura
 
@@ -28,3 +28,17 @@ Proyecto `calculadoras` del sitio Wolfgang Resendiz. Entorno de Claude Code: `WE
 - Cada página HTML sigue el encabezado de `../herramientas/plantilla/index.html`: marca «Wolfgang Resendiz», bloque `.ajustes` (botones de acento y tema), favicon `../img/darwin-cara.svg` y enlace `← Inicio`. Las fuentes las importa `../css/styles.css` (solo se dejan los `preconnect`).
 - Cada página HTML carga `<script src="../js/tema.js"></script>` en el `<head>`, **sin** `defer` y antes de los demás scripts, para aplicar tema y acento antes de pintar (script de la zona general). Fuera de la gráfica, los colores salen de las variables del sitio (`--accent`, `--text`, …); la gráfica se queda en tema claro a propósito.
 - Cada página HTML incluye a Darwin, la gatita del sitio, con `<script src="../js/darwin.js" defer></script>` en el `<head>` (script de la zona general, no se edita desde aquí).
+
+## Reglas heredadas del sitio
+
+- Español; no usar el guion largo (U+2014) en textos, interfaz, comentarios ni mensajes. Notación formal cuando aporte.
+- El repositorio es **público**: nada privado en claro. Nunca pidas contraseñas ni llaves en el chat.
+- Solo HTML, CSS y JavaScript sin build; `npm test` en verde antes de cada commit.
+
+## Sesión del sitio y partes privadas
+
+El sitio es estático y el repositorio público, así que lo privado se publica **cifrado** con la llave de la sesión del sitio (`../js/sesion.mjs`, que `../js/tema.js` carga en cada página). Detalles en el `CLAUDE.md` de la raíz, «Sesión y partes privadas».
+
+- `<div data-privado="calculadoras/notas.enc" data-lineas="3"></div>`: sin sesión se ve tachado; con sesión se descifra e inserta. El texto en claro vive en `.privado/` (ignorado por git) y se sella con `npm run sesion -- sellar calculadoras`.
+- Desde JavaScript: `import { sesion } from "../js/sesion.mjs"` (`activa()`, `llaveProyecto(id)`, `descifrar(bytes)`, `alCambiar(fn)`).
+- Las credenciales `SITIO_USUARIO` y `SITIO_CONTRASENA` van en el entorno de Claude Code, nunca en el chat.

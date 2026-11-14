@@ -19,6 +19,7 @@ El sitio se divide en **proyectos**, uno por carpeta, registrados en `proyectos.
 | `general` | `index.html`, `css/`, `js/`, `img/`, `herramientas/`, `.claude/`, `.github/`, `proyectos.json`, `package.json`, `README.md` | Este archivo |
 | `calculadoras` | `calculadoras/` | `calculadoras/CLAUDE.md` |
 | `catalogo` | `catalogo/`, `.catalogo/` (privada) | `catalogo/CLAUDE.md` |
+| `manuales-conagua` | `manuales-conagua/` | `manuales-conagua/CLAUDE.md` |
 
 Reglas:
 
@@ -39,10 +40,19 @@ npm run proyectos -- nuevo <id> --nombre "…"     # crea un proyecto (solo desd
 npm run proyectos -- portada [--revisar]         # regenera (o revisa) la portada y sitemap.xml
 ```
 
+### Reglas que heredan todos los proyectos
+
+Cada `CLAUDE.md` de proyecto las repite, pero valen siempre:
+
+- Responder en español y no usar el guion largo (U+2014) en textos, interfaz, comentarios ni mensajes (el cuerpo transcrito de los libros de `manuales-conagua` es la única excepción, por fidelidad al original). Notación formal cuando aporte.
+- El repositorio es **público**: nada privado en claro, nunca contraseñas ni llaves en el chat. Lo privado se publica cifrado con la sesión del sitio (ver «Sesión y partes privadas»).
+- Solo HTML, CSS y JavaScript sin build ni gestor de paquetes; librerías externas solo si se copian al repo (`js/vendor/`) o con versión fija.
+- Un cambio, una zona; `npm test` en verde antes de cada commit.
+
 ### Agregar un proyecto (entorno general)
 
 1. `npm run proyectos -- nuevo <id> --nombre "Nombre" [--corto "Nombre corto"] [--icono "🧪"] [--descripcion "…"]`: copia `herramientas/plantilla/` a `<id>/` (`CLAUDE.md` e `index.html`, ya con el diseño del sitio), lo registra en `proyectos.json` y agrega su tarjeta y su enlace a la portada.
-2. Completa en `proyectos.json` la descripción, el icono y las etiquetas, y corre `npm run proyectos -- portada`.
+2. Completa en `proyectos.json` la descripción, el icono, el `area`, el `tipo` y las etiquetas, y corre `npm run proyectos -- portada`.
 3. Commit y PR con la etiqueta `varias-zonas`.
 4. El usuario crea en Claude Code un entorno con `WEB_PROYECTO=<id>`. Desde ahí se desarrolla el proyecto y se completa su `CLAUDE.md`.
 
@@ -50,19 +60,22 @@ Para quitar o renombrar un proyecto, edita `proyectos.json`, corre `npm run proy
 
 ### La portada sale de `proyectos.json`
 
-En `index.html`, el menú lateral, las tarjetas de la sección «Proyectos» y el total están entre marcadores (`<!-- proyectos:menu -->`, `<!-- proyectos:tarjetas -->`, `<!-- proyectos:total -->`) y **no se editan a mano**: se generan con `npm run proyectos -- portada`. Una prueba (`npm test`, también en la revisión «Pruebas» de GitHub) falla si la portada no está al día.
+La portada va en este orden: nombre y una línea de identidad, Proyectos (por áreas), Sobre mí, Bitácora y el pie, donde se menciona a Darwin. En `index.html`, el menú lateral, las tarjetas de la sección «Proyectos» y el total están entre marcadores (`<!-- proyectos:menu -->`, `<!-- proyectos:tarjetas -->`, `<!-- proyectos:total -->`) y **no se editan a mano**: se generan con `npm run proyectos -- portada`. Una prueba (`npm test`, también en la revisión «Pruebas» de GitHub) falla si la portada no está al día.
 
 Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la portada):
 
 | Campo | Uso |
 |---|---|
 | `nombre`, `carpetas` | Obligatorios. Título de la tarjeta y carpetas de la zona. |
+| `area`, `tipo` | Área de la portada (`areas`) y tipo de proyecto (`tipos`). Una prueba falla si usan un valor no declarado. |
 | `corto` | Nombre en el menú lateral (si no, `nombre`). |
 | `inicio` | Página a la que lleva la tarjeta (por defecto `<carpeta>/`). |
 | `descripcion`, `anio`, `icono`, `etiquetas` | Texto, año, emoji y etiquetas de la tarjeta. |
 | `privado` | Marca la tarjeta como privada (p. ej. requiere contraseña). |
 | `codigo: false` | Quita el enlace «Código» a GitHub. |
 | `oculto: true` | Deja el proyecto fuera de la portada (en construcción). |
+
+`areas` (id → `nombre`, `orden`) y `tipos` (lista) se declaran al principio de `proyectos.json`: la portada agrupa menú y tarjetas por área, en su orden. Hoy hay `ingenieria`, `filosofia` y `herramientas`, y los tipos son `herramienta`, `notas`, `biblioteca` y `app`; agregar uno nuevo (por ejemplo para tarjetas de estudio) es solo declararlo ahí.
 
 `sitio.nombre`, `sitio.url` y `sitio.repositorio` son los datos generales (la URL arma `sitemap.xml`; el repositorio, los enlaces «Código»).
 
@@ -98,7 +111,7 @@ El sitio es estático y el repositorio público: no hay servidor que revise cont
 |---|---|
 | `index.html` | Portada: barra lateral (en celular, barra superior), presentación con bitácora y retrato de Darwin, y tarjetas de proyectos (generadas). |
 | `css/styles.css` | Estilos base del sitio: variables de tema y acento, tipografía, encabezado, formularios, portada y componentes de las calculadoras. |
-| `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`). También carga la sesión. |
+| `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`), botón para quitar a Darwin. También carga la sesión. |
 | `js/sesion.mjs`, `js/llaves.mjs` | Sesión del sitio: botón de inicio de sesión y partes privadas (ver «Sesión y partes privadas»). |
 | `datos/acceso.json` | Público: la llave del sitio envuelta con la contraseña de cada usuario. |
 | `herramientas/sesion.mjs` | Usuarios y fragmentos cifrados (`npm run sesion -- ayuda`). |
@@ -136,6 +149,6 @@ Inspirado gráficamente en un jardín digital: papel beige y grises cálidos, un
 - Si debajo de ella hay una barra fija pegada a la orilla (como la de unidades de las calculadoras), se para encima para no tapar sus controles.
 - Comportamiento: se sienta, pasea, se duerme tras 75 s sin actividad; al hacer clic en la página voltea o camina hacia ahí; al acariciarla ronronea y saluda (cada 5 caricias salta); se puede arrastrar. Recuerda su lugar entre páginas de la misma sesión.
 - Accesorios por fecha en `TEMPORADAS` (Reyes, invierno, San Valentín, primavera, verano, fiestas patrias, otoño, Halloween, Día de Muertos, Navidad). Para verlos: `?darwin=<id>` (p. ej. `?darwin=navidad`).
-- `?darwin=no` la oculta en ese navegador; `?darwin=si` la regresa. Respeta `prefers-reduced-motion` (no camina) y no se imprime.
+- Se quita o se pone con el botón del gato que `js/tema.js` agrega a cada `.ajustes` (clave `darwin-oculta` de `localStorage`: `1` oculta, `0` muestra). Sin preferencia, solo aparece en pantallas anchas y sin `prefers-reduced-motion`. `?darwin=no` la oculta y `?darwin=si` la muestra siempre. Respeta `prefers-reduced-motion` (no camina) y no se imprime.
 - Rendimiento: repinta un canvas pequeño solo al cambiar de cuadro, usa `requestAnimationFrame` solo mientras se mueve y se detiene con la pestaña oculta.
 - Pruebas en `herramientas/pruebas/darwin.test.mjs` (temporadas, sprites y que los accesorios quepan).

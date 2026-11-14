@@ -50,3 +50,17 @@ Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneam
 | `manuales-conagua/js/` | Búsqueda: `texto.js` (reglas de texto y bloques), `consulta.js` (lenguaje), `buscador.js` (índice), `libro.js` (dentro del libro) |
 | `manuales-conagua/datos/` | Índice de búsqueda generado |
 | `manuales-conagua/herramientas/` | `indice.mjs` (genera `datos/`), `bloques.mjs`, `reflujo.mjs` (une renglones partidos) y pruebas |
+
+## Reglas heredadas del sitio
+
+- Español; no usar el guion largo (U+2014) en la interfaz propia, comentarios ni mensajes (el cuerpo de los libros lo conserva por fidelidad). Notación formal cuando aporte.
+- El repositorio es **público**: nada privado en claro. Nunca pidas contraseñas ni llaves en el chat.
+- Solo HTML, CSS y JavaScript sin build; `npm test` en verde antes de cada commit.
+
+## Sesión del sitio y partes privadas
+
+El sitio es estático y el repositorio público, así que lo privado se publica **cifrado** con la llave de la sesión del sitio (`../js/sesion.mjs`, que `../js/tema.js` carga en cada página). Detalles en el `CLAUDE.md` de la raíz, «Sesión y partes privadas».
+
+- `<div data-privado="manuales-conagua/notas.enc" data-lineas="3"></div>`: sin sesión se ve tachado; con sesión se descifra e inserta. El texto en claro vive en `.privado/` (ignorado por git) y se sella con `npm run sesion -- sellar manuales-conagua`.
+- Desde JavaScript: `import { sesion } from "../js/sesion.mjs"` (`activa()`, `llaveProyecto(id)`, `descifrar(bytes)`, `alCambiar(fn)`).
+- Las credenciales `SITIO_USUARIO` y `SITIO_CONTRASENA` van en el entorno de Claude Code, nunca en el chat.
