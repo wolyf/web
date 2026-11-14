@@ -757,3 +757,30 @@ a.ref:hover { color: var(--accent); text-decoration-style: solid; }
   font-size: .78rem;
   color: var(--muted);
 }
+
+/* ---- Imágenes a pedido (fotos y mapas): no se descargan hasta pulsar el botón ---- */
+.a-pedido { margin-top: .5rem; }
+.a-pedido .figdesc { margin: 0 0 .6rem; font-size: .9rem; color: var(--muted); }
+.a-pedido--cargada .figdesc { margin-bottom: 0; }
+
+.libro__texto .a-pedido__boton {
+  display: inline-flex;
+  align-items: baseline;
+  gap: .35rem;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: .4rem .8rem;
+  font-family: var(--font-mono);
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--accent);
+  background: var(--bg);
+  border: 1px dashed color-mix(in srgb, var(--accent) 50%, var(--border-strong));
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.libro__texto .a-pedido__boton:hover { filter: none; background: var(--accent-soft); }
+.a-pedido__boton span { color: var(--muted); font-size: .72rem; }
+.a-pedido--cargada .figura__imagen { margin-top: .6rem; }
