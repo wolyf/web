@@ -84,6 +84,11 @@
   document.addEventListener("click", (evento) => {
     const boton = evento.target.closest?.("[data-tema-accion]");
     if (!boton) return;
+    if (boton.dataset.temaAccion === "darwin") {
+      guardar(CLAVE_DARWIN, darwinVisible() ? "1" : "0");
+      location.reload(); // Darwin se arma al cargar la página
+      return;
+    }
     if (boton.dataset.temaAccion === "tema") {
       const nuevo = esOscuro() ? "claro" : "oscuro";
       raiz.dataset.tema = nuevo;
@@ -97,9 +102,39 @@
     rotular();
   });
 
+  // Botón para quitar o poner a Darwin (se agrega a cada .ajustes; ver js/darwin.js)
+  const CLAVE_DARWIN = "darwin-oculta";
+  const darwinVisible = () => {
+    const pref = leer(CLAVE_DARWIN);
+    if (pref === "1") return false;
+    if (pref === "0") return true;
+    return !window.matchMedia("(prefers-reduced-motion: reduce)").matches && innerWidth >= 560;
+  };
+  const SVG_GATO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 4l3 3h8l3-3v9a7 7 0 0 1-14 0z"/><path d="M9.5 12h.01M14.5 12h.01"/></svg>';
+  function agregarBotonDarwin() {
+    for (const contenedor of document.querySelectorAll(".ajustes")) {
+      if (contenedor.querySelector('[data-tema-accion="darwin"]')) continue;
+      const b = document.createElement("button");
+      b.className = "ajuste";
+      b.type = "button";
+      b.dataset.temaAccion = "darwin";
+      b.innerHTML = SVG_GATO;
+      contenedor.appendChild(b);
+    }
+  }
+  function rotularDarwin() {
+    for (const b of document.querySelectorAll('[data-tema-accion="darwin"]')) {
+      const texto = darwinVisible() ? "Quitar a Darwin" : "Mostrar a Darwin";
+      b.setAttribute("aria-label", texto);
+      b.setAttribute("aria-pressed", String(darwinVisible()));
+      b.title = texto;
+    }
+  }
+
   // Si cambia el tema del sistema y no hay elección guardada, actualiza las etiquetas
   sistemaOscuro.addEventListener?.("change", rotular);
 
-  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", rotular);
-  else rotular();
+  const iniciarBotones = () => { agregarBotonDarwin(); rotular(); rotularDarwin(); };
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciarBotones);
+  else iniciarBotones();
 })();
