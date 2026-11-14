@@ -2259,3 +2259,13 @@ th[aria-sort="descending"]::after {
     break-inside: avoid;
   }
 }
+
+/* Acceso: botón de la sesión del sitio y separador con el acceso anterior */
+.acceso .boton {
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.acceso__o {
+  margin-top: 1.25rem;
+}

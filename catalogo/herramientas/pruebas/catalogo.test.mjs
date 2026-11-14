@@ -11,10 +11,13 @@ import {
   derivarKEK,
   descifrarCatalogo,
   envolverDEK,
+  envolverConSitio,
+  desenvolverConSitio,
   entrar,
   idUsuario,
   nuevaDEK,
 } from "../../js/boveda.js";
+import { llaveProyecto } from "../../../js/llaves.mjs";
 import { construirIndice, precioPartida, diferenciasEntreOfertas, columnasDe } from "../../js/modelo.js";
 import { crearBuscador, terminos } from "../../js/buscar.js";
 import { valorNumerico, compararTexto, fechaCorta, esFechaISO, dinero, dineroDivisa } from "../../js/util.js";
@@ -84,6 +87,19 @@ test("el llavero sellado en acceso.json solo lo abre un administrador con su con
   assert.deepEqual([...abierto.admins], ["admin"]);
   await assert.rejects(abrirLlavero(acceso, "admin", "otra-cosa-123456"), ErrorAcceso);
   await assert.rejects(abrirLlavero(acceso, "lector", "lector-pass-123456"), /no es administrador/);
+});
+
+test("la DEK envuelta con la llave del proyecto abre la bóveda y solo con esa llave", async () => {
+  const dek = nuevaDEK();
+  const K = aleatorio(32); // llave del sitio de prueba
+  const kp = await llaveProyecto(K, "catalogo");
+  const entrada = await envolverConSitio(dek, kp);
+  assert.deepEqual(await desenvolverConSitio(entrada, kp), dek);
+  // otra llave del sitio, o la llave de otro proyecto, no la abre
+  await assert.rejects(desenvolverConSitio(entrada, await llaveProyecto(aleatorio(32), "catalogo")));
+  await assert.rejects(desenvolverConSitio(entrada, await llaveProyecto(K, "otro")));
+  const bovedaCifrada = await cifrarCatalogo({ a: 1 }, dek);
+  assert.deepEqual(await descifrarCatalogo(bovedaCifrada, await desenvolverConSitio(entrada, kp)), { a: 1 });
 });
 
 test("las contraseñas generadas son largas y sin caracteres ambiguos", () => {

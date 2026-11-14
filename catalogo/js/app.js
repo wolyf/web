@@ -2,13 +2,16 @@
 //  Catálogo de cotizaciones: arranque, acceso y navegación
 // ============================================================
 //
-// 1. Si hay una sesión guardada, se usa su llave; si no, se pide
-//    usuario y contraseña y se obtiene la llave con acceso.json.
+// 1. Si hay sesión del sitio (../../js/sesion.mjs), la llave de datos sale de
+//    acceso.json → "sitio", abierta con K_p = sesion.llaveProyecto("catalogo").
+//    Si no, se usa la sesión propia guardada o se pide usuario y contraseña
+//    del catálogo (acceso anterior, que sigue funcionando).
 // 2. Se descarga y descifra datos/catalogo.enc y se arma el índice.
 // 3. Cada cambio de #ruta pinta una vista. Todo ocurre en el navegador:
 //    GitHub Pages solo sirve archivos cifrados.
 
-import { entrar, descifrarCatalogo, aHex, deHex, normalizarUsuario, ErrorAcceso } from "./boveda.js";
+import { entrar, descifrarCatalogo, desenvolverConSitio, aHex, deHex, normalizarUsuario, ErrorAcceso } from "./boveda.js";
+import { sesion } from "../../js/sesion.mjs";
 import { construirIndice, ESQUEMA } from "./modelo.js";
 import { crearBuscador } from "./buscar.js";
 import { html, crudo, dinero, fechaCorta, hoyISO, urlCarpetaDrive } from "./util.js";
@@ -25,15 +28,15 @@ const DATOS = "datos/";
 const CLAVE_SESION = "catalogo-wr:sesion";
 const raiz = document.getElementById("app");
 
-const estado = { indice: null, buscador: null, usuario: "", nombre: "", limpiar: null };
+const estado = { indice: null, buscador: null, usuario: "", nombre: "", limpiar: null, origen: "propia" };
 
 // ---- Sesión (la llave solo vive en este navegador) ----
 
 function leerSesion() {
   for (const almacen of [sessionStorage, localStorage]) {
     try {
-      const sesion = JSON.parse(almacen.getItem(CLAVE_SESION));
-      if (sesion?.llave && sesion?.usuario) return sesion;
+      const guardada = JSON.parse(almacen.getItem(CLAVE_SESION));
+      if (guardada?.llave && guardada?.usuario) return guardada;
     } catch {
       /* almacenamiento bloqueado o dato corrupto: se ignora */
     }
@@ -51,6 +54,12 @@ function guardarSesion(usuario, dek, recordar) {
 }
 
 function cerrarSesion() {
+  // Con la sesión del sitio, salir cierra la sesión de todo el sitio; el aviso
+  // de cambio (ver iniciar) pinta la pantalla de acceso
+  if (estado.origen === "sitio") {
+    sesion.cerrar();
+    return;
+  }
   for (const almacen of [sessionStorage, localStorage]) {
     try {
       almacen.removeItem(CLAVE_SESION);
@@ -71,7 +80,16 @@ async function descargar(archivo, tipo) {
 // ---- Botones de tema y acento ----
 // ../js/tema.js (zona general) los atiende por data-tema-accion con un solo
 // escucha en document, así que funcionan aunque se rendericen después.
-const AJUSTES = html`<div class="ajustes">
+// El botón de sesión lo pone sesion.mjs solo al cargar la página; como el
+// catálogo pinta su encabezado después, lleva el suyo (data-sesion-accion abre
+// el panel de sesión y sesion.mjs mantiene su título al entrar o salir).
+const SVG_PERSONA = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>';
+const ajustes = () => {
+  const titulo = sesion.activa() ? `Sesión iniciada como ${sesion.usuario()}` : "Sin sesión. Iniciar sesión";
+  return html`<div class="ajustes">
+  <button class="ajuste sesion-boton" type="button" data-sesion-accion="abrir" aria-haspopup="dialog" aria-label="${titulo}" title="${titulo}">
+    ${crudo(SVG_PERSONA)}<span class="sesion-boton__estado" aria-hidden="true"></span>
+  </button>
   <button class="ajuste" type="button" data-tema-accion="acento" aria-label="Cambiar color de acento" title="Cambiar color de acento">
     <span class="ajuste__punto"></span>
   </button>
@@ -80,6 +98,7 @@ const AJUSTES = html`<div class="ajustes">
     <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
   </button>
 </div>`;
+};
 
 // ---- Pantalla de acceso ----
 
@@ -89,10 +108,12 @@ function mostrarAcceso(mensaje = "") {
     <form class="acceso__tarjeta" autocomplete="on">
       <div class="acceso__cabeza">
         <a class="marca" href="../index.html">Wolfgang Resendiz</a>
-        ${AJUSTES}
+        ${ajustes()}
       </div>
       <h1>Catálogo de cotizaciones</h1>
-      <p class="acceso__sub">Piezas y servicios de agua potable. Entra con tu usuario y contraseña.</p>
+      <p class="acceso__sub">Piezas y servicios de agua potable. Entra con la sesión del sitio.</p>
+      <button class="boton" type="button" data-sesion-accion="abrir">Iniciar sesión del sitio</button>
+      <p class="acceso__sub acceso__o">O con tu usuario y contraseña del catálogo:</p>
       <label for="acceso-usuario">Usuario</label>
       <input id="acceso-usuario" name="usuario" autocomplete="username" autocapitalize="none" spellcheck="false" required>
       <label for="acceso-contrasena">Contraseña</label>
@@ -133,7 +154,7 @@ function mostrarAcceso(mensaje = "") {
 
 // ---- Carga del catálogo ----
 
-async function abrirCatalogo(usuario, dek) {
+async function abrirCatalogo(usuario, dek, origen = "propia") {
   const datos = await descifrarCatalogo(await descargar("catalogo.enc"), dek);
   if ((datos.esquema ?? 1) > ESQUEMA) {
     raiz.innerHTML = String(html`<main class="acceso"><div class="acceso__tarjeta">
@@ -144,8 +165,10 @@ async function abrirCatalogo(usuario, dek) {
   estado.indice = construirIndice(datos);
   estado.buscador = crearBuscador(estado.indice);
   estado.usuario = usuario;
+  estado.origen = origen;
   estado.nombre = estado.indice.usuarios.find((u) => u.usuario === usuario)?.nombre || usuario;
   montarMarco();
+  window.removeEventListener("hashchange", enrutar); // por si se vuelve a abrir (otra sesión)
   window.addEventListener("hashchange", enrutar);
   enrutar();
 }
@@ -171,7 +194,7 @@ function montarMarco() {
           <kbd class="buscador__atajo" aria-hidden="true">/</kbd>
           <div id="sugerencias" class="sugerencias" role="listbox" hidden></div>
         </div>
-        ${AJUSTES}
+        ${ajustes()}
         <div class="usuario">
           <button class="usuario__boton" type="button" aria-haspopup="true" aria-expanded="false" title="${estado.nombre}">${iniciales}</button>
           <div class="usuario__menu" hidden>
@@ -417,11 +440,46 @@ function enrutar() {
 
 // ---- Arranque ----
 
-async function iniciar() {
-  const sesion = leerSesion();
-  if (!sesion) return mostrarAcceso();
+// Abre el catálogo con la sesión del sitio; devuelve false si no se puede
+async function abrirConSitio() {
+  if (!sesion.activa()) return false;
   try {
-    await abrirCatalogo(sesion.usuario, deHex(sesion.llave));
+    const acceso = await descargar("acceso.json", "json");
+    if (!acceso.sitio) return false;
+    const dek = await desenvolverConSitio(acceso.sitio, await sesion.llaveProyecto("catalogo"));
+    await abrirCatalogo(normalizarUsuario(sesion.usuario()), dek, "sitio");
+    return true;
+  } catch (e) {
+    console.warn("La sesión del sitio no abre el catálogo:", e);
+    return false;
+  }
+}
+
+async function iniciar() {
+  // Entrar o salir de la sesión del sitio abre o cierra el catálogo, sin
+  // recargar (sesion.cerrar() borra la sesión guardada sin esperarla, y una
+  // recarga inmediata la recuperaría). Un aviso sin cambio real se ignora.
+  const habiaSitio = sesion.activa();
+  let previa = habiaSitio;
+  sesion.alCambiar(async ({ activa }) => {
+    if (activa === previa) return;
+    previa = activa;
+    if (activa && estado.origen !== "sitio") {
+      if (!(await abrirConSitio())) console.warn("El catálogo sigue como estaba: la sesión del sitio no lo abre.");
+    } else if (!activa && estado.origen === "sitio") {
+      window.removeEventListener("hashchange", enrutar);
+      estado.limpiar?.();
+      estado.indice = estado.buscador = null;
+      estado.origen = "propia";
+      history.replaceState(null, "", location.pathname + location.search);
+      mostrarAcceso();
+    }
+  });
+  if (await abrirConSitio()) return;
+  const guardada = leerSesion();
+  if (!guardada) return mostrarAcceso(habiaSitio ? "Tu sesión del sitio no abre el catálogo. Entra con tu usuario del catálogo." : "");
+  try {
+    await abrirCatalogo(guardada.usuario, deHex(guardada.llave));
   } catch (e) {
     console.warn("La sesión guardada ya no sirve:", e);
     for (const almacen of [sessionStorage, localStorage]) {

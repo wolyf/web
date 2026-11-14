@@ -21,7 +21,7 @@ Proyecto `catalogo` del sitio de Wolfgang Resendiz, publicado en https://wolyf.g
 | `catalogo/js/boveda.js` | Cifrado: AES-256-GCM sobre gzip(JSON); DEK envuelta por usuario con PBKDF2-SHA256 (600 000 iteraciones). Corre igual en Node. |
 | `catalogo/js/modelo.js` | Índices, normalización de precios, resúmenes, historial. |
 | `catalogo/js/buscar.js`, `grafica.js`, `vistas/*.js` | Búsqueda, gráfica de historial y pantallas. |
-| `catalogo/datos/acceso.json` | Público: por usuario, la DEK envuelta con su contraseña; por administrador, el llavero sellado. |
+| `catalogo/datos/acceso.json` | Público: por usuario, la DEK envuelta con su contraseña; por administrador, el llavero sellado; `sitio`, la DEK envuelta con la llave del proyecto de la sesión del sitio. |
 | `catalogo/herramientas/catalogo.mjs` | CLI de gestión (`npm run catalogo -- ayuda`). |
 | `catalogo/herramientas/semilla/taxonomia.json` | Taxonomía inicial (solo para `iniciar` y el demo). |
 | `catalogo/herramientas/demo/datos.json` | Datos ficticios para probar la interfaz. |
@@ -140,20 +140,17 @@ npm run catalogo -- usuario listar
 
 Después, commit de `catalogo/datos/`. Para que vean los PDF, comparte la carpeta raíz de Drive (`drive.raiz`) con su correo como lector (`share_file`). Si cambia la contraseña de un administrador, debe actualizar `CATALOGO_CONTRASENA` en el entorno.
 
-## Propuesta pendiente: unificar el acceso con la sesión del sitio
+## Acceso con la sesión del sitio
 
-Estado actual (verificado): el catálogo tiene su propia sesión (`catalogo/js/app.js`, clave `catalogo-wr:sesion` en `sessionStorage`/`localStorage`) y su propio `catalogo/datos/acceso.json`. La DEK es aleatoria ($32$ bytes), cifra `catalogo.enc` directamente y se envuelve por usuario con $\mathrm{KEK}_u=\mathrm{PBKDF2\text{-}SHA256}(\text{contraseña}_u,\text{sal}_u,600\,000)$. No usa `js/sesion.mjs` ni `datos/acceso.json`, y su encabezado no tiene el bloque `.ajustes`, así que no muestra el botón de sesión del sitio.
+Iniciar sesión en el sitio (`../js/sesion.mjs`) abre también el catálogo. La DEK (la llave que cifra `catalogo.enc`) no cambia: `catalogo/datos/acceso.json` guarda además `sitio`, la DEK envuelta con $K_p=\mathrm{HKDF}(K,\texttt{"wr-proyecto:catalogo"})$ mediante AES-256-GCM con dato asociado `catalogo-sitio` (`envolverConSitio` / `desenvolverConSitio` en `catalogo/js/boveda.js`).
 
-Propuesta: que la llave del catálogo sea $K_p=\mathrm{HKDF}(K,\texttt{"wr-proyecto:catalogo"})$, obtenida con `sesion.llaveProyecto("catalogo")`, de modo que iniciar sesión en el sitio abra también el catálogo.
+- **Web** (`catalogo/js/app.js`): con sesión del sitio, `sesion.llaveProyecto("catalogo")` abre `sitio` y de ahí la DEK. Entrar o salir de la sesión del sitio abre o cierra el catálogo sin recargar (`sesion.cerrar()` borra la sesión guardada sin esperarla, y una recarga inmediata la recuperaría). El encabezado y la pantalla de acceso llevan su propio botón de sesión (`data-sesion-accion="abrir"`), porque `sesion.mjs` solo inyecta el suyo al cargar la página y el catálogo pinta su encabezado después.
+- **Acceso anterior**: el usuario y contraseña propios del catálogo siguen funcionando como respaldo (`usuarios` y `administracion` de `acceso.json` no cambian). La edición sigue siendo solo con la CLI y las credenciales `CATALOGO_*` del administrador.
+- **Quién entra**: cualquier usuario del sitio abre el catálogo en lectura. Para que alguien vea el sitio y no el catálogo, no se le debe dar usuario del sitio.
+- **CLI**: `npm run catalogo -- sitio vincular` (requiere `CATALOGO_*` y `SITIO_USUARIO`/`SITIO_CONTRASENA`) escribe `sitio` sin tocar `catalogo.enc`. `verificar` lo comprueba. `clave rotar` y `usuario quitar` rotan la DEK y rehacen `sitio` si hay credenciales del sitio; si no las hay, lo quitan y avisan, y hay que volver a correr `sitio vincular`.
+- Si cambia la llave del sitio $K$ (por ejemplo, tras quitar un usuario del sitio y resellar), `sitio` queda inválido: volver a correr `sitio vincular`.
 
-Pasos (no se han hecho):
-
-1. Desde el entorno del catálogo, con `CATALOGO_*` y `.catalogo/`: descifrar con la DEK actual y volver a cifrar `catalogo.enc` con $K_p$. Hay que resellar también el llavero de administración (`administracion` en `acceso.json`).
-2. Reemplazar `entrar`/`leerSesion` de `app.js` por `sesion.activa()`, `sesion.llaveProyecto("catalogo")` y `sesion.alCambiar(...)`. Mantener la edición solo para administradores.
-3. Adaptar la CLI (`catalogo.mjs`, `llavero.mjs`) y las pruebas; los usuarios pasarían a gestionarse con `npm run sesion`.
-4. Solo entonces, agregar `<div class="ajustes"></div>` al `.site-header` de `catalogo/index.html` para mostrar el botón de sesión.
-
-Riesgo: si se cambia la web antes de resellar los datos (o al revés), el catálogo queda sin acceso. Por eso hacerlo en un solo PR, probado con `npm run demo`, y con las credenciales del dueño.
+Pendiente (zona general): que `sesion.mjs` observe los `.ajustes` que se agregan después de cargar, para que el catálogo no necesite su propio botón de sesión.
 
 ## Código del catálogo
 
@@ -168,9 +165,3 @@ Riesgo: si se cambia la web antes de resellar los datos (o al revés), el catál
 - Español; no usar el guion largo (U+2014) en textos, interfaz, comentarios ni mensajes. Notación formal cuando aporte.
 - El repositorio es **público**: nada privado en claro. Nunca pidas contraseñas ni llaves en el chat.
 - Solo HTML, CSS y JavaScript sin build; `npm test` en verde antes de cada commit.
-
-## Sesión del sitio y acceso propio del catálogo
-
-Hoy el catálogo tiene su acceso propio: `catalogo/datos/acceso.json` guarda la llave de datos (DEK) envuelta por usuario y `catalogo/js/app.js` mantiene su sesión (`catalogo-wr:sesion`). Es independiente de la sesión del sitio (`../js/sesion.mjs`, `../datos/acceso.json`, que el resto de proyectos usan con `data-privado`).
-
-Propuesta de unificación (no aplicada): derivar la llave del catálogo como $K_p = \mathrm{HKDF}(K, \texttt{"wr-proyecto:catalogo"})$ con `sesion.llaveProyecto("catalogo")`, quitar el formulario propio y mostrar el botón de sesión añadiendo un bloque `.ajustes` al encabezado. Exige volver a sellar `catalogo.enc` con $K_p$ y reemplazar el llavero de `.catalogo/`, por lo que solo se hace desde este entorno, con las credenciales del dueño y con `catalogo/` y `datos/acceso.json` coordinados. Hasta entonces no mezcles ambos accesos ni resellar datos.

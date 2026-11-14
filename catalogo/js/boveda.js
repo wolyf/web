@@ -145,6 +145,28 @@ export async function desenvolverDEK(entrada, kek, id) {
   return new Uint8Array(dek);
 }
 
+// ---- Acceso con la sesión del sitio ----
+//
+// La DEK también se guarda envuelta con K_p = HKDF(K, "wr-proyecto:catalogo"),
+// la llave del proyecto que da js/sesion.mjs (sesion.llaveProyecto("catalogo")).
+// Así quien inicia sesión en el sitio abre el catálogo sin otra contraseña,
+// y catalogo.enc no cambia (sigue cifrado con la misma DEK).
+
+const AAD_SITIO = codificador.encode("catalogo-sitio");
+
+export async function envolverConSitio(dek, llaveProyecto) {
+  const iv = aleatorio(LARGO_IV);
+  const llave = await llaveAES(llaveProyecto, ["encrypt"]);
+  const envuelta = new Uint8Array(await subtle.encrypt({ name: "AES-GCM", iv, additionalData: AAD_SITIO }, llave, dek));
+  return { iv: aB64(iv), llave: aB64(envuelta) };
+}
+
+export async function desenvolverConSitio(entrada, llaveProyecto) {
+  const llave = await llaveAES(llaveProyecto, ["decrypt"]);
+  const dek = await subtle.decrypt({ name: "AES-GCM", iv: deB64(entrada.iv), additionalData: AAD_SITIO }, llave, deB64(entrada.llave));
+  return new Uint8Array(dek);
+}
+
 // Inicio de sesión completo: devuelve la DEK o lanza ErrorAcceso.
 export async function entrar(acceso, usuario, contrasena) {
   const id = await idUsuario(usuario);
