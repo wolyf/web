@@ -1,0 +1,84 @@
+/* Graficas interactivas del Libro 7 */
+.grafica07-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.grafica07-tip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface);
+  color: var(--text-strong);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.grafica07-tip.visible {
+  opacity: 1;
+}
+
+.grafica07-punto {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+.grafica07-punto:hover,
+.grafica07-punto:focus {
+  fill: var(--accent);
+  outline: none;
+}
+
+.grafica07-linea {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 2.4;
+}
+
+.grafica07-reticula {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.grafica07-eje {
+  stroke: var(--border-strong);
+  stroke-width: 1.2;
+}
+
+.grafica07-etiq {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+
+.grafica07-titulo-eje {
+  fill: var(--text);
+  font-size: 12px;
+  font-family: var(--font-texto);
+}
+
+/* Ilustracion vectorial del PDF en linea (.svg-pdf: 4.9) */
+.svg-pdf {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: .7rem auto .2rem;
+  font-family: var(--font-texto);
+  overflow: visible;
+}
+.svg-pdf text { fill: var(--text-strong); }
+.svg-pdf .tk { stroke: var(--text-strong); }
+.svg-pdf .tg { stroke: color-mix(in srgb, var(--muted) 65%, transparent); }
+.svg-pdf .tw { stroke: var(--surface); }
+.svg-pdf .rk { fill: var(--text-strong); }
+.svg-pdf .rw { fill: var(--surface); }
+

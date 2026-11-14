@@ -1,0 +1,102 @@
+/* Gráficas interactivas del Libro 9 (Ilustraciones 4.1, 4.5, 4.10, 4.17, 11.14 y 11.27).
+   Complementa ../css/graficas.css con paletas adicionales y estilos de foco. */
+
+.grafica-libro {
+  --grafica-serie-3: color-mix(in srgb, #2d9d48 85%, var(--text-strong));
+  --grafica-serie-4: color-mix(in srgb, #b84d9e 85%, var(--text-strong));
+  --grafica-serie-5: color-mix(in srgb, #2e5cb8 85%, var(--text-strong));
+  --grafica-serie-6: color-mix(in srgb, #c96a2b 85%, var(--text-strong));
+}
+
+.grafica-libro .serie-3 { --c: var(--grafica-serie-3); }
+.grafica-libro .serie-4 { --c: var(--grafica-serie-4); }
+.grafica-libro .serie-5 { --c: var(--grafica-serie-5); }
+.grafica-libro .serie-6 { --c: var(--grafica-serie-6); }
+
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.grafica-svg .punto-activo {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.grafica-svg .linea-ref {
+  stroke: color-mix(in srgb, #dc5256 75%, var(--text-strong));
+  stroke-width: 1.2;
+  stroke-dasharray: 4 3;
+}
+
+.grafica-libro .leyenda-btn {
+  width: auto;
+  margin: 0;
+  filter: none;
+  transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 30px;
+  padding: 0.25rem 0.65rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-strong);
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.grafica-libro .leyenda-btn:hover {
+  background: var(--accent-soft);
+}
+
+.grafica-libro .leyenda-btn[aria-pressed="false"] {
+  opacity: 0.45;
+}
+
+.grafica-libro .leyenda-muestra {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--c);
+  flex-shrink: 0;
+}
+
+.grafica-svg .rejilla line {
+  stroke: var(--border);
+  stroke-width: 0.75;
+}
+
+.grafica-svg .ejes line {
+  stroke: var(--border-strong);
+  stroke-width: 1.1;
+}
+
+.grafica-svg .eje-tick,
+.grafica-svg .eje-titulo {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: var(--font-sans, sans-serif);
+}
+
+.grafica-svg .eje-titulo {
+  font-weight: 600;
+}
+
+.grafica-svg .guia {
+  stroke: var(--muted);
+  stroke-width: 1;
+  stroke-dasharray: 3 3;
+}
+
+.grafica-libro .grafica-globo {
+  margin-top: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-strong);
+}
