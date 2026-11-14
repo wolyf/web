@@ -15,7 +15,7 @@
 //   revisar [--base ref] [--cabeza ref] [--rama nombre] [--varias]
 //                                  Qué zonas toca un cambio (por defecto, la
 //                                  copia de trabajo frente a origin/main)
-//   nuevo <id> --nombre "Nombre" [--descripcion "…"] [--icono "🧪"] [--corto "Nombre corto"] [--area id] [--tipo id]
+//   nuevo <id> --nombre "Nombre" [--descripcion "…"] [--icono "🧪"] [--corto "Nombre corto"] [--area id] [--tipo id]   (--tipo notas usa la plantilla de notas de estudio)
 //                                  Crea un proyecto desde herramientas/plantilla/
 //   portada [--revisar]            Regenera las tarjetas y el menú de proyectos de
 //                                  index.html desde proyectos.json (--revisar solo
@@ -33,7 +33,9 @@ import { fileURLToPath } from "node:url";
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const REGISTRO = path.join(RAIZ, "proyectos.json");
+// Plantillas de proyecto: la general y la de notas de estudio (--tipo notas)
 const PLANTILLA = path.join(RAIZ, "herramientas", "plantilla");
+const PLANTILLA_NOTAS = path.join(RAIZ, "herramientas", "plantilla-notas");
 export const GENERAL = "general";
 const RESERVADOS = new Set([GENERAL, "css", "js", "herramientas", "node_modules", "proyectos"]);
 
@@ -301,7 +303,7 @@ const comandos = {
         }
       }
     };
-    copiar(PLANTILLA, destino);
+    copiar(opciones.tipo === "notas" ? PLANTILLA_NOTAS : PLANTILLA, destino);
 
     const texto = (clave) => (typeof opciones[clave] === "string" ? opciones[clave].trim() : "");
     registro.proyectos[id] = {
@@ -312,7 +314,7 @@ const comandos = {
       descripcion: texto("descripcion") || "En construcción.",
       anio: new Date().getFullYear(),
       icono: texto("icono") || "🧪",
-      area: texto("area") || "herramientas",
+      area: texto("area") || (opciones.tipo === "notas" ? "filosofia" : "herramientas"),
       tipo: texto("tipo") || "herramienta",
       etiquetas: [],
     };
