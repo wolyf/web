@@ -1,0 +1,201 @@
+/* ==========================================================================
+   Libro 4 (MAPAS): diagramas recreados en HTML y CSS (Ilustraciones 2.1 y 4.1),
+   ilustraciones vectoriales del PDF en línea (.svg-pdf: 2.5, 3.1 y 5.1) y
+   ajustes de tablas. Solo usa las variables del sitio para adaptarse a los
+   temas claro y oscuro. Se carga después de libro.css y diagramas.css.
+   ========================================================================== */
+
+/* ---- Tablas: filas de sección, subencabezados y celdas vacías ---- */
+.libro__texto td:empty,
+.libro__texto th:empty {
+  background-image: none;
+  min-width: 0;
+}
+
+.libro__texto tr.seccion th {
+  background: color-mix(in srgb, var(--muted) 22%, var(--surface));
+  color: var(--text-strong);
+  font-size: .8rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.libro__texto tr.sub th {
+  background: var(--accent-soft);
+  color: var(--text-strong);
+  font-size: .78rem;
+  font-weight: 600;
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1.5px solid color-mix(in srgb, var(--accent) 45%, var(--border-strong));
+}
+
+.libro__texto td.x {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+/* ---- Ilustraciones vectoriales del PDF pasadas a SVG en línea ---- */
+.svg-pdf {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: .7rem auto .2rem;
+  font-family: var(--font-texto);
+  overflow: visible;
+}
+.svg-pdf text { fill: var(--text-strong); }
+.svg-pdf text.xw { fill: #fff; }
+.svg-pdf .tk { stroke: var(--text-strong); }
+.svg-pdf .tg { stroke: color-mix(in srgb, var(--muted) 65%, transparent); }
+.svg-pdf .tw { stroke: var(--surface); }
+.svg-pdf .rk { fill: var(--text-strong); }
+.svg-pdf .rw { fill: var(--surface); }
+.svg-pdf .rg { fill: color-mix(in srgb, var(--muted) 55%, var(--surface)); }
+.svg-pdf .agua { fill: color-mix(in srgb, #1d8cd1 78%, var(--surface)); }
+
+/* ---- Ilustración 2.1: árbol de tipos de consumo ---- */
+.diagrama--consumo {
+  --linea: color-mix(in srgb, #9e4b47 78%, var(--text));
+}
+.diagrama--consumo .arbol--uniforme {
+  --ancho-caja: 7.4rem;
+}
+
+/* ---- Ilustración 4.1: esquema general del diseño de drenaje pluvial ---- */
+.diagrama--drenaje {
+  max-width: 31rem;
+  margin: .6rem auto .2rem;
+}
+
+.drenaje {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .25rem;
+}
+
+.drenaje__flecha-etapa {
+  font-size: 1.15rem;
+  line-height: 1;
+  color: var(--muted);
+  user-select: none;
+}
+
+.drenaje__etapa {
+  display: grid;
+  grid-template-columns: 1.8rem 1fr;
+  gap: .45rem;
+  width: 100%;
+  align-items: stretch;
+}
+
+.drenaje__rotulo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  letter-spacing: .02em;
+  text-align: center;
+}
+
+.drenaje__caja {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .18rem;
+  padding: .65rem .85rem;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, var(--etapa-borde) 65%, var(--surface));
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--etapa-arriba) 46%, var(--surface)) 0%,
+    color-mix(in srgb, var(--etapa-abajo) 52%, var(--surface)) 100%);
+  color: var(--text-strong);
+  text-align: center;
+  font-size: .8rem;
+  line-height: 1.3;
+}
+
+.drenaje__etapa--1 {
+  --etapa-arriba: #e8de7a;
+  --etapa-abajo: #877b4d;
+  --etapa-borde: #756b43;
+  --etapa-flecha: color-mix(in srgb, #4a3f18 80%, var(--text-strong));
+}
+
+.drenaje__etapa--2 {
+  --etapa-arriba: #f4f8e8;
+  --etapa-abajo: #c2d98b;
+  --etapa-borde: #7a9445;
+  --etapa-flecha: color-mix(in srgb, #2e6b34 85%, var(--text-strong));
+}
+
+.drenaje__etapa--3 {
+  --etapa-arriba: #7bc4eb;
+  --etapa-abajo: #d4ebf7;
+  --etapa-borde: #4a8eb5;
+  --etapa-flecha: color-mix(in srgb, #1c7fb8 85%, var(--text-strong));
+}
+
+.drenaje__etapa--4 {
+  --etapa-arriba: #cf79ab;
+  --etapa-abajo: #e8bfd6;
+  --etapa-borde: #9e527e;
+  --etapa-flecha: color-mix(in srgb, #7d2b5c 85%, var(--text-strong));
+}
+
+.drenaje__paso {
+  margin: 0;
+}
+
+.drenaje__flecha {
+  font-size: .88rem;
+  line-height: 1;
+  color: var(--etapa-flecha);
+  user-select: none;
+}
+
+/* Bifurcación superior en Análisis hidrológico */
+.drenaje__par {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: .5rem .8rem;
+  width: 100%;
+  align-items: start;
+}
+
+.drenaje__rama {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .18rem;
+}
+
+.drenaje__union {
+  position: relative;
+  width: 54%;
+  height: .7rem;
+  border-left: 1.5px solid var(--etapa-flecha);
+  border-right: 1.5px solid var(--etapa-flecha);
+  border-bottom: 1.5px solid var(--etapa-flecha);
+  margin-top: .1rem;
+}
+
+@media (max-width: 480px) {
+  .drenaje__etapa {
+    grid-template-columns: 1.4rem 1fr;
+    gap: .3rem;
+  }
+  .drenaje__caja {
+    padding: .55rem .55rem;
+    font-size: .76rem;
+  }
+  .drenaje__par {
+    gap: .35rem .45rem;
+  }
+}

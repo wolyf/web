@@ -1,0 +1,43 @@
+/* Gráficas interactivas del Libro 4 (Ilustraciones 1.1, 2.2, 2.3, 2.4 y 3.2).
+   Complementa ../css/graficas.css con las cinco series de la Ilustración 3.2
+   y el foco de teclado sobre el lienzo SVG. */
+
+.grafica-libro {
+  --grafica-serie-3: color-mix(in srgb, #2e5cb8 85%, var(--text-strong));
+  --grafica-serie-4: color-mix(in srgb, #b84d9e 85%, var(--text-strong));
+  --grafica-serie-5: color-mix(in srgb, #dc5256 88%, var(--text-strong));
+}
+
+.grafica-libro .serie-3 { --c: var(--grafica-serie-3); }
+.grafica-libro .serie-4 { --c: var(--grafica-serie-4); }
+.grafica-libro .serie-5 { --c: var(--grafica-serie-5); }
+
+/* En la Ilustración 3.2 las cinco curvas usan los colores y trazos del original */
+.grafica-libro[data-grafica="l4-3-2"] {
+  --grafica-serie-1: color-mix(in srgb, #2d9d48 85%, var(--text-strong));
+  --grafica-serie-2: var(--text-strong);
+}
+
+.grafica-libro .linea--raya-punto { stroke-dasharray: 12 4 1.8 4; }
+.grafica-libro .linea--raya-dos-puntos { stroke-dasharray: 10 4 1.8 4 1.8 4; }
+.grafica-libro .linea--puntos { stroke-dasharray: 1.8 3.2; }
+
+.grafica-svg .aro {
+  fill: var(--surface);
+  stroke: var(--c);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.grafica-svg .punto-activo {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
