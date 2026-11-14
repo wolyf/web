@@ -157,6 +157,33 @@
   }
   document.addEventListener("wr:privado", (e) => renderizarEcuaciones(e.target));
 
+  // Al copiar texto que incluye ecuaciones KaTeX, entrega el LaTeX limpio en lugar de duplicar MathML + HTML
+  document.addEventListener("copy", (e) => {
+    const sel = window.getSelection();
+    if (!sel || sel.isCollapsed || !e.clipboardData) return;
+    const rango = sel.getRangeAt(0);
+    const contenedor = rango.commonAncestorContainer;
+    const raiz = contenedor.nodeType === 1 ? contenedor : contenedor.parentElement;
+    if (!raiz) return;
+    const ecDirecta = raiz.closest?.("[data-latex]");
+    const tieneEcuacion = ecDirecta || raiz.querySelector?.("[data-latex]");
+    if (!tieneEcuacion) return;
+
+    const frag = rango.cloneContents();
+    if (ecDirecta && !frag.querySelector("[data-latex]")) {
+      const delim = ecDirecta.hasAttribute("data-display") ? "$$" : "$";
+      e.clipboardData.setData("text/plain", `${delim}${ecDirecta.dataset.latex}${delim}`);
+      e.preventDefault();
+      return;
+    }
+    for (const eq of frag.querySelectorAll("[data-latex]")) {
+      const delim = eq.hasAttribute("data-display") ? "$$" : "$";
+      eq.replaceWith(document.createTextNode(`${delim}${eq.dataset.latex}${delim}`));
+    }
+    e.clipboardData.setData("text/plain", frag.textContent.replace(/\s+\n/g, "\n").trim());
+    e.preventDefault();
+  });
+
   // Si cambia el tema del sistema y no hay elección guardada, actualiza las etiquetas
   sistemaOscuro.addEventListener?.("change", rotular);
 

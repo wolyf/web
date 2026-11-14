@@ -468,8 +468,7 @@ span.pag[data-p]::before { margin-top: .15em; }
   font-size: 1.08rem;
   margin: 0 auto;
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
+  padding: .15rem .25rem;
 }
 
 .formula .katex-display { margin: 0; }
