@@ -1,0 +1,196 @@
+/*
+ * Gráficas interactivas (js/graficas.js).
+ * Solo usa las variables del sitio: respeta tema claro/oscuro y acento.
+ * Serie 1: el acento. Serie 2: gris de texto, contrasta en ambos temas.
+ */
+.grafica-libro {
+  --grafica-serie-1: var(--accent);
+  --grafica-serie-2: color-mix(in srgb, var(--text-strong) 68%, var(--bg));
+  --grafica-reticula: color-mix(in srgb, var(--border-strong) 55%, transparent);
+  margin: 0.75rem 0;
+  padding: 0.75rem 0.75rem 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: var(--font-texto);
+}
+
+/* Dentro de un <figure> del libro, la figura ya da el marco */
+figure > .grafica-libro {
+  margin: 0 0 0.6rem;
+  padding: 0;
+  background: none;
+  border: 0;
+}
+
+/* ---- Leyenda (botones para ocultar o mostrar series) ---- */
+.grafica-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 0.4rem;
+}
+.grafica-libro .grafica-serie {
+  /* anula el estilo global de button del sitio */
+  width: auto;
+  margin: 0;
+  filter: none;
+  transform: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 32px;
+  padding: 0.2rem 0.65rem 0.2rem 0.45rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 999px;
+  background: var(--bg);
+  color: var(--text-strong);
+  font: 500 0.85rem/1.2 var(--font-texto);
+  cursor: pointer;
+}
+.grafica-libro .grafica-serie:hover { background: var(--surface-2); }
+.grafica-serie:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.grafica-libro .grafica-serie[aria-pressed="false"] {
+  color: var(--muted);
+  border-style: dashed;
+  background: transparent;
+}
+.grafica-serie[aria-pressed="false"] span { text-decoration: line-through; }
+.grafica-serie[aria-pressed="false"] .grafica-muestra { opacity: 0.35; }
+.grafica-muestra { flex: none; }
+
+/* Colores por serie (leyenda, gráfica y globo) */
+.grafica-libro .serie-1 { --c: var(--grafica-serie-1); }
+.grafica-libro .serie-2 { --c: var(--grafica-serie-2); }
+.grafica-libro .linea { fill: none; stroke: var(--c); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.grafica-libro .marca { fill: var(--c); }
+
+/* ---- Lienzo y SVG ---- */
+.grafica-lienzo { position: relative; }
+.grafica-svg {
+  display: block;
+  width: 100%;
+  overflow: visible;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.grafica-svg .reticula line { stroke: var(--grafica-reticula); stroke-width: 1; shape-rendering: crispEdges; }
+.grafica-svg .marco { fill: none; stroke: var(--border-strong); stroke-width: 1; shape-rendering: crispEdges; }
+.grafica-svg .base { stroke: var(--border-strong); stroke-width: 1; shape-rendering: crispEdges; }
+.grafica-svg .marca-eje {
+  fill: var(--muted);
+  font: 400 11px var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.grafica-svg .titulo-eje { fill: var(--text); font: 500 12.5px var(--font-texto); }
+.grafica-svg .valor-barra { fill: var(--text); font: 400 10.5px var(--font-mono); }
+.grafica-svg .zona { fill: transparent; }
+.grafica-svg .guia-eje { stroke: var(--grafica-reticula); stroke-width: 1; }
+.grafica-svg .guia { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 3 3; pointer-events: none; }
+
+/* Puntos: anillo del color del fondo para separarlos de las líneas */
+.grafica-svg .punto {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+  cursor: pointer;
+  transition: transform 0.12s ease;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.grafica-svg .punto.activo { transform: scale(1.45); }
+.grafica-svg .punto:focus { outline: none; }
+.grafica-svg .punto:focus-visible { stroke: var(--text-strong); stroke-width: 2; }
+
+/* Barras */
+.grafica-svg .barra { cursor: pointer; }
+.grafica-svg .barra:focus { outline: none; }
+.grafica-svg .barra.activo .marca { fill: color-mix(in srgb, var(--c) 78%, var(--text-strong)); }
+.grafica-svg .barra:focus-visible .marca { stroke: var(--text-strong); stroke-width: 2; }
+.grafica-svg .barra.activo .zona { fill: var(--accent-soft); fill-opacity: 0.6; }
+
+@media (prefers-reduced-motion: reduce) {
+  .grafica-svg .punto { transition: none; }
+}
+
+/* ---- Globo ---- */
+.grafica-globo {
+  position: absolute;
+  z-index: 2;
+  min-width: 9rem;
+  max-width: 15rem;
+  padding: 0.45rem 0.6rem;
+  background: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--text-strong) 18%, transparent);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  pointer-events: none;
+}
+.grafica-globo[hidden] { display: none; }
+.grafica-globo .titulo { font-weight: 600; color: var(--text-strong); margin-bottom: 0.15rem; }
+.grafica-globo .fila { display: flex; align-items: center; gap: 0.4rem; }
+.grafica-globo .fila svg { flex: none; }
+.grafica-globo .nombre { color: var(--muted); }
+.grafica-globo .valor {
+  margin-left: auto;
+  padding-left: 0.6rem;
+  color: var(--text-strong);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.grafica-globo .enfocada .nombre { color: var(--text-strong); font-weight: 600; }
+.grafica-globo .aviso { margin-top: 0.25rem; color: var(--muted); font-size: 0.75rem; }
+
+/* ---- Tabla de datos ---- */
+.grafica-datos { margin-top: 0.35rem; font-size: 0.85rem; }
+.grafica-datos summary {
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.82rem;
+  padding: 0.2rem 0;
+}
+.grafica-datos summary:hover { color: var(--text-strong); }
+.grafica-datos summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.grafica-libro .grafica-datos table {
+  width: auto;
+  margin: 0.4rem 0 0.25rem;
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+.grafica-libro .grafica-datos th,
+.grafica-libro .grafica-datos td {
+  position: static;
+  vertical-align: baseline;
+  padding: 0.15rem 0.75rem;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background: none;
+  text-align: right;
+  white-space: nowrap;
+}
+.grafica-libro .grafica-datos thead th {
+  color: var(--text-strong);
+  font-weight: 600;
+  border-bottom: 1px solid var(--border-strong);
+}
+.grafica-libro .grafica-datos tbody th,
+.grafica-libro .grafica-datos tfoot th { text-align: left; font-weight: 400; color: var(--muted); }
+.grafica-libro .grafica-datos td { font-family: var(--font-mono); color: var(--text); }
+.grafica-libro .grafica-datos tfoot th,
+.grafica-libro .grafica-datos tfoot td { border-top: 1px solid var(--border-strong); border-bottom: 0; color: var(--text-strong); }
+.grafica-libro .grafica-datos tbody tr:nth-child(n) td,
+.grafica-libro .grafica-datos tbody tr:nth-child(n) th { background: none; }
+.grafica-libro .grafica-datos tbody tr:nth-child(n):hover td,
+.grafica-libro .grafica-datos tbody tr:nth-child(n):hover th { background: var(--accent-soft); }
+.grafica-nota { margin: 0.25rem 0 0.2rem; color: var(--muted); font-size: 0.78rem; }
+
+@media (max-width: 480px) {
+  .grafica-libro:not(figure > *) { padding: 0.6rem 0.4rem 0.4rem; }
+  .grafica-libro .grafica-datos th,
+  .grafica-libro .grafica-datos td { padding: 0.15rem 0.5rem; }
+}

@@ -747,3 +747,12 @@ a.ref:hover { color: var(--accent); text-decoration-style: solid; }
   .rotulos > ul { display: revert; }
   .tabla { overflow: visible; }
 }
+
+/* Ilustración original plegada debajo de una recreación (gráfica o diagrama) */
+.libro__texto details.original { margin-top: .6rem; }
+.libro__texto details.original > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--muted);
+}
