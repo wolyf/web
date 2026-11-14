@@ -1,0 +1,265 @@
+/* ==========================================================================
+   Libro 3 (MAPAS): ilustraciones recreadas en HTML y CSS, tablas con formato
+   del original (matrices de riesgo, formatos para llenar, celdas de color) y
+   notas en recuadro. Solo usa las variables del sitio; los colores del
+   original se mezclan con var(--surface) para leerse en tema claro y oscuro.
+   Se carga después de libro.css y diagramas.css.
+   ========================================================================== */
+
+.libro__texto {
+  --l3-azul: #3a4fc4;
+  --l3-verde: #1f9e4a;
+  --l3-amarillo: #f2d600;
+  --l3-naranja: #f2902a;
+  --l3-rojo: #e0262d;
+  --l3-cielo: #2aa0dc;
+  --l3-mezcla: 62%;
+}
+
+/* ---- Listas numeradas de tercer nivel (a.1, b.2…) ---- */
+.libro__texto p.lista--sub2 { margin-left: 3.2em; }
+
+/* ---- Nota en recuadro naranja del original («Nota Importante») ---- */
+.nota-importante {
+  max-width: var(--medida);
+  margin: 1.2rem 0;
+  padding: .8rem 1rem;
+  background: color-mix(in srgb, var(--l3-naranja) 18%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--l3-naranja) 60%, var(--surface));
+  border-left: 4px solid var(--l3-naranja);
+  border-radius: var(--radius);
+}
+.libro__texto .nota-importante p { margin: 0 0 .4rem; }
+.libro__texto .nota-importante p:last-child { margin-bottom: 0; }
+.nota-importante__titulo { font-weight: 700; color: var(--text-strong); }
+
+.smallcaps { font-variant: small-caps; }
+
+/* ---- Tablas: filas de sección, marcas y campos para llenar ---- */
+.libro__texto tr.seccion th {
+  background: color-mix(in srgb, var(--muted) 22%, var(--surface));
+  color: var(--text-strong);
+  font-size: .8rem;
+  font-weight: 700;
+  text-align: center;
+}
+.libro__texto tbody th { font-weight: 400; color: var(--text); text-align: left; }
+.libro__texto tbody th.fuerte { font-weight: 700; color: var(--text-strong); }
+.libro__texto td.x { text-align: center; font-family: var(--font-mono); color: var(--text-strong); }
+.libro__texto td.instruccion,
+.libro__texto th.instruccion { font-size: .82rem; font-weight: 400; color: var(--text); text-align: left; }
+
+.campo {
+  display: inline-block;
+  min-width: 7em;
+  height: 1em;
+  vertical-align: baseline;
+  border-bottom: 1px solid var(--border-strong);
+}
+
+.recuadro {
+  display: block;
+  height: 4.5rem;
+  margin: .3rem 0 .2rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: 4px;
+}
+
+.libro__texto table.interna { margin: .4rem 0 .2rem; font-size: .82rem; }
+.libro__texto table.interna thead th { position: static; }
+.libro__texto table.interna td:empty { min-width: 3rem; }
+.libro__texto table.casillas { width: auto; font-size: .82rem; }
+.libro__texto table.casillas td { padding: .15rem .6rem .15rem 0; border: 0; background: none; }
+.libro__texto td.firma { padding-top: 1.2rem; }
+
+.libro__texto .firma-pie {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem 1rem;
+  align-items: baseline;
+  margin: .4rem 0 1rem;
+  font-size: .85rem;
+  color: var(--muted);
+}
+.libro__texto .nota-tabla--caja {
+  max-width: var(--medida);
+  padding: .5rem .8rem;
+  font-style: normal;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: 6px;
+}
+.libro__texto .nota-tabla--caja p { margin: 0 0 .25rem; }
+
+/* Matrices de riesgo (Tablas 2.1 a 2.3): encabezados verticales y marcas «x» */
+.libro__texto table.matriz-riesgo { width: auto; font-size: .76rem; }
+.libro__texto table.matriz-riesgo th,
+.libro__texto table.matriz-riesgo td { padding: .25rem .3rem; }
+.libro__texto table.matriz-riesgo thead th { text-align: center; vertical-align: bottom; font-size: .72rem; }
+.libro__texto table.matriz-riesgo thead tr:first-child th { position: static; }
+.libro__texto table.matriz-riesgo th.v span {
+  display: inline-block;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  max-height: 9.5rem;
+  white-space: normal;
+  text-align: left;
+}
+.libro__texto table.matriz-riesgo th.esquina { min-width: 10rem; text-align: left; }
+.libro__texto table.matriz-riesgo th.esquina span { display: block; margin-top: .3rem; color: var(--muted); }
+.libro__texto table.matriz-riesgo tbody th[scope="row"] { min-width: 10rem; white-space: normal; }
+.libro__texto table.matriz-riesgo td.x { width: 1.4rem; padding: .25rem 0; }
+
+/* Celdas de color (Tabla 3.7, semáforo de alerta volcánica) */
+.libro__texto td.color { font-weight: 700; color: var(--text-strong); vertical-align: middle; }
+.libro__texto td.color--verde { background: color-mix(in srgb, var(--l3-verde) var(--l3-mezcla), var(--surface)) !important; }
+.libro__texto td.color--amarillo { background: color-mix(in srgb, var(--l3-amarillo) var(--l3-mezcla), var(--surface)) !important; }
+.libro__texto td.color--rojo { background: color-mix(in srgb, var(--l3-rojo) var(--l3-mezcla), var(--surface)) !important; }
+
+/* ---- Ilustraciones 3.2 y 3.3: tablas de alerta por colores ---- */
+.diagrama--semaforo { overflow-x: auto; }
+.libro__texto table.semaforo { width: auto; margin: 0 auto; font-size: .72rem; border-collapse: separate; border-spacing: 2px; }
+.libro__texto table.semaforo th,
+.libro__texto table.semaforo td { padding: .25rem .35rem; border: 0; text-align: center; }
+.libro__texto table.semaforo thead th { position: static; max-width: 4.5rem; background: var(--surface-2); font-size: .68rem; font-weight: 500; vertical-align: middle; }
+.libro__texto table.semaforo tbody th { white-space: nowrap; font-family: var(--font-mono); font-size: .7rem; background: var(--surface-2); }
+.libro__texto table.semaforo td { position: relative; min-width: 2.2rem; height: 1.4rem; }
+.libro__texto table.semaforo td span {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.alerta--azul, .libro__texto tbody tr td.alerta--azul { background: color-mix(in srgb, var(--l3-azul) var(--l3-mezcla), var(--surface)) !important; }
+.alerta--verde, .libro__texto tbody tr td.alerta--verde { background: color-mix(in srgb, var(--l3-verde) var(--l3-mezcla), var(--surface)) !important; }
+.alerta--amarillo, .libro__texto tbody tr td.alerta--amarillo { background: color-mix(in srgb, var(--l3-amarillo) var(--l3-mezcla), var(--surface)) !important; }
+.alerta--naranja, .libro__texto tbody tr td.alerta--naranja { background: color-mix(in srgb, var(--l3-naranja) var(--l3-mezcla), var(--surface)) !important; }
+.alerta--rojo, .libro__texto tbody tr td.alerta--rojo { background: color-mix(in srgb, var(--l3-rojo) var(--l3-mezcla), var(--surface)) !important; }
+.semaforo__leyenda { display: flex; flex-wrap: wrap; justify-content: center; gap: .3rem .9rem; margin: .5rem 0 0; font-size: .74rem; color: var(--text); }
+.semaforo__leyenda .alerta { display: inline-block; width: .9rem; height: .9rem; border-radius: 3px; vertical-align: -.15rem; }
+
+/* ---- Ilustración 3.4: nomenclatura y color ---- */
+.diagrama .alertas { display: grid; gap: .45rem; max-width: 17rem; margin: 0 auto; padding: 0; list-style: none; }
+.diagrama .alertas li {
+  display: flex; flex-direction: column; align-items: center;
+  padding: .45rem .6rem; text-align: center; color: var(--text-strong);
+  border: 1px solid var(--border-strong); border-radius: 10px;
+}
+.diagrama .alertas strong { font-weight: 500; margin-bottom: .2rem; }
+
+/* ---- Ilustración 3.8: llaves ---- */
+.diagrama--llaves { overflow-x: auto; }
+.diagrama .llave { display: flex; align-items: center; gap: .2rem; }
+.diagrama .llave__rotulo { flex: none; padding-right: .5rem; }
+.diagrama .llave__hijos {
+  margin: 0; padding: .2rem 0 .2rem .9rem; list-style: none;
+  border-left: 2px solid var(--linea); border-radius: 12px 0 0 12px;
+  display: flex; flex-direction: column; gap: .6rem;
+}
+.diagrama .llave__hoja { display: block; }
+
+/* ---- Ilustración 3.9: pasos ---- */
+.diagrama .pasos { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; max-width: 34rem; margin: 0 auto; }
+.diagrama .paso { position: relative; flex-direction: column; width: 100%; min-height: 0; border-radius: 0; --mezcla: 58%; }
+.diagrama .paso strong { font-weight: 500; }
+.diagrama .pasos > .caja + .caja::before,
+.diagrama .pasos > .pasos__par + .caja::before,
+.diagrama .pasos__par::before {
+  content: "↓"; position: absolute; top: -1.45rem; left: 50%; transform: translateX(-50%); color: var(--linea); font-size: 1.1rem; line-height: 1.3rem;
+}
+.diagrama .pasos__par { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; gap: .4rem; width: 100%; align-items: center; }
+.diagrama .pasos__doble { font-size: 1.3rem; color: var(--linea); }
+.diagrama .paso--1 { --tono: #1aa58a; }
+.diagrama .paso--2 { --tono: #5cb54a; }
+.diagrama .paso--3 { --tono: #b7a52f; }
+.diagrama .paso--4 { --tono: #f2902a; }
+.diagrama .paso--5 { --tono: #e9b31c; }
+.diagrama .paso--6 { --tono: #d6d826; }
+.diagrama .paso--7 { --tono: #f2e600; }
+
+/* ---- Ilustración 3.10: tipología de medidas ---- */
+.diagrama--tipologia { display: flex; flex-direction: column; gap: .5rem; align-items: center; }
+.diagrama .caja--cielo3 { --tono: var(--l3-cielo); border-radius: 0; max-width: 20rem; }
+.diagrama .tipologia__arriba,
+.diagrama .tipologia__abajo { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: .6rem 1.2rem; }
+.diagrama .flecha-texto { margin: 0; font-size: .8rem; color: var(--text); }
+.libro__texto table.tipologia { width: auto; max-width: 100%; font-size: .78rem; }
+.libro__texto table.tipologia thead th { position: static; text-align: center; }
+.libro__texto table.tipologia td { text-align: center; }
+.libro__texto td.estado--verde { background: color-mix(in srgb, var(--l3-verde) var(--l3-mezcla), var(--surface)) !important; color: var(--text-strong); }
+.libro__texto td.estado--amarillo { background: color-mix(in srgb, var(--l3-amarillo) var(--l3-mezcla), var(--surface)) !important; color: var(--text-strong); }
+.libro__texto td.estado--naranja { background: color-mix(in srgb, var(--l3-naranja) var(--l3-mezcla), var(--surface)) !important; color: var(--text-strong); }
+.libro__texto td.estado--rojo { background: color-mix(in srgb, var(--l3-rojo) var(--l3-mezcla), var(--surface)) !important; color: var(--text-strong); }
+
+/* ---- Ilustraciones 3.11 y 4.1: instrumentos antes y después del desastre ---- */
+.diagrama--instrumentos { overflow-x: auto; }
+.diagrama .instr {
+  display: grid;
+  grid-template-columns: auto minmax(7rem, 1fr) minmax(8rem, 1fr) minmax(12rem, 1.6fr);
+  gap: .55rem .6rem;
+  align-items: center;
+  min-width: 34rem;
+  text-align: center;
+}
+.diagrama .instr > * { grid-column: auto; }
+.diagrama .instr__f1 { grid-row: 1; grid-column: 1; }
+.diagrama .instr__rot { grid-column: 1; text-align: left; }
+.diagrama .instr__f2 { grid-row: 2; } .diagrama .instr__f3 { grid-row: 3; } .diagrama .instr__f4 { grid-row: 4; }
+.diagrama .instr__antes {
+  grid-column: 2;
+  background: color-mix(in srgb, var(--l3-verde) 16%, var(--surface));
+  padding: .3rem;
+}
+.diagrama .instr__cab.instr__antes { grid-row: 1; }
+.diagrama .instr__t.instr__antes { grid-row: 2; }
+.diagrama .caja.instr__antes { grid-row: 3; }
+.diagrama .instr__ocurre { grid-row: 1; grid-column: 3; text-align: left; border-left: 2px solid var(--linea); padding-left: .4rem; }
+.diagrama .instr__despues { grid-row: 1; grid-column: 4; }
+.diagrama .instr__t { font-size: .76rem; border-bottom: 1px solid var(--linea); padding-bottom: .15rem; }
+.diagrama .instr__c2 { grid-column: 3; }
+.diagrama .instr__c3 { grid-column: 4; }
+.diagrama .instr__t.instr__c2, .diagrama .instr__t.instr__c3 { grid-row: 2; }
+.diagrama .caja.instr__c2, .diagrama .instr__doble { grid-row: 3; }
+.diagrama .instr__act { grid-row: 4; font-size: .78rem; }
+.diagrama .instr__doble { display: grid; grid-template-columns: 1fr 1.3fr; }
+.diagrama .instr__planes { grid-row: 5; grid-column: 3 / 5; text-align: left; border-left: 2px solid var(--linea); padding-left: .4rem; }
+.diagrama .instrumentos--despues .instr__ocurre,
+.diagrama .instrumentos--despues .instr__despues,
+.diagrama .instrumentos--despues .instr__t.instr__c2,
+.diagrama .instrumentos--despues .instr__t.instr__c3,
+.diagrama .instrumentos--despues .instr__act,
+.diagrama .instrumentos--despues .instr__planes { background: color-mix(in srgb, var(--l3-azul) 12%, var(--surface)); }
+
+.diagrama .caja--recuadro {
+  --tono: var(--matiz-azul);
+  min-height: 0;
+  border-radius: 0;
+  background: var(--surface);
+  border: 1.5px solid color-mix(in srgb, var(--tono) 70%, var(--surface));
+}
+.diagrama .caja--gris4 { background: color-mix(in srgb, var(--muted) 20%, var(--surface)); }
+
+/* ---- Ilustraciones 4.2 a 4.5: flujos horizontales ---- */
+.diagrama--flujo4 { overflow-x: auto; }
+.diagrama .flujo4 { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .35rem; }
+.diagrama .flujo4 > .caja { max-width: 11rem; font-size: .76rem; }
+.diagrama .flujo4__flecha { display: inline-flex; flex-direction: column; align-items: center; color: var(--matiz-azul); font-size: 1.1rem; line-height: 1; }
+.diagrama .flujo4__flecha small { font-size: .62rem; color: var(--text); }
+.diagrama .flujo4__rama { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: .4rem .6rem; margin-top: .5rem; font-size: .76rem; }
+.diagrama .flujo4__nota { font-size: .7rem; color: var(--muted); }
+.diagrama .flujo4--reparto { flex-wrap: nowrap; justify-content: flex-start; min-width: 36rem; }
+.diagrama .reparto { display: flex; flex-direction: column; gap: .5rem; padding-left: .5rem; border-left: 2px solid var(--matiz-azul); }
+.diagrama .reparto__fila { display: flex; align-items: center; gap: .35rem; }
+.diagrama .reparto__sub { display: flex; flex-direction: column; gap: .4rem; }
+.diagrama .reparto .caja { font-size: .74rem; max-width: 11rem; }
+
+@media (max-width: 560px) {
+  .diagrama .flujo4 > .flujo4__flecha { transform: rotate(90deg); }
+  .diagrama .flujo4 { flex-direction: column; }
+  .libro__texto table.matriz-riesgo th.v span { max-height: 7.5rem; }
+}
+
+/* Tablas que no son formatos: sin la línea de «campo para llenar» en las celdas vacías */
+.libro__texto table.sin-campos td:empty { background-image: none; min-width: 0; }
+/* Filas de sección de las matrices: el rótulo queda a la vista al desplazar la tabla */
+.libro__texto table.matriz-riesgo tr.seccion th { text-align: left; }
+.libro__texto table.matriz-riesgo tr.seccion th,
+.libro__texto table.matriz-riesgo tbody th[scope="row"] { position: sticky; left: 0; z-index: 1; background: var(--surface); }
+.libro__texto table.matriz-riesgo tr.seccion th { background: color-mix(in srgb, var(--muted) 22%, var(--surface)); }

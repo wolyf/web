@@ -1,0 +1,203 @@
+/* ==========================================================================
+   Libro 2 (MAPAS): ilustraciones recreadas y notas al pie.
+   Solo variables del sitio: respeta tema claro/oscuro y acento.
+   ========================================================================== */
+
+/* ---- Ilustraciones vectoriales del PDF pasadas a SVG en línea ----
+   Trazos y textos oscuros siguen al color del texto; los blancos, al fondo. */
+.svg-pdf {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: .7rem auto .2rem;
+  font-family: var(--font-texto);
+  overflow: visible;
+}
+.svg-pdf text { fill: var(--text-strong); }
+.svg-pdf text.xw { fill: #fff; }
+.svg-pdf .tk { stroke: var(--text-strong); }
+.svg-pdf .tg { stroke: color-mix(in srgb, var(--muted) 70%, transparent); }
+.svg-pdf .tw { stroke: var(--surface); }
+.svg-pdf .rk { fill: var(--text-strong); }
+.svg-pdf .rw { fill: var(--surface); }
+
+/* ---- Diagramas recreados en HTML (.d2) ---- */
+.d2 {
+  --linea: color-mix(in srgb, var(--text) 70%, var(--surface));
+  margin: .7rem 0 .2rem;
+  font-family: var(--font-texto);
+  font-size: .82rem;
+  line-height: 1.32;
+  color: var(--text-strong);
+}
+.d2 p { margin: 0; }
+.d2-caja {
+  --tono: #4f88d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 2.6rem;
+  padding: .4rem .6rem;
+  text-align: center;
+  background: color-mix(in srgb, var(--tono) 30%, var(--surface));
+  border: 1px solid color-mix(in srgb, var(--tono) 65%, var(--surface));
+  border-radius: 6px;
+}
+.d2-azul { --tono: #4f88d6; }
+.d2-azul-claro { --tono: #8fb0dc; }
+.d2-marino { --tono: #2e3a8c; }
+.d2-celeste { --tono: #7fb3c8; }
+.d2-verde { --tono: #9cc46a; }
+.d2-amarillo { --tono: #f2b51c; }
+.d2-gris { --tono: var(--muted); background: var(--surface); }
+.d2-claro { --tono: #a9c1e6; }
+.d2-texto-caja { text-align: left; justify-content: flex-start; font-size: .78rem; }
+.d2-grande { min-height: 6rem; font-weight: 600; }
+.d2-nota-fig { margin-top: .5rem !important; font-size: .76rem; color: var(--muted); }
+.d2-texto { font-size: .8rem; color: var(--text); margin-bottom: .5rem !important; }
+.d2-flecha, .d2-flecha-doble { align-self: center; color: var(--accent); font-size: 1.1rem; line-height: 1; text-align: center; }
+.d2-columna { display: flex; flex-direction: column; gap: .35rem; }
+.d2-par { display: flex; gap: .5rem; align-items: center; justify-content: space-around; }
+.d2-par > .d2-caja { flex: 1 1 0; }
+.d2-baja::before, .d2-sube::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  margin: .1rem auto;
+  border: .4rem solid transparent;
+}
+.d2-baja::before { border-top: .55rem solid var(--accent); border-bottom: 0; }
+.d2-sube::before { border-bottom: .55rem solid var(--accent); border-top: 0; }
+
+/* Árbol causa-efecto: tres niveles con su rótulo a la derecha */
+.d2-ce__fila {
+  display: grid;
+  grid-template-columns: 1fr 5.2rem;
+  gap: .3rem .6rem;
+  align-items: center;
+}
+.d2-ce__cajas { display: flex; flex-wrap: wrap; gap: .35rem; justify-content: center; }
+.d2-ce__cajas > * { flex: 1 1 7rem; }
+.d2-ce__rotulo {
+  font-family: var(--font-mono);
+  font-size: .76rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+.d2-ce__rotulo::before { content: "⇠ "; opacity: .7; }
+.d2-ce__nota {
+  grid-column: 1 / -1;
+  justify-self: end;
+  max-width: 22rem;
+  padding: .25rem .5rem;
+  font-size: .76rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 4px;
+}
+
+/* Diagrama de decisión (1.1) */
+.d2-decision { list-style: none; padding: 0; display: flex; flex-direction: column; gap: .2rem; }
+.d2-decision > li { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem .7rem; }
+.d2-pregunta {
+  flex: 1 1 14rem;
+  padding: .45rem .8rem;
+  text-align: center;
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 1.4rem;
+}
+.d2-salida { display: flex; align-items: center; gap: .4rem; flex: 0 1 15rem; }
+.d2-salida .d2-caja { flex: 1; min-height: 2.2rem; }
+.d2-si-no { font-family: var(--font-mono); font-size: .74rem; color: var(--accent); white-space: nowrap; }
+.d2-si-no::after { content: " →"; }
+.d2-si-no--baja { flex-basis: 100%; text-align: center; }
+.d2-si-no--baja::after { content: " ↓"; }
+
+/* 1.3 y 1.4 */
+.d2-rejilla2 { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; align-items: stretch; }
+.d2-rejilla-flecha { display: grid; grid-template-columns: 1fr auto 1.3fr; gap: .5rem; align-items: center; }
+.d2-lista { display: flex; flex-direction: column; gap: .3rem; }
+@media (max-width: 600px) {
+  .d2-rejilla2, .d2-rejilla-flecha { grid-template-columns: 1fr; }
+  .d2-rejilla-flecha .d2-flecha { transform: rotate(90deg); }
+  .d2-ce__fila { grid-template-columns: 1fr; }
+  .d2-ce__rotulo { text-align: center; }
+  .d2-ce__nota { justify-self: center; }
+}
+
+/* 1.12: fases y estudios */
+.d2-tabla-fig table { width: 100%; font-size: .78rem; }
+.libro__texto .d2-tabla-fig th, .libro__texto .d2-tabla-fig td { padding: .35rem .5rem; }
+.libro__texto .d2-fases td.d2-fase { background: color-mix(in srgb, #8a9a5b 30%, var(--surface)); font-weight: 600; vertical-align: middle; }
+.libro__texto .d2-fases td.d2-etapa { background: color-mix(in srgb, #1e8a44 22%, var(--surface)); vertical-align: middle; }
+
+/* 1.13: la estructuración al centro y las cinco evaluaciones alrededor */
+.d2-rueda { display: grid; grid-template-columns: 1fr auto; gap: .6rem; align-items: center; }
+.d2-rueda__centro { grid-column: 1; grid-row: 1; display: flex; justify-content: center; }
+.d2-rueda__aros { grid-column: 1; grid-row: 2; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .4rem; justify-content: center; }
+.d2-rueda .d2-llave { grid-column: 2; grid-row: 1 / 3; }
+.d2-circulo { border-radius: 999px; min-height: 5.2rem; min-width: 9rem; padding: .5rem 1rem; }
+.d2-chico { min-height: 4.2rem; min-width: 6.8rem; font-size: .76rem; }
+.d2-llave { display: flex; align-items: center; gap: .3rem; }
+.d2-llave > span { font-size: 3.4rem; line-height: 1; font-weight: 200; color: var(--accent); }
+
+/* 1.14 y E.3: elementos de un ciclo */
+.d2-ciclo { display: grid; grid-template-columns: 1fr auto; gap: .6rem; align-items: center; }
+.d2-ciclo__lista { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem .6rem; counter-reset: ciclo; }
+.d2-ciclo__lista > li { flex: 1 1 9rem; position: relative; }
+.d2-ciclo__lista > li:not(:last-child)::after { content: "→"; position: absolute; right: -.55rem; top: 50%; transform: translateY(-50%); color: var(--accent); font-size: .8rem; }
+.d2-ciclo__lista > li:last-child::after { content: "↺"; position: absolute; right: -.75rem; top: 50%; transform: translateY(-50%); color: var(--accent); }
+.d2-ciclo .d2-nota-fig { grid-column: 1 / -1; }
+@media (max-width: 600px) {
+  .d2-ciclo, .d2-rueda { grid-template-columns: 1fr; }
+  .d2-rueda .d2-llave { grid-column: 1; grid-row: 3; }
+  .d2-llave > span { display: none; }
+}
+
+/* E.4: cadena de estudios */
+.d2-e4 { display: flex; flex-direction: column; gap: .4rem; }
+.d2-e4 > .d2-caja { align-self: flex-start; }
+.d2-cadena { list-style: none; margin: 0; padding: .5rem; display: flex; flex-wrap: wrap; gap: .4rem; background: color-mix(in srgb, #3f9aa0 22%, var(--surface)); border-radius: 6px; }
+.d2-cadena > li { flex: 1 1 8rem; display: flex; }
+.d2-cadena > li > .d2-caja { flex: 1; }
+
+/* 1.15: calendario (diagrama de barras por mes) */
+.d2-gantt { overflow-x: auto; }
+.libro__texto .d2-gantt table { font-size: .72rem; border-collapse: collapse; width: auto; }
+.libro__texto .d2-gantt th, .libro__texto .d2-gantt td { padding: .15rem .2rem; border: 1px solid var(--border); min-width: 1.05rem; text-align: center; }
+.libro__texto .d2-gantt tbody th { text-align: left; font-weight: 400; min-width: 13rem; white-space: normal; }
+.libro__texto .d2-gantt thead th { position: static; font-size: .66rem; padding: .15rem; }
+.libro__texto .d2-gantt td:empty { background-image: none; min-width: 1.05rem; }
+.libro__texto .d2-gantt td.d2-lleno, .libro__texto .d2-gantt tbody tr td.d2-lleno { background: color-mix(in srgb, var(--accent) 65%, var(--surface)); }
+
+/* ---- Notas al pie del original ---- */
+.libro__texto p.nota-pie {
+  max-width: var(--medida);
+  margin: -.3rem 0 1rem;
+  padding: .35rem 0 0 .9rem;
+  font-size: .8rem;
+  line-height: 1.5;
+  color: var(--muted);
+  border-left: 2px solid var(--border-strong);
+}
+.libro__texto p.nota-pie > a:first-child {
+  margin-right: .3rem;
+  font-family: var(--font-mono);
+  font-size: .75rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+.libro__texto sup.nota-ref { font-size: .68em; line-height: 0; }
+.libro__texto sup.nota-ref a { font-family: var(--font-mono); color: var(--accent); text-decoration: none; padding: 0 .1em; }
+.libro__texto p.nota-pie:target, .libro__texto sup.nota-ref a:target { background: var(--accent-soft); }
+
+/* Portada del Libro 2: subtítulo */
+.portada .subtitulo { margin: -.4rem 0 .9rem; font-size: .92rem; color: var(--muted); }
+.d2-tabla-fig { overflow-x: auto; }
+@media (max-width: 600px) {
+  .libro__texto .d2-tabla-fig th, .libro__texto .d2-tabla-fig td { padding: .3rem .35rem; font-size: .72rem; }
+  .libro__texto .d2-fases td.d2-fase, .libro__texto .d2-fases td.d2-etapa { writing-mode: vertical-rl; transform: rotate(180deg); }
+}
+.libro__texto p.nota-pie > .nota-num { margin-right: .3rem; font-family: var(--font-mono); font-size: .75rem; color: var(--accent); }
