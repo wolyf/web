@@ -498,6 +498,49 @@ span.pag[data-p]::before { margin-top: .15em; }
   :root:not([data-tema="claro"]) .posible-error { color: #ff8a8f; }
 }
 
+/* ---- Imagen de la ilustración (recorte del PDF original) ---- */
+.figura__imagen {
+  display: block;
+  margin: .7rem 0 .2rem;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;            /* las ilustraciones del original van sobre blanco */
+  cursor: zoom-in;
+}
+
+.figura__imagen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* En tema oscuro, un marco que separe el blanco del original del fondo */
+:root[data-tema="oscuro"] .figura__imagen { box-shadow: 0 0 0 1px var(--border-strong); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .figura__imagen { box-shadow: 0 0 0 1px var(--border-strong); }
+}
+
+/* Las ilustraciones grandes pueden usar más ancho que el renglón de texto */
+.libro__texto figure.figura { max-width: none; }
+
+/* ---- Tablas agrupadas (Organismo/Estado, Tipo): celdas que abarcan varios renglones ---- */
+.libro__texto td.agrupa {
+  vertical-align: middle;
+  font-weight: 600;
+  color: var(--text-strong);
+  background: var(--surface) !important;
+  border-right: 1px solid var(--border-card);
+}
+
+.libro__texto tr.grupo-inicio td { border-top: 2px solid var(--border-card); }
+.libro__texto tbody tr.grupo-inicio:first-child td { border-top: 0; }
+.libro__texto td.foto { padding: .3rem; width: 150px; }
+.libro__texto td.foto img { display: block; width: 140px; height: auto; border-radius: 4px; }
+.tabla-organismos td.n { width: 2.4rem; color: var(--muted); font-family: var(--font-mono); font-size: .8rem; }
+
+/* Aviso en línea (por ejemplo, un inciso que falta en el original) */
+.libro__texto p.posible-error--linea { max-width: var(--medida); margin: .2rem 0 .6rem; }
+
 /* ---- Enlaces internos a ilustraciones, tablas y ecuaciones ---- */
 a.ref {
   color: inherit;
