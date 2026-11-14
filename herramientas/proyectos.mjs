@@ -15,7 +15,7 @@
 //   revisar [--base ref] [--cabeza ref] [--rama nombre] [--varias]
 //                                  Qué zonas toca un cambio (por defecto, la
 //                                  copia de trabajo frente a origin/main)
-//   nuevo <id> --nombre "Nombre" [--descripcion "…"] [--icono "🧪"] [--corto "Nombre corto"]
+//   nuevo <id> --nombre "Nombre" [--descripcion "…"] [--icono "🧪"] [--corto "Nombre corto"] [--area id] [--tipo id]
 //                                  Crea un proyecto desde herramientas/plantilla/
 //   portada [--revisar]            Regenera las tarjetas y el menú de proyectos de
 //                                  index.html desde proyectos.json (--revisar solo
@@ -49,6 +49,11 @@ export function leerRegistro(archivo = REGISTRO) {
 // Datos generales del sitio (nombre y repositorio), en "sitio" de proyectos.json.
 export function leerSitio(archivo = REGISTRO) {
   return JSON.parse(fs.readFileSync(archivo, "utf8")).sitio ?? {};
+}
+
+// Áreas de la portada (id → { nombre, orden }), en "areas" de proyectos.json.
+export function leerAreas(archivo = REGISTRO) {
+  return JSON.parse(fs.readFileSync(archivo, "utf8")).areas ?? {};
 }
 
 // Ruta relativa a la raíz del repo, con "/" como separador.
@@ -121,7 +126,7 @@ export function revisarCambio(archivos, proyectos, { rama = "", varias = false, 
 //   <!-- proyectos:tarjetas --> … <!-- /proyectos:tarjetas -->  tarjetas de la sección Proyectos
 //   <!-- proyectos:total -->…<!-- /proyectos:total -->          «N proyectos»
 // Campos de cada proyecto (además de nombre y carpetas): corto, inicio,
-// descripcion, anio, icono, etiquetas, privado, codigo (false oculta el
+// descripcion, anio, icono, area, tipo, etiquetas, privado, codigo (false oculta el
 // enlace al código) y oculto (true lo deja fuera de la portada).
 
 export const escaparHTML = (texto) => String(texto).replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
@@ -146,6 +151,18 @@ export function tarjetaProyecto(id, p, { repositorio = "" } = {}) {
   ];
 }
 
+// Agrupa los proyectos visibles por área, en el orden de `areas` (objeto
+// id → { nombre, orden }). Sin áreas declaradas devuelve un solo grupo sin título.
+export function agruparPorArea(proyectos, areas = {}) {
+  const lista = visibles(proyectos);
+  const ids = Object.keys(areas).sort((a, b) => (areas[a].orden ?? 0) - (areas[b].orden ?? 0));
+  if (!ids.length) return [{ id: "", nombre: "", items: lista }];
+  const grupos = ids.map((id) => ({ id, nombre: areas[id].nombre, items: lista.filter(([, p]) => p.area === id) }));
+  const sueltos = lista.filter(([, p]) => !ids.includes(p.area));
+  if (sueltos.length) grupos.push({ id: "", nombre: "Otros", items: sueltos });
+  return grupos.filter((g) => g.items.length);
+}
+
 export function enlaceMenu(id, p) {
   const e = escaparHTML;
   return `<a href="${e(inicioDe(id, p))}"><span class="lateral__icono" aria-hidden="true">${e(p.icono || "📁")}</span>${e(p.corto || p.nombre)}</a>`;
@@ -168,10 +185,26 @@ function reemplazarMarcador(html, nombre, contenido) {
 }
 
 // Devuelve la portada con las partes generadas al día.
-export function actualizarPortada(html, proyectos, sitio = {}) {
+// `areas` es opcional: con ellas, el menú y las tarjetas salen agrupados por área.
+export function actualizarPortada(html, proyectos, sitio = {}, areas = {}) {
   const lista = visibles(proyectos);
-  let nuevo = reemplazarMarcador(html, "menu", lista.map(([id, p]) => enlaceMenu(id, p)));
-  nuevo = reemplazarMarcador(nuevo, "tarjetas", lista.flatMap(([id, p]) => tarjetaProyecto(id, p, sitio)));
+  const grupos = agruparPorArea(proyectos, areas);
+  const agrupado = grupos.some((g) => g.nombre);
+  const menu = agrupado
+    ? grupos.flatMap((g) => [`<p class="lateral__titulo">${escaparHTML(g.nombre)}</p>`, ...g.items.map(([id, p]) => enlaceMenu(id, p))])
+    : lista.map(([id, p]) => enlaceMenu(id, p));
+  const tarjetas = agrupado
+    ? grupos.flatMap((g) => [
+        `<div class="area" data-area="${escaparHTML(g.id)}">`,
+        `  <h3 class="area__titulo">${escaparHTML(g.nombre)}</h3>`,
+        `  <div class="proyectos">`,
+        ...g.items.flatMap(([id, p]) => tarjetaProyecto(id, p, sitio).map((l) => `    ${l}`)),
+        `  </div>`,
+        `</div>`,
+      ])
+    : lista.flatMap(([id, p]) => tarjetaProyecto(id, p, sitio));
+  let nuevo = reemplazarMarcador(html, "menu", menu);
+  nuevo = reemplazarMarcador(nuevo, "tarjetas", tarjetas);
   nuevo = reemplazarMarcador(nuevo, "total", `${lista.length} ${lista.length === 1 ? "proyecto" : "proyectos"}`);
   return nuevo;
 }
@@ -279,13 +312,15 @@ const comandos = {
       descripcion: texto("descripcion") || "En construcción.",
       anio: new Date().getFullYear(),
       icono: texto("icono") || "🧪",
+      area: texto("area") || "herramientas",
+      tipo: texto("tipo") || "herramienta",
       etiquetas: [],
     };
     fs.writeFileSync(REGISTRO, `${JSON.stringify(registro, null, 2)}\n`);
 
     // Tarjeta y enlace en la portada
     try {
-      fs.writeFileSync(PORTADA, actualizarPortada(fs.readFileSync(PORTADA, "utf8"), registro.proyectos, registro.sitio));
+      fs.writeFileSync(PORTADA, actualizarPortada(fs.readFileSync(PORTADA, "utf8"), registro.proyectos, registro.sitio, registro.areas));
     } catch (error) {
       console.log(`Aviso: ${error.message} Agrega la tarjeta a mano.`);
     }
@@ -300,8 +335,9 @@ const comandos = {
   portada(_, opciones) {
     const proyectos = leerRegistro();
     const sitio = leerSitio();
+    const areas = leerAreas();
     const archivos = [
-      [PORTADA, actualizarPortada(fs.readFileSync(PORTADA, "utf8"), proyectos, sitio)],
+      [PORTADA, actualizarPortada(fs.readFileSync(PORTADA, "utf8"), proyectos, sitio, areas)],
       [SITEMAP, generarSitemap(proyectos, sitio)],
     ];
     const pendientes = archivos.filter(([archivo, nuevo]) => !fs.existsSync(archivo) || fs.readFileSync(archivo, "utf8") !== nuevo);
