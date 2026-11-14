@@ -42,6 +42,8 @@
 <div class="lectura" hidden>
   <div class="lectura__progreso" aria-hidden="true"><span></span></div>
   <div class="lectura__barra">
+    <a class="lectura__casa" href="../../index.html" title="Inicio del sitio" aria-label="Inicio del sitio"></a>
+    <a class="lectura__boton lectura__manuales" href="../" title="Todos los manuales">Manuales</a>
     <button class="lectura__boton" type="button" data-lectura="indice" aria-haspopup="dialog">Índice</button>
     <span class="lectura__seccion" aria-live="off"></span>
     <button class="lectura__boton" type="button" data-lectura="paginas" aria-pressed="true" title="Mostrar u ocultar las marcas de página del original">Páginas</button>
@@ -50,6 +52,7 @@
 <dialog class="panel-indice" aria-label="Índice del libro">
   <div class="panel-indice__cabeza">
     <strong>Contenido</strong>
+    <span class="panel-indice__enlaces"><a href="../../index.html">Inicio</a> · <a href="../">Manuales</a></span>
     <button class="lectura__boton" type="button" data-lectura="cerrar">Cerrar</button>
   </div>
   <div class="panel-indice__cuerpo"></div>
@@ -258,15 +261,15 @@
 <th>Evento</th>
 </tr></thead>
 <tbody>
-<tr><td>1948</td><td>La Secretaría de Recursos Hidráulicos (SRH) crea la Dirección General de Agua Potable y Alcantarillado (DGAPA)</td></tr>
-<tr><td>1949</td><td>Se expide el Reglamento de las Juntas Federales de Agua Potable</td></tr>
-<tr><td>1956</td><td>Se aprueba la Ley de Cooperación para Dotación de Agua Potable a los Municipios</td></tr>
-<tr><td>1971</td><td>La SRH crea la Dirección General de Operación de Sistemas de Agua Potable y Alcantarillado</td></tr>
-<tr><td>1976</td><td>Sus funciones se transfieren a la Secretaría de Asentamientos Humanos y Obras Públicas (SAHOP)</td></tr>
-<tr><td>1980</td><td>El manejo de los sistemas de abastecimiento de agua potable se transfiere a los estados</td></tr>
-<tr><td>1982</td><td>La nueva Secretaría de Desarrollo Urbano y Ecología absorbe la función de las obras públicas y de infraestructura</td></tr>
-<tr><td>1983</td><td>Una Reforma constitucional al artículo 115 transfiere la administración del agua potable y alcantarillado a los municipios y estados</td></tr>
-<tr><td>1989</td><td>Creación de la Comisión Nacional del Agua</td></tr>
+<tr><td class="n">1948</td><td>La Secretaría de Recursos Hidráulicos (SRH) crea la Dirección General de Agua Potable y Alcantarillado (DGAPA)</td></tr>
+<tr><td class="n">1949</td><td>Se expide el Reglamento de las Juntas Federales de Agua Potable</td></tr>
+<tr><td class="n">1956</td><td>Se aprueba la Ley de Cooperación para Dotación de Agua Potable a los Municipios</td></tr>
+<tr><td class="n">1971</td><td>La SRH crea la Dirección General de Operación de Sistemas de Agua Potable y Alcantarillado</td></tr>
+<tr><td class="n">1976</td><td>Sus funciones se transfieren a la Secretaría de Asentamientos Humanos y Obras Públicas (SAHOP)</td></tr>
+<tr><td class="n">1980</td><td>El manejo de los sistemas de abastecimiento de agua potable se transfiere a los estados</td></tr>
+<tr><td class="n">1982</td><td>La nueva Secretaría de Desarrollo Urbano y Ecología absorbe la función de las obras públicas y de infraestructura</td></tr>
+<tr><td class="n">1983</td><td>Una Reforma constitucional al artículo 115 transfiere la administración del agua potable y alcantarillado a los municipios y estados</td></tr>
+<tr><td class="n">1989</td><td>Creación de la Comisión Nacional del Agua</td></tr>
 </tbody>
 </table></div>
 <p>Como regulador nacional de los servicios de agua potable, desde su creación, la Conagua jugó un papel activo y definitivo en la formulación de una nueva política de agua potable en las ciudades y se convirtió en el motor de la transformación y reordenamiento de los organismos operadores del agua potable.</p>
@@ -327,9 +330,15 @@
 <p class="lista">a) Fijar los objetivos, políticas, estrategias, programas y normas que conlleven al óptimo aprovechamiento del agua en su estado, que garantice su sustentabilidad</p>
 <p class="lista">b) Formular y proponer al poder ejecutivo estatal el Programa Estatal Hídrico</p>
 <p class="lista">c) Orientar, con apego a las leyes correspondiente y con base en la disponibilidad del agua, las acciones que atiendan:</p>
-<p class="lista">1. La demanda de los diferentes usos</p>
-<p class="lista">2. Las descargas, el tratamiento y reutilización de aguas residuales</p>
-<div class="tabla" id="tabla-1-2" tabindex="0"><table>
+<p class="lista lista--sub">1. La demanda de los diferentes usos</p>
+<p class="lista lista--sub">2. Las descargas, el tratamiento y reutilización de aguas residuales</p>
+
+<div class="pag" id="pdf-22" data-p="11" title="Comienza la página 11 del libro impreso (página 22 del PDF)"></div>
+<p class="lista lista--sub">3. La recarga de acuíferos, el control de avenidas y la protección contra inundaciones</p>
+<p class="lista">e) Establecer la coordinación con las autoridades federales y municipales, para participar en la planeación, programación, diseño, construcción, control y evaluación de obras en cada estado y en los municipios</p>
+<p class="lista">f) Promover, coordinar, concertar y en su caso realizar la investigación y desarrollo tecnológico en materia de agua, y la formación y capacitación de recursos humanos</p>
+<p class="lista">g) Promover una cultura del agua que considere a este compuesto como un recurso finito, vital y escaso, que debe aprovecharse con racionalidad y eficiencia</p>
+<div class="tabla" id="tabla-1-2" tabindex="0"><table class="tabla-organismos">
 <caption><span class="num">Tabla 1.2</span> Ejemplo de organismos operadores intermunicipales en México</caption>
 <thead><tr>
 <th>Organismo</th>
@@ -337,17 +346,12 @@
 <th>Municipios a los que brinda servicio</th>
 </tr></thead>
 <tbody>
-<tr><td>ADOSAPACO</td><td>Oaxaca</td><td>1. San Sebastián Tutla; 2. Oaxaca de Juárez; 3. Santa Cruz Xoxocotlán; 4. San Agustín Yatareni; 5. Santa Lucía del Camino; 6. San Andrés Huayapam; 7. San Antonio de la Cal; 8. San Jacinto Amilpas; 9. San Lorenzo Cacaotepec; 10. San Pablo Etla</td></tr>
-<tr><td>SAS</td><td>Veracruz</td><td>1. Veracruz; 2. Boca del Río; 3. Medellín</td></tr>
-<tr><td>SIAPA</td><td>Jalisco</td><td>1. Guadalajara; 2. Zapopan; 3. San Pedro Tlaquepaque; 4. Tonalá; 5. Tlajomulco de Zúñiga; 6. El Salto; 7. Juanacatlán; 8. Ixtlahuacán de Membrillos</td></tr>
+<tr><td>ADOSAPACO</td><td>Oaxaca</td><td><ol class="municipios"><li>San Sebastián Tutla</li><li>Oaxaca de Juárez</li><li>Santa Cruz Xoxocotlán</li><li>San Agustín Yatareni</li><li>Santa Lucía del Camino</li><li>San Andrés Huayapam</li><li>San Antonio de la Cal</li><li>San Jacinto Amilpas</li><li>San Lorenzo Cacaotepec</li><li>San Pablo Etla</li></ol></td></tr>
+<tr><td>SAS</td><td>Veracruz</td><td><ol class="municipios"><li>Veracruz</li><li>Boca del Río</li><li>Medellín</li></ol></td></tr>
+<tr><td>SIAPA</td><td>Jalisco</td><td><ol class="municipios"><li>Guadalajara</li><li>Zapopan</li><li>San Pedro Tlaquepaque</li><li>Tonalá</li><li>Tlajomulco de Zúñiga</li><li>El Salto</li><li>Juanacatlán</li><li>Ixtlahuacán de Membrillos</li></ol></td></tr>
 </tbody>
 </table></div>
 <p class="nota-tabla">Nota de transcripción: en el original el municipio 5 del SIAPA se lee «Tlajomuncol de Zuñiga»; se transcribe como «Tlajomulco de Zúñiga» [nombre correcto del municipio].</p>
-<div class="pag" id="pdf-22" data-p="11" title="Comienza la página 11 del libro impreso (página 22 del PDF)"></div>
-<p class="lista">3. La recarga de acuíferos, el control de avenidas y la protección contra inundaciones</p>
-<p class="lista">e) Establecer la coordinación con las autoridades federales y municipales, para participar en la planeación, programación, diseño, construcción, control y evaluación de obras en cada estado y en los municipios</p>
-<p class="lista">f) Promover, coordinar, concertar y en su caso realizar la investigación y desarrollo tecnológico en materia de agua, y la formación y capacitación de recursos humanos</p>
-<p class="lista">g) Promover una cultura del agua que considere a este compuesto como un recurso finito, vital y escaso, que debe aprovecharse con racionalidad y eficiencia</p>
 <p>Entre sus atribuciones, además, se considera que cuando por circunstancias particulares los ayuntamientos determinen que carecen de los recursos materiales, técnicos y humanos para la prestación directa de los servicios de agua potable, alcantarillado y saneamiento, o para el establecimiento de un organismo operador, podrán convenir que se presten los servicios por parte del poder ejecutivo del estado, a través de la dependencia encargada de la administración del agua, de forma total o parcial y por un periodo de tiempo que permita al municipio solventar sus necesidades para brindar el servicio (el mecanismo para este proceso se presenta en el subcapítulo 3.4).</p>
 <p>Dependiendo de cada estado, dicho órgano puede tener diversos nombres. El más común es &quot;Comisión Estatal del Agua&quot;, aunque existen algunas otras como:</p>
 <ul>
@@ -593,7 +597,7 @@
 </ul>
 <p>Para su estimación, lo más recomendable es realizar un estudio de fugas, que debe incluir trabajos de campo. Lo más común es partir con la relación entre los valores de la facturación dividido entre la producción de agua potable, aunque este factor también abarca todo lo referente al agua no contabilizada, como pueden ser errores de macro y micromedición y tomas clandestinas.</p>
 <p>El volumen diario de pérdidas físicas, Vp, que se considera para el cálculo de las demandas y dotaciones será el obtenido con la <a class="ref" href="#ecuacion-2-1">ecuación 2.1</a>.</p>
-<div class="formula" id="ecuacion-2-1"><p class="ecuacion">V<sub>p</sub> = V<sub>fr</sub> + V<sub>ft</sub> <span class="num-ec">Ecuación 2.1</span></p><p class="donde">Donde:</p><ul class="donde-lista"><li>V<sub>p</sub> = Volumen de pérdidas, en m³</li><li>V<sub>fr</sub> = Volumen de fugas en red, en m³</li><li>V<sub>ft</sub> = Volumen de fugas en tomas domiciliarias, en m³</li></ul></div>
+<div class="formula" id="ecuacion-2-1"><div class="ecuacion"><math display="block"><mrow><msub><mi>V</mi><mi>p</mi></msub><mo>=</mo><msub><mi>V</mi><mi>fr</mi></msub><mo>+</mo><msub><mi>V</mi><mi>ft</mi></msub></mrow></math><span class="num-ec">Ecuación 2.1</span></div><p class="donde">Donde:</p><ul class="donde-lista"><li>V<sub>p</sub> = Volumen de pérdidas, en m³</li><li>V<sub>fr</sub> = Volumen de fugas en red, en m³</li><li>V<sub>ft</sub> = Volumen de fugas en tomas domiciliarias, en m³</li></ul></div>
 <p>Las pérdidas de agua dependen de factores como la presión de trabajo, la calidad de la tubería y los accesorios, el proceso constructivo, el tipo de material, la antigüedad de los elementos del sistema y el mantenimiento preventivo y correctivo que se les practique a los elementos del sistema.</p>
 <p>En caso de no existir una red de distribución, el valor de la demanda puede estimarse como el cálculo del consumo más un 30 por ciento, considerando un valor inicial de pérdidas físicas de acuerdo con los resultados de Ochoa y Bourguett (2001).</p>
 <h2 id="s2-3">2.3 Diagnóstico de los organismos operadores existentes</h2>
@@ -645,7 +649,7 @@
 <p>Además de caracterizar los elementos que conforman la red de distribución es necesario conocer cómo funciona y es operada la infraestructura. A través de este análisis se pueden identificar las acciones necesarias para mejorar el servicio y eficientizar la operación y los costos que esta produce.</p>
 <p>Una vez identificados todos los elementos que conforman la red de distribución, deberá describirse la forma de operar cada uno de estos, es decir, horarios de funcionamiento de equipos de bombeo, apertura y cierre de válvulas, suministro por sectores (tandeo) y todas las actividades que se realicen cotidianamente para brindar el servicio a los usuarios (<a class="ref" href="#tabla-2-8">Tabla 2.8</a>).</p>
 <p>De acuerdo con los horarios de servicio de agua a la red, puede establecerse la continuidad del servicio a los usuarios, a través del índice de continuidad en el servicio, que es el porcentaje de horas de servicio al día.</p>
-<div class="formula" id="ecuacion-2-2"><p class="ecuacion">i<sub>C</sub> = T<sub>D</sub> / 24 <span class="num-ec">Ecuación 2.2</span></p><p class="donde">Donde:</p><ul class="donde-lista"><li>i<sub>C</sub> = Índice de continuidad</li><li>T<sub>D</sub> = Tiempo de servicio por día (h/d)</li></ul></div>
+<div class="formula" id="ecuacion-2-2"><div class="ecuacion"><math display="block"><mrow><msub><mi>i</mi><mi>C</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>T</mi><mi>D</mi></msub></mrow><mrow><mn>24</mn></mrow></mfrac></mrow></math><span class="num-ec">Ecuación 2.2</span></div><p class="donde">Donde:</p><ul class="donde-lista"><li>i<sub>C</sub> = Índice de continuidad</li><li>T<sub>D</sub> = Tiempo de servicio por día (h/d)</li></ul></div>
 <div class="pag" id="pdf-40" data-p="29" title="Comienza la página 29 del libro impreso (página 40 del PDF)"></div>
 <div class="tabla" id="tabla-2-8" tabindex="0"><table>
 <caption><span class="num">Tabla 2.8</span> Horarios de servicio y zonas de tandeo (IMTA, 2013)</caption>
@@ -654,14 +658,14 @@
 <th>Horario de servicio</th>
 </tr></thead>
 <tbody>
-<tr><td>1</td><td>Lunes, miércoles y viernes (8:00 – 18:00)</td></tr>
-<tr><td>2</td><td>Martes, jueves y sábado (8:00 – 18:00)</td></tr>
-<tr><td>3</td><td>Lunes, miércoles y viernes (8:00 – 13:00)</td></tr>
-<tr><td>4</td><td>Martes, jueves y sábado (8:00 – 18:00)</td></tr>
-<tr><td>5</td><td>Lunes, miércoles y viernes (13:00 – 18:00)</td></tr>
-<tr><td>6</td><td>Martes, jueves y sábado (8:00 – 18:00)</td></tr>
-<tr><td>7</td><td>Lunes, miércoles y viernes (8:00 – 18:00)</td></tr>
-<tr><td>8</td><td>Lunes a sábado (8:00 – 18:00)</td></tr>
+<tr><td class="n">1</td><td>Lunes, miércoles y viernes (8:00 – 18:00)</td></tr>
+<tr><td class="n">2</td><td>Martes, jueves y sábado (8:00 – 18:00)</td></tr>
+<tr><td class="n">3</td><td>Lunes, miércoles y viernes (8:00 – 13:00)</td></tr>
+<tr><td class="n">4</td><td>Martes, jueves y sábado (8:00 – 18:00)</td></tr>
+<tr><td class="n">5</td><td>Lunes, miércoles y viernes (13:00 – 18:00)</td></tr>
+<tr><td class="n">6</td><td>Martes, jueves y sábado (8:00 – 18:00)</td></tr>
+<tr><td class="n">7</td><td>Lunes, miércoles y viernes (8:00 – 18:00)</td></tr>
+<tr><td class="n">8</td><td>Lunes a sábado (8:00 – 18:00)</td></tr>
 </tbody>
 </table></div>
 <p>Considere que un índice de continuidad de 1 corresponde a un servicio continuo, lo cual es la condición ideal de funcionamiento.</p>
@@ -670,7 +674,7 @@
 <p>Para estimar el volumen producido, debe multiplicarse el gasto medido por las horas de bombeo al día, a la semana o al mes, dependiendo de las características propias del servicio.</p>
 <p>Lo más común es presentar este resultado por mes, de acuerdo con la <a class="ref" href="#ecuacion-2-3">Ecuación 2.3</a>.</p>
 <div class="pag" id="pdf-41" data-p="30" title="Comienza la página 30 del libro impreso (página 41 del PDF)"></div>
-<div class="formula" id="ecuacion-2-3"><p class="ecuacion">V<sub>Mensual</sub> = Q × T<sub>D</sub> × N<sub>D</sub> <span class="num-ec">Ecuación 2.3</span></p><p class="donde">Donde:</p><ul class="donde-lista"><li>V<sub>Mensual</sub> = Volumen producido por mes (m³/mes)</li><li>Q = Gasto medido en las fuentes (m³/s)</li><li>T<sub>D</sub> = Tiempo de servicio por día (h/día)</li><li>N<sub>D</sub> = Número de días de servicio al mes</li></ul></div>
+<div class="formula formula--error" id="ecuacion-2-3"><div class="ecuacion"><math display="block"><mrow><msub><mi>V</mi><mi>Mensual</mi></msub><mo>=</mo><mi>Q</mi><mo>×</mo><msub><mi>T</mi><mi>D</mi></msub><mo>×</mo><msub><mi>N</mi><mi>D</mi></msub></mrow></math><span class="num-ec">Ecuación 2.3</span></div><p class="donde">Donde:</p><ul class="donde-lista"><li>V<sub>Mensual</sub> = Volumen producido por mes (m³/mes)</li><li>Q = Gasto medido en las fuentes (m³/s)</li><li>T<sub>D</sub> = Tiempo de servicio por día (h/día)</li><li>N<sub>D</sub> = Número de días de servicio al mes</li></ul><p class="posible-error"><strong>Posible error en el original.</strong> Con Q en m³/s y T<sub>D</sub> en h/día, el producto no da m³/mes: falta convertir horas a segundos. Con esas unidades, V<sub>Mensual</sub> = 3 600 × Q × T<sub>D</sub> × N<sub>D</sub>.</p></div>
 <h4 id="s2-3-5-2">2.3.5.2 Consumo por tipo de usuario</h4>
 <p>Previamente se presentó la forma de obtener la demanda por tipo de usuario, así como el número de usuarios. Sin embargo, la dotación real que se le brinda a cada usuario no necesariamente cumple con la demanda calculada.</p>
 <p>Para establecer el consumo real de la población deberá cuantificarse el agua que ingresa a las viviendas.</p>
@@ -769,52 +773,51 @@
 <p>La forma de asentar los estudios realizados y poder establecer si los parámetros evaluados se encuentran dentro de un rango adecuado, aceptable o no, es a través de los indicadores, los cuales se presentan a continuación y pueden consultarse en http://www.pigoo.gob.mx.</p>
 <h4 id="s2-3-11-1">2.3.11.1 Indicadores básicos de eficiencia y gestión</h4>
 <p><strong>Eficiencia física (Efis).</strong></p>
-<div class="formula" id="ecuacion-2-4"><p class="ecuacion">E<sub>fis</sub> = (Volumen facturado / Volumen producido) × 100 % <span class="num-ec">Ecuación 2.4</span></p></div>
+<div class="formula" id="ecuacion-2-4"><div class="ecuacion"><math display="block"><mrow><msub><mi>E</mi><mi>fis</mi></msub><mo>=</mo><mfrac><mrow><mtext>Volumen facturado</mtext></mrow><mrow><mtext>Volumen producido</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.4</span></div></div>
 <p><strong>Cobertura del servicio de agua potable (COSAP).</strong></p>
-<div class="formula" id="ecuacion-2-5"><p class="ecuacion">COSAP = (Población total con servicio / Población total) × 100 % <span class="num-ec">Ecuación 2.5</span></p></div>
+<div class="formula" id="ecuacion-2-5"><div class="ecuacion"><math display="block"><mrow><mi>COSAP</mi><mo>=</mo><mfrac><mrow><mtext>Población total con servicio</mtext></mrow><mrow><mtext>Población total</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.5</span></div></div>
 <p><strong>Cobertura del servicio de alcantarillado (COSAL).</strong></p>
-<div class="formula" id="ecuacion-2-6"><p class="ecuacion">COSAL = (Población total con servicio de alcantarillado / Población total) × 100 % <span class="num-ec">Ecuación 2.6</span></p></div>
+<div class="formula" id="ecuacion-2-6"><div class="ecuacion"><math display="block"><mrow><mi>COSAL</mi><mo>=</mo><mfrac><mrow><mtext>Población total con servicio de alcantarillado</mtext></mrow><mrow><mtext>Población total</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.6</span></div></div>
 <p><strong>Cobertura del servicio de saneamiento (COSSAN).</strong></p>
-<div class="formula" id="ecuacion-2-7"><p class="ecuacion">COSSAN = (Agua tratada / (0.80 × Volumen de agua facturada)) × 100 % <span class="num-ec">Ecuación 2.7</span></p></div>
-<p class="nota">Nota de transcripción: en el original la fórmula de la cobertura de saneamiento aparece rotulada «COSAP»; se transcribe aquí como COSSAN, conforme a la Tabla 2.12 y al nombre del indicador, y se deja constancia de la diferencia.</p>
+<div class="formula formula--error" id="ecuacion-2-7"><div class="ecuacion"><math display="block"><mrow><mi>COSSAN</mi><mo>=</mo><mfrac><mrow><mtext>Agua tratada</mtext></mrow><mrow><mn>0.80</mn><mo>×</mo><mtext>Volumen de agua facturada</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.7</span></div><p class="posible-error"><strong>Posible error en el original.</strong> En el original esta fórmula aparece rotulada «COSAP» (cobertura de agua potable); por su nombre y por la Tabla 2.12 corresponde a COSSAN.</p></div>
 <p><strong>Agua no contabilizada (ANC).</strong></p>
-<div class="formula" id="ecuacion-2-8"><p class="ecuacion">ANC = ((Volumen producido − Volumen facturado) / Volumen producido) × 100 % <span class="num-ec">Ecuación 2.8</span></p></div>
+<div class="formula" id="ecuacion-2-8"><div class="ecuacion"><math display="block"><mrow><mi>ANC</mi><mo>=</mo><mfrac><mrow><mtext>Volumen producido</mtext><mo>−</mo><mtext>Volumen facturado</mtext></mrow><mrow><mtext>Volumen producido</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.8</span></div></div>
 <p><strong>Cobertura de macromedición (COMAC).</strong></p>
-<div class="formula" id="ecuacion-2-9"><p class="ecuacion">COMAC = (Cantidad de fuentes con macromedidor funcionando / Cantidad de fuentes) × 100 % <span class="num-ec">Ecuación 2.9</span></p></div>
+<div class="formula" id="ecuacion-2-9"><div class="ecuacion"><math display="block"><mrow><mi>COMAC</mi><mo>=</mo><mfrac><mrow><mtext>Cantidad de fuentes con macromedidor funcionando</mtext></mrow><mrow><mtext>Cantidad de fuentes</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.9</span></div></div>
 <p><strong>Cobertura de micromedición (MIC-TOT).</strong></p>
-<div class="formula" id="ecuacion-2-10"><p class="ecuacion">MIC-TOT = (Cantidad de tomas con micromedidor funcionando / Cantidad de tomas) × 100 % <span class="num-ec">Ecuación 2.10</span></p></div>
+<div class="formula" id="ecuacion-2-10"><div class="ecuacion"><math display="block"><mrow><mi>MIC-TOT</mi><mo>=</mo><mfrac><mrow><mtext>Cantidad de tomas con micromedidor funcionando</mtext></mrow><mrow><mtext>Cantidad de tomas</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.10</span></div></div>
 <p><strong>Continuidad del servicio (CONTAP).</strong></p>
-<div class="formula" id="ecuacion-2-11"><p class="ecuacion">CONTAP = (Número de tomas con servicio continuo / Cantidad de tomas activas) × 100 % <span class="num-ec">Ecuación 2.11</span></p></div>
+<div class="formula" id="ecuacion-2-11"><div class="ecuacion"><math display="block"><mrow><mi>CONTAP</mi><mo>=</mo><mfrac><mrow><mtext>Número de tomas con servicio continuo</mtext></mrow><mrow><mtext>Cantidad de tomas activas</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.11</span></div></div>
 <p><strong>Incidencia de la energía eléctrica (IEECOS).</strong></p>
-<div class="formula" id="ecuacion-2-12"><p class="ecuacion">IEECOS = (Costo del servicio de energía eléctrica / Costo de operación) × 100 % <span class="num-ec">Ecuación 2.12</span></p></div>
+<div class="formula" id="ecuacion-2-12"><div class="ecuacion"><math display="block"><mrow><mi>IEECOS</mi><mo>=</mo><mfrac><mrow><mtext>Costo del servicio de energía eléctrica</mtext></mrow><mrow><mtext>Costo de operación</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.12</span></div></div>
 <p><strong>Indicador energético (IE).</strong></p>
-<div class="formula" id="ecuacion-2-13"><p class="ecuacion">IE = Energía total consumida / Volumen total de agua producida (m³/año) en captaciones <span class="num-ec">Ecuación 2.13</span></p></div>
+<div class="formula" id="ecuacion-2-13"><div class="ecuacion"><math display="block"><mrow><mi>IE</mi><mo>=</mo><mfrac><mrow><mtext>Energía total consumida</mtext></mrow><mrow><mtext>Volumen total de agua producida (m³/año) en captaciones</mtext></mrow></mfrac></mrow></math><span class="num-ec">Ecuación 2.13</span></div></div>
 <p class="nota">Nota de transcripción: la unidad del indicador energético es kWh/m³ (Tabla 2.12). La fórmula se transcribe tal como se presenta en el original; la expresión «en captaciones» del denominador se reproduce como aparece.</p>
 <p><strong>Índice laboral (IL).</strong></p>
-<div class="formula" id="ecuacion-2-14"><p class="ecuacion">IL = (Total de empleados / Total de tomas) × 1000 &nbsp;[empleados / 1 000 tomas] <span class="num-ec">Ecuación 2.14</span></p></div>
+<div class="formula" id="ecuacion-2-14"><div class="ecuacion"><math display="block"><mrow><mi>IL</mi><mo>=</mo><mfrac><mrow><mtext>Total de empleados</mtext></mrow><mrow><mtext>Total de tomas</mtext></mrow></mfrac><mo>×</mo><mn>1000</mn><mo>&#x2003;</mo><mtext>[empleados / 1 000 tomas]</mtext></mrow></math><span class="num-ec">Ecuación 2.14</span></div></div>
 <h4 id="s2-3-11-2">2.3.11.2 Indicadores comerciales</h4>
 <p><strong>Eficiencia comercial (Ecomer).</strong></p>
-<div class="formula" id="ecuacion-2-15"><p class="ecuacion">E<sub>comer</sub> = (Monto recaudado sin rezagos / Monto facturado) × 100 % <span class="num-ec">Ecuación 2.15</span></p></div>
+<div class="formula" id="ecuacion-2-15"><div class="ecuacion"><math display="block"><mrow><msub><mi>E</mi><mi>comer</mi></msub><mo>=</mo><mfrac><mrow><mtext>Monto recaudado sin rezagos</mtext></mrow><mrow><mtext>Monto facturado</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.15</span></div></div>
 <p><strong>Eficiencia global (Eglob).</strong></p>
-<div class="formula" id="ecuacion-2-16"><p class="ecuacion">E<sub>glob</sub> = E<sub>fis</sub> × E<sub>comer</sub> &nbsp;[%] <span class="num-ec">Ecuación 2.16</span></p></div>
+<div class="formula formula--error" id="ecuacion-2-16"><div class="ecuacion"><math display="block"><mrow><msub><mi>E</mi><mi>glob</mi></msub><mo>=</mo><msub><mi>E</mi><mi>fis</mi></msub><mo>×</mo><msub><mi>E</mi><mi>comer</mi></msub><mo>&#x2003;</mo><mtext>[%]</mtext></mrow></math><span class="num-ec">Ecuación 2.16</span></div><p class="posible-error"><strong>Posible error en el original.</strong> Si E<sub>fis</sub> y E<sub>comer</sub> se expresan en %, su producto queda en %²: para obtener un porcentaje hay que dividir entre 100 (E<sub>glob</sub> = E<sub>fis</sub> × E<sub>comer</sub> / 100) o usar ambas eficiencias como fracciones.</p></div>
 <p class="nota">Nota de transcripción: en el original la fórmula se presenta como E<sub>glob</sub> = E<sub>fis</sub> × E<sub>comer</sub>, en %; se reproduce así, sin añadir factores que el original no muestra.</p>
 <p><strong>Tarifa recuperada (TREC).</strong></p>
-<div class="formula" id="ecuacion-2-17"><p class="ecuacion">TREC = (Monto recaudado sin rezagos / Volumen producido) &nbsp;[$/m³] <span class="num-ec">Ecuación 2.17</span></p></div>
+<div class="formula" id="ecuacion-2-17"><div class="ecuacion"><math display="block"><mrow><mi>TREC</mi><mo>=</mo><mfrac><mrow><mtext>Monto recaudado sin rezagos</mtext></mrow><mrow><mtext>Volumen producido</mtext></mrow></mfrac><mo>&#x2003;</mo><mtext>[$/m³]</mtext></mrow></math><span class="num-ec">Ecuación 2.17</span></div></div>
 <p><strong>Ingreso anual por toma.</strong></p>
-<div class="formula" id="ecuacion-2-18"><p class="ecuacion">Ingreso anual por toma = (Monto de ingresos por el cobro de servicio / Número de tomas en el sistema) &nbsp;[$/toma] <span class="num-ec">Ecuación 2.18</span></p></div>
+<div class="formula" id="ecuacion-2-18"><div class="ecuacion"><math display="block"><mrow><mtext>Ingreso anual por toma</mtext><mo>=</mo><mfrac><mrow><mtext>Monto de ingresos por el cobro de servicio</mtext></mrow><mrow><mtext>Número de tomas en el sistema</mtext></mrow></mfrac><mo>&#x2003;</mo><mtext>[$/toma]</mtext></mrow></math><span class="num-ec">Ecuación 2.18</span></div></div>
 <p><strong>Indicadores financieros y contables.</strong></p>
 <p><strong>Liquidez.</strong></p>
-<div class="formula" id="ecuacion-2-19"><p class="ecuacion">Liquidez = Activo circulante / Pasivo circulante <span class="num-ec">Ecuación 2.19</span></p></div>
+<div class="formula" id="ecuacion-2-19"><div class="ecuacion"><math display="block"><mrow><mtext>Liquidez</mtext><mo>=</mo><mfrac><mrow><mtext>Activo circulante</mtext></mrow><mrow><mtext>Pasivo circulante</mtext></mrow></mfrac></mrow></math><span class="num-ec">Ecuación 2.19</span></div></div>
 <p><strong>Apalancamiento.</strong></p>
-<div class="formula" id="ecuacion-2-20"><p class="ecuacion">Apalancamiento = Pasivos totales / Activos totales <span class="num-ec">Ecuación 2.20</span></p></div>
+<div class="formula" id="ecuacion-2-20"><div class="ecuacion"><math display="block"><mrow><mtext>Apalancamiento</mtext><mo>=</mo><mfrac><mrow><mtext>Pasivos totales</mtext></mrow><mrow><mtext>Activos totales</mtext></mrow></mfrac></mrow></math><span class="num-ec">Ecuación 2.20</span></div></div>
 <p><strong>Prueba ácida.</strong></p>
-<div class="formula" id="ecuacion-2-21"><p class="ecuacion">Prueba ácida = (Caja + Bancos + Cuentas por cobrar) / Pasivo circulante <span class="num-ec">Ecuación 2.21</span></p></div>
+<div class="formula" id="ecuacion-2-21"><div class="ecuacion"><math display="block"><mrow><mtext>Prueba ácida</mtext><mo>=</mo><mfrac><mrow><mtext>Caja</mtext><mo>+</mo><mtext>Bancos</mtext><mo>+</mo><mtext>Cuentas por cobrar</mtext></mrow><mrow><mtext>Pasivo circulante</mtext></mrow></mfrac></mrow></math><span class="num-ec">Ecuación 2.21</span></div></div>
 <p><strong>Rentabilidad.</strong></p>
-<div class="formula" id="ecuacion-2-22"><p class="ecuacion">Rentabilidad = (Utilidad neta / Activos totales) × 100 % <span class="num-ec">Ecuación 2.22</span></p></div>
+<div class="formula" id="ecuacion-2-22"><div class="ecuacion"><math display="block"><mrow><mtext>Rentabilidad</mtext><mo>=</mo><mfrac><mrow><mtext>Utilidad neta</mtext></mrow><mrow><mtext>Activos totales</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.22</span></div></div>
 <p><strong>Productividad.</strong></p>
-<div class="formula" id="ecuacion-2-23"><p class="ecuacion">Productividad = (Utilidad neta / Ventas netas) × 100 % <span class="num-ec">Ecuación 2.23</span></p></div>
+<div class="formula" id="ecuacion-2-23"><div class="ecuacion"><math display="block"><mrow><mtext>Productividad</mtext><mo>=</mo><mfrac><mrow><mtext>Utilidad neta</mtext></mrow><mrow><mtext>Ventas netas</mtext></mrow></mfrac><mo>×</mo><mn>100</mn><mo>%</mo></mrow></math><span class="num-ec">Ecuación 2.23</span></div></div>
 <p><strong>Capital de trabajo.</strong></p>
-<div class="formula" id="ecuacion-2-24"><p class="ecuacion">Capital de trabajo = Activo circulante − Pasivo circulante &nbsp;[$] <span class="num-ec">Ecuación 2.24</span></p></div>
+<div class="formula" id="ecuacion-2-24"><div class="ecuacion"><math display="block"><mrow><mtext>Capital de trabajo</mtext><mo>=</mo><mtext>Activo circulante</mtext><mo>−</mo><mtext>Pasivo circulante</mtext><mo>&#x2003;</mo><mtext>[$]</mtext></mrow></math><span class="num-ec">Ecuación 2.24</span></div></div>
 <p>De acuerdo con los indicadores mencionados, la información necesaria a recopilar se muestra en la <a class="ref" href="#tabla-2-11">Tabla 2.11</a>. Con base en dicha información, el cálculo puede presentarse como se muestra en la <a class="ref" href="#tabla-2-12">Tabla 2.12</a>.</p>
 <p>Con esta información se tienen las herramientas técnicas necesarias para la creación de un nuevo organismo operador. Además, es posible identificar las acciones necesarias para mejorar el servicio que reciben los usuarios, una vez que el nuevo organismo, cualquiera que sea la forma de su configuración, entre en funciones. La cantidad de estudios a realizar dependerá de las condiciones iniciales del servicio y de los alcances proyectados para el organismo de nueva creación.</p>
 <div class="pag" id="pdf-48" data-p="37" title="Comienza la página 37 del libro impreso (página 48 del PDF)"></div>
@@ -829,33 +832,33 @@
 <th>Valor obtenido</th>
 </tr></thead>
 <tbody>
-<tr><td>1</td><td>Volumen de agua producido</td><td>(m³/mes)</td><td></td><td>promedio mensual</td></tr>
-<tr><td>2</td><td>Volumen de agua facturado</td><td>(m³/mes)</td><td></td><td>promedio mensual</td></tr>
-<tr><td>3</td><td>Población total actual con servicio (agua potable)</td><td>(Hab)</td><td></td><td></td></tr>
-<tr><td>4</td><td>Población total actual</td><td>(Hab)</td><td></td><td></td></tr>
-<tr><td>5</td><td>Población total actual con servicio en su predio o vivienda (alcantarillado)</td><td>(Hab)</td><td></td><td></td></tr>
-<tr><td>6</td><td>Volumen de agua tratada</td><td>(m³/mes)</td><td></td><td>promedio mensual</td></tr>
-<tr><td>7</td><td>Cantidad de fuentes de abastecimiento con sistema de medición funcionando</td><td>núm</td><td></td><td></td></tr>
-<tr><td>8</td><td>Cantidad total de fuentes de abastecimiento activas</td><td>núm</td><td></td><td></td></tr>
-<tr><td>9</td><td>Cantidad de tomas con medidor funcionando</td><td>núm</td><td></td><td></td></tr>
-<tr><td>10</td><td>Cantidad de tomas activas existentes</td><td>núm</td><td></td><td></td></tr>
-<tr><td>11</td><td>Número de tomas con servicio ininterrumpido las 24 horas del día</td><td>núm</td><td></td><td></td></tr>
-<tr><td>12</td><td>Total de tomas</td><td>núm</td><td></td><td></td></tr>
-<tr><td>13</td><td>Costo del servicio de energía eléctrica</td><td>$</td><td></td><td>promedio mensual</td></tr>
-<tr><td>14</td><td>Costo de operación</td><td>$</td><td></td><td>promedio mensual</td></tr>
-<tr><td>15</td><td>Energía total consumida</td><td>kWh/m³</td><td></td><td>promedio mensual</td></tr>
-<tr><td>16</td><td>Total de empleados</td><td>núm</td><td></td><td></td></tr>
-<tr><td>17</td><td>Monto recaudado</td><td>$/mes</td><td></td><td>promedio mensual</td></tr>
-<tr><td>18</td><td>Monto facturado</td><td>$/mes</td><td></td><td>promedio mensual</td></tr>
-<tr><td>19</td><td>Monto recaudado (sin rezagos)</td><td>$/mes</td><td></td><td>promedio mensual</td></tr>
-<tr><td>20</td><td>Monto de los ingresos por cobro de los servicios</td><td>$/mes</td><td></td><td>promedio mensual</td></tr>
-<tr><td>21</td><td>Activo circulante</td><td>$</td><td></td><td></td></tr>
-<tr><td>22</td><td>Pasivo circulante</td><td>$</td><td></td><td></td></tr>
-<tr><td>23</td><td>Pasivos totales</td><td>$</td><td></td><td></td></tr>
-<tr><td>24</td><td>Activos totales</td><td>$</td><td></td><td></td></tr>
-<tr><td>25</td><td>Utilidad neta</td><td>$</td><td></td><td></td></tr>
-<tr><td>26</td><td>Caja + bancos + cuentas por cobrar</td><td>$</td><td></td><td></td></tr>
-<tr><td>27</td><td>Ventas netas</td><td>$</td><td></td><td>anual</td></tr>
+<tr><td class="n">1</td><td>Volumen de agua producido</td><td>(m³/mes)</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">2</td><td>Volumen de agua facturado</td><td>(m³/mes)</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">3</td><td>Población total actual con servicio (agua potable)</td><td>(Hab)</td><td></td><td></td></tr>
+<tr><td class="n">4</td><td>Población total actual</td><td>(Hab)</td><td></td><td></td></tr>
+<tr><td class="n">5</td><td>Población total actual con servicio en su predio o vivienda (alcantarillado)</td><td>(Hab)</td><td></td><td></td></tr>
+<tr><td class="n">6</td><td>Volumen de agua tratada</td><td>(m³/mes)</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">7</td><td>Cantidad de fuentes de abastecimiento con sistema de medición funcionando</td><td>núm</td><td></td><td></td></tr>
+<tr><td class="n">8</td><td>Cantidad total de fuentes de abastecimiento activas</td><td>núm</td><td></td><td></td></tr>
+<tr><td class="n">9</td><td>Cantidad de tomas con medidor funcionando</td><td>núm</td><td></td><td></td></tr>
+<tr><td class="n">10</td><td>Cantidad de tomas activas existentes</td><td>núm</td><td></td><td></td></tr>
+<tr><td class="n">11</td><td>Número de tomas con servicio ininterrumpido las 24 horas del día</td><td>núm</td><td></td><td></td></tr>
+<tr><td class="n">12</td><td>Total de tomas</td><td>núm</td><td></td><td></td></tr>
+<tr><td class="n">13</td><td>Costo del servicio de energía eléctrica</td><td>$</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">14</td><td>Costo de operación</td><td>$</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">15</td><td>Energía total consumida</td><td>kWh/m³</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">16</td><td>Total de empleados</td><td>núm</td><td></td><td></td></tr>
+<tr><td class="n">17</td><td>Monto recaudado</td><td>$/mes</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">18</td><td>Monto facturado</td><td>$/mes</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">19</td><td>Monto recaudado (sin rezagos)</td><td>$/mes</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">20</td><td>Monto de los ingresos por cobro de los servicios</td><td>$/mes</td><td></td><td>promedio mensual</td></tr>
+<tr><td class="n">21</td><td>Activo circulante</td><td>$</td><td></td><td></td></tr>
+<tr><td class="n">22</td><td>Pasivo circulante</td><td>$</td><td></td><td></td></tr>
+<tr><td class="n">23</td><td>Pasivos totales</td><td>$</td><td></td><td></td></tr>
+<tr><td class="n">24</td><td>Activos totales</td><td>$</td><td></td><td></td></tr>
+<tr><td class="n">25</td><td>Utilidad neta</td><td>$</td><td></td><td></td></tr>
+<tr><td class="n">26</td><td>Caja + bancos + cuentas por cobrar</td><td>$</td><td></td><td></td></tr>
+<tr><td class="n">27</td><td>Ventas netas</td><td>$</td><td></td><td>anual</td></tr>
 </tbody>
 </table></div>
 <p class="nota-tabla">Tabla-formato del original: las columnas «Cantidad» y «Valor obtenido» aparecen en blanco en el libro, para ser llenadas con los datos del organismo; la columna «Valor obtenido» indica, donde corresponde, «promedio mensual» o «anual».</p>
@@ -870,27 +873,27 @@
 <th>Valor de referencia</th>
 </tr></thead>
 <tbody>
-<tr><td>1</td><td>Eficiencia física</td><td>Efis</td><td>(%)</td><td>67.3</td></tr>
-<tr><td>2</td><td>Cobertura del servicio de agua potable</td><td>COSAP</td><td>(%)</td><td>94.8</td></tr>
-<tr><td>3</td><td>Cobertura del servicio de alcantarillado</td><td>COSAL</td><td>(%)</td><td>87.7</td></tr>
-<tr><td>4</td><td>Cobertura del servicio de saneamiento</td><td>COSSAN</td><td>(%)</td><td>42.8</td></tr>
-<tr><td>5</td><td>Agua no contabilizada</td><td>ANC</td><td>(%)</td><td>15 a 35%</td></tr>
-<tr><td>6</td><td>Cobertura de macromedición</td><td>COMAC</td><td>(%)</td><td>79.1</td></tr>
-<tr><td>7</td><td>Cobertura de micromedición</td><td>MIC-TOT</td><td>(%)</td><td>54.7</td></tr>
-<tr><td>8</td><td>Continuidad en el servicio</td><td>CONTAP</td><td>(%)</td><td>71.3</td></tr>
-<tr><td>9</td><td>Incidencia de la energía eléctrica</td><td>IEECOS</td><td>(%)</td><td>44.0</td></tr>
-<tr><td>10</td><td>Indicador energético</td><td>IE</td><td>kWh/m³</td><td>—</td></tr>
-<tr><td>11</td><td>Índice laboral</td><td>IL</td><td>empleados/1 000 tomas</td><td>4.9</td></tr>
-<tr><td>12</td><td>Eficiencia comercial</td><td>Ecomer</td><td>(%)</td><td>72.2</td></tr>
-<tr><td>13</td><td>Eficiencia global</td><td>Eglobal</td><td>(%)</td><td>48.1</td></tr>
-<tr><td>14</td><td>Tarifa recuperada</td><td>TREC</td><td>($/m³)</td><td>5.6</td></tr>
-<tr><td>15</td><td>Ingreso anual por toma</td><td>—</td><td>($/toma)</td><td>—</td></tr>
-<tr><td>16</td><td>Liquidez</td><td>Liquidez</td><td>—</td><td>entre 1 y 2</td></tr>
-<tr><td>17</td><td>Apalancamiento</td><td>Apalancamiento</td><td>—</td><td>—</td></tr>
-<tr><td>18</td><td>Rentabilidad</td><td>Rentabilidad</td><td>(%)</td><td>—</td></tr>
-<tr><td>19</td><td>Prueba ácida</td><td>—</td><td>—</td><td>—</td></tr>
-<tr><td>20</td><td>Productividad</td><td>—</td><td>(%)</td><td>—</td></tr>
-<tr><td>21</td><td>Capital de trabajo</td><td>—</td><td>$</td><td>—</td></tr>
+<tr><td class="n">1</td><td>Eficiencia física</td><td>Efis</td><td>(%)</td><td class="n">67.3</td></tr>
+<tr><td class="n">2</td><td>Cobertura del servicio de agua potable</td><td>COSAP</td><td>(%)</td><td class="n">94.8</td></tr>
+<tr><td class="n">3</td><td>Cobertura del servicio de alcantarillado</td><td>COSAL</td><td>(%)</td><td class="n">87.7</td></tr>
+<tr><td class="n">4</td><td>Cobertura del servicio de saneamiento</td><td>COSSAN</td><td>(%)</td><td class="n">42.8</td></tr>
+<tr><td class="n">5</td><td>Agua no contabilizada</td><td>ANC</td><td>(%)</td><td>15 a 35%</td></tr>
+<tr><td class="n">6</td><td>Cobertura de macromedición</td><td>COMAC</td><td>(%)</td><td class="n">79.1</td></tr>
+<tr><td class="n">7</td><td>Cobertura de micromedición</td><td>MIC-TOT</td><td>(%)</td><td class="n">54.7</td></tr>
+<tr><td class="n">8</td><td>Continuidad en el servicio</td><td>CONTAP</td><td>(%)</td><td class="n">71.3</td></tr>
+<tr><td class="n">9</td><td>Incidencia de la energía eléctrica</td><td>IEECOS</td><td>(%)</td><td class="n">44.0</td></tr>
+<tr><td class="n">10</td><td>Indicador energético</td><td>IE</td><td>kWh/m³</td><td>—</td></tr>
+<tr><td class="n">11</td><td>Índice laboral</td><td>IL</td><td>empleados/1 000 tomas</td><td class="n">4.9</td></tr>
+<tr><td class="n">12</td><td>Eficiencia comercial</td><td>Ecomer</td><td>(%)</td><td class="n">72.2</td></tr>
+<tr><td class="n">13</td><td>Eficiencia global</td><td>Eglobal</td><td>(%)</td><td class="n">48.1</td></tr>
+<tr><td class="n">14</td><td>Tarifa recuperada</td><td>TREC</td><td>($/m³)</td><td class="n">5.6</td></tr>
+<tr><td class="n">15</td><td>Ingreso anual por toma</td><td>—</td><td>($/toma)</td><td>—</td></tr>
+<tr><td class="n">16</td><td>Liquidez</td><td>Liquidez</td><td>—</td><td>entre 1 y 2</td></tr>
+<tr><td class="n">17</td><td>Apalancamiento</td><td>Apalancamiento</td><td>—</td><td>—</td></tr>
+<tr><td class="n">18</td><td>Rentabilidad</td><td>Rentabilidad</td><td>(%)</td><td>—</td></tr>
+<tr><td class="n">19</td><td>Prueba ácida</td><td>—</td><td>—</td><td>—</td></tr>
+<tr><td class="n">20</td><td>Productividad</td><td>—</td><td>(%)</td><td>—</td></tr>
+<tr><td class="n">21</td><td>Capital de trabajo</td><td>—</td><td>$</td><td>—</td></tr>
 </tbody>
 </table></div>
 <p class="nota-tabla">La tabla se presenta en dos grupos en el original: «Indicadores básicos de eficiencia y gestión» (núms. 1–11) e «Indicadores comerciales» (núms. 12–21). Las celdas marcadas «—» están en blanco en el original; no se les asignó valor. Nota del original, al pie de la tabla: «Si el valor obtenido es menor al valor de referencia, indica que es un punto en que se debe trabajar para mejorar».</p>
@@ -1128,8 +1131,8 @@
 <th>Cuota</th>
 </tr></thead>
 <tbody>
-<tr><td>Doméstico</td><td>$ 50.00</td></tr>
-<tr><td>Comercial</td><td>$ 80.00</td></tr>
+<tr><td>Doméstico</td><td class="n">$ 50.00</td></tr>
+<tr><td>Comercial</td><td class="n">$ 80.00</td></tr>
 </tbody>
 </table></div>
 <div class="tabla" id="tabla-3-2" tabindex="0"><table>
@@ -1139,11 +1142,11 @@
 <th>Cuota</th>
 </tr></thead>
 <tbody>
-<tr><td>Doméstico</td><td>$ 50</td></tr>
-<tr><td>Residencial 1</td><td>$ 150</td></tr>
-<tr><td>Residencial 2</td><td>$ 300</td></tr>
-<tr><td>Media toma</td><td>$ 25</td></tr>
-<tr><td>Comercial</td><td>$ 80</td></tr>
+<tr><td>Doméstico</td><td class="n">$ 50</td></tr>
+<tr><td>Residencial 1</td><td class="n">$ 150</td></tr>
+<tr><td>Residencial 2</td><td class="n">$ 300</td></tr>
+<tr><td>Media toma</td><td class="n">$ 25</td></tr>
+<tr><td>Comercial</td><td class="n">$ 80</td></tr>
 </tbody>
 </table></div>
 <div class="pag" id="pdf-66" data-p="55" title="Comienza la página 55 del libro impreso (página 66 del PDF)"></div>
@@ -1167,15 +1170,15 @@
 <th>Industrial</th>
 </tr></thead>
 <tbody>
-<tr><td>0–20</td><td>0.01</td><td>0.012</td><td>0.016</td><td>0.02</td><td>0.034</td></tr>
-<tr><td>21–30</td><td>0.012</td><td>0.014</td><td>0.02</td><td>0.025</td><td>0.042</td></tr>
-<tr><td>31–50</td><td>0.015</td><td>0.017</td><td>0.024</td><td>0.03</td><td>0.051</td></tr>
-<tr><td>51–75</td><td>0.019</td><td>0.022</td><td>0.03</td><td>0.038</td><td>0.064</td></tr>
-<tr><td>76–100</td><td>0.021</td><td>0.024</td><td>0.034</td><td>0.043</td><td>0.072</td></tr>
-<tr><td>101–150</td><td>0.025</td><td>0.029</td><td>0.04</td><td>0.05</td><td>0.085</td></tr>
-<tr><td>151–200</td><td>0.037</td><td>0.043</td><td>0.06</td><td>0.076</td><td>0.127</td></tr>
-<tr><td>201–300</td><td>0.05</td><td>0.058</td><td>0.08</td><td>0.101</td><td>0.17</td></tr>
-<tr><td>300 –</td><td>0.062</td><td>0.072</td><td>0.1</td><td>0.126</td><td>0.212</td></tr>
+<tr><td class="n">0–20</td><td class="n">0.01</td><td class="n">0.012</td><td class="n">0.016</td><td class="n">0.02</td><td class="n">0.034</td></tr>
+<tr><td class="n">21–30</td><td class="n">0.012</td><td class="n">0.014</td><td class="n">0.02</td><td class="n">0.025</td><td class="n">0.042</td></tr>
+<tr><td class="n">31–50</td><td class="n">0.015</td><td class="n">0.017</td><td class="n">0.024</td><td class="n">0.03</td><td class="n">0.051</td></tr>
+<tr><td class="n">51–75</td><td class="n">0.019</td><td class="n">0.022</td><td class="n">0.03</td><td class="n">0.038</td><td class="n">0.064</td></tr>
+<tr><td class="n">76–100</td><td class="n">0.021</td><td class="n">0.024</td><td class="n">0.034</td><td class="n">0.043</td><td class="n">0.072</td></tr>
+<tr><td class="n">101–150</td><td class="n">0.025</td><td class="n">0.029</td><td class="n">0.04</td><td class="n">0.05</td><td class="n">0.085</td></tr>
+<tr><td class="n">151–200</td><td class="n">0.037</td><td class="n">0.043</td><td class="n">0.06</td><td class="n">0.076</td><td class="n">0.127</td></tr>
+<tr><td class="n">201–300</td><td class="n">0.05</td><td class="n">0.058</td><td class="n">0.08</td><td class="n">0.101</td><td class="n">0.17</td></tr>
+<tr><td>300 –</td><td class="n">0.062</td><td class="n">0.072</td><td class="n">0.1</td><td class="n">0.126</td><td class="n">0.212</td></tr>
 </tbody>
 </table></div>
 <p class="nota-tabla">En el original el encabezado de la tabla dice «Esquema Tarifario para agua potable y saneamiento (m3)»; las cifras se transcriben tal como aparecen, sin añadir la unidad monetaria, que el original no indica en esta tabla.</p>
@@ -1189,11 +1192,11 @@
 <th>Cobro estimado $/(predio)</th>
 </tr></thead>
 <tbody>
-<tr><td>Popular</td><td>173</td><td>180</td><td>20.26</td><td>51.67</td></tr>
-<tr><td>Medio</td><td>742</td><td>230</td><td>25.88</td><td>76.76</td></tr>
-<tr><td>Residencial</td><td>368</td><td>400</td><td>45.02</td><td>223.92</td></tr>
-<tr><td>Comercial</td><td>100</td><td>1065</td><td>32.39</td><td>203.48</td></tr>
-<tr><td>Público</td><td>31</td><td>60</td><td>1.83</td><td>—</td></tr>
+<tr><td>Popular</td><td class="n">173</td><td class="n">180</td><td class="n">20.26</td><td class="n">51.67</td></tr>
+<tr><td>Medio</td><td class="n">742</td><td class="n">230</td><td class="n">25.88</td><td class="n">76.76</td></tr>
+<tr><td>Residencial</td><td class="n">368</td><td class="n">400</td><td class="n">45.02</td><td class="n">223.92</td></tr>
+<tr><td>Comercial</td><td class="n">100</td><td class="n">1065</td><td class="n">32.39</td><td class="n">203.48</td></tr>
+<tr><td>Público</td><td class="n">31</td><td class="n">60</td><td class="n">1.83</td><td>—</td></tr>
 </tbody>
 </table></div>
 <p class="nota-tabla">La celda de «Cobro estimado» de la fila «Público» está en blanco en el original; se marca «—» y no se le asigna valor.</p>
