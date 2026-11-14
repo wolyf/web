@@ -10,7 +10,8 @@
 
    Este archivo solo reúne las partes, en este orden (sin build: @import):
      fuentes.css       fuentes autoalojadas (Inter, Outfit, Google Sans Code)
-     base.css          variables, tipografía, encabezado, ajustes y sesión
+     base.css          variables, tipografía y encabezado
+     ajustes.css       botones de ajustes y panel de sesión
      componentes.css   títulos, enlaces, pastillas y formularios
      portada.css       barra lateral, secciones, tarjetas y pie de la portada
      calculadoras.css  gráfica y barra de unidades de las calculadoras
@@ -18,6 +19,7 @@
 
 @import url("fuentes.css");
 @import url("base.css");
+@import url("ajustes.css");
 @import url("componentes.css");
 @import url("portada.css");
 @import url("calculadoras.css");

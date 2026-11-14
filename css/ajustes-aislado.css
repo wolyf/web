@@ -1,0 +1,41 @@
+/* ==========================================================================
+   Ajustes y sesión para páginas que NO cargan styles.css (zona general)
+
+   Los libros 2 a 55 de manuales-conagua tienen su propio estilo (papel claro
+   fijo). Esta hoja solo les da los botones de .ajustes y el panel de sesión,
+   con las variables de base.css en su versión clara, sin tocar el resto.
+   ========================================================================== */
+
+@import url("ajustes.css");
+
+:root {
+  --bg: #fdfcf8;
+  --surface: #f1ead5;
+  --surface-2: #ece4ca;
+  --text: #28282e;
+  --text-strong: #1d1d22;
+  --muted: #5a5a61;
+  --border: #e5dcbd;
+  --border-card: #ded4b2;
+  --border-strong: #c6ba93;
+  --accent: #b12d6c;
+  --sobre-acento: #ffffff;
+  --shadow-hover: rgba(124, 114, 76, 0.35) 0 5px 15px 0;
+  --radius: 8px;
+  --font-texto: system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+
+.ajustes-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-texto);
+  font-size: 0.9em;
+  margin-bottom: 1em;
+}
+
+.ajustes-barra .ajuste {
+  font-family: var(--font-texto);
+}
