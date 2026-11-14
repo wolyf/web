@@ -35,58 +35,129 @@
 
 import * as L from "./llaves.mjs";
 
-const CLAVE = "wr-sesion";
 const URL_ACCESO = new URL("../datos/acceso.json", import.meta.url);
 const raiz = document.documentElement;
 
 // ---- Estado guardado ----
+//
+// La llave del sitio K se guarda como CryptoKey HKDF **no extraíble** en
+// IndexedDB (no como texto en localStorage ni sessionStorage): un script de la
+// página puede pedirle derivaciones, pero no leer sus bytes.
+//   - Sin «Recordarme»: el registro pertenece a esta pestaña (un identificador
+//     en sessionStorage) y se pierde al cerrarla.
+//   - Con «Recordarme»: registro persistente de este navegador.
+// En localStorage o sessionStorage solo queda una marca sin secretos
+// (CLAVE_MARCA) para que js/tema.js sepa el estado antes de pintar.
 
-const almacenes = () => {
-  const lista = [];
-  for (const nombre of ["sessionStorage", "localStorage"]) {
-    try {
-      if (window[nombre]) lista.push(window[nombre]);
-    } catch {
-      /* almacenamiento bloqueado */
-    }
+const CLAVE_MARCA = "wr-sesion-activa";
+const CLAVE_PESTANA = "wr-pestana";
+const BD = "wr-sesion";
+const ALMACEN = "llaves";
+const REGISTRO_PERSISTENTE = "persistente";
+
+const almacenWeb = (nombre) => {
+  try {
+    return window[nombre] ?? null;
+  } catch {
+    return null; // almacenamiento bloqueado
   }
-  return lista;
 };
 
-function leerGuardada() {
-  for (const almacen of almacenes()) {
+function idPestana() {
+  const s = almacenWeb("sessionStorage");
+  try {
+    let id = s?.getItem(CLAVE_PESTANA);
+    if (!id) {
+      id = L.aHex(L.aleatorio(16));
+      s?.setItem(CLAVE_PESTANA, id);
+    }
+    return id;
+  } catch {
+    return null;
+  }
+}
+
+function abrirBD() {
+  return new Promise((ok, mal) => {
+    if (!window.indexedDB) return mal(new Error("Sin IndexedDB"));
+    const r = indexedDB.open(BD, 1);
+    r.onupgradeneeded = () => r.result.createObjectStore(ALMACEN);
+    r.onsuccess = () => ok(r.result);
+    r.onerror = () => mal(r.error);
+  });
+}
+
+// Ejecuta fn(almacén) en una transacción y devuelve su resultado
+async function enBD(modo, fn) {
+  const bd = await abrirBD();
+  try {
+    return await new Promise((ok, mal) => {
+      const t = bd.transaction(ALMACEN, modo);
+      const peticion = fn(t.objectStore(ALMACEN));
+      t.oncomplete = () => ok(peticion?.result);
+      t.onerror = t.onabort = () => mal(t.error);
+    });
+  } finally {
+    bd.close();
+  }
+}
+
+const clavePestana = () => {
+  const id = idPestana();
+  return id ? `pestana:${id}` : null;
+};
+
+async function leerGuardada() {
+  const claves = [clavePestana(), REGISTRO_PERSISTENTE].filter(Boolean);
+  for (const clave of claves) {
     try {
-      const s = JSON.parse(almacen.getItem(CLAVE));
-      if (s?.llave && s?.usuario) return { usuario: s.usuario, llave: L.deB64(s.llave), huella: s.huella };
+      const s = await enBD("readonly", (a) => a.get(clave));
+      if (s?.llave && s?.usuario) return { usuario: s.usuario, llave: s.llave, huella: s.huella, recordar: clave === REGISTRO_PERSISTENTE };
     } catch {
-      /* dato dañado: se ignora */
+      /* sin registro o sin IndexedDB */
     }
   }
   return null;
 }
 
-function guardar(s, recordar) {
-  borrarGuardada();
-  const valor = JSON.stringify({ usuario: s.usuario, llave: L.aB64(s.llave), huella: s.huella });
-  const [sesionAlm, localAlm] = [window.sessionStorage, window.localStorage];
+async function guardar(s, recordar) {
+  await borrarGuardada();
+  const marca = almacenWeb(recordar ? "localStorage" : "sessionStorage");
   try {
-    (recordar ? localAlm : sesionAlm).setItem(CLAVE, valor);
+    marca?.setItem(CLAVE_MARCA, "1");
   } catch {
-    /* sin almacenamiento: la sesión dura lo que dure la página */
+    /* sin almacenamiento */
+  }
+  const clave = recordar ? REGISTRO_PERSISTENTE : clavePestana();
+  if (!clave) return;
+  try {
+    await enBD("readwrite", (a) => a.put({ usuario: s.usuario, llave: s.llave, huella: s.huella }, clave));
+  } catch {
+    /* sin IndexedDB: la sesión dura lo que dure la página */
   }
 }
 
-function borrarGuardada() {
-  for (const almacen of almacenes()) {
+async function borrarGuardada() {
+  for (const nombre of ["sessionStorage", "localStorage"]) {
     try {
-      almacen.removeItem(CLAVE);
+      almacenWeb(nombre)?.removeItem(CLAVE_MARCA);
+      almacenWeb(nombre)?.removeItem("wr-sesion"); // formato anterior, con la llave en texto
     } catch {
       /* nada que borrar */
     }
   }
+  try {
+    const pestana = clavePestana();
+    await enBD("readwrite", (a) => {
+      a.delete(REGISTRO_PERSISTENTE);
+      if (pestana) a.delete(pestana);
+    });
+  } catch {
+    /* nada que borrar */
+  }
 }
 
-let actual = leerGuardada();
+let actual = await leerGuardada();
 const oyentes = new Set();
 
 function avisar() {
@@ -133,9 +204,10 @@ async function revisarVigencia() {
 async function entrar(usuario, contrasena, recordar = false) {
   const a = await acceso();
   if (!a || !Object.keys(a.usuarios ?? {}).length) throw new Error("Aún no hay usuarios en este sitio.");
-  const llave = await L.entrar(a, usuario, contrasena);
-  actual = { usuario: String(usuario).trim(), llave, huella: await L.huella(llave) };
-  guardar(actual, recordar);
+  const bytes = await L.entrar(a, usuario, contrasena);
+  actual = { usuario: String(usuario).trim(), llave: await L.llaveHKDF(bytes), huella: await L.huella(bytes) };
+  bytes.fill(0);
+  await guardar(actual, recordar);
   avisar();
 }
 
@@ -165,10 +237,10 @@ export const sesion = {
 
 window.WRSesion = sesion;
 
-// Cambios desde otra pestaña (solo localStorage avisa)
-window.addEventListener("storage", (e) => {
-  if (e.key !== CLAVE && e.key !== null) return;
-  const nueva = leerGuardada();
+// Cambios desde otra pestaña (solo la marca de localStorage avisa)
+window.addEventListener("storage", async (e) => {
+  if (e.key !== CLAVE_MARCA && e.key !== null) return;
+  const nueva = await leerGuardada();
   if (!!nueva === !!actual && nueva?.huella === actual?.huella) return;
   actual = nueva;
   avisar();
@@ -184,6 +256,15 @@ let botonAbierto = null;
 
 const escapar = (t) =>
   String(t).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
+// Dentro de un marco (iframe) de otro sitio no se ofrece el inicio de sesión
+const enMarco = (() => {
+  try {
+    return window.top !== window.self;
+  } catch {
+    return true;
+  }
+})();
 
 function crearBoton(conTexto) {
   const boton = document.createElement("button");
@@ -201,6 +282,7 @@ function crearBoton(conTexto) {
 // Un botón al principio de cada .ajustes y, con texto de estado, en cada
 // [data-sesion-lugar] (la portada lo usa en escritorio)
 function pintarBotones() {
+  if (enMarco) return;
   const lugares = [
     ...[...document.querySelectorAll(".ajustes")].map((el) => [el, false]),
     ...[...document.querySelectorAll("[data-sesion-lugar]")].map((el) => [el, true]),
@@ -236,7 +318,7 @@ function pintarPanel() {
       <p class="sesion-panel__nota">Entra para ver las partes privadas del sitio.</p>
       <label>Usuario<input name="usuario" autocomplete="username" autocapitalize="none" spellcheck="false" required></label>
       <label>Contraseña<input name="contrasena" type="password" autocomplete="current-password" required></label>
-      <label class="sesion-panel__recordar"><input name="recordar" type="checkbox"> Recordarme en este navegador</label>
+      <label class="sesion-panel__recordar"><input name="recordar" type="checkbox"> Recordarme en este navegador (no en equipos compartidos)</label>
       <p class="sesion-panel__error" role="alert"></p>
       <button type="submit">Entrar</button>
     </form>`;
@@ -280,6 +362,7 @@ function colocarPanel() {
 }
 
 function abrirPanel(boton) {
+  if (enMarco) return;
   if (!panel) {
     panel = document.createElement("div");
     panel.className = "sesion-panel";

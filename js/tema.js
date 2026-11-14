@@ -54,7 +54,7 @@
   let guardada = null;
   for (const nombre of ["sessionStorage", "localStorage"]) {
     try {
-      guardada = guardada || window[nombre].getItem("wr-sesion");
+      guardada = guardada || window[nombre].getItem("wr-sesion-activa");
     } catch {
       /* almacenamiento bloqueado */
     }
