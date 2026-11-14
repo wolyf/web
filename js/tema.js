@@ -139,10 +139,28 @@
     }
   }
 
+  // Ecuaciones en LaTeX con KaTeX (si la página cargó js/vendor/katex/katex.min.js)
+  function renderizarEcuaciones(ambito) {
+    if (!window.katex) return;
+    const base = ambito && ambito.querySelectorAll ? ambito : document;
+    for (const el of base.querySelectorAll("[data-latex]")) {
+      if (el.querySelector(".katex")) continue;
+      try {
+        window.katex.render(el.dataset.latex, el, {
+          throwOnError: false,
+          displayMode: el.hasAttribute("data-display"),
+        });
+      } catch {
+        /* si algo falla, se conserva el texto de respaldo */
+      }
+    }
+  }
+  document.addEventListener("wr:privado", (e) => renderizarEcuaciones(e.target));
+
   // Si cambia el tema del sistema y no hay elección guardada, actualiza las etiquetas
   sistemaOscuro.addEventListener?.("change", rotular);
 
-  const iniciarBotones = () => { agregarBotonDarwin(); rotular(); rotularDarwin(); };
+  const iniciarBotones = () => { agregarBotonDarwin(); rotular(); rotularDarwin(); renderizarEcuaciones(); };
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", iniciarBotones);
   else iniciarBotones();
 })();

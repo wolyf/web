@@ -46,7 +46,7 @@ export function bloquesDOM(raiz = document.body) {
       }
       if (n.nodeType !== 1) continue;
       const tag = n.localName;
-      if (IGNORADOS.has(tag) || IDS_IGNORADOS.has(n.id)) { limite(abierto); continue; }
+      if (IGNORADOS.has(tag) || IDS_IGNORADOS.has(n.id) || n.hasAttribute("data-latex")) { limite(abierto); continue; }
       if (tag === "img" || tag === "wbr") continue;
       if (VACIOS_LIMITE.has(tag)) { limite(abierto); continue; }
       if (EN_LINEA.has(tag)) { visitar(n, abierto); continue; }

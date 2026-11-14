@@ -463,11 +463,16 @@ span.pag[data-p]::before { margin-top: .15em; }
   overflow-x: auto;
 }
 
+.formula [data-latex],
 .formula math {
-  font-size: 1.12rem;
+  font-size: 1.08rem;
   margin: 0 auto;
-  font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", math;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
+
+.formula .katex-display { margin: 0; }
 
 .formula mtext { font-family: var(--font-texto); font-size: .86em; }
 
@@ -722,6 +727,7 @@ a.ref:hover { color: var(--accent); text-decoration-style: solid; }
 /* ---- Celular ---- */
 @media (max-width: 600px) {
   .libro__texto { font-size: 1rem; line-height: 1.68; }
+  .formula [data-latex],
   .formula math { font-size: .95rem; }
   .formula mtext { font-size: .8em; }
   .formula .ecuacion { justify-content: flex-start; }

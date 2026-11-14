@@ -32,7 +32,7 @@ El repo es público: lo privado se publica cifrado con la llave de la sesión de
 
 ## Qué es
 
-Notas de estudio (área `filosofia`, tipo `notas`). Cada nota es un HTML con tipografía de lectura, índice, notas al pie, citas y bibliografía, y un estado `borrador` o `revisado`. Para símbolos se usa Unicode directo (∀, ∃, ¬, ⇒, ∈) y MathML solo puntual; si hiciera falta LaTeX, KaTeX está en `../js/vendor/katex/` (ver `calculadoras/caudal.html`).
+Notas de estudio (área `filosofia`, tipo `notas`). Cada nota es un HTML con tipografía de lectura, índice, notas al pie, citas y bibliografía, y un estado `borrador` o `revisado`. Para símbolos simples en prosa puede usarse Unicode directo (∀, ∃, ¬, ⇒, ∈); todas las ecuaciones y expresiones matemáticas se escriben en LaTeX (`data-latex`, con `data-display` en bloque) y las renderiza KaTeX (copia local en `../js/vendor/katex/`, 0.16.11): enlazar `katex.min.css` y `katex.min.js` (`defer`) y `../js/tema.js` las renderiza automáticamente.
 
 ## Estructura
 

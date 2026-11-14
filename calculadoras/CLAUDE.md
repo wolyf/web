@@ -23,7 +23,7 @@ Proyecto `calculadoras` del sitio Wolfgang Resendiz. Entorno de Claude Code: `WE
 - Cada calculadora es un HTML en `calculadoras/` que carga, con `defer` y en este orden, `js/units.js`, sus scripts propios y su script principal.
 - Todo se calcula en unidades base (SI). La calculadora solo declara sus entradas (`magnitud`, `positivo`) y su función de cálculo en `crearCalculadora`; el motor arma la barra de unidades y convierte.
 - Una magnitud nueva se agrega en `MAGNITUDES` de `units.js` con su unidad base y factores.
-- Las ecuaciones se escriben en LaTeX (`data-latex`) y las renderiza KaTeX (copia local en `../js/vendor/katex/`, 0.16.11), con texto de respaldo.
+- Las ecuaciones se escriben en LaTeX (`data-latex`, con `data-display` en bloque) y las renderiza KaTeX (copia local en `../js/vendor/katex/`, 0.16.11; `../js/tema.js` y `units.js` las renderizan automáticamente), con texto de respaldo.
 - Los scripts son clásicos (IIFE y `window`), no módulos, para que la página funcione también abierta como archivo (`file://`).
 - Al terminar, abre la página en el navegador (Playwright) y comprueba un cálculo conocido, p. ej. $d = 100\ \text{mm}$, $v = 1\ \text{m/s} \Rightarrow Q \approx 7.85\ \text{L/s}$.
 - Cada página HTML sigue el encabezado de `../herramientas/plantilla/index.html`: marca «Wolfgang Resendiz», bloque `.ajustes` (botones de acento y tema), favicon `../img/darwin-cara.svg` y enlace `← Inicio`. Las fuentes las trae `../css/styles.css` (autoalojadas; sin `preconnect`).

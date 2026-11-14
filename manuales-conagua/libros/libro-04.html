@@ -20,6 +20,8 @@
 <link rel="stylesheet" href="../css/diagramas-libro04.css">
 
 <!-- Tema y acento (sin defer, antes de pintar); lectura y Darwin (con defer) -->
+<link rel="stylesheet" href="../../js/vendor/katex/katex.min.css">
+<script src="../../js/vendor/katex/katex.min.js" defer></script>
 <script src="../../js/tema.js"></script>
 <script src="../js/lectura.js" defer></script>
 <script src="../js/graficas-libro04.js" defer></script>
@@ -505,7 +507,7 @@
 <p class="lista"><strong><em>12. Presentación de resultados y sensibilidad</em></strong> Finalmente, elaborar un informe mostrando y describiendo cada consumo unitario y su evolución en el tiempo. Cuando los términos de referencia lo piden, los resultados deben mostrar los coeficientes de elasticidad y por variación cíclica, además de analizar la sensibilidad de los valores ante cambios en las condiciones. Generalmente deben incluirse recomendaciones para lograr que, en el futuro, exista un comportamiento deseable en los consumos</p>
 <p>Una vez determinado cada uno de los consumos por tipo de servicio, se calcula el consumo total, sumando todos los valores correspondientes a consumos domésticos y no domésticos, por clase y por tipo, de acuerdo a la <a class="ref" href="#ecuacion-2-1">Ecuación 2.1</a>.</p>
 <div class="formula" id="ecuacion-2-1">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>C</mi><mi>T</mi></msub><mo>=</mo><msub><mi>C</mi><mtext>dr</mtext></msub><mo>+</mo><msub><mi>C</mi><mtext>dm</mtext></msub><mo>+</mo><msub><mi>C</mi><mtext>dp</mtext></msub><mo>+</mo><msub><mi>C</mi><mi>c</mi></msub><mo>+</mo><msub><mi>C</mi><mi>i</mi></msub><mo>+</mo><msub><mi>C</mi><mi>p</mi></msub><mo>+</mo><msub><mi>C</mi><mi>e</mi></msub></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-2-1">Ecuación 2.1</a></span></div>
+<div class="ecuacion"><span data-latex="{C}_{T} = {C}_{\text{dr}} + {C}_{\text{dm}} + {C}_{\text{dp}} + {C}_{c} + {C}_{i} + {C}_{p} + {C}_{e}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-2-1">Ecuación 2.1</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>C</em><sub>T</sub> = Consumo promedio diario total, en m³</li>
@@ -527,7 +529,7 @@
 <p>A este respecto, en estudios de campo (Enríquez et al. 1993), se ha definido que estas pérdidas se determinan a partir de muestreos de inspección y aforo (fugas en tomas domiciliarias); de medición en sectores controlados, llamados distritos hidrométricos (fugas en tuberías principales y secundarías y pérdidas en tomas clandestinas); y de verificación de un grupo de micromedidores domiciliarios (pérdidas por mala medición).</p>
 <p>El volumen promedio diario de pérdidas físicas, <em>Vp,</em> que se considera para el cálculo de las demandas y dotaciones será el obtenido con la <a class="ref" href="#ecuacion-2-2">Ecuación 2.2</a>.</p>
 <div class="formula" id="ecuacion-2-2">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>V</mi><mi>p</mi></msub><mo>=</mo><msub><mi>V</mi><mtext>fr</mtext></msub><mo>+</mo><msub><mi>V</mi><mtext>ft</mtext></msub></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-2-2">Ecuación 2.2</a></span></div>
+<div class="ecuacion"><span data-latex="{V}_{p} = {V}_{\text{fr}} + {V}_{\text{ft}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-2-2">Ecuación 2.2</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>V</em><sub>p</sub> = Volumen de pérdidas por día, en m³</li>
@@ -595,10 +597,10 @@
 <p>Los gastos máximo diario y máximo horario, son los requeridos para satisfacer las necesidades de la población en un día de máximo consumo, y a la hora de máximo consumo en un año tipo, respectivamente.</p>
 <p>Los gastos máximo diario y máximo horario se obtienen a partir del gasto medio con la <a class="ref" href="#ecuacion-2-3">Ecuación 2.3</a> y <a class="ref" href="#ecuacion-2-4">Ecuación 2.4</a>.</p>
 <div class="formula" id="ecuacion-2-3">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>Q</mi><mtext>Md</mtext></msub><mo>=</mo><msub><mi>CV</mi><mi>d</mi></msub><mo>&#x2062;</mo><msub><mi>Q</mi><mtext>med</mtext></msub></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-2-3">Ecuación 2.3</a></span></div>
+<div class="ecuacion"><span data-latex="{Q}_{\text{Md}} = {\mathrm{CV}}_{d} {Q}_{\text{med}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-2-3">Ecuación 2.3</a></span></div>
 </div>
 <div class="formula" id="ecuacion-2-4">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>Q</mi><mtext>Mh</mtext></msub><mo>=</mo><msub><mi>CV</mi><mi>h</mi></msub><mo>&#x2062;</mo><msub><mi>Q</mi><mtext>Md</mtext></msub></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-2-4">Ecuación 2.4</a></span></div>
+<div class="ecuacion"><span data-latex="{Q}_{\text{Mh}} = {\mathrm{CV}}_{h} {Q}_{\text{Md}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-2-4">Ecuación 2.4</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>Q</em><sub>Md</sub> = Gasto máximo diario, en l/s</li>
@@ -638,7 +640,7 @@
 <h3 id="s2-2-8">2.2.8. Cálculo de pérdida de energía</h3>
 <p>La pérdida de carga en tuberías a presión se calcula a través de la ecuación de Darcy-Weisbach:</p>
 <div class="formula" id="ecuacion-2-5">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>h</mi><mi>f</mi></msub><mo>=</mo><mi>f</mi><mfrac><mrow><mi>L</mi><msup><mi>V</mi><mn>2</mn></msup></mrow><mrow><mi>D</mi><mn>2</mn><mi>g</mi></mrow></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-2-5">Ecuación 2.5</a></span></div>
+<div class="ecuacion"><span data-latex="{h}_{f} = f \frac{L {V}^{2}}{D 2 g}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-2-5">Ecuación 2.5</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>f</em> = coeficiente de pérdidas (adimensional)</li>
@@ -755,7 +757,7 @@
 <p class="nota-tabla">Nota: Las velocidades altas incrementan la magnitud de los fenómenos transitorios. La velocidad máxima en la tabla ha sido establecida considerando que se han resuelto los problemas asociados a fenómenos transitorios. En el libro “Fenómenos transitorios en líneas de conducción” se explican más detalladamente los estudios correspondientes.</p>
 <p>A través de estudios experimentales se determinó el coeficiente <em>f</em>, el cual se asoció al diámetro y la rugosidad del material de la tubería y número de Reynolds el cual se define como:</p>
 <div class="formula" id="ecuacion-2-6">
-<div class="ecuacion"><math display="block"><mrow><mi>Re</mi><mo>=</mo><mfrac><mrow><mi>V</mi><mi>D</mi></mrow><mi>ν</mi></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-2-6">Ecuación 2.6</a></span></div>
+<div class="ecuacion"><span data-latex="\mathrm{Re} = \frac{V D}{\nu}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-2-6">Ecuación 2.6</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>V</em> = Velocidad media del flujo, en m/s</li>
@@ -765,7 +767,7 @@
 </div>
 <p>Coolebrook y While presentaron una ecuación empírica para números de Reynolds mayores a 4 000 (Zona de transición y turbulencia completa, observe la <a class="ref" href="#ilustracion-2-5">Ilustración 2.5</a>) en tubos comerciales.</p>
 <div class="formula" id="ecuacion-2-7">
-<div class="ecuacion"><math display="block"><mrow><mfrac><mn>1</mn><msqrt><mi>f</mi></msqrt></mfrac><mo>=</mo><mo>−</mo><mn>2</mn><mo>log</mo><mrow><mo>(</mo><mfrac><mrow><mi>ε</mi><mo>/</mo><mi>D</mi></mrow><mn>3.71</mn></mfrac><mo>+</mo><mfrac><mn>2.51</mn><mrow><mi>Re</mi><msqrt><mi>f</mi></msqrt></mrow></mfrac><mo>)</mo></mrow></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-2-7">Ecuación 2.7</a></span></div>
+<div class="ecuacion"><span data-latex="\frac{1}{\sqrt{f}} = - 2 log ( \frac{\varepsilon / D}{3.71} + \frac{2.51}{\mathrm{Re} \sqrt{f}} )" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-2-7">Ecuación 2.7</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>ε</em> = Rugosidad absoluta de la pared interior del tubo (mm)</li>
@@ -775,8 +777,8 @@
 <p>Con base en estos resultados, Moody (1944), presentó el diagrama universal para determinar el coeficiente de fricción, <em>f</em>, en tuberías de rugosidad comercial que transporta cualquier líquido (<a class="ref" href="#ilustracion-2-5">Ilustración 2.5</a>).</p>
 <p>Por otra parte, el cálculo del coeficiente de pérdidas se puede realizar de forma directa a través de la ecuación de Swamee – Jain (o Churchil):</p>
 <div class="formula" id="ecuacion-2-8">
-<div class="ecuacion"><math display="block"><mrow><mi>f</mi><mo>=</mo><mfrac><mn>0.25</mn><msup><mrow><mo>[</mo><mo>log</mo><mrow><mo>(</mo><mfrac><mi>ε</mi><mrow><mn>3.71</mn><mi>D</mi></mrow></mfrac><mo>+</mo><mfrac><mn>5.74</mn><msup><mi>Re</mi><mn>0.9</mn></msup></mfrac><mo>)</mo></mrow><mo>]</mo></mrow><mn>2</mn></msup></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-2-8">Ecuación 2.8</a></span></div>
-<p class="donde">Válida para <math><mrow><mn>5&#xA0;000</mn><mo>&lt;</mo><mi>Re</mi><mo>&lt;</mo><msup><mn>10</mn><mn>6</mn></msup></mrow></math> y <math><mrow><msup><mn>10</mn><mrow><mo>−</mo><mn>6</mn></mrow></msup><mo>&lt;</mo><mfrac><mi>ε</mi><mi>D</mi></mfrac><mo>&lt;</mo><msup><mn>10</mn><mrow><mo>−</mo><mn>2</mn></mrow></msup></mrow></math></p>
+<div class="ecuacion"><span data-latex="f = \frac{0.25}{{[ log ( \frac{\varepsilon}{3.71 D} + \frac{5.74}{{\mathrm{Re}}^{0.9}} ) ]}^{2}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-2-8">Ecuación 2.8</a></span></div>
+<p class="donde">Válida para <span data-latex="5 000 &lt; \mathrm{Re} &lt; {10}^{6}"></span> y <span data-latex="{10}^{- 6} &lt; \frac{\varepsilon}{D} &lt; {10}^{- 2}"></span></p>
 </div>
 <div class="pag" id="pdf-34" data-p="23" title="Comienza la página 23 del libro impreso (página 34 del PDF)"></div>
 <p>Con la cual se calculan las pérdidas de energía por fricción en una conducción. La <a class="ref" href="#tabla-2-10">Tabla 2.10</a> presenta algunos valores de rugosidad absoluta para diversos materiales. Los cuales fueron tomados de la referencia indicada y no constituyen ordenanza por parte de la Conagua, por lo que es responsabilidad del diseñador el uso de estos datos. Lo más recomendable, para el caso de tubería nueva, es consultar las especificaciones de cada proveedor, las cuales deberán estar fundamentadas en la normatividad correspondiente.</p>
@@ -1032,7 +1034,7 @@
 <p>La Conagua considera, para el diseño de una nueva red que el alcantarillado deben construirse herméticamente, por lo que no se adicionará al caudal de aguas residuales, el volumen por infiltraciones.</p>
 <p>En función de la población y de la aportación, el gasto medio de aguas residuales en cada tramo de la red, se calcula con:</p>
 <div class="formula" id="ecuacion-3-1">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>Q</mi><mtext>MED</mtext></msub><mo>=</mo><mfrac><mrow><msub><mi>A</mi><mi>p</mi></msub><mi>P</mi></mrow><mn>86&#xA0;400</mn></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-1">Ecuación 3.1</a></span></div>
+<div class="ecuacion"><span data-latex="{Q}_{\text{MED}} = \frac{{A}_{p} P}{86 400}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-1">Ecuación 3.1</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>Q</em><sub>MED</sub> = Gasto medio de aguas residuales en l/s</li>
@@ -1045,7 +1047,7 @@
 <h4 id="s3-2-2-2">3.2.2.2. Gasto mínimo</h4>
 <p>El gasto mínimo, <em>Q</em><sub>min</sub> (<a class="ref" href="#ecuacion-3-2">Ecuación 3.2</a>) es el menor de los valores de escurrimiento que normalmente se presenta en un conducto. Se acepta que este valor es igual a la mitad del gasto medio.</p>
 <div class="formula" id="ecuacion-3-2">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>Q</mi><mtext>MIN</mtext></msub><mo>=</mo><mn>0.5</mn><msub><mi>Q</mi><mtext>MED</mtext></msub></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-2">Ecuación 3.2</a></span></div>
+<div class="ecuacion"><span data-latex="{Q}_{\text{MIN}} = 0.5 {Q}_{\text{MED}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-2">Ecuación 3.2</a></span></div>
 </div>
 <p>En la <a class="ref" href="#tabla-3-1">Tabla 3.1</a> se muestran valores del gasto mínimo que también pueden ser usados en el diseño de atarjeas. Se observa que el límite inferior es de 1.5 l/s, lo que significa que en los tramos<span class="pag" id="pdf-47" data-p="36" title="Comienza la página 36 del libro impreso (página 47 del PDF)"></span> iniciales de las redes de alcantarillado, cuando resulten valores de gasto mínimo menores a 1.5 l/s, se debe usar este valor en el diseño.</p>
 <div class="tabla" id="tabla-3-1" data-pdf="47" tabindex="0">
@@ -1073,7 +1075,7 @@
 <p>El gasto máximo instantáneo es el valor máximo de escurrimiento que se puede presentar en un instante dado. Para evaluar este gasto se considera la cantidad de habitantes servidos y no tiene relación con las condiciones socioeconómicas de la población.</p>
 <p>El gasto máximo instantáneo se obtiene a partir del coeficiente de Harmon (<em>M</em>):</p>
 <div class="formula" id="ecuacion-3-3">
-<div class="ecuacion"><math display="block"><mrow><mi>M</mi><mo>=</mo><mn>1</mn><mo>+</mo><mfrac><mn>14</mn><mrow><mn>4</mn><mo>+</mo><msqrt><mi>P</mi></msqrt></mrow></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-3">Ecuación 3.3</a></span></div>
+<div class="ecuacion"><span data-latex="M = 1 + \frac{14}{4 + \sqrt{P}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-3">Ecuación 3.3</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>P</em> = Población servida acumulada hasta el punto final (aguas abajo) del tramo de tubería considerada en miles de habitantes</li>
@@ -1087,7 +1089,7 @@
 <p>Lo anterior resulta de considerar al alcantarillado como un reflejo de la red de distribución de agua potable, ya que el coeficiente <em>M</em> se equipara con los coeficientes de variación del gasto<span class="pag" id="pdf-48" data-p="37" title="Comienza la página 37 del libro impreso (página 48 del PDF)"></span> (<a class="ref" href="#tabla-2-5">Tabla 2.5</a>), que para la estimación del coeficiente de Harmon se considera <em>CV</em><sub>d</sub> = 1.3 (valor medio entre 1.2 y 1.4) y <em>CV</em><sub>h</sub> = 1.55, lo anterior implica que <em>M = 1.30 (1.55) = 2.0</em>.</p>
 <p>Así, la expresión para el cálculo del gasto máximo instantáneo es:</p>
 <div class="formula" id="ecuacion-3-4">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>Q</mi><mtext>Minst</mtext></msub><mo>=</mo><mi>M</mi><msub><mi>Q</mi><mtext>MED</mtext></msub></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-4">Ecuación 3.4</a></span></div>
+<div class="ecuacion"><span data-latex="{Q}_{\text{Minst}} = M {Q}_{\text{MED}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-4">Ecuación 3.4</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>Q</em><sub>Minst</sub> = Gasto máximo instantáneo, en l/s</li>
@@ -1101,7 +1103,7 @@
 <p>En los casos en que se diseñe la ampliación de un sistema existente de tipo combinado, previendo las aportaciones extraordinarias de origen pluvial, se podrá usar un coeficiente de seguridad de 1.5.</p>
 <p>La expresión para el cálculo del gasto máximo extraordinario resulta:</p>
 <div class="formula" id="ecuacion-3-5">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>Q</mi><mtext>Mext</mtext></msub><mo>=</mo><mtext>CS</mtext><mo>&#x2062;</mo><msub><mi>Q</mi><mtext>Minst</mtext></msub></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-5">Ecuación 3.5</a></span></div>
+<div class="ecuacion"><span data-latex="{Q}_{\text{Mext}} = \text{CS} {Q}_{\text{Minst}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-5">Ecuación 3.5</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>Q</em><sub>Mext</sub> = Gasto máximo extraordinario, en l/s</li>
@@ -1128,7 +1130,7 @@
 <p>En alcantarillado, generalmente se presenta la condición de flujo a superficie libre, para simplificar el diseño del alcantarillado se consideran condiciones de flujo permanente (Sotelo, 2002).</p>
 <p>Para el cálculo hidráulico del alcantarillado se debe utilizar la fórmula de <em>Manning</em> (<a class="ref" href="#ecuacion-3-6">Ecuación 3.6</a>), ya que es la que mejor simula el comportamiento del flujo a superficie libre.</p>
 <div class="formula" id="ecuacion-3-6">
-<div class="ecuacion"><math display="block"><mrow><mi>V</mi><mo>=</mo><mfrac><mrow><msup><msub><mi>R</mi><mi>h</mi></msub><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msup><msup><mi>S</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mrow><mi>n</mi></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-6">Ecuación 3.6</a></span></div>
+<div class="ecuacion"><span data-latex="V = \frac{{{R}_{h}}^{2 / 3} {S}^{1 / 2}}{n}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-6">Ecuación 3.6</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>V</em> = Velocidad, en m/s</li>
@@ -1140,7 +1142,7 @@
 <div class="pag" id="pdf-50" data-p="39" title="Comienza la página 39 del libro impreso (página 50 del PDF)"></div>
 <p>El radio hidráulico se calcula con la <a class="ref" href="#ecuacion-3-7">Ecuación 3.7</a>:</p>
 <div class="formula" id="ecuacion-3-7">
-<div class="ecuacion"><math display="block"><mrow><msub><mi>R</mi><mi>h</mi></msub><mo>=</mo><mfrac><mi>A</mi><msub><mi>P</mi><mi>m</mi></msub></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-7">Ecuación 3.7</a></span></div>
+<div class="ecuacion"><span data-latex="{R}_{h} = \frac{A}{{P}_{m}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-7">Ecuación 3.7</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>A</em> = Área transversal del flujo, en m²</li>
@@ -1153,16 +1155,16 @@
 <svg class="svg-pdf" viewBox="90.3 366.6 218 221.7" style="max-width:316px" role="img" aria-label="Esquema de la sección transversal circular parcialmente llena: ancho de superficie libre T, diámetro interior D, tirante y, radio r y ángulo central θ."><path class="rg" d="M257.7 485.7C257.7 442.6 222.8 407.7 179.7 407.7C136.6 407.7 101.7 442.6 101.7 485.7C101.7 528.8 136.6 563.7 179.7 563.7C222.8 563.7 257.7 528.8 257.7 485.7M179.4 401.5C225.7 401.5 263.3 439.1 263.3 485.4C263.3 531.8 225.7 569.4 179.4 569.4C133.1 569.4 95.5 531.8 95.5 485.4C95.5 439.1 133.1 401.5 179.4 401.5"/><path class="tk" d="M257.7 485.7C257.7 528.8 222.8 563.7 179.7 563.7C136.6 563.7 101.7 528.8 101.7 485.7C101.7 442.6 136.6 407.7 179.7 407.7C222.8 407.7 257.7 442.6 257.7 485.7M263.3 485.4C263.3 531.8 225.7 569.4 179.4 569.4C133.1 569.4 95.5 531.8 95.5 485.4C95.5 439.1 133.1 401.5 179.4 401.5C225.7 401.5 263.3 439.1 263.3 485.4" fill="none" stroke-width="1.1"/><path class="agua tk" d="M240.7 437.6C251.1 450.8 257.4 467.5 257.4 485.7C257.4 528.8 222.5 563.7 179.4 563.7C136.4 563.7 101.5 528.8 101.5 485.7C101.5 467.5 107.7 450.8 118.1 437.6L240.7 437.6"/><path class="tk" d="M179.4 563.7L299.8 563.7M118.7 391.7L240.7 391.7M276.5 563.7L276.5 437.6M291.5 563.7L291.5 408.4" fill="none" stroke-width="0.2"/><path class="rw tk" d="M216.3 433.9L224.5 433.9L220.4 437.3L216.3 433.9" stroke-width="0.2"/><path class="rw tk" d="M216.5 438.2L224.4 438.2" stroke-width="0.2"/><path class="rw tk" d="M217.6 439L223.1 439" stroke-width="0.2"/><path class="rw tk" d="M219 440.1L221.7 440.1" stroke-width="0.2"/><path class="rw tk" d="M220.1 441.2L220.5 441.2" stroke-width="0.2"/><path class="tk" d="M179.4 564.2L179.4 484.6L118.1 437.6M169.6 477C167.9 479.1 167 481.7 167 484.6C167 491.4 172.6 497 179.4 497" fill="none" stroke-width="0.6"/><path class="tk" d="M240.7 437.6L240.7 383.9M118.7 437.6L118.7 383.9M179.4 437.3L285 437.3M179.4 407.7L299.8 407.7" fill="none" stroke-width="0.2"/><g class="txt"><text x="280.8" y="495.1" font-size="10.2" font-style="italic">y</text><text x="183.8" y="524.3" font-size="10.2" font-style="italic">r</text><text x="294.7" y="487" font-size="10.2" font-style="italic">D</text><text x="177.6" y="386.8" font-size="10.2" font-style="italic">T</text><text x="160.7" y="495.1" font-size="10.2">θ</text></g></svg>
 </figure>
 <div class="formula" id="ecuacion-3-8">
-<div class="ecuacion"><math display="block"><mrow><mi>θ</mi><mo>=</mo><mn>2</mn><mo>arccos</mo><mrow><mo>(</mo><mn>1</mn><mo>−</mo><mfrac><mrow><mn>2</mn><mi>y</mi></mrow><mi>D</mi></mfrac><mo>)</mo></mrow></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-8">Ecuación 3.8</a></span></div>
+<div class="ecuacion"><span data-latex="\theta = 2 arccos ( 1 - \frac{2 y}{D} )" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-8">Ecuación 3.8</a></span></div>
 </div>
 <div class="formula" id="ecuacion-3-9">
-<div class="ecuacion"><math display="block"><mrow><mi>A</mi><mo>=</mo><mfrac><msup><mi>D</mi><mn>2</mn></msup><mn>4</mn></mfrac><mrow><mo>(</mo><mfrac><mi>θ</mi><mn>2</mn></mfrac><mo>−</mo><mfrac><mrow><mo>sen</mo><mi>θ</mi></mrow><mn>2</mn></mfrac><mo>)</mo></mrow></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-9">Ecuación 3.9</a></span></div>
+<div class="ecuacion"><span data-latex="A = \frac{{D}^{2}}{4} ( \frac{\theta}{2} - \frac{sen \theta}{2} )" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-9">Ecuación 3.9</a></span></div>
 </div>
 <div class="formula" id="ecuacion-3-10">
-<div class="ecuacion"><math display="block"><mrow><mi>P</mi><mo>=</mo><mfrac><mrow><mi>D</mi><mi>θ</mi></mrow><mn>2</mn></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-10">Ecuación 3.10</a></span></div>
+<div class="ecuacion"><span data-latex="P = \frac{D \theta}{2}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-10">Ecuación 3.10</a></span></div>
 </div>
 <div class="formula" id="ecuacion-3-11">
-<div class="ecuacion"><math display="block"><mrow><mi>T</mi><mo>=</mo><mi>D</mi><mo>sen</mo><mrow><mo>(</mo><mfrac><mi>θ</mi><mn>2</mn></mfrac><mo>)</mo></mrow></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-11">Ecuación 3.11</a></span></div>
+<div class="ecuacion"><span data-latex="T = D sen ( \frac{\theta}{2} )" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-11">Ecuación 3.11</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>T</em> = Ancho de superficie libre (m)</li>
@@ -1206,18 +1208,18 @@
 <h5 id="ejemplo">Ejemplo</h5>
 <p>Calcular el gasto que puede conducir una tubería de concreto a superficie libre con un tirante igual al 80 por ciento del diámetro. La pendiente de la tubería es 0.004 y el diámetro de ella es de 1.2 metros.</p>
 <h5 id="solucion">Solución</h5>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mi>Q</mi><mo>=</mo><mi>A</mi><mi>V</mi></mrow></math></div></div>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mi>Q</mi><mo>=</mo><mfrac><mn>1</mn><mi>n</mi></mfrac><mi>A</mi><msup><msub><mi>R</mi><mi>h</mi></msub><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msup><msup><mi>S</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mrow></math></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="Q = A V" data-display></span></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="Q = \frac{1}{n} A {{R}_{h}}^{2 / 3} {S}^{1 / 2}" data-display></span></div></div>
 <p>Separando las variables conocidas de las incognitas:</p>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mi>A</mi><msup><msub><mi>R</mi><mi>h</mi></msub><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msup><mo>=</mo><mfrac><mrow><mi>n</mi><mi>Q</mi></mrow><msup><mi>S</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup></mfrac></mrow></math></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="A {{R}_{h}}^{2 / 3} = \frac{n Q}{{S}^{1 / 2}}" data-display></span></div></div>
 <p>Para hacer uso de la <a class="ref" href="#tabla-3-4">Tabla 3.4</a> (adimensional), se dividen ambos lados de la ecuación por <em>D</em><sup>8/3</sup>.</p>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mfrac><mrow><mi>A</mi><msup><msub><mi>R</mi><mi>h</mi></msub><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msup></mrow><msup><mi>D</mi><mrow><mn>8</mn><mo>/</mo><mn>3</mn></mrow></msup></mfrac><mo>=</mo><mfrac><mrow><mi>n</mi><mi>Q</mi></mrow><mrow><msup><mi>S</mi><mrow><mn>1</mn><mo>/</mo><mn>2</mn></mrow></msup><msup><mi>D</mi><mrow><mn>8</mn><mo>/</mo><mn>3</mn></mrow></msup></mrow></mfrac></mrow></math></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="\frac{A {{R}_{h}}^{2 / 3}}{{D}^{8 / 3}} = \frac{n Q}{{S}^{1 / 2} {D}^{8 / 3}}" data-display></span></div></div>
 <p>Para la tubería de concreto en uso, se considera el coeficiente de rugosidad de <em>Manning</em> es<em>n = 0.013</em>. De la <a class="ref" href="#tabla-3-4">Tabla 3.4</a>, para una relación <em>y/D=0.8</em>, puede obtenerse el valor de la relación:</p>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mfrac><mrow><mi>A</mi><msup><msub><mi>R</mi><mi>h</mi></msub><mrow><mn>2</mn><mo>/</mo><mn>3</mn></mrow></msup></mrow><msup><mi>D</mi><mrow><mn>8</mn><mo>/</mo><mn>3</mn></mrow></msup></mfrac><mo>=</mo><mn>0.3045</mn></mrow></math></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="\frac{A {{R}_{h}}^{2 / 3}}{{D}^{8 / 3}} = 0.3045" data-display></span></div></div>
 <p>por lo que:</p>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mfrac><mrow><mi>n</mi><mi>Q</mi></mrow><mrow><msup><mi>S</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><msup><mi>D</mi><mfrac><mn>8</mn><mn>3</mn></mfrac></msup></mrow></mfrac><mo>=</mo><mn>0.3045</mn></mrow></math></div></div>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mi>Q</mi><mo>=</mo><mn>0.3045</mn><mfrac><mrow><msup><mi>S</mi><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><msup><mi>D</mi><mfrac><mn>8</mn><mn>3</mn></mfrac></msup></mrow><mi>n</mi></mfrac></mrow></math></div></div>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mi>Q</mi><mo>=</mo><mn>0.3045</mn><mfrac><mrow><msup><mrow><mo>(</mo><mn>0.004</mn><mo>)</mo></mrow><mfrac><mn>1</mn><mn>2</mn></mfrac></msup><msup><mrow><mo>(</mo><mn>1.2</mn><mo>)</mo></mrow><mfrac><mn>8</mn><mn>3</mn></mfrac></msup></mrow><mn>0.013</mn></mfrac><mo>=</mo><mn>2.41</mn><mtext>&#xA0;</mtext><mfrac><msup><mtext>m</mtext><mn>3</mn></msup><mtext>s</mtext></mfrac></mrow></math></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="\frac{n Q}{{S}^{\frac{1}{2}} {D}^{\frac{8}{3}}} = 0.3045" data-display></span></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="Q = 0.3045 \frac{{S}^{\frac{1}{2}} {D}^{\frac{8}{3}}}{n}" data-display></span></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="Q = 0.3045 \frac{{( 0.004 )}^{\frac{1}{2}} {( 1.2 )}^{\frac{8}{3}}}{0.013} = 2.41 \text{ } \frac{{\text{m}}^{3}}{\text{s}}" data-display></span></div></div>
 <div class="pag" id="pdf-52" data-p="41" title="Comienza la página 41 del libro impreso (página 52 del PDF)"></div>
 <figure id="ilustracion-3-2" class="figura" data-pdf="52">
 <figcaption><span class="num">Ilustración 3.2</span> Características del flujo con una sección circular parcialmente llena</figcaption>
@@ -1315,7 +1317,7 @@
 <p class="posible-error"><strong>Posible error en el original.</strong> En este apartado: 1) se afirma que «el coeficiente de Harmon para poblaciones acumuladas mayores de 63 500 es 2.0», mientras que en el apartado <a class="ref" href="#s3-2-2-3">3.2.2.3</a> (p. 36) ese límite se fijó en 100 000 habitantes; y 2) están intercambiadas las referencias a las ecuaciones 3.3 y 3.5: el gasto máximo extraordinario corresponde a la <a class="ref" href="#ecuacion-3-5">Ecuación 3.5</a> y el coeficiente de variación (<em>M</em>) a la <a class="ref" href="#ecuacion-3-3">Ecuación 3.3</a>.</p>
 <div class="pag" id="pdf-55" data-p="44" title="Comienza la página 44 del libro impreso (página 55 del PDF)"></div>
 <div class="formula" id="ecuacion-3-12">
-<div class="ecuacion"><math display="block"><mrow><msub><mtext>Población</mtext><mtext>equiv</mtext></msub><mo>=</mo><mfrac><msub><mi>Q</mi><mtext>ind</mtext></msub><msub><mtext>Cons</mtext><mtext>prom</mtext></msub></mfrac></mrow></math><span class="num-ec"><a class="ref" href="#ecuacion-3-12">Ecuación 3.12</a></span></div>
+<div class="ecuacion"><span data-latex="{\text{Población}}_{\text{equiv}} = \frac{{Q}_{\text{ind}}}{{\text{Cons}}_{\text{prom}}}" data-display></span><span class="num-ec"><a class="ref" href="#ecuacion-3-12">Ecuación 3.12</a></span></div>
 <p class="donde">donde:</p>
 <ul class="donde-lista">
 <li><em>Población</em><sub>equiv</sub> = Población equivalente del caudal de aguas residuales</li>
@@ -1325,7 +1327,7 @@
 <p class="posible-error"><strong>Posible error en el original.</strong> La lista «donde:» indica <em>Q</em><sub>ind</sub> en l/s y <em>Cons</em><sub>prom</sub> en l/hab (diario), sin el factor de conversión de 86 400 s/d; en la sustitución numérica inmediatamente inferior el propio libro expresa <em>Q</em><sub>ind</sub> en l/d (3 831 000 l/d = 44.34 l/s × 86 400 s/d).</p>
 </div>
 <p>Por lo tanto, la población equivalente, considerando un consumo de 100 l/hab al día (<a class="ref" href="#tabla-3-6">Tabla 3.6</a>) será:</p>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><msub><mtext>Población</mtext><mtext>equiv</mtext></msub><mo>=</mo><mfrac><mrow><mn>3&#xA0;831&#xA0;000</mn><mtext>&#xA0;</mtext><mfrac><mtext>l</mtext><mtext>d</mtext></mfrac></mrow><mrow><mn>100</mn><mtext>&#xA0;</mtext><mfrac><mtext>l</mtext><mrow><mtext>hab</mtext><mo>/</mo><mtext>d</mtext></mrow></mfrac></mrow></mfrac><mo>=</mo><mn>38&#xA0;310</mn><mtext>&#xA0;hab</mtext></mrow></math></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="{\text{Población}}_{\text{equiv}} = \frac{3 831 000 \text{ } \frac{\text{l}}{\text{d}}}{100 \text{ } \frac{\text{l}}{\text{hab} / \text{d}}} = 38 310 \text{ hab}" data-display></span></div></div>
 <p>Para el cálculo de gasto máximo extraordinario, el coeficiente de seguridad se considera de 1.2, ya que se tiene un sistema independiente de alcantarillado pluvial; el sistema de alcantarillado no es del tipo hermético.</p>
 <div class="tabla" id="tabla-3-5" data-pdf="55" tabindex="0">
 <table class="sin-campos">
@@ -1900,9 +1902,9 @@
 </div>
 <div class="pag" id="pdf-80" data-p="69" title="Comienza la página 69 del libro impreso (página 80 del PDF)"></div>
 <h5 id="conv-temperatura">Temperatura</h5>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mtext>°C</mtext><mo>=</mo><mfrac><mn>5</mn><mn>9</mn></mfrac><mrow><mo>(</mo><mtext>°F</mtext><mo>−</mo><mtext>…</mtext><mo>)</mo></mrow></mrow></math></div></div>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mtext>°F</mtext><mo>=</mo><mfrac><mn>9</mn><mn>5</mn></mfrac><mtext>°C</mtext><mo>+</mo><mn>32</mn></mrow></math></div></div>
-<div class="formula"><div class="ecuacion"><math display="block"><mrow><mtext>K</mtext><mo>=</mo><mtext>°C</mtext><mo>+</mo><mn>273.15</mn></mrow></math></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="\text{°C} = \frac{5}{9} ( \text{°F} - \text{…} )" data-display></span></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="\text{°F} = \frac{9}{5} \text{°C} + 32" data-display></span></div></div>
+<div class="formula"><div class="ecuacion"><span data-latex="\text{K} = \text{°C} + 273.15" data-display></span></div></div>
 <p class="posible-error"><strong>Posible error en el original.</strong> En la página 69 del PDF (página 80 del archivo), la caja de la primera fórmula de temperatura quedó recortada a la derecha tras «(°F −», omitiendo «32)».</p>
 <div class="tabla" tabindex="0">
 <table class="sin-campos">

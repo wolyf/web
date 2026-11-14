@@ -4,7 +4,7 @@ Proyecto `{{ID}}` del sitio de Wolfgang Resendiz. Entorno de Claude Code: `WEB_P
 
 ## Reglas heredadas del sitio
 
-Español; sin guion largo (U+2014) en textos, interfaz, comentarios ni mensajes; repositorio **público** (nada privado en claro, nunca contraseñas en el chat); solo HTML, CSS y JavaScript sin build; `npm test` en verde. Detalle en el `CLAUDE.md` de la raíz, «Reglas que heredan todos los proyectos».
+Español; sin guion largo (U+2014) en textos, interfaz, comentarios ni mensajes; repositorio **público** (nada privado en claro, nunca contraseñas en el chat); solo HTML, CSS y JavaScript sin build; ecuaciones en LaTeX con KaTeX (`data-latex`, copia local en `../js/vendor/katex/`, renderizado automático desde `../js/tema.js`); `npm test` en verde. Detalle en el `CLAUDE.md` de la raíz, «Reglas que heredan todos los proyectos».
 
 ## Zona
 

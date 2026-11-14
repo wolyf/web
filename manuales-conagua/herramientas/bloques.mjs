@@ -188,7 +188,7 @@ export function extraer(html) {
       continue;
     }
     const id = (attrs.match(/\sid\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i) || [])[1];
-    const ign = IGNORADOS.has(tag) || (id && IDS_IGNORADOS.has(id));
+    const ign = IGNORADOS.has(tag) || (id && IDS_IGNORADOS.has(id)) || /\sdata-latex(?:\s|=|$)/i.test(attrs);
     if (ign) ignorado++;
     if (!ignorado && !EN_LINEA.has(tag)) {
       // Abrir un bloque o un contenedor también es un límite.

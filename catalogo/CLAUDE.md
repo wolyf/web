@@ -164,4 +164,4 @@ Pendiente (zona general): que `sesion.mjs` observe los `.ajustes` que se agregan
 
 - Español; no usar el guion largo (U+2014) en textos, interfaz, comentarios ni mensajes. Notación formal cuando aporte.
 - El repositorio es **público**: nada privado en claro. Nunca pidas contraseñas ni llaves en el chat.
-- Solo HTML, CSS y JavaScript sin build; `npm test` en verde antes de cada commit.
+- Solo HTML, CSS y JavaScript sin build; ecuaciones en LaTeX con KaTeX (`data-latex`, copia local en `../js/vendor/katex/`, renderizado automático desde `../js/tema.js`); `npm test` en verde antes de cada commit.

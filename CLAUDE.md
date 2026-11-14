@@ -47,6 +47,7 @@ Cada `CLAUDE.md` de proyecto las repite, pero valen siempre:
 - Responder en español y no usar el guion largo (U+2014) en textos, interfaz, comentarios ni mensajes (el cuerpo transcrito de los libros de `manuales-conagua` es la única excepción, por fidelidad al original). Notación formal cuando aporte.
 - El repositorio es **público**: nada privado en claro, nunca contraseñas ni llaves en el chat. Lo privado se publica cifrado con la sesión del sitio (ver «Sesión y partes privadas»).
 - Solo HTML, CSS y JavaScript sin build ni gestor de paquetes; librerías externas solo si se copian al repo (`js/vendor/`) o con versión fija.
+- **Ecuaciones**: siempre en LaTeX con KaTeX (copia local en `js/vendor/katex/`, 0.16.11). Enlazar `katex.min.css` y `katex.min.js` (`defer`) y usar `data-latex="…"` (con `data-display` para bloque, o sin él en línea) y texto de respaldo; `js/tema.js` las renderiza automáticamente al cargar el DOM y al descifrar partes privadas.
 - Un cambio, una zona; `npm test` en verde antes de cada commit.
 
 ### Agregar un proyecto (entorno general)
@@ -127,7 +128,7 @@ Con la sesión iniciada se puede subrayar texto en **cualquier página de cualqu
 | `index.html` | Portada: barra lateral (en celular, barra superior), presentación con bitácora y retrato de Darwin, y tarjetas de proyectos (generadas). |
 | `css/styles.css` | Reúne con `@import` las partes: `fuentes.css`, `base.css` (variables, tipografía, encabezado), `ajustes.css` (botones de `.ajustes` y panel de sesión; `ajustes-aislado.css` lo da a páginas sin `styles.css`), `componentes.css`, `portada.css` y `calculadoras.css`. Los proyectos solo enlazan `styles.css`. |
 | `css/fuentes/`, `js/vendor/katex/` | Fuentes y KaTeX copiados al repo (ver «Endurecimiento del sitio»). |
-| `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`), botón para quitar a Darwin. También carga la sesión y los subrayados. |
+| `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`), botón para quitar a Darwin. También carga la sesión, los subrayados y renderiza `[data-latex]` si la página cargó KaTeX. |
 | `js/sesion.mjs`, `js/llaves.mjs` | Sesión del sitio: botón de inicio de sesión y partes privadas (ver «Sesión y partes privadas»). |
 | `js/subrayados.mjs`, `js/subrayados-nucleo.mjs`, `js/subrayados-sync.mjs`, `js/subrayados-coord.mjs` | Subrayados sincronizados en todas las páginas (ver «Subrayados»): interfaz y pintado, lógica pura (mezcla, anclaje, formato), sincronización con GitHub y coordinación entre pestañas. |
 | `datos/acceso.json` | Público: la llave del sitio envuelta con la contraseña de cada usuario y, cifrado, el token de sincronización de subrayados (campo `token`). |
