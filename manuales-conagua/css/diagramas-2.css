@@ -14,7 +14,7 @@
    .caja--lista                 caja con título y lista numerada (3.10)
    .caja--tabla                 caja de puestos con columnas E y R (3.11)
    .caja--bloque                bloque con índice sangrado (3.15)
-   li.lateral                   hijos en columna con espina a la izquierda (3.14)
+   li.espina                   hijos en columna con espina a la izquierda (3.14)
    .caja--baja                  caja más abajo que sus hermanas (3.15) */
 
 .diagrama {
@@ -36,7 +36,8 @@
 .diagrama .caja--elipse { border-radius: 50%; }
 
 /* Caja dividida: cada parte ocupa --parte de la altura (la última, el resto) */
-.diagrama .caja--partida {
+.diagrama .caja--partida,
+.diagrama .plano > .caja--partida {
   flex-direction: column;
   align-items: stretch;
   padding: 0;
@@ -59,8 +60,9 @@
 
 .diagrama .caja--izq .caja__parte {
   justify-content: flex-start;
-  padding-left: .9em;
+  padding-left: .7em;
   text-align: left;
+  white-space: nowrap;
 }
 
 /* ---- Caja blanca con borde negro (Ilustración 3.18) ---- */
@@ -85,6 +87,7 @@
 .diagrama .plano--fijo .rotulo {
   font-size: var(--letra);
   line-height: var(--interlinea, 1.12);
+  white-space: nowrap;   /* los cortes de renglón son los del original */
 }
 
 /* Ancho mínimo para que el texto no se encoja: en celular se desplaza */
@@ -128,12 +131,18 @@
   padding: .6em .7em .9em 1.9em;
 }
 
-.diagrama .caja--lista li {
+.diagrama .arbol .caja--lista li {
+  position: static;
+  display: list-item;
   margin: 0 0 .75em;
-  padding-left: .15em;
+  padding: 0 0 0 .15em;
 }
 
-.diagrama .caja--lista li:last-child { margin-bottom: 0; }
+/* Sin los conectores que el árbol dibuja en sus propios li */
+.diagrama .arbol .caja--lista li::before,
+.diagrama .arbol .caja--lista li::after { content: none; }
+
+.diagrama .arbol .caja--lista li:last-child { margin-bottom: 0; }
 
 /* ---- Caja de puestos con columnas E y R (Ilustración 3.11) ---- */
 .diagrama .caja--tabla {
@@ -178,7 +187,7 @@
 }
 
 /* Encabezado E R sobre la caja, alineado con sus columnas */
-.diagrama .tabla__er {
+.diagrama .caja--tabla > .tabla__er {
   position: absolute;
   bottom: 100%;
   right: 0;
@@ -189,13 +198,13 @@
   border: 0;
 }
 
-.diagrama .tabla__er > span { padding: 0; border: 0; background: none; }
+.diagrama .caja--tabla > .tabla__er > span { padding: 0; border: 0; background: none; }
 
 .diagrama--puestos { padding-top: 1.6rem; }
 .diagrama--puestos .arbol { --sep: 1.35rem; }
 
 /* Leyenda del organigrama de puestos, bajo la Dirección "A" */
-.diagrama .leyenda {
+.diagrama .organigrama__leyenda {
   align-self: flex-start;
   margin: 4.5rem 0 0 2.5rem;
   line-height: 1.3;
@@ -225,16 +234,16 @@
   background: color-mix(in srgb, var(--tono) calc(var(--mezcla) * 1.2), var(--surface));
 }
 
-.diagrama .indice {
+.diagrama .bloque__indice {
   margin: 0;
   padding: .5em .6em .7em;
   line-height: 1.32;
 }
 
-.diagrama .indice span { display: block; }
-.diagrama .indice .n2 { padding-left: .6em; }
-.diagrama .indice .n3 { padding-left: 1.6em; }
-.diagrama .indice .aparte { margin-top: .95em; }
+.diagrama .bloque__indice span { display: block; }
+.diagrama .bloque__indice .n2 { padding-left: .6em; }
+.diagrama .bloque__indice .n3 { padding-left: 1.6em; }
+.diagrama .bloque__indice .aparte { margin-top: .95em; }
 
 /* Caja que baja respecto de sus hermanas, con la línea que la alcanza */
 .diagrama .caja--baja {
@@ -256,8 +265,8 @@
    línea baja de su centro, gira a la izquierda hasta la espina y de ahí sale
    un tramo a cada hijo. El relleno derecho iguala al izquierdo para que el
    centro del li coincida con el de la caja y la barra superior caiga en él. */
-.diagrama .arbol li.lateral {
-  --lado: 1.5rem;     /* de la espina a la orilla de las cajas, más aire */
+.diagrama .arbol li.espina {
+  --lado: 1.3rem;     /* de la espina a la orilla de las cajas, más aire */
   --codo: .9rem;      /* bajada desde la caja padre hasta el codo */
   --espacio: .65rem;  /* espacio sobre cada hijo */
   align-items: flex-end;
@@ -265,12 +274,12 @@
   padding-right: calc(var(--hueco) / 2 + var(--lado));
 }
 
-.diagrama .arbol li.lateral > .caja,
-.diagrama .arbol li.lateral > ul .caja {
+.diagrama .arbol li.espina > .caja,
+.diagrama .arbol li.espina > ul .caja {
   width: var(--ancho-caja, 5.6rem);
 }
 
-.diagrama .arbol li.lateral > ul {
+.diagrama .arbol li.espina > ul {
   flex-direction: column;
   align-self: stretch;
   align-items: flex-end;
@@ -279,7 +288,7 @@
 }
 
 /* Bajada desde el centro de la caja padre y giro hasta la espina */
-.diagrama .arbol li.lateral > ul::before {
+.diagrama .arbol li.espina > ul::before {
   left: calc(var(--lado) * .45);
   right: calc(var(--ancho-caja, 5.6rem) / 2);
   height: calc(var(--codo) * .55);
@@ -288,12 +297,12 @@
   border-bottom: var(--grosor) solid var(--linea);
 }
 
-.diagrama .arbol li.lateral > ul > li {
+.diagrama .arbol li.espina > ul > li {
   padding: var(--espacio) 0 0;
 }
 
 /* Tramo de la espina (::after) y ramal a cada hijo (::before) */
-.diagrama .arbol li.lateral > ul > li::before {
+.diagrama .arbol li.espina > ul > li::before {
   content: "";
   right: auto;
   left: calc(var(--lado) * -.55);
@@ -303,23 +312,23 @@
   border-top: var(--grosor) solid var(--linea);
 }
 
-.diagrama .arbol li.lateral > ul > li::after {
+.diagrama .arbol li.espina > ul > li::after {
   left: calc(var(--lado) * -.55);
   width: 0;
   height: 100%;
   border-top: 0;
 }
 
-.diagrama .arbol li.lateral > ul > li:first-child::after {
+.diagrama .arbol li.espina > ul > li:first-child::after {
   top: calc(var(--codo) * -.45);
   height: calc(100% + var(--codo) * .45);
 }
 
-.diagrama .arbol li.lateral > ul > li:last-child::after {
+.diagrama .arbol li.espina > ul > li:last-child::after {
   height: calc(50% + var(--espacio) / 2);
 }
 
-.diagrama .arbol li.lateral > ul > li:only-child::after {
+.diagrama .arbol li.espina > ul > li:only-child::after {
   height: calc(50% + var(--espacio) / 2 + var(--codo) * .45);
 }
 
@@ -328,6 +337,6 @@
   .diagrama .caja--lista { width: var(--ancho-caja-movil, 11rem); }
   .diagrama .caja--tabla { width: var(--ancho-caja-movil, 13.5rem); }
   .diagrama .caja--bloque { width: var(--ancho-caja-movil, 10rem); }
-  .diagrama .leyenda { margin: 3rem 0 0 1rem; }
-  .diagrama .arbol li.lateral { --lado: 1.2rem; }
+  .diagrama .organigrama__leyenda { margin: 3rem 0 0 1rem; }
+  .diagrama .arbol li.espina { --lado: 1.2rem; }
 }
