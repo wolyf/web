@@ -1,0 +1,436 @@
+/* Diagramas del Libro 1 recreados en HTML y CSS (organigramas, diagramas de
+   flujo y esquemas de clasificación). Solo usan las variables del sitio, así
+   que siguen el tema claro/oscuro y el acento. Los tonos de cada nivel salen
+   de mezclar un matiz fijo con var(--surface): quedan suaves en ambos temas.
+
+   Tipos:
+   .diagrama--arbol     árbol de arriba abajo con listas anidadas (ul > li)
+   .diagrama--flujo     pasos en columna con flechas, con ramas opcionales
+   .diagrama--plano     cajas en posiciones fijas sobre un SVG de conectores
+                        (organigramas circular y horizontal) */
+
+.diagrama {
+  /* Matices del original por nivel jerárquico */
+  --matiz-rosa: #e8779c;
+  --matiz-naranja: #f2954f;
+  --matiz-amarillo: #eecb22;
+  --matiz-azul: #4f88d6;
+  --matiz-gris: var(--muted);
+  --matiz-linea: var(--text);
+  --linea: color-mix(in srgb, var(--matiz-linea) 85%, var(--surface));
+  --grosor: 1.5px;
+  --mezcla: 42%;
+
+  margin: .4rem 0 0;
+  padding: .75rem .25rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  font-family: var(--font-texto);
+  font-size: .82rem;
+  line-height: 1.3;
+  color: var(--text-strong);
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- Cajas ---- */
+.diagrama .caja {
+  --tono: var(--matiz-gris);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 2.9rem;
+  padding: .45rem .7rem;
+  text-align: center;
+  color: var(--text-strong);
+  background: linear-gradient(to top right,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--tono) calc(var(--mezcla) * .45), var(--surface)) 45%,
+    color-mix(in srgb, var(--tono) var(--mezcla), var(--surface)) 100%);
+  border: 1px solid color-mix(in srgb, var(--tono) 70%, var(--surface));
+  border-radius: 6px;
+}
+
+.diagrama .caja--rosa { --tono: var(--matiz-rosa); }
+.diagrama .caja--naranja { --tono: var(--matiz-naranja); }
+.diagrama .caja--amarillo { --tono: var(--matiz-amarillo); }
+
+/* Diagramas de flujo: gris (oscuro a la derecha) y azul (a la izquierda) */
+.diagrama .caja--gris,
+.diagrama .caja--azul {
+  border-radius: 0;
+  border-color: color-mix(in srgb, var(--muted) 45%, var(--surface));
+}
+
+.diagrama .caja--gris {
+  --tono: var(--matiz-gris);
+  background: linear-gradient(to right,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--tono) 12%, var(--surface)) 45%,
+    color-mix(in srgb, var(--tono) 52%, var(--surface)) 100%);
+}
+
+.diagrama .caja--azul {
+  --tono: var(--matiz-azul);
+  background: linear-gradient(to right,
+    color-mix(in srgb, var(--tono) 48%, var(--surface)) 0%,
+    color-mix(in srgb, var(--tono) 18%, var(--surface)) 55%,
+    var(--surface) 100%);
+}
+
+/* Clasificación de usos (Ilustración 2.1): cajas azules en relieve */
+.diagrama .caja--celeste {
+  --tono: var(--matiz-azul);
+  border-radius: 0;
+  border-color: color-mix(in srgb, var(--tono) 55%, var(--surface));
+  background: linear-gradient(to bottom,
+    color-mix(in srgb, var(--tono) 55%, var(--surface)) 0%,
+    color-mix(in srgb, var(--tono) 14%, var(--surface)) 50%,
+    color-mix(in srgb, var(--tono) 40%, var(--surface)) 100%);
+  box-shadow: 1px 2px 0 color-mix(in srgb, var(--text) 18%, transparent);
+}
+
+/* Cajas más grandes (Ilustración 3.19) */
+.diagrama .caja--alta { min-height: 4.2rem; }
+.diagrama .caja--ancha { min-width: 13rem; min-height: 4.2rem; }
+
+/* Cajas sin texto (organigramas de ejemplo) */
+.diagrama .caja--vacia {
+  min-width: 5rem;
+  min-height: 2.6rem;
+}
+
+/* ---- Árbol de arriba abajo ----
+   Conectores con bordes de pseudo-elementos: cada li dibuja su medio tramo de
+   la barra horizontal y la bajada a su caja; cada ul, la bajada desde la caja
+   de su padre hasta la barra. */
+.diagrama--arbol {
+  --sep: 1.1rem;     /* mitad del espacio vertical entre niveles */
+  --hueco: .55rem;   /* espacio horizontal entre hermanos */
+}
+
+.diagrama .arbol,
+.diagrama .arbol ul {
+  display: flex;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.diagrama .arbol {
+  width: max-content;
+  margin-inline: auto;   /* centrado si cabe; si no, se desplaza a lo ancho */
+}
+
+.diagrama .arbol li {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: var(--sep) calc(var(--hueco) / 2) 0;
+}
+
+.diagrama .arbol > li { padding-top: 0; }
+
+.diagrama .arbol li::before,
+.diagrama .arbol li::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 50%;
+  height: var(--sep);
+  border-top: var(--grosor) solid var(--linea);
+}
+
+.diagrama .arbol li::before { right: 50%; }
+
+.diagrama .arbol li::after {
+  left: 50%;
+  border-left: var(--grosor) solid var(--linea);
+}
+
+.diagrama .arbol li:first-child::before,
+.diagrama .arbol li:last-child::after { border-top: 0; }
+
+.diagrama .arbol li:only-child::before { content: none; }
+.diagrama .arbol > li::before,
+.diagrama .arbol > li::after { content: none; }
+
+.diagrama .arbol li > ul {
+  position: relative;
+  padding-top: var(--sep);
+}
+
+.diagrama .arbol li > ul::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: var(--sep);
+  border-left: var(--grosor) solid var(--linea);
+}
+
+/* Hijos colgantes: lista vertical a la derecha de una espina que baja del
+   costado izquierdo de la caja padre (Ilustración 2.1). Todas las cajas de
+   ese árbol tienen el mismo ancho (--ancho-caja) para que la caja padre quede
+   centrada sobre su conector. Con .arbol--plegable, en celular todo el árbol
+   se reacomoda así (como un índice con sangría). */
+.diagrama .arbol--uniforme .caja {
+  width: var(--ancho-caja, 7rem);
+}
+
+.diagrama .arbol {
+  --sangria: 1.6rem;   /* de la orilla de la caja padre a la de sus hijos */
+  --espina: .7rem;     /* de la orilla de la caja padre a la espina */
+  --arriba: .7rem;     /* espacio sobre cada hijo colgante */
+}
+
+.diagrama .arbol li.colgante { margin-right: var(--sangria); }
+
+.diagrama .arbol li.colgante::after { right: calc(-1 * var(--sangria)); width: auto; }
+
+.diagrama .arbol li.colgante > ul {
+  flex-direction: column;
+  align-self: flex-start;
+  margin-right: calc(-1 * var(--sangria));
+  padding: .45rem 0 0 var(--sangria);
+}
+
+.diagrama .arbol li.colgante > ul::before {
+  left: var(--espina);
+  height: .45rem;
+}
+
+.diagrama .arbol li.colgante > ul > li { padding: var(--arriba) 0 0; }
+
+.diagrama .arbol li.colgante > ul > li::before {
+  content: "";
+  right: auto;
+  left: calc(var(--espina) - var(--sangria));
+  top: calc(50% + var(--arriba) / 2);
+  width: calc(var(--sangria) - var(--espina));
+  height: 0;
+  border-top: var(--grosor) solid var(--linea);
+}
+
+.diagrama .arbol li.colgante > ul > li::after {
+  right: auto;
+  left: calc(var(--espina) - var(--sangria));
+  width: 0;
+  height: 100%;
+  border-top: 0;
+}
+
+.diagrama .arbol li.colgante > ul > li:last-child::after {
+  height: calc(50% + var(--arriba) / 2);
+}
+
+@media (max-width: 560px) {
+  .diagrama .arbol--plegable {
+    --sangria: 1.3rem;
+    --espina: .6rem;
+    --arriba: .45rem;
+    margin-inline: 0;
+  }
+
+  .diagrama .arbol--plegable li {
+    align-items: flex-start;
+    margin-right: 0;
+  }
+
+  .diagrama .arbol--plegable li > ul {
+    flex-direction: column;
+    align-self: flex-start;
+    margin-right: 0;
+    padding: .3rem 0 0 var(--sangria);
+  }
+
+  .diagrama .arbol--plegable li > ul::before {
+    left: var(--espina);
+    height: .3rem;
+  }
+
+  .diagrama .arbol--plegable ul > li { padding: var(--arriba) 0 0; }
+
+  .diagrama .arbol--plegable ul > li::before {
+    content: "";
+    right: auto;
+    left: calc(var(--espina) - var(--sangria));
+    top: calc(var(--arriba) + 1.3rem);
+    width: calc(var(--sangria) - var(--espina));
+    height: 0;
+    border-top: var(--grosor) solid var(--linea);
+  }
+
+  .diagrama .arbol--plegable ul > li::after {
+    right: auto;
+    left: calc(var(--espina) - var(--sangria));
+    width: 0;
+    height: 100%;
+    border-top: 0;
+  }
+
+  .diagrama .arbol--plegable ul > li:last-child::after {
+    height: calc(var(--arriba) + 1.3rem);
+  }
+}
+
+/* ---- Diagrama de flujo ---- */
+.diagrama--flujo {
+  --flecha: 2rem;   /* largo de las flechas entre pasos */
+  --punta: 5px;
+}
+
+.diagrama .flujo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(100%, 26rem);
+  margin-inline: auto;
+}
+
+.diagrama .flujo--ancho { width: min(100%, 44rem); }
+
+.diagrama .flujo .caja {
+  position: relative;
+  width: min(100%, 21rem);
+  min-height: 3.6rem;
+  padding: .6rem .8rem;
+}
+
+/* Flecha que llega a cada paso desde arriba */
+.diagrama .flujo .caja + .caja,
+.diagrama .flujo__ramas > .caja {
+  margin-top: var(--flecha);
+}
+
+.diagrama .flujo .caja + .caja::before,
+.diagrama .flujo__ramas > .caja::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 1px);
+  height: var(--flecha);
+  border-left: var(--grosor) solid var(--linea);
+  transform: translateX(-50%);
+}
+
+.diagrama .flujo .caja + .caja::after,
+.diagrama .flujo__ramas > .caja::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 1px);
+  border: var(--punta) solid transparent;
+  border-top: calc(var(--punta) * 1.6) solid var(--linea);
+  border-bottom: 0;
+  transform: translateX(-50%);
+}
+
+/* Bifurcación: dos columnas cuyas filas se alinean entre sí */
+.diagrama .flujo__ramas {
+  --media: calc(var(--flecha) / 2);
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: repeat(var(--filas, 4), auto);
+  grid-auto-flow: column;
+  column-gap: var(--entre-ramas, 1rem);
+  width: 100%;
+  margin-top: var(--media);
+}
+
+.diagrama .flujo__ramas > .caja { width: 100%; }
+
+.diagrama .flujo__ramas > .caja.inicio-rama { margin-top: var(--media); }
+.diagrama .flujo__ramas > .caja.inicio-rama::before { height: var(--media); }
+
+/* Bajada desde el paso anterior y barra que reparte a las dos ramas */
+.diagrama .flujo__ramas::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  height: var(--media);
+  border-left: var(--grosor) solid var(--linea);
+}
+
+.diagrama .flujo__ramas::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: calc(25% - var(--entre-ramas, 1rem) / 4);
+  right: calc(25% - var(--entre-ramas, 1rem) / 4);
+  border-top: var(--grosor) solid var(--linea);
+}
+
+/* ---- Plano: cajas en posiciones fijas ----
+   El contenedor guarda la proporción del original (--proporcion); el SVG
+   dibuja los conectores con el mismo viewBox y cada caja se coloca en
+   porcentajes con --x, --y (esquina superior izquierda), --w y --h. */
+.diagrama--plano {
+  padding-inline: .5rem;
+}
+
+.diagrama .plano {
+  position: relative;
+  width: 100%;
+  max-width: var(--ancho-max, 40rem);
+  min-width: 16rem;
+  margin-inline: auto;
+  aspect-ratio: var(--proporcion);
+  container-type: inline-size;
+}
+
+.diagrama .plano > svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+  stroke: var(--linea);
+  stroke-width: var(--grosor);
+}
+
+.diagrama .plano > svg * { vector-effect: non-scaling-stroke; }
+
+.diagrama .plano > .caja {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w) * 1%);
+  height: calc(var(--h) * 1%);
+  min-height: 0;
+  min-width: 0;
+  padding: 0 .2em;
+  font-size: clamp(.62rem, 2.1cqi, .85rem);
+  line-height: 1.1;
+}
+
+/* Organigrama circular: rectángulos rectos con degradado horizontal */
+.diagrama .caja--recta {
+  border-radius: 0;
+  background: linear-gradient(to right,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--tono) calc(var(--mezcla) * .4), var(--surface)) 45%,
+    color-mix(in srgb, var(--tono) var(--mezcla), var(--surface)) 100%);
+}
+
+/* ---- Celular ---- */
+@media (max-width: 560px) {
+  .diagrama { padding-inline: 0; font-size: .74rem; }
+  .diagrama--arbol { --sep: .9rem; --hueco: .35rem; }
+  .diagrama .caja { padding: .4rem .5rem; min-height: 2.6rem; }
+  .diagrama .caja--vacia { min-width: 2.1rem; min-height: 2rem; }
+  .diagrama .caja--alta { min-height: 3.4rem; max-width: 8.5rem; }
+  .diagrama .caja--ancha { min-width: 6rem; min-height: 3.4rem; }
+  .diagrama--flujo { --flecha: 1.6rem; }
+  .diagrama .flujo .caja { min-height: 3.2rem; padding: .5rem .55rem; }
+  .diagrama .flujo__ramas { --entre-ramas: .6rem; }
+  /* En columnas angostas, los cortes del original estorban: el texto fluye
+     (cada <br> de las ramas lleva un espacio antes). */
+  .diagrama .flujo__ramas br { display: none; }
+}

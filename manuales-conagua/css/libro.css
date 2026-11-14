@@ -247,51 +247,61 @@ body.libro #mapas-hallazgos .mapas-volver { color: var(--accent); }
 }
 
 
-/* ---- Marcas de página del original ---- */
-/* En bloque: una línea fina con el número al margen */
+/* ---- Marcas de página del original ----
+   Discretas y al margen derecho de la columna: no cortan la lectura.
+   La marca en bloque es una línea invisible con el número a la derecha; la que va
+   dentro de un párrafo se posiciona en el margen a la altura de su renglón. */
+.libro__texto { position: relative; }
+
 div.pag {
-  display: flex;
-  align-items: center;
-  gap: .6rem;
-  max-width: var(--medida);
-  margin: 1.2rem 0;
-  color: var(--muted);
-  font-family: var(--font-mono);
-  font-size: .72rem;
+  position: relative;
+  height: 0;
+  margin: 0;
   scroll-margin-top: calc(var(--alto-barra) + 16px);
 }
 
-div.pag::before {
-  content: "";
-  flex: 1;
-  border-top: 1px dashed var(--border-strong);
-}
-
-div.pag::after { content: "p. " attr(data-p); }
-div.pag--blanco::after { content: "p. " attr(data-p) " · en blanco"; }
-
-/* En línea: una pastilla discreta dentro del párrafo */
-span.pag[data-p] {
-  scroll-margin-top: calc(var(--alto-barra) + 16px);
-}
-
+div.pag::after,
 span.pag[data-p]::before {
-  content: "p. " attr(data-p);
-  display: inline-block;
-  margin: 0 .15em;
-  padding: 0 .35em;
+  content: attr(data-p);
+  position: absolute;
+  right: -3.4rem;
+  width: 2.8rem;
   font-family: var(--font-mono);
-  font-size: .68rem;
-  line-height: 1.5;
-  vertical-align: .12em;
+  font-size: .66rem;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.6;
+  text-align: left;
   text-indent: 0;
-  color: var(--muted);
-  border: 1px solid var(--border-strong);
-  border-radius: 4px;
+  letter-spacing: .02em;
+  color: color-mix(in srgb, var(--muted) 70%, transparent);
+  border-left: 1px solid var(--border-strong);
+  padding-left: .4rem;
+  pointer-events: none;
   user-select: none;
 }
 
-.sin-paginas div.pag { display: none; }
+div.pag::after { top: -.2rem; }
+div.pag--blanco::after { content: attr(data-p) " ∅"; }
+
+span.pag[data-p] { scroll-margin-top: calc(var(--alto-barra) + 16px); }
+span.pag[data-p]::before { margin-top: .15em; }
+
+/* Columna angosta: sin margen libre; la marca queda en la orilla, aún más tenue */
+@media (max-width: 920px) {
+  div.pag::after,
+  span.pag[data-p]::before {
+    right: -14px;
+    width: auto;
+    padding-left: 0;
+    border-left: 0;
+    font-size: .58rem;
+    writing-mode: vertical-rl;
+    color: color-mix(in srgb, var(--muted) 55%, transparent);
+  }
+}
+
+.sin-paginas div.pag::after,
 .sin-paginas span.pag[data-p]::before { content: none; }
 
 /* ---- Ilustraciones ---- */
@@ -352,10 +362,14 @@ span.pag[data-p]::before {
   border-radius: 4px;
 }
 
-/* ---- Tablas: se desplazan a lo ancho en pantallas chicas ---- */
+/* ---- Tablas: tarjeta con encabezado marcado; se desplazan a lo ancho en celular ---- */
 .tabla {
-  margin: 1.4rem 0;
+  margin: 1.6rem 0;
   overflow-x: auto;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
   scroll-margin-top: calc(var(--alto-barra) + 16px);
 }
 
@@ -363,33 +377,53 @@ span.pag[data-p]::before {
 
 .libro__texto table {
   width: 100%;
-  border-collapse: collapse;
-  font-size: .88rem;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: .87rem;
   line-height: 1.45;
+  font-variant-numeric: tabular-nums;
 }
 
 .libro__texto caption {
-  padding: 0 0 .5rem;
+  padding: .8rem 1rem .7rem;
   text-align: left;
+  font-family: var(--font-titulo);
+  font-size: .98rem;
   font-weight: 600;
   color: var(--text-strong);
+  border-bottom: 1px solid var(--border-card);
 }
 
 .libro__texto th,
 .libro__texto td {
-  padding: .4rem .55rem;
+  padding: .5rem .8rem;
   text-align: left;
   vertical-align: top;
-  border: 1px solid var(--border-strong);
+  border: 0;
+  border-bottom: 1px solid var(--border);
 }
 
-.libro__texto th {
-  background: var(--surface-2);
+.libro__texto th + th,
+.libro__texto td + td { border-left: 1px solid var(--border); }
+
+.libro__texto thead th {
+  position: sticky;
+  top: 0;
+  background: var(--accent-soft);
   color: var(--text-strong);
+  font-size: .78rem;
   font-weight: 600;
+  letter-spacing: .01em;
+  border-bottom: 2px solid color-mix(in srgb, var(--accent) 45%, var(--border-strong));
+  vertical-align: bottom;
 }
 
-.libro__texto tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--surface) 55%, transparent); }
+.libro__texto tbody tr:last-child td { border-bottom: 0; }
+.libro__texto tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--bg) 55%, transparent); }
+.libro__texto tbody tr:hover td { background: var(--accent-soft); }
+.libro__texto td.n { text-align: right; white-space: nowrap; }
+/* Celdas en blanco de los formatos para llenar en campo */
+.libro__texto td:empty { background-image: linear-gradient(transparent calc(100% - 1.1em), var(--border) 0, var(--border) calc(100% - 1.1em + 1px), transparent 0); min-width: 5rem; }
 
 .libro__texto .nota-tabla,
 .libro__texto .nota {
@@ -399,11 +433,19 @@ span.pag[data-p]::before {
   color: var(--muted);
 }
 
-/* ---- Ecuaciones ---- */
+/* Tabla 1.2: un municipio por renglón, como en el original */
+.municipios { margin: 0; padding-left: 1.6rem; }
+.municipios li { margin: 0; }
+.municipios li::marker { color: var(--muted); font-family: var(--font-mono); font-size: .8em; }
+
+/* Sub-incisos numerados dentro de un inciso con letra */
+.libro__texto p.lista--sub { margin-left: 1.6em; }
+
+/* ---- Ecuaciones (MathML, sin librerías) ---- */
 .formula {
   max-width: var(--medida);
   margin: 1.2rem 0;
-  padding: .8rem 1.1rem;
+  padding: .9rem 1.1rem;
   background: var(--surface);
   border: 1px solid var(--border-card);
   border-radius: var(--radius);
@@ -414,15 +456,22 @@ span.pag[data-p]::before {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: baseline;
-  gap: .3rem 1rem;
-  margin: .2rem 0 .4rem;
-  font-size: 1.12rem;
+  align-items: center;
+  gap: .4rem 1.2rem;
+  margin: .2rem 0 .5rem;
   color: var(--text-strong);
+  overflow-x: auto;
 }
 
+.formula math {
+  font-size: 1.12rem;
+  margin: 0 auto;
+  font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", math;
+}
+
+.formula mtext { font-family: var(--font-texto); font-size: .86em; }
+
 .formula .num-ec {
-  margin-left: auto;
   font-family: var(--font-mono);
   font-size: .75rem;
   color: var(--muted);
@@ -430,6 +479,67 @@ span.pag[data-p]::before {
 
 .formula .donde { margin: .4rem 0 .1rem; font-weight: 600; font-size: .9rem; }
 .formula .donde-lista { margin: 0; padding-left: 1.2rem; font-size: .9rem; }
+
+/* Posible error que viene del PDF original: en rojo */
+.formula--error { border-color: color-mix(in srgb, #d23 55%, var(--border-card)); border-left: 3px solid #d23; }
+
+.posible-error {
+  margin: .6rem 0 0;
+  padding: .5rem .7rem;
+  font-size: .86rem;
+  line-height: 1.5;
+  color: #b3141f;
+  background: color-mix(in srgb, #d23 9%, transparent);
+  border-radius: 6px;
+}
+
+:root[data-tema="oscuro"] .posible-error { color: #ff8a8f; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .posible-error { color: #ff8a8f; }
+}
+
+/* ---- Imagen de la ilustración (recorte del PDF original) ---- */
+.figura__imagen {
+  display: block;
+  margin: .7rem 0 .2rem;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;            /* las ilustraciones del original van sobre blanco */
+  cursor: zoom-in;
+}
+
+.figura__imagen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* En tema oscuro, un marco que separe el blanco del original del fondo */
+:root[data-tema="oscuro"] .figura__imagen { box-shadow: 0 0 0 1px var(--border-strong); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .figura__imagen { box-shadow: 0 0 0 1px var(--border-strong); }
+}
+
+/* Las ilustraciones grandes pueden usar más ancho que el renglón de texto */
+.libro__texto figure.figura { max-width: none; }
+
+/* ---- Tablas agrupadas (Organismo/Estado, Tipo): celdas que abarcan varios renglones ---- */
+.libro__texto td.agrupa {
+  vertical-align: middle;
+  font-weight: 600;
+  color: var(--text-strong);
+  background: var(--surface) !important;
+  border-right: 1px solid var(--border-card);
+}
+
+.libro__texto tr.grupo-inicio td { border-top: 2px solid var(--border-card); }
+.libro__texto tbody tr.grupo-inicio:first-child td { border-top: 0; }
+.libro__texto td.foto { padding: .3rem; width: 150px; }
+.libro__texto td.foto img { display: block; width: 140px; height: auto; border-radius: 4px; }
+.tabla-organismos td.n { width: 2.4rem; color: var(--muted); font-family: var(--font-mono); font-size: .8rem; }
+
+/* Aviso en línea (por ejemplo, un inciso que falta en el original) */
+.libro__texto p.posible-error--linea { max-width: var(--medida); margin: .2rem 0 .6rem; }
 
 /* ---- Enlaces internos a ilustraciones, tablas y ecuaciones ---- */
 a.ref {
@@ -544,6 +654,26 @@ a.ref:hover { color: var(--accent); text-decoration-style: solid; }
 .lectura__boton:hover { border-color: var(--border-strong); }
 .lectura__boton[aria-pressed="false"] { color: var(--muted); text-decoration: line-through; }
 
+.lectura__casa {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  background: url("../../img/darwin-cara.svg") center / contain no-repeat;
+}
+
+.lectura__manuales { text-decoration: none; }
+
+@media (max-width: 520px) {
+  .lectura__manuales { display: none; }
+}
+
+.panel-indice__enlaces {
+  margin-left: auto;
+  margin-right: .8rem;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+}
+
 /* ---- Panel del índice ---- */
 .panel-indice {
   width: min(440px, 100vw);
@@ -591,6 +721,9 @@ a.ref:hover { color: var(--accent); text-decoration-style: solid; }
 /* ---- Celular ---- */
 @media (max-width: 600px) {
   .libro__texto { font-size: 1rem; line-height: 1.68; }
+  .formula math { font-size: .95rem; }
+  .formula mtext { font-size: .8em; }
+  .formula .ecuacion { justify-content: flex-start; }
   .libro__texto figure,
   .formula { padding: .75rem .85rem; }
   .indice { padding: .8rem .7rem; }
@@ -613,4 +746,13 @@ a.ref:hover { color: var(--accent); text-decoration-style: solid; }
   .nota-transcripcion > :not(summary),
   .rotulos > ul { display: revert; }
   .tabla { overflow: visible; }
+}
+
+/* Ilustración original plegada debajo de una recreación (gráfica o diagrama) */
+.libro__texto details.original { margin-top: .6rem; }
+.libro__texto details.original > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--muted);
 }
