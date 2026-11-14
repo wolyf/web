@@ -268,3 +268,146 @@ export function anclar(texto, x) {
 // Con sesión y la preferencia en «1» (o sin preferencia) los subrayados
 // están activos. La preferencia viene de localStorage («1», «0» o null).
 export const subrayadosActivos = (sesionActiva, preferencia) => !!sesionActiva && preferencia !== "0";
+
+// ---- Anclaje aproximado ----
+//
+// Si la cita exacta ya no está (una errata corregida dentro del subrayado,
+// una cifra que cambió), se busca la mejor coincidencia APROXIMADA cerca de
+// donde estaban el contexto o los extremos del texto: distancia de edición
+// (Sellers, con inicio y fin) de a lo más 25 % de la longitud de la cita.
+// Citas de menos de MIN_APROX caracteres no se buscan así (demasiado ambiguo).
+
+export const MIN_APROX = 12;
+const SEMILLA = 10;
+const MAX_VENTANAS = 12;
+const MAX_CITA_APROX = 1500; // la búsqueda es O(|e| · |ventana|) por ventana
+
+export const distanciaMaxima = (n) => Math.max(2, Math.floor(n * 0.25));
+
+// Mejor subcadena de `v` parecida a `e`: { dist, inicio, fin } (fin exclusivo)
+export function mejorSubcadena(e, v) {
+  const m = e.length;
+  const n = v.length;
+  let dAnt = new Uint16Array(n + 1); // D[0][j] = 0: la coincidencia puede empezar donde sea
+  let sAnt = new Int32Array(n + 1);
+  for (let j = 0; j <= n; j++) sAnt[j] = j;
+  let dAct = new Uint16Array(n + 1);
+  let sAct = new Int32Array(n + 1);
+  for (let i = 1; i <= m; i++) {
+    dAct[0] = i;
+    sAct[0] = 0;
+    const c = e.charCodeAt(i - 1);
+    for (let j = 1; j <= n; j++) {
+      let d = dAnt[j - 1] + (c === v.charCodeAt(j - 1) ? 0 : 1);
+      let s = sAnt[j - 1];
+      const borrar = dAnt[j] + 1; // falta un carácter de e en v
+      if (borrar < d) {
+        d = borrar;
+        s = sAnt[j];
+      }
+      const insertar = dAct[j - 1] + 1; // sobra un carácter de v
+      if (insertar < d) {
+        d = insertar;
+        s = sAct[j - 1];
+      }
+      dAct[j] = d;
+      sAct[j] = s;
+    }
+    [dAnt, dAct] = [dAct, dAnt];
+    [sAnt, sAct] = [sAct, sAnt];
+  }
+  let mejor = 0;
+  for (let j = 1; j <= n; j++) if (dAnt[j] < dAnt[mejor]) mejor = j;
+  return { dist: dAnt[mejor], inicio: sAnt[mejor], fin: mejor };
+}
+
+function apariciones(texto, aguja, tope = 20) {
+  const lista = [];
+  if (!aguja) return lista;
+  for (let i = texto.indexOf(aguja); i !== -1 && lista.length < tope; i = texto.indexOf(aguja, i + 1)) lista.push(i);
+  return lista;
+}
+
+// → { a, b } (tramo del texto normalizado) o null. No usa la cita exacta.
+export function anclarAprox(texto, x) {
+  const e = normalizar(x.e);
+  const m = e.length;
+  if (m < MIN_APROX || m > MAX_CITA_APROX) return null;
+  const pre = String(x.pre ?? "").replace(/\s+/g, " ");
+  const suf = String(x.suf ?? "").replace(/\s+/g, " ");
+  const largo = Math.ceil(m * 1.3) + 8;
+  const ventanas = [];
+  const agregar = (desde) => {
+    const a = Math.max(0, desde);
+    if (ventanas.some((v) => Math.abs(v - a) < 6) || ventanas.length >= MAX_VENTANAS) return;
+    ventanas.push(a);
+  };
+  for (const i of apariciones(texto, e.slice(0, SEMILLA))) agregar(i - 8);
+  for (const i of apariciones(texto, e.slice(-SEMILLA))) agregar(i + SEMILLA - largo + 8);
+  const colaPre = pre.slice(-Math.min(12, pre.length));
+  if (colaPre.length >= 6) for (const i of apariciones(texto, colaPre)) agregar(i + colaPre.length - 4);
+  const cabezaSuf = suf.slice(0, Math.min(12, suf.length));
+  if (cabezaSuf.length >= 6) for (const i of apariciones(texto, cabezaSuf)) agregar(i - largo + 4);
+
+  const maximo = distanciaMaxima(m);
+  const candidatos = [];
+  for (const desde of ventanas) {
+    const ventana = texto.slice(desde, desde + largo);
+    const r = mejorSubcadena(e, ventana);
+    if (r.dist > maximo) continue;
+    let a = desde + r.inicio;
+    let b = desde + r.fin;
+    while (a < b && texto[a] === " ") a++;
+    while (b > a && texto[b - 1] === " ") b--;
+    if (b - a < m / 2) continue;
+    const contexto = sufijoComun(pre, texto.slice(Math.max(0, a - pre.length), a)) + prefijoComun(suf, texto.slice(b, b + suf.length));
+    candidatos.push({ a, b, dist: r.dist, contexto });
+  }
+  if (!candidatos.length) return null;
+  candidatos.sort((p, q) => p.dist - q.dist || q.contexto - p.contexto);
+  const [primero, ...resto] = candidatos;
+  // Si otra coincidencia distinta empata en distancia y contexto, no se adivina
+  if (resto.some((c) => c.dist === primero.dist && c.contexto === primero.contexto && Math.abs(c.a - primero.a) > m / 2)) return null;
+  return { a: primero.a, b: primero.b };
+}
+
+// Ancla con la cita exacta y, solo si esa cita ya no existe, de forma aproximada.
+// → { a, b, aprox } o null. Con citas exactas ambiguas no se recurre a lo aproximado.
+export function anclarTodo(texto, x) {
+  const exacto = anclar(texto, x);
+  if (exacto) return { ...exacto, aprox: false };
+  if (texto.includes(normalizar(x.e))) return null; // existe pero no se distingue
+  const aprox = anclarAprox(texto, x);
+  return aprox ? { ...aprox, aprox: true } : null;
+}
+
+// ---- Poda de lápidas y rutas ----
+
+export const DIAS_LAPIDA = 90;
+export const DIAS_ESTANCADO = 60; // un equipo sin sincronizar más tiempo que esto ya no se fía de su caché
+export const MS_DIA = 86_400_000;
+
+// Quita las lápidas con más de `dias` días (el borrado ya llegó a todos los equipos activos)
+export const podar = (items, ahora, dias = DIAS_LAPIDA) => items.filter((x) => !(x.b && ahora - x.t > dias * MS_DIA));
+
+// Un equipo estancado (última sincronización de hace más de DIAS_ESTANCADO días) pudo
+// perderse la lápida de algo ya podado: lo que conocía en esa sincronización y el
+// remoto ya no tiene se da por borrado. Lo creado después (t mayor) se conserva.
+export function sinBorradosPodados(locales, remotos, ultimaSync, ahora) {
+  if (!ultimaSync || ahora - ultimaSync <= DIAS_ESTANCADO * MS_DIA) return locales;
+  const ids = new Set(remotos.map((x) => x.id));
+  return locales.filter((x) => ids.has(x.id) || x.t > ultimaSync);
+}
+
+// Cambia la ruta `p` de los elementos: `desde` exacta, o con prefijo si termina en «/»
+// (carpeta). Devuelve la lista nueva (los cambiados llevan t mayor para ganar la mezcla).
+export function renombrarRutas(items, desde, hasta, ahora) {
+  const salida = [];
+  for (const x of items) {
+    const coincide = desde.endsWith("/") ? x.p.startsWith(desde) : x.p === desde;
+    if (!coincide) continue;
+    const nueva = desde.endsWith("/") ? hasta + x.p.slice(desde.length) : hasta;
+    salida.push({ ...x, p: nueva, t: Math.max(ahora, x.t + 1) });
+  }
+  return salida;
+}

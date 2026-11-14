@@ -25,8 +25,8 @@ import path from "node:path";
 import readline from "node:readline";
 import { fileURLToPath } from "node:url";
 import * as L from "../js/llaves.mjs";
-import { cifrarDatos } from "../js/subrayados-nucleo.mjs";
-import { API, RAMA, REPO, RUTA } from "../js/subrayados-sync.mjs";
+import { cifrarDatos, descifrarDatos, mezclar, renombrarRutas } from "../js/subrayados-nucleo.mjs";
+import { API, RAMA, REPO, RUTA, clienteGitHub } from "../js/subrayados-sync.mjs";
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const RUTA_ACCESO = path.join(RAIZ, "datos", "acceso.json");
@@ -45,6 +45,8 @@ Usuarios
 Subrayados sincronizados (js/subrayados.mjs)
   token                   cifra SITIO_TOKEN_GITHUB con la llave del sitio y lo guarda en datos/acceso.json
   rama                    crea la rama «subrayados» (vacía, con subrayados.enc inicial cifrado) si no existe
+  rutas <vieja> <nueva>   cambia la ruta de página de los subrayados cuando se mueve o renombra una página
+                          (relativa a la base del sitio; para una carpeta, ambas terminan en «/»)
 
 Partes privadas (.privado/<ruta>.html ↔ <ruta>.enc)
   sellar [carpeta]        cifra lo que cambió en .privado/ (solo esa carpeta, si se indica)
@@ -267,6 +269,15 @@ const comandos = {
     console.log(resultado === "existe" ? `✓ La rama «${RAMA}» ya existe.` : `✓ Rama «${RAMA}» creada con ${RUTA} inicial.`);
   },
 
+  async rutas(desde, hasta) {
+    if (!desde || hasta === undefined) fallar("Uso: npm run sesion -- rutas <ruta-vieja> <ruta-nueva> (para carpetas, ambas terminan en «/»)");
+    const token = (process.env.SITIO_TOKEN_GITHUB || "").trim();
+    if (!token) fallar("Falta SITIO_TOKEN_GITHUB en el entorno de Claude Code.");
+    const llave = await abrirLlave();
+    const n = await migrarRutas({ token, llave, desde, hasta });
+    console.log(n ? `✓ ${n} subrayado(s) movidos de «${desde}» a «${hasta}».` : `✓ No hay subrayados en «${desde}».`);
+  },
+
   async sellar(carpeta) {
     const destino = carpetaArgumento(carpeta);
     const origen = path.join(PRIVADO, path.relative(RAIZ, destino));
@@ -375,6 +386,32 @@ export async function crearRama({ token, llave, repo = REPO, rama = RAMA, fetch:
   const ref = await llamar("git/refs", "POST", { ref: `refs/heads/${rama}`, sha: commit.json.sha });
   if (ref.estado !== 201) throw new Error(`GitHub respondió ${ref.estado} al crear la rama`);
   return "creada";
+}
+
+// Cambia la ruta `p` de los subrayados de una página (o carpeta) en la rama «subrayados».
+// → cuántos cambió. `fetch` se inyecta para las pruebas.
+export async function migrarRutas({ token, llave, desde, hasta, fetch: f, ahora = () => Date.now() }) {
+  const limpia = (r) => String(r).replace(/^\/+/, "");
+  desde = limpia(desde);
+  hasta = limpia(hasta);
+  if (desde.endsWith("/") !== hasta.endsWith("/") && hasta !== "") {
+    throw new Error("Para una carpeta, ambas rutas terminan en «/»; para una página, ninguna.");
+  }
+  const cliente = clienteGitHub({ token, fetch: f });
+  for (let intento = 0; intento < 5; intento++) {
+    const remoto = await cliente.leer();
+    const items = remoto.bytes ? await descifrarDatos(remoto.bytes, llave) : [];
+    const cambios = renombrarRutas(
+      items.filter((x) => !x.b),
+      desde,
+      hasta,
+      ahora(),
+    );
+    if (!cambios.length) return 0;
+    const r = await cliente.escribir(await cifrarDatos(mezclar(items, cambios), llave), remoto.sha);
+    if (!r.conflicto) return cambios.length;
+  }
+  throw new Error("No se pudo escribir tras varios intentos.");
 }
 
 // data-privado="…" en las páginas que apuntan a fragmentos inexistentes

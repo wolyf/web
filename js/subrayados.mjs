@@ -19,17 +19,23 @@
 // Estado en <html data-subrayados="activos|apagados"> y evento «wr:subrayados»
 // en document (detail: { activos, estado, huerfanos, total }).
 //
+// Lo que se subrayó y ya no se encuentra (una errata corregida, una cifra que cambió) se
+// busca de forma aproximada; si aparece, se reubica solo. Los huérfanos se pueden reubicar
+// a mano (panel de la pastilla) y todos los subrayados del sitio se listan y buscan en
+// «Mis subrayados» (botón en el panel de sesión).
+//
 // Se excluyen .ajustes, .site-header, formularios, input, textarea,
 // [contenteditable] y [data-no-subrayar] (ver SELECTOR_EXCLUIDO). El contenido
 // descifrado de [data-privado] sí se puede subrayar (se repinta con «wr:privado»).
 //
 // Desde JavaScript: window.WRSubrayados (también exportado como `subrayados`):
-//   activos(), establecer(bool), alternar(), items(), estado(), alCambiar(fn)
+//   activos(), establecer(bool), alternar(), items(), todos(), abrirLista(), estado(), alCambiar(fn)
 
 import { sesion } from "./sesion.mjs";
 import * as L from "./llaves.mjs";
 import * as N from "./subrayados-nucleo.mjs";
 import * as S from "./subrayados-sync.mjs";
+import * as C from "./subrayados-coord.mjs";
 
 const raiz = document.documentElement;
 const URL_ACCESO = new URL("../datos/acceso.json", import.meta.url);
@@ -76,6 +82,9 @@ let paginaItems = []; // elementos vivos de esta página
 let pintados = []; // { item, rango }
 let huerfanos = [];
 let huerfanosVisibles = [];
+let aproximados = []; // subrayados que solo se anclaron de forma aproximada (pendientes de confirmar)
+let reubicando = null; // huérfano que se está reubicando a mano
+let coord = null;
 let flujo = null;
 let nodos = [];
 let sucioFlujo = true;
@@ -172,6 +181,31 @@ const CSS_PROPIO = `
 .sub-panel li{display:grid;gap:4px;padding:6px 8px;border-left:4px solid var(--c,#f5c400);background:var(--bg,#fff);border-radius:4px}
 .sub-panel q{quotes:none;overflow-wrap:anywhere}
 .sub-panel button{justify-self:start;min-height:0;padding:2px 10px;font:inherit;color:var(--text,#28282e);background:transparent;border:1px solid var(--border-strong,#c6ba93);border-radius:6px;cursor:pointer}
+.sub-panel__acciones{display:flex;gap:6px}
+.sub-menu__reubicar{display:flex;gap:6px;align-items:center}
+.sub-menu__reubicar[hidden]{display:none}
+.sub-menu__cancelar{min-height:0;padding:4px 10px;color:var(--text,#28282e);background:transparent;border:1px solid var(--border-strong,#c6ba93);border-radius:6px;cursor:pointer}
+.sub-aviso{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:1200;max-width:min(520px,calc(100vw - 24px));padding:8px 14px;
+  color:var(--sobre-acento,#fff);background:var(--accent,#b12d6c);border-radius:999px;box-shadow:var(--shadow-hover,0 6px 18px rgba(0,0,0,.25))}
+.sub-aviso[hidden]{display:none}
+.sub-lista{position:fixed;inset:0;z-index:1300;display:grid;place-items:center;padding:16px;background:rgba(0,0,0,.4)}
+.sub-lista[hidden]{display:none}
+.sub-lista__caja{display:grid;grid-template-rows:auto auto 1fr;gap:10px;width:min(720px,100%);max-height:min(80vh,720px);padding:16px;
+  background:var(--surface,#f1ead5);border:1px solid var(--border-card,#ded4b2);border-radius:var(--radius,8px);box-shadow:var(--shadow-hover,0 6px 18px rgba(0,0,0,.25))}
+.sub-lista__cabeza{display:flex;align-items:baseline;gap:10px}
+.sub-lista__cabeza h2{margin:0;font-size:1rem;flex:1}
+.sub-lista__cuenta{color:var(--muted,#5a5a61);font-size:.78rem}
+.sub-lista__cerrar{min-height:0;width:28px;height:28px;padding:0;font-size:1.3rem;line-height:1;color:var(--text,#28282e);background:transparent;border:0;border-radius:6px;cursor:pointer}
+.sub-lista input[type="search"]{width:100%;box-sizing:border-box;padding:8px 10px;font:inherit;color:var(--text,#28282e);background:var(--bg,#fff);border:1px solid var(--border-strong,#c6ba93);border-radius:6px}
+.sub-lista__cuerpo{overflow:auto;display:grid;gap:6px;align-content:start}
+.sub-lista__cuerpo h3{margin:10px 0 0;font-size:.82rem;font-weight:600;overflow-wrap:anywhere}
+.sub-lista__cuerpo ul{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.sub-lista__cuerpo li{display:grid;gap:4px;padding:6px 10px;border-left:4px solid var(--c,#f5c400);background:var(--bg,#fff);border-radius:4px}
+.sub-lista__cuerpo li p{margin:0;color:var(--muted,#5a5a61);font-size:.8rem}
+.sub-lista__cita{color:var(--text,#28282e);text-decoration:none;overflow-wrap:anywhere}
+.sub-lista__cita:hover{text-decoration:underline}
+.sub-lista li button{justify-self:start;min-height:0;padding:2px 10px;font:inherit;color:var(--text,#28282e);background:transparent;border:1px solid var(--border-strong,#c6ba93);border-radius:6px;cursor:pointer}
+.sub-lista__vacio{margin:8px 0;color:var(--muted,#5a5a61)}
 @media print{.sub-ui,.sub-boton,.sub-flotante{display:none!important}}
 `;
 
@@ -250,18 +284,25 @@ function pintar() {
   const f = leerFlujo();
   const grupos = new Map();
   const notas = [];
+  aproximados = [];
   for (const item of paginaItems) {
-    const ancla = N.anclar(f.texto, item);
+    const ancla = N.anclarTodo(f.texto, item);
     const rango = ancla && rangoDeTramo(f, ancla.a, ancla.b);
     if (!rango) {
       huerfanos.push(item);
       continue;
+    }
+    if (ancla.aprox) {
+      const cita = N.citaDeTramo(f.texto, ancla.a, ancla.b);
+      if (cita) aproximados.push({ item, cita });
     }
     pintados.push({ item, rango });
     if (!grupos.has(item.c)) grupos.set(item.c, []);
     grupos.get(item.c).push(rango);
     if (item.n) notas.push(rango);
   }
+  // Un huérfano que ya se ubicó deja de mostrarse al instante (los nuevos esperan a que la página se asiente)
+  if (huerfanosVisibles.length) huerfanosVisibles = huerfanosVisibles.filter((v) => huerfanos.some((h) => h.id === v.id));
   for (const [color, rangos] of grupos) CSS.highlights.set(`wr-sub-${color}`, new Highlight(...rangos));
   if (notas.length) CSS.highlights.set("wr-sub-nota", new Highlight(...notas));
   programarHuerfanos();
@@ -287,7 +328,21 @@ function programarHuerfanos() {
     huerfanosVisibles = huerfanos.slice();
     pintarEstado();
     emitir();
+    confirmarAproximados();
   }, 1500);
+}
+
+// Ya con la página asentada, un anclaje aproximado se vuelve el texto exacto nuevo
+// (así el siguiente repintado lo encuentra sin buscar de forma aproximada)
+async function confirmarAproximados() {
+  const lista = aproximados;
+  aproximados = [];
+  if (!sync || !activos()) return;
+  for (const { item, cita } of lista) {
+    const actual = paginaItems.find((x) => x.id === item.id);
+    if (!actual || actual.t !== item.t) continue; // cambió mientras tanto
+    await actualizar(actual, { e: cita.e, pre: cita.pre, suf: cita.suf });
+  }
 }
 
 function recalcularPagina() {
@@ -360,6 +415,10 @@ function crearMenu() {
       <textarea rows="3" maxlength="2000" placeholder="Nota (opcional)" aria-label="Nota"></textarea>
       <div class="sub-menu__botones"><button type="button" class="sub-menu__guardar" data-accion="guardar">Guardar</button></div>
     </div>
+    <div class="sub-menu__reubicar" hidden>
+      <button type="button" class="sub-menu__guardar" data-accion="reubicar">Reubicar aquí</button>
+      <button type="button" class="sub-menu__cancelar" data-accion="cancelar-reubicar">Cancelar</button>
+    </div>
     <p class="sub-menu__aviso" hidden></p>`;
   // No quitar la selección al tocar el menú (salvo en la nota, que necesita el foco)
   menu.addEventListener("mousedown", (e) => {
@@ -383,6 +442,9 @@ function pintarMenu() {
   const c = contexto;
   for (const b of menu.querySelectorAll(".sub-color")) b.setAttribute("aria-pressed", String(b.dataset.color === c.color));
   menu.querySelector('[data-accion="borrar"]').hidden = !c.item;
+  menu.querySelector(".sub-menu__fila").hidden = !!c.reubicar;
+  menu.querySelector(".sub-menu__reubicar").hidden = !c.reubicar;
+  if (c.reubicar) menu.querySelector(".sub-menu__nota").hidden = true;
   const aviso = menu.querySelector(".sub-menu__aviso");
   aviso.hidden = !c.aviso;
   aviso.textContent = c.aviso ?? "";
@@ -464,6 +526,10 @@ function alMenu(e) {
     if (!caja.hidden) menu.querySelector("textarea").focus();
   } else if (accion === "guardar") {
     guardarNota();
+  } else if (accion === "reubicar" && contexto?.reubicar && !contexto.aviso) {
+    reubicarAqui(contexto);
+  } else if (accion === "cancelar-reubicar") {
+    cancelarReubicar();
   } else if (accion === "borrar" && contexto?.item) {
     const item = contexto.item;
     cerrarMenu();
@@ -527,6 +593,7 @@ function mostrarMenuSeleccion() {
   abrirMenu({
     cita: s.cita,
     item: null,
+    reubicar: reubicando,
     color: N.COLORES[0],
     aviso: s.ambigua ? "Ese fragmento se repite en la página: amplía la selección." : "",
     ancla: { x: r.left + r.width / 2 + window.scrollX, y: r.top + window.scrollY, alto: r.height },
@@ -562,7 +629,10 @@ document.addEventListener("keyup", (e) => {
   temporizadorSeleccion = setTimeout(mostrarMenuSeleccion, 300);
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && menu && !menu.hidden) cerrarMenu();
+  if (e.key !== "Escape") return;
+  if (menu && !menu.hidden) cerrarMenu();
+  else if (reubicando) cancelarReubicar();
+  else if (listaVista && !listaVista.hidden) listaVista.hidden = true;
 });
 
 // Tocar un subrayado existente abre su menú
@@ -698,6 +768,13 @@ function abrirPanel() {
     panel.className = "sub-ui sub-panel";
     panel.hidden = true;
     panel.addEventListener("click", (e) => {
+      const idR = e.target.closest("[data-reubicar]")?.dataset.reubicar;
+      const aReubicar = huerfanosVisibles.find((x) => x.id === idR);
+      if (aReubicar) {
+        panel.hidden = true;
+        iniciarReubicar(aReubicar);
+        return;
+      }
       const id = e.target.closest("[data-borrar]")?.dataset.borrar;
       const item = huerfanosVisibles.find((x) => x.id === id);
       if (item) {
@@ -729,16 +806,166 @@ function pintarPanel() {
       n.textContent = x.n;
       li.append(n);
     }
+    const fila = document.createElement("div");
+    fila.className = "sub-panel__acciones";
+    const r = document.createElement("button");
+    r.type = "button";
+    r.dataset.reubicar = x.id;
+    r.textContent = "Reubicar";
     const b = document.createElement("button");
     b.type = "button";
     b.dataset.borrar = x.id;
     b.textContent = "Borrar";
-    li.append(b);
+    fila.append(r, b);
+    li.append(fila);
     lista.append(li);
   }
   panel.append(titulo, nota, lista);
   if (!huerfanosVisibles.length) panel.hidden = true;
 }
+
+// ---- Reubicar a mano ----
+
+let aviso = null;
+
+function iniciarReubicar(item) {
+  reubicando = item;
+  if (!aviso) {
+    aviso = document.createElement("div");
+    aviso.className = "sub-ui sub-aviso";
+    aviso.setAttribute("role", "status");
+    document.body.append(aviso);
+  }
+  const cita = item.e.length > 60 ? `${item.e.slice(0, 60)}…` : item.e;
+  aviso.textContent = `Selecciona el texto nuevo para «${cita}». Esc cancela.`;
+  aviso.hidden = false;
+}
+
+function cancelarReubicar() {
+  reubicando = null;
+  if (aviso) aviso.hidden = true;
+  if (menu && !menu.hidden && contexto?.reubicar) cerrarMenu();
+}
+
+async function reubicarAqui(c) {
+  const item = c.reubicar;
+  const cita = c.cita;
+  cancelarReubicar();
+  cerrarMenu(true);
+  await actualizar(item, { p: pagina(), e: cita.e, pre: cita.pre, suf: cita.suf });
+}
+
+// ---- Mis subrayados: lista y búsqueda de todo el sitio ----
+
+let listaVista = null;
+
+const plano = (t) => String(t).normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+
+// Enlace a la página con fragmento de texto (#:~:text=), que lleva al pasaje
+function enlaceDe(x) {
+  const frag = x.e.trim().slice(0, 60).trim();
+  const url = new URL(`${BASE}${x.p}`, location.origin);
+  return `${url.origin}${url.pathname}#:~:text=${encodeURIComponent(frag).replace(/-/g, "%2D")}`;
+}
+
+function pintarLista() {
+  const consulta = plano(listaVista.querySelector("input").value.trim());
+  const cuerpo = listaVista.querySelector(".sub-lista__cuerpo");
+  cuerpo.textContent = "";
+  const todos = (sync?.items() ?? []).filter((x) => !x.b);
+  const visibles = todos
+    .filter((x) => !consulta || plano(`${x.e} ${x.n ?? ""} ${x.p}`).includes(consulta))
+    .sort((a, b) => (a.p < b.p ? -1 : a.p > b.p ? 1 : a.t - b.t));
+  listaVista.querySelector(".sub-lista__cuenta").textContent = `${visibles.length} de ${todos.length}`;
+  if (!visibles.length) {
+    const vacio = document.createElement("p");
+    vacio.className = "sub-lista__vacio";
+    vacio.textContent = todos.length ? "Nada coincide con la búsqueda." : "Aún no hay subrayados.";
+    cuerpo.append(vacio);
+    return;
+  }
+  let paginaActual = null;
+  let ul = null;
+  for (const x of visibles) {
+    if (x.p !== paginaActual) {
+      paginaActual = x.p;
+      const h = document.createElement("h3");
+      const a = document.createElement("a");
+      a.href = new URL(`${BASE}${x.p}`, location.origin).href;
+      a.textContent = x.p || "Portada";
+      h.append(a);
+      ul = document.createElement("ul");
+      cuerpo.append(h, ul);
+    }
+    const li = document.createElement("li");
+    li.style.setProperty("--c", COLOR_HEX[x.c]);
+    const cita = document.createElement("a");
+    cita.className = "sub-lista__cita";
+    cita.href = enlaceDe(x);
+    cita.textContent = x.e.length > 240 ? `${x.e.slice(0, 240)}…` : x.e;
+    li.append(cita);
+    if (x.n) {
+      const n = document.createElement("p");
+      n.textContent = x.n;
+      li.append(n);
+    }
+    const borrarBoton = document.createElement("button");
+    borrarBoton.type = "button";
+    borrarBoton.dataset.borrar = x.id;
+    borrarBoton.textContent = "Borrar";
+    li.append(borrarBoton);
+    ul.append(li);
+  }
+}
+
+function abrirLista() {
+  if (!activos()) return;
+  if (!listaVista) {
+    listaVista = document.createElement("div");
+    listaVista.className = "sub-ui sub-lista";
+    listaVista.setAttribute("role", "dialog");
+    listaVista.setAttribute("aria-label", "Mis subrayados");
+    listaVista.hidden = true;
+    listaVista.innerHTML = `
+      <div class="sub-lista__caja">
+        <div class="sub-lista__cabeza">
+          <h2>Mis subrayados</h2>
+          <span class="sub-lista__cuenta"></span>
+          <button type="button" class="sub-lista__cerrar" data-cerrar aria-label="Cerrar">&times;</button>
+        </div>
+        <input type="search" placeholder="Buscar en textos, notas y páginas" aria-label="Buscar subrayados" autocomplete="off">
+        <div class="sub-lista__cuerpo"></div>
+      </div>`;
+    listaVista.addEventListener("click", (e) => {
+      if (e.target === listaVista || e.target.closest("[data-cerrar]")) {
+        listaVista.hidden = true;
+        return;
+      }
+      const id = e.target.closest("[data-borrar]")?.dataset.borrar;
+      const item = sync?.items().find((x) => x.id === id);
+      if (item) borrar(item).then(pintarLista);
+    });
+    listaVista.querySelector("input").addEventListener("input", pintarLista);
+    document.documentElement.append(listaVista);
+  }
+  listaVista.hidden = false;
+  pintarLista();
+  listaVista.querySelector("input").focus();
+}
+
+// «Mis subrayados» en el panel de sesión (sesion.mjs emite el evento al pintarlo)
+document.addEventListener("wr:panel-sesion", (e) => {
+  if (!soportado || enMarco || !sesion.activa()) return;
+  const panelSesion = e.detail.panel;
+  const boton = document.createElement("button");
+  boton.type = "button";
+  boton.textContent = "Mis subrayados";
+  boton.addEventListener("click", () => {
+    document.dispatchEvent(new KeyboardEvent("keydown", { key: "Escape" })); // cierra el panel de sesión
+    abrirLista();
+  });
+  panelSesion.querySelector(".sesion-panel__salir")?.before(boton);
+});
 
 // ---- Sincronización ----
 
@@ -757,13 +984,19 @@ async function conectar() {
     /* sin red o token ilegible: se trabaja en local */
   }
   if (mia !== generacion) return;
+  coord?.cerrar();
+  coord = C.crearCoordinador();
   const nuevo = S.crearSincronizador({
     llave,
     token,
+    coordinador: coord,
     almacen: S.almacenIndexedDB(),
     alCambiar: (tipo) => {
       if (mia !== generacion) return;
-      if (tipo === "datos") recalcularPagina();
+      if (tipo === "datos") {
+        recalcularPagina();
+        if (listaVista && !listaVista.hidden) pintarLista();
+      }
       aplicarEstado();
     },
   });
@@ -779,6 +1012,10 @@ function desconectar() {
   generacion++;
   sync?.detener();
   sync = null;
+  coord?.cerrar();
+  coord = null;
+  cancelarReubicar();
+  if (listaVista) listaVista.hidden = true;
   paginaItems = [];
   huerfanosVisibles = [];
 }
@@ -845,6 +1082,8 @@ export const subrayados = {
   establecer,
   alternar: () => establecer(!activos()),
   items: () => paginaItems.slice(),
+  todos: () => (sync?.items() ?? []).filter((x) => !x.b),
+  abrirLista,
   estado: () => estadoSync().estado,
   alCambiar(fn) {
     const oyente = (e) => fn(e.detail);

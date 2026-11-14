@@ -33,7 +33,9 @@
 //   sesion.alCambiar(fn)           avisa al entrar o salir; devuelve cómo dejar de escuchar
 //   sesion.abrir()                 muestra el formulario de inicio de sesión
 //
-// También queda en window.WRSesion y se emite «wr:sesion» en document.
+// También queda en window.WRSesion y se emite «wr:sesion» en document. Con la sesión
+// iniciada, al pintar el panel se emite «wr:panel-sesion» (detail.panel) para que otros
+// módulos del sitio agreguen botones.
 
 import * as L from "./llaves.mjs";
 
@@ -312,6 +314,8 @@ function pintarPanel() {
       <p class="sesion-panel__titulo"><span class="sesion-panel__punto" aria-hidden="true"></span>Sesión iniciada</p>
       <p class="sesion-panel__nota">Entraste como <strong>${escapar(actual.usuario)}</strong>. Ves las partes privadas del sitio.</p>
       <button type="button" class="sesion-panel__salir" data-sesion-accion="cerrar">Cerrar sesión</button>`;
+    // Los módulos del sitio pueden agregar sus acciones (p. ej. «Mis subrayados»)
+    document.dispatchEvent(new CustomEvent("wr:panel-sesion", { detail: { panel } }));
     return;
   }
   panel.setAttribute("aria-label", "Iniciar sesión");
