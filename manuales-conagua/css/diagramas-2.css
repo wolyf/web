@@ -14,7 +14,7 @@
    .caja--lista                 caja con título y lista numerada (3.10)
    .caja--tabla                 caja de puestos con columnas E y R (3.11)
    .caja--bloque                bloque con índice sangrado (3.15)
-   li.espina                   hijos en columna con espina a la izquierda (3.14)
+   li.espina                    hijos en columna con espina a la izquierda (3.14)
    .caja--baja                  caja más abajo que sus hermanas (3.15) */
 
 .diagrama {
@@ -266,7 +266,7 @@
    un tramo a cada hijo. El relleno derecho iguala al izquierdo para que el
    centro del li coincida con el de la caja y la barra superior caiga en él. */
 .diagrama .arbol li.espina {
-  --lado: 1.3rem;     /* de la espina a la orilla de las cajas, más aire */
+  --lado: 1.2rem;     /* de la espina a la orilla de las cajas, más aire */
   --codo: .9rem;      /* bajada desde la caja padre hasta el codo */
   --espacio: .65rem;  /* espacio sobre cada hijo */
   align-items: flex-end;
@@ -338,5 +338,5 @@
   .diagrama .caja--tabla { width: var(--ancho-caja-movil, 13.5rem); }
   .diagrama .caja--bloque { width: var(--ancho-caja-movil, 10rem); }
   .diagrama .organigrama__leyenda { margin: 3rem 0 0 1rem; }
-  .diagrama .arbol li.espina { --lado: 1.2rem; }
+  .diagrama .arbol li.espina { --lado: 1.1rem; }
 }
