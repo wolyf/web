@@ -2,9 +2,12 @@
 <html lang="es">
 <head>
   <!-- Política de contenido: solo recursos del propio sitio (ver CLAUDE.md, «Seguridad») -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <!-- Agregado por el sitio: ícono y Darwin, la gatita (zona general) -->
 <link rel="icon" href="../../img/darwin-cara.svg" type="image/svg+xml">
+<!-- Agregado por el sitio: tema, sesión y subrayados (zona general) -->
+<link rel="stylesheet" href="../../css/ajustes-aislado.css">
+<script src="../../js/tema.js"></script>
 <script src="../../js/darwin.js" defer></script>
 <!-- Agregado por el sitio: búsqueda dentro del libro (resalta y lleva a la coincidencia) -->
 <script type="module" src="../js/libro.js"></script>
@@ -40,7 +43,7 @@ nav a{color:#0b3d66;text-decoration:none}
 </style>
 </head>
 <body>
-<nav style="font-family:system-ui,sans-serif;font-size:.9em;margin-bottom:1em"><a href="../">← Manuales de la Conagua</a> · <a href="../../">Wolfgang Resendiz</a></nav>
+<nav class="ajustes-barra"><span><a href="../">← Manuales de la Conagua</a> · <a href="../../">Wolfgang Resendiz</a></span><div class="ajustes"></div></nav>
 <h1>Libro 16 — Cálculo, Estudio y Diseño de Instalaciones Eléctricas</h1>
 <p><b>Manual de Agua Potable, Alcantarillado y Saneamiento (MAPAS) — Comisión Nacional del Agua.</b></p>
 <div class="nota-metodo"><h2>Nota sobre esta transcripción</h2><p>Transcripción fiel y completa del Libro 16, <i>Cálculo, Estudio y Diseño de Instalaciones Eléctricas</i>, del Manual de Agua Potable, Alcantarillado y Saneamiento (MAPAS) de la Comisión Nacional del Agua, a partir del PDF de 430 páginas. El texto se reproduce en español, en el orden del original, con sus capítulos, secciones, tablas, fórmulas, figuras, notas y referencias.</p><p>El original está maquetado a dos columnas; la transcripción reordena el texto en orden de lectura (columna izquierda y luego columna derecha). Las tablas se reproducen como tablas HTML reconstruidas a partir de las líneas de texto alineadas del PDF, con todos sus valores legibles y sin omitir cifras; en las tablas con celdas de varias líneas, cada línea puede aparecer como fila propia, conservando todos los datos. Las fórmulas del original son tipografía matemática con símbolos, superíndices y subíndices; en la capa de texto aparecen fragmentadas (por ejemplo, raíces y fracciones se descomponen en líneas), por lo que se transcriben tal como se extraen, junto con su número de ecuación, sin reconstruir ni inventar símbolos. Las figuras son diagramas, esquemas, gráficas y planos en el original: se dan su número y título y se transcriben las etiquetas y notas legibles; el dibujo en sí no se reproduce en texto.</p><p>Las páginas divisorias ilustradas sin texto y las páginas en blanco para notas se señalan explícitamente en su lugar. No se ha resumido ni acortado el contenido.</p></div>

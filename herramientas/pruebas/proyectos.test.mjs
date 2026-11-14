@@ -180,6 +180,35 @@ test("cada proyecto aparece en la tabla de zonas del CLAUDE.md raíz", () => {
   }
 });
 
+test("toda página HTML carga js/tema.js (sesión y subrayados), también las plantillas", () => {
+  const paginas = [];
+  const recorrer = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if ([".git", "node_modules", ".catalogo", ".privado"].includes(e.name)) continue;
+      const ruta = path.join(dir, e.name);
+      if (e.isDirectory()) recorrer(ruta);
+      else if (e.name.endsWith(".html")) paginas.push(ruta);
+    }
+  };
+  recorrer(RAIZ_REAL);
+  assert.ok(paginas.length > 5);
+  for (const ruta of paginas) {
+    const html = fs.readFileSync(ruta, "utf8");
+    const nombre = path.relative(RAIZ_REAL, ruta);
+    const origenes = [...html.matchAll(/<script\b[^>]*\bsrc="([^"]*tema\.js)"[^>]*>/g)];
+    assert.ok(origenes.length, `${nombre} no carga js/tema.js.`);
+    const [, src] = origenes[0];
+    // Las plantillas se copian a <id>/index.html: su ruta se resuelve desde ahí
+    const esPlantilla = nombre.startsWith(`herramientas${path.sep}plantilla`);
+    const carpeta = esPlantilla ? path.join(RAIZ_REAL, "proyecto-nuevo") : path.dirname(ruta);
+    assert.equal(path.resolve(carpeta, src), path.join(RAIZ_REAL, "js", "tema.js"), `${nombre}: la ruta de tema.js no llega a js/tema.js.`);
+    assert.doesNotMatch(origenes[0][0], /\b(defer|async)\b/, `${nombre}: tema.js va sin defer ni async.`);
+  }
+  for (const plantilla of ["plantilla", "plantilla-notas"]) {
+    assert.ok(paginas.some((r) => r.includes(`herramientas${path.sep}${plantilla}${path.sep}`)), `Falta la plantilla ${plantilla}.`);
+  }
+});
+
 test("cada página HTML lleva la política de contenido y no carga recursos externos", () => {
   const paginas = [];
   const recorrer = (dir) => {
@@ -198,7 +227,11 @@ test("cada página HTML lleva la política de contenido y no carga recursos exte
     const nombre = path.relative(RAIZ_REAL, ruta);
     assert.ok(politica, `${nombre} no tiene la política de contenido.`);
     assert.match(politica, /script-src 'self'(;|$)/, `${nombre}: script-src debe ser solo 'self'.`);
-    assert.doesNotMatch(politica, /https?:/, `${nombre}: la política no debe abrir hosts externos.`);
+    // Único host externo permitido: la API de GitHub, solo para connect-src (subrayados sincronizados)
+    assert.match(politica, /connect-src 'self' https:\/\/api\.github\.com(;|$)/, `${nombre}: connect-src debe ser 'self' https://api.github.com.`);
+    assert.doesNotMatch(politica.replace("https://api.github.com", ""), /https?:/, `${nombre}: la política no debe abrir otros hosts externos.`);
+    assert.doesNotMatch(politica, /script-src[^;]*'unsafe-(inline|eval)'/, `${nombre}: sin scripts en línea.`);
+    assert.doesNotMatch(html, /<script(?![^>]*\bsrc=)(?![^>]*application\/ld\+json)[^>]*>/, `${nombre} tiene un script en línea.`);
     assert.doesNotMatch(html, /<(?:script|link)\b[^>]*(?:src|href)="https?:\/\/(?!(?:www\.)?(?:linkedin|researchgate|github))[^"]*"[^>]*(?:rel="stylesheet"|<script)/, `${nombre} carga un recurso externo.`);
   }
 });

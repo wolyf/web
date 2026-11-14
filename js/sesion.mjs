@@ -28,6 +28,8 @@
 //   sesion.usuario()              nombre con el que se entró
 //   await sesion.llaveProyecto(id) llave propia del proyecto (o null)
 //   await sesion.descifrar(bytes)  texto de un fragmento .enc
+//   sesion.llave()                 CryptoKey HKDF no extraíble de la llave del sitio (para módulos
+//                                  del sitio, como js/subrayados.mjs; null sin sesión)
 //   sesion.alCambiar(fn)           avisa al entrar o salir; devuelve cómo dejar de escuchar
 //   sesion.abrir()                 muestra el formulario de inicio de sesión
 //
@@ -221,6 +223,7 @@ function cerrar() {
 export const sesion = {
   activa: () => !!actual,
   usuario: () => actual?.usuario ?? null,
+  llave: () => actual?.llave ?? null,
   llaveProyecto: async (id) => (actual ? L.llaveProyecto(actual.llave, id) : null),
   async descifrar(bytes) {
     if (!actual) throw new Error("Sin sesión");

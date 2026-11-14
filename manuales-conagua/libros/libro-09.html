@@ -2,9 +2,12 @@
 <html lang="es">
 <head>
   <!-- Política de contenido: solo recursos del propio sitio (ver CLAUDE.md, «Seguridad») -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <!-- Agregado por el sitio: ícono y Darwin, la gatita (zona general) -->
 <link rel="icon" href="../../img/darwin-cara.svg" type="image/svg+xml">
+<!-- Agregado por el sitio: tema, sesión y subrayados (zona general) -->
+<link rel="stylesheet" href="../../css/ajustes-aislado.css">
+<script src="../../js/tema.js"></script>
 <script src="../../js/darwin.js" defer></script>
 <!-- Agregado por el sitio: búsqueda dentro del libro (resalta y lleva a la coincidencia) -->
 <script type="module" src="../js/libro.js"></script>
@@ -44,7 +47,7 @@ margin:1.6em 0 .4em;padding-top:4px}
 </style>
 </head>
 <body>
-<nav style="font-family:system-ui,sans-serif;font-size:.9em;margin-bottom:1em"><a href="../">← Manuales de la Conagua</a> · <a href="../../">Wolfgang Resendiz</a></nav>
+<nav class="ajustes-barra"><span><a href="../">← Manuales de la Conagua</a> · <a href="../../">Wolfgang Resendiz</a></span><div class="ajustes"></div></nav>
 <header><h1>Manual de Agua Potable, Alcantarillado y Saneamiento<br>Sistemas de Medición del Agua:<br>Producción, Operación y consumo</h1><p style="text-align:center"><strong>Libro 9</strong> &nbsp;·&nbsp; Comisión Nacional del Agua (Conagua) &nbsp;·&nbsp; ISBN: 978-607-626-006-7</p></header>
 <section class="nota-transcripcion"><h2>Nota de transcripción</h2><p>Transcripción completa y fiel del PDF <em>Libro09.pdf</em> (246 páginas, Libro 9 de los Manuales de Agua Potable, Alcantarillado y Saneamiento, MAPAS, de la Conagua). El texto se reproduce en español, en el orden del original y sin resúmenes. Las tablas se presentan como tablas HTML con todos sus valores; las fórmulas se reproducen de forma legible; las ilustraciones se citan con su número y título, con una descripción de lo que muestran, y las fotografías divisorias de capítulo se describen. Las ilustraciones son imágenes, esquemas, gráficas o fotografías en el original y no se reproducen como imagen en este archivo.</p><p>Advertencias: el libro está compuesto a dos columnas; la transcripción sigue el orden de lectura (columna izquierda y luego columna derecha, por franjas separadas por los elementos a todo lo ancho, como tablas y títulos). Algunas fórmulas con fracciones y subíndices se reproducen de forma lineal, tal como se extraen del PDF. La Tabla 1.2 (pág. 3) está girada 90° en el original; se transcribe en orden de lectura. La Tabla 6.3 (págs. 75–76) es un formato en blanco para registro de aforo con molinete; se transcriben sus encabezados y campos tal como aparecen. Las Tablas 6.5 y 6.6 son comparaciones en forma de etiquetas con listas de viñetas en una sola columna del original; se presentan con su rótulo y su contenido completo en listas, no como tabla reticular. En algunas tablas con celdas de texto largo (por ejemplo 7.6, 10.3 y 11.1) parte de las filas se transcribe como texto continuo, con todos sus valores, porque las celdas se parten en varias líneas en el original.</p></section>
 <section class="portada"><h2>Portada</h2><p><strong>comisión nacional del agua</strong></p><p><strong>Sistemas de Medición del Agua:</strong><br>Producción, Operación y consumo</p><p>Manual de Agua Potable, Alcantarillado y Saneamiento</p><p class="nota-pagina">En la portada aparece además una gráfica (serie temporal) con un eje vertical de valores de 0 a 9 y un eje horizontal con horas (de las 10:17 a las 5:57); es una imagen en el original y no se reproduce aquí.</p></section>

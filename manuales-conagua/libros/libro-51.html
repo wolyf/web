@@ -2,9 +2,12 @@
 <html lang="es">
 <head>
   <!-- Política de contenido: solo recursos del propio sitio (ver CLAUDE.md, «Seguridad») -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' https://api.github.com; object-src 'none'; base-uri 'none'; form-action 'none'">
 <!-- Agregado por el sitio: ícono y Darwin, la gatita (zona general) -->
 <link rel="icon" href="../../img/darwin-cara.svg" type="image/svg+xml">
+<!-- Agregado por el sitio: tema, sesión y subrayados (zona general) -->
+<link rel="stylesheet" href="../../css/ajustes-aislado.css">
+<script src="../../js/tema.js"></script>
 <script src="../../js/darwin.js" defer></script>
 <!-- Agregado por el sitio: búsqueda dentro del libro (resalta y lleva a la coincidencia) -->
 <script type="module" src="../js/libro.js"></script>
@@ -55,7 +58,7 @@ ul.indice .pag{float:right;color:#555}
 </style>
 </head>
 <body>
-<nav style="font-family:system-ui,sans-serif;font-size:.9em;margin-bottom:1em"><a href="../">← Manuales de la Conagua</a> · <a href="../../">Wolfgang Resendiz</a></nav>
+<nav class="ajustes-barra"><span><a href="../">← Manuales de la Conagua</a> · <a href="../../">Wolfgang Resendiz</a></span><div class="ajustes"></div></nav>
 <div class="nota-transcripcion">
 <h2>Nota sobre esta transcripción</h2>
 <p>Transcripción fiel y completa del <strong>Libro 51</strong> del <em>Manual de Agua Potable, Alcantarillado y Saneamiento (MAPAS)</em> de la Comisión Nacional del Agua: <strong>«Operación y Mantenimiento de Plantas de Tratamiento de Aguas Residuales Municipales: Lodos Activados»</strong> (ISBN 978-607-8246-91-5), a partir del PDF oficial. Se transcriben en orden todos los capítulos, secciones, anexos, tablas, fórmulas, notas y referencias, en español como en el original.</p>

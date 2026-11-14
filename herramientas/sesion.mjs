@@ -11,6 +11,7 @@
 //
 //   SITIO_USUARIO, SITIO_CONTRASENA   cuenta con la que se abre la llave
 //   SITIO_NUEVA_CONTRASENA            contraseña nueva (agregar, contrasena)
+//   SITIO_TOKEN_GITHUB                token de GitHub de grano fino (token, rama)
 //
 // Partes privadas: el texto en claro vive en .privado/ (en .gitignore) con
 // la misma ruta que el fragmento cifrado que se publica:
@@ -24,6 +25,8 @@ import path from "node:path";
 import readline from "node:readline";
 import { fileURLToPath } from "node:url";
 import * as L from "../js/llaves.mjs";
+import { cifrarDatos } from "../js/subrayados-nucleo.mjs";
+import { API, RAMA, REPO, RUTA } from "../js/subrayados-sync.mjs";
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const RUTA_ACCESO = path.join(RAIZ, "datos", "acceso.json");
@@ -39,10 +42,19 @@ Usuarios
   contrasena [usuario]    cambia la contraseña (por defecto, la de SITIO_USUARIO)
   usuarios                cuántos usuarios hay (los nombres no se guardan en claro)
 
+Subrayados sincronizados (js/subrayados.mjs)
+  token                   cifra SITIO_TOKEN_GITHUB con la llave del sitio y lo guarda en datos/acceso.json
+  rama                    crea la rama «subrayados» (vacía, con subrayados.enc inicial cifrado) si no existe
+
 Partes privadas (.privado/<ruta>.html ↔ <ruta>.enc)
   sellar [carpeta]        cifra lo que cambió en .privado/ (solo esa carpeta, si se indica)
   abrir [carpeta]         descifra los fragmentos .enc a .privado/
   verificar               revisa la llave, los fragmentos y las referencias data-privado
+
+El token es de grano fino: solo wolyf/web, permiso Contents: read and write. Lo crea el
+dueño en GitHub y lo configura como SITIO_TOKEN_GITHUB en el entorno de Claude Code (nunca
+en el chat). Conviene una regla (Ruleset) sobre main que exija pull request, para que el
+token solo pueda escribir en «subrayados».
 
 Las cuentas se abren con SITIO_USUARIO y SITIO_CONTRASENA (variables del entorno);
 en una terminal, si faltan, se preguntan sin mostrarse.`;
@@ -232,6 +244,29 @@ const comandos = {
     console.log(`${n} usuario${n === 1 ? "" : "s"} (los nombres solo se guardan como resumen).`);
   },
 
+  async token() {
+    const token = (process.env.SITIO_TOKEN_GITHUB || (await preguntar("Token de GitHub: ", true)) || "").trim();
+    if (!token)
+      fallar(
+        "Falta SITIO_TOKEN_GITHUB. Configúralo en el entorno de Claude Code " +
+          "(o corre el comando en una terminal para que lo pregunte). Nunca lo escribas en el chat.",
+      );
+    if (token.length < 20 || /\s/.test(token)) fallar("Eso no parece un token de GitHub.");
+    const acceso = leerAcceso();
+    const llave = await abrirLlave(acceso);
+    acceso.token = await L.sellarSecreto(token, llave);
+    escribirAcceso(acceso);
+    console.log("✓ Token cifrado y guardado en datos/acceso.json (campo «token»).");
+  },
+
+  async rama() {
+    const token = (process.env.SITIO_TOKEN_GITHUB || "").trim();
+    if (!token) fallar("Falta SITIO_TOKEN_GITHUB en el entorno de Claude Code.");
+    const llave = await abrirLlave();
+    const resultado = await crearRama({ token, llave });
+    console.log(resultado === "existe" ? `✓ La rama «${RAMA}» ya existe.` : `✓ Rama «${RAMA}» creada con ${RUTA} inicial.`);
+  },
+
   async sellar(carpeta) {
     const destino = carpetaArgumento(carpeta);
     const origen = path.join(PRIVADO, path.relative(RAIZ, destino));
@@ -282,6 +317,14 @@ const comandos = {
         errores++;
       }
     }
+    if (acceso.token) {
+      try {
+        await L.abrirSecreto(acceso.token, llave);
+      } catch {
+        console.error("  ✗ datos/acceso.json: el token no se descifra con la llave del sitio");
+        errores++;
+      }
+    }
     for (const falta of referenciasRotas()) {
       console.error(`  ✗ ${falta}`);
       errores++;
@@ -290,6 +333,49 @@ const comandos = {
     console.log(`✓ Llave correcta; ${fragmentos().length} fragmento(s) y sus referencias en orden.`);
   },
 };
+
+// Crea la rama de subrayados si no existe: un commit sin padres con solo
+// subrayados.enc (vacío y cifrado), con la API de Git de GitHub. Con la rama ya
+// creada, solo agrega el archivo si falta. `fetch` se inyecta para las pruebas.
+export async function crearRama({ token, llave, repo = REPO, rama = RAMA, fetch: f = globalThis.fetch }) {
+  const llamar = async (ruta, metodo = "GET", cuerpo) => {
+    const r = await f(`${API}/repos/${repo}/${ruta}`, {
+      method: metodo,
+      headers: {
+        Accept: "application/vnd.github+json",
+        Authorization: `Bearer ${token}`,
+        "X-GitHub-Api-Version": "2022-11-28",
+        ...(cuerpo ? { "Content-Type": "application/json" } : {}),
+      },
+      body: cuerpo ? JSON.stringify(cuerpo) : undefined,
+    });
+    return { estado: r.status, json: r.status === 204 ? null : await r.json().catch(() => null) };
+  };
+  const inicial = Buffer.from(await cifrarDatos([], llave)).toString("base64");
+
+  const existente = await llamar(`branches/${encodeURIComponent(rama)}`);
+  if (existente.estado === 200) {
+    const archivo = await llamar(`contents/${RUTA}?ref=${encodeURIComponent(rama)}`);
+    if (archivo.estado === 200) return "existe";
+    if (archivo.estado !== 404) throw new Error(`GitHub respondió ${archivo.estado} al buscar ${RUTA}`);
+    const puesto = await llamar(`contents/${RUTA}`, "PUT", { message: "Crea subrayados", content: inicial, branch: rama });
+    if (puesto.estado >= 300) throw new Error(`GitHub respondió ${puesto.estado} al crear ${RUTA}`);
+    return "archivo";
+  }
+  if (existente.estado !== 404) throw new Error(`GitHub respondió ${existente.estado} al buscar la rama`);
+
+  const blob = await llamar("git/blobs", "POST", { content: inicial, encoding: "base64" });
+  if (blob.estado !== 201) throw new Error(`GitHub respondió ${blob.estado} al crear el blob`);
+  const arbol = await llamar("git/trees", "POST", {
+    tree: [{ path: RUTA, mode: "100644", type: "blob", sha: blob.json.sha }],
+  });
+  if (arbol.estado !== 201) throw new Error(`GitHub respondió ${arbol.estado} al crear el árbol`);
+  const commit = await llamar("git/commits", "POST", { message: "Rama de subrayados", tree: arbol.json.sha, parents: [] });
+  if (commit.estado !== 201) throw new Error(`GitHub respondió ${commit.estado} al crear el commit`);
+  const ref = await llamar("git/refs", "POST", { ref: `refs/heads/${rama}`, sha: commit.json.sha });
+  if (ref.estado !== 201) throw new Error(`GitHub respondió ${ref.estado} al crear la rama`);
+  return "creada";
+}
 
 // data-privado="…" en las páginas que apuntan a fragmentos inexistentes
 export function referenciasRotas(base = RAIZ) {
