@@ -956,67 +956,54 @@ body.con-lateral {
   color: var(--muted);
 }
 
-/* ---- Presentación: texto + retrato de Darwin ---- */
+/* ---- Presentación: nombre y una línea de identidad ---- */
 .presentacion {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 220px;
-  gap: 48px;
-  align-items: start;
-  padding-top: 56px;
+  padding: 56px 0 40px;
 }
 
-.presentacion h3 {
-  margin: 0 0 18px;
-  font-size: 1.15rem;
+.presentacion .subtitulo {
+  max-width: 34em;
 }
 
-.retrato {
-  margin: 8px 0 0;
-  display: grid;
-  justify-items: center;
-  gap: 14px;
+.contenido > main h3 {
+  margin: 28px 0 14px;
+  font-size: 1.1rem;
 }
 
-.retrato__circulo {
-  display: grid;
-  place-items: center;
-  width: 170px;
-  height: 170px;
-  background: var(--accent);
-  border-radius: 50%;
+.contenido > main h3:first-child {
+  margin-top: 0;
 }
 
-.retrato__circulo img {
-  width: 112px;
-  height: 112px;
-  image-rendering: pixelated;
-}
-
-/* Globo de texto debajo del retrato */
-.retrato figcaption {
-  position: relative;
-  width: 100%;
-  padding: 10px 14px;
-  font-size: 0.82rem;
-  line-height: 1.45;
-  text-align: center;
-  background: var(--surface);
-  border: 1px solid var(--border-card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-}
-
-.retrato figcaption::before {
-  content: "";
+/* Enlace «saltar al contenido»: solo se ve al enfocarlo con el teclado */
+.saltar {
   position: absolute;
-  top: -7px;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  background: var(--surface);
-  border-top: 1px solid var(--border-card);
-  border-left: 1px solid var(--border-card);
-  transform: translateX(-50%) rotate(45deg);
+  left: 12px;
+  top: -60px;
+  z-index: 100;
+  padding: 8px 14px;
+  color: var(--sobre-acento);
+  background: var(--accent);
+  border-radius: var(--radius);
+  text-decoration: none;
+}
+
+.saltar:focus {
+  top: 12px;
+}
+
+/* Áreas de la portada (las genera herramientas/proyectos.mjs) */
+.area + .area {
+  margin-top: 32px;
+}
+
+.area__titulo {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 
 /* ---- Sobre mí ---- */
@@ -1205,39 +1192,16 @@ body.con-lateral {
   margin: 0;
 }
 
-.corazon {
-  color: var(--accent);
+.pie__darwin {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px !important;
+  font-size: 0.8rem;
 }
 
-/* ---- Portada en pantallas medianas: el retrato pasa abajo ---- */
-@media (max-width: 1100px) {
-  .presentacion {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 32px;
-  }
-
-  .retrato {
-    grid-auto-flow: column;
-    justify-content: start;
-    align-items: center;
-    max-width: 460px;
-  }
-
-  .retrato__circulo {
-    width: 120px;
-    height: 120px;
-  }
-
-  .retrato__circulo img {
-    width: 80px;
-    height: 80px;
-  }
-
-  .retrato figcaption::before {
-    top: 50%;
-    left: -7px;
-    transform: translateY(-50%) rotate(-45deg);
-  }
+.pie__darwin img {
+  image-rendering: pixelated;
 }
 
 /* ---- Portada en celular: la barra lateral se vuelve barra superior ---- */
