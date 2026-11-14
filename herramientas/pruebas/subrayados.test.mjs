@@ -6,7 +6,8 @@ import fs from "node:fs";
 import * as L from "../../js/llaves.mjs";
 import * as N from "../../js/subrayados-nucleo.mjs";
 import * as S from "../../js/subrayados-sync.mjs";
-import { crearRama } from "../sesion.mjs";
+import { crearCoordinador } from "../../js/subrayados-coord.mjs";
+import { crearRama, migrarRutas } from "../sesion.mjs";
 
 const RAIZ = new URL("../../", import.meta.url);
 
@@ -212,8 +213,12 @@ function githubFalso({ existe = true, alAntesDeEscribir } = {}) {
     }
     if (metodo === "GET") {
       if (!estado.bytes) return res({ message: "Not Found" }, 404);
+      const etag = `W/"${estado.sha}"`;
+      if (opciones.headers?.["If-None-Match"] === etag) return { status: 304, ok: false, headers: { get: () => etag }, json: async () => ({}) };
       // La API de contenidos puede deformar los binarios: su `content` no debe usarse
-      return res({ sha: estado.sha, encoding: "base64", size: estado.bytes.length, content: Buffer.from("contenido deformado").toString("base64") });
+      const r = res({ sha: estado.sha, encoding: "base64", size: estado.bytes.length, content: Buffer.from("contenido deformado").toString("base64") });
+      r.headers = { get: (n) => (n === "etag" ? etag : null) };
+      return r;
     }
     if (alAntesDeEscribir) await alAntesDeEscribir(estado);
     const cuerpo = JSON.parse(opciones.body);
@@ -263,17 +268,19 @@ test("sin cambios remotos no se vuelve a bajar el blob ni se escribe", async () 
   await a.iniciar();
   await a.aplicar(item("uno", 10));
   await a.sincronizar();
+  await a.sincronizar(); // tras escribir no hay ETag aún: esta lectura lo obtiene
   const antes = estado.llamadas.length;
   await a.sincronizar();
   const nuevas = estado.llamadas.slice(antes);
   assert.equal(nuevas.length, 1, "solo consulta el sha");
   assert.equal(nuevas[0].metodo, "GET");
-  // Un cambio local pendiente se escribe sin releer el blob
+  assert.ok(nuevas[0].cabeceras["If-None-Match"], "la consulta es condicional (ETag)");
+  // Un cambio local pendiente se escribe directo con el sha conocido, sin leer antes
   await a.aplicar(item("dos", 20));
   const antes2 = estado.llamadas.length;
   await a.sincronizar();
   const nuevas2 = estado.llamadas.slice(antes2).map((l) => l.metodo + (l.url.includes("blobs") ? ":blob" : ""));
-  assert.deepEqual(nuevas2, ["GET", "PUT"]);
+  assert.deepEqual(nuevas2, ["PUT"], "escritura optimista: una sola petición");
   assert.deepEqual((await N.descifrarDatos(estado.bytes, llave)).map((i) => i.id).sort(), ["dos", "uno"]);
 });
 
@@ -409,6 +416,243 @@ test("una rama o un archivo ausentes no tumban la sincronización: falla con un 
   assert.match(a.estado().detalle, /rama/);
 });
 
+// ---- Anclaje aproximado ----
+
+test("anclarAprox: una errata corregida dentro del subrayado se reancla", () => {
+  const antes = "El caudal medio diaro se calcula con la dotación de proyecto, según el manual.";
+  const c = N.citaDeTramo(antes, antes.indexOf("caudal"), antes.indexOf(", según"));
+  const despues = "Capítulo nuevo. El caudal medio diario se calcula con la dotación de proyecto, según el manual.";
+  assert.equal(N.anclar(despues, c), null, "la cita exacta ya no existe");
+  const a = N.anclarTodo(despues, c);
+  assert.equal(a.aprox, true);
+  assert.equal(despues.slice(a.a, a.b), "caudal medio diario se calcula con la dotación de proyecto");
+});
+
+test("anclarAprox: una cifra que cambia dentro de una frase larga se sigue encontrando", () => {
+  const antes = "La dotación media es de 150 litros por habitante y por día en climas cálidos.";
+  const c = N.citaDeTramo(antes, antes.indexOf("La dotación"), antes.length - 1);
+  const despues = "Notas. La dotación media es de 170 litros por habitante y por día en climas cálidos.";
+  const a = N.anclarTodo(despues, c);
+  assert.ok(a?.aprox);
+  assert.match(despues.slice(a.a, a.b), /^La dotación media es de 170 litros/);
+});
+
+test("anclarAprox: demasiado distinto, o cita muy corta, queda huérfano", () => {
+  const x = { e: "una explicación completamente distinta del tema", pre: "antes ", suf: " después" };
+  assert.equal(N.anclarTodo("antes algo no relacionado en absoluto después", x), null);
+  const corta = { e: "caudal", pre: "el ", suf: " medio" };
+  assert.equal(N.anclarTodo("el caudl medio", corta), null, "menos de 12 caracteres no se busca de forma aproximada");
+});
+
+test("anclarTodo: lo exacto manda y lo ambiguo no se adivina con la búsqueda aproximada", () => {
+  const exacto = N.anclarTodo("hola mundo cruel y duro", { e: "mundo cruel", pre: "", suf: "" });
+  assert.equal(exacto.aprox, false);
+  const x = { e: "una frase repetida igual", pre: "zzz ", suf: " zzz" };
+  assert.equal(N.anclarTodo("aaa una frase repetida igual bbb. ccc una frase repetida igual ddd.", x), null);
+});
+
+test("mejorSubcadena devuelve la distancia de edición y el tramo", () => {
+  assert.deepEqual(N.mejorSubcadena("abcdef", "xx abcdef yy"), { dist: 0, inicio: 3, fin: 9 });
+  const r = N.mejorSubcadena("abcdef", "xx abXdef yy");
+  assert.equal(r.dist, 1);
+  assert.equal("xx abXdef yy".slice(r.inicio, r.fin), "abXdef");
+});
+
+// ---- Poda de lápidas y equipos estancados ----
+
+test("podar quita solo las lápidas con más de 90 días", () => {
+  const ahora = 200 * N.MS_DIA;
+  const lista = [item("viva", 1), N.lapida(item("vieja", 1), 1), N.lapida(item("reciente", 1), ahora - 10 * N.MS_DIA)];
+  assert.deepEqual(N.podar(lista, ahora).map((i) => i.id).sort(), ["reciente", "viva"]);
+});
+
+test("sinBorradosPodados: un equipo estancado descarta lo que el remoto ya no tiene, salvo lo nuevo", () => {
+  const ahora = 500 * N.MS_DIA;
+  const ultima = 100 * N.MS_DIA;
+  const locales = [item("conocido", 50 * N.MS_DIA), item("nuevo", 300 * N.MS_DIA), item("enRemoto", 10)];
+  const remotos = [item("enRemoto", 10)];
+  assert.deepEqual(N.sinBorradosPodados(locales, remotos, ultima, ahora).map((i) => i.id).sort(), ["enRemoto", "nuevo"]);
+  // Sincronizado hace poco: no se toca nada (la lápida aún existe en el remoto)
+  assert.equal(N.sinBorradosPodados(locales, remotos, ahora - 5 * N.MS_DIA, ahora), locales);
+  assert.equal(N.sinBorradosPodados(locales, remotos, null, ahora), locales);
+});
+
+test("la sincronización poda lápidas viejas del remoto y no resucita lo borrado", async () => {
+  const llave = L.nuevaLlave();
+  const { f, estado } = githubFalso();
+  const dia = N.MS_DIA;
+  const T = 1000 * dia;
+  const vieja = N.lapida(item("borrado", 1), T - 120 * dia);
+  estado.bytes = await N.cifrarDatos([vieja, item("vivo", T - dia)], llave);
+  estado.sha = "shaInicial";
+  estado.version = 1;
+  const a = crearSinc(llave, f, { ahora: () => T });
+  await a.iniciar();
+  // Un equipo atrasado aún tiene la versión viva (t anterior a la lápida)
+  await a.aplicar(item("borrado", 0));
+  await a.sincronizar();
+  const remoto = await N.descifrarDatos(estado.bytes, llave);
+  assert.deepEqual(remoto.map((i) => i.id), ["vivo"], "la lápida vieja se podó y no quedó la versión viva");
+});
+
+test("un equipo estancado (más de 60 días) descarta lo que el remoto ya no tiene", async () => {
+  const llave = L.nuevaLlave();
+  const { f, estado } = githubFalso();
+  const almacen = S.almacenMemoria();
+  const dia = N.MS_DIA;
+  const T0 = 1000 * dia;
+  const a = crearSinc(llave, f, { almacen, ahora: () => T0 });
+  await a.iniciar();
+  await a.aplicar(item("antiguo", T0 - 5), item("otro", T0 - 4));
+  await a.sincronizar();
+  // Pasa el tiempo: el remoto podó la lápida de «antiguo» y ya no lo tiene
+  estado.bytes = await N.cifrarDatos([item("otro", T0 - 4)], llave);
+  estado.version++;
+  estado.sha = `sha${estado.version}`;
+  const b = crearSinc(llave, f, { almacen, ahora: () => T0 + 70 * dia });
+  await b.iniciar();
+  await b.aplicar(item("creado-sin-red", T0 + 69 * dia));
+  await b.sincronizar();
+  assert.deepEqual(b.items().map((i) => i.id).sort(), ["creado-sin-red", "otro"]);
+});
+
+// ---- Escritura optimista ----
+
+test("si la escritura directa da 409 se relee, se mezcla y no se pierde nada", async () => {
+  const llave = L.nuevaLlave();
+  const { f, estado } = githubFalso();
+  const a = crearSinc(llave, f);
+  await a.iniciar();
+  await a.aplicar(item("uno", 10));
+  await a.sincronizar();
+  // Otro equipo escribe; nuestro sha ya es viejo
+  estado.bytes = await N.cifrarDatos([item("uno", 10), item("ajeno", 99)], llave);
+  estado.version++;
+  estado.sha = `sha${estado.version}`;
+  await a.aplicar(item("dos", 20));
+  await a.sincronizar();
+  assert.equal(a.estado().estado, "sincronizado");
+  assert.deepEqual((await N.descifrarDatos(estado.bytes, llave)).map((i) => i.id).sort(), ["ajeno", "dos", "uno"]);
+});
+
+// ---- Rutas ----
+
+test("renombrarRutas: ruta exacta o carpeta, y los cambiados ganan la mezcla", () => {
+  const lista = [item("a", 5, { p: "viejo/pag.html" }), item("b", 5, { p: "viejo/sub/otra.html" }), item("c", 5, { p: "otro/x.html" })];
+  const exacta = N.renombrarRutas(lista, "viejo/pag.html", "nuevo/pag.html", 100);
+  assert.deepEqual(exacta.map((i) => [i.id, i.p]), [["a", "nuevo/pag.html"]]);
+  const carpeta = N.renombrarRutas(lista, "viejo/", "nuevo/", 100);
+  assert.deepEqual(carpeta.map((i) => i.p).sort(), ["nuevo/pag.html", "nuevo/sub/otra.html"]);
+  const m = N.mezclar(lista, carpeta);
+  assert.equal(m.find((i) => i.id === "a").p, "nuevo/pag.html");
+  assert.equal(m.find((i) => i.id === "c").p, "otro/x.html");
+});
+
+test("migrarRutas mueve los subrayados de una página y de una carpeta en el remoto", async () => {
+  const llave = L.nuevaLlave();
+  const { f, estado } = githubFalso();
+  estado.bytes = await N.cifrarDatos([item("a", 5, { p: "viejo/pag.html" }), item("b", 5, { p: "viejo/sub/x.html" }), item("c", 5, { p: "otro/y.html" })], llave);
+  estado.sha = "sha0";
+  estado.version = 1;
+  assert.equal(await migrarRutas({ token: "t", llave, desde: "viejo/", hasta: "nuevo/", fetch: f, ahora: () => 100 }), 2);
+  const remoto = await N.descifrarDatos(estado.bytes, llave);
+  assert.deepEqual(remoto.map((i) => [i.id, i.p]), [["a", "nuevo/pag.html"], ["b", "nuevo/sub/x.html"], ["c", "otro/y.html"]]);
+  assert.equal(await migrarRutas({ token: "t", llave, desde: "otro/y.html", hasta: "nuevo/z.html", fetch: f }), 1);
+  assert.equal(await migrarRutas({ token: "t", llave, desde: "nada/", hasta: "nuevo2/", fetch: f }), 0);
+  await assert.rejects(migrarRutas({ token: "t", llave, desde: "a/", hasta: "b", fetch: f }));
+});
+
+// ---- Varias pestañas ----
+
+// Web Locks mínimo: exclusivo por nombre, en cola
+function locksFalsos() {
+  const colas = new Map();
+  return {
+    async request(nombre, opciones, fn) {
+      const previo = colas.get(nombre) ?? Promise.resolve();
+      const mio = previo.then(() => fn());
+      colas.set(nombre, mio.catch(() => {}));
+      return mio;
+    },
+  };
+}
+
+const esperar = (ms) => new Promise((ok) => setTimeout(ok, ms));
+const docFalso = { visibilityState: "visible", addEventListener() {}, removeEventListener() {} };
+
+test("con varias pestañas solo la líder consulta y los cambios viajan por el canal", async () => {
+  const llave = L.nuevaLlave();
+  const { f, estado } = githubFalso();
+  const locks = locksFalsos();
+  const nombre = `wr-prueba-${Math.random()}`;
+  const contar = () => estado.llamadas.filter((l) => l.metodo === "GET").length;
+  const mk = () => {
+    const coordinador = crearCoordinador({ nombre, locks });
+    const s = crearSinc(llave, f, { coordinador, periodo: 25, latido: 10_000, espera: 15, temporizadores: { setTimeout, clearTimeout } });
+    return { s, coordinador };
+  };
+  const A = mk();
+  await esperar(5);
+  const B = mk();
+  try {
+    assert.equal(A.coordinador.esLider(), true);
+    assert.equal(B.coordinador.esLider(), false);
+    await A.s.iniciar();
+    await B.s.iniciar();
+    A.s.arrancar(docFalso, null);
+    B.s.arrancar(docFalso, null);
+    await esperar(200);
+    const consultasA = contar();
+    assert.ok(consultasA >= 3, `la líder consulta periódicamente (${consultasA})`);
+
+    // Un cambio en la pestaña B llega a A por el canal sin esperar a GitHub
+    await B.s.aplicar(item("desdeB", 10));
+    await esperar(30);
+    assert.ok(A.s.items().some((i) => i.id === "desdeB"));
+    await esperar(150);
+    assert.deepEqual((await N.descifrarDatos(estado.bytes, llave)).map((i) => i.id), ["desdeB"]);
+
+    // Se cierra la líder: la otra pestaña toma el relevo y sigue consultando
+    A.s.detener();
+    A.coordinador.cerrar();
+    await esperar(20);
+    assert.equal(B.coordinador.esLider(), true);
+    const antes = contar();
+    await esperar(150);
+    assert.ok(contar() > antes, "la nueva líder consulta");
+
+  } finally {
+    A.s.detener();
+    A.coordinador.cerrar();
+    B.s.detener();
+    B.coordinador.cerrar();
+  }
+});
+
+test("la pestaña no líder no consulta por su cuenta", async () => {
+  const llave = L.nuevaLlave();
+  const { f, estado } = githubFalso();
+  const locks = locksFalsos();
+  const nombre = `wr-prueba-${Math.random()}`;
+  const lider = crearCoordinador({ nombre, locks });
+  await esperar(5);
+  const seguidora = crearCoordinador({ nombre, locks });
+  const s = crearSinc(llave, f, { coordinador: seguidora, periodo: 20, latido: 10_000 });
+  await s.iniciar();
+  s.arrancar(docFalso, null);
+  await esperar(120);
+  assert.equal(estado.llamadas.length, 0);
+  s.detener();
+  seguidora.cerrar();
+  lider.cerrar();
+});
+
+test("sin Web Locks la pestaña es líder y todo funciona como antes", () => {
+  const c = crearCoordinador({ nombre: `wr-prueba-${Math.random()}`, locks: null });
+  assert.equal(c.esLider(), true);
+  c.cerrar();
+});
+
 // ---- Rama «subrayados» (herramientas/sesion.mjs) ----
 
 test("crearRama: sin rama crea un commit huérfano con subrayados.enc cifrado", async () => {
@@ -460,7 +704,7 @@ test("el módulo de subrayados no escribe el token en almacenamiento web ni lo r
   assert.doesNotMatch(fuente, /(?:local|session)Storage\.setItem\([^)]*token/i);
   assert.doesNotMatch(fuente, /console\.\w+\([^)]*token/i);
   assert.doesNotMatch(fuente, /raw\.githubusercontent\.com/);
-  for (const r of ["js/subrayados.mjs", "js/subrayados-sync.mjs", "js/subrayados-nucleo.mjs"]) {
+  for (const r of ["js/subrayados.mjs", "js/subrayados-sync.mjs", "js/subrayados-nucleo.mjs", "js/subrayados-coord.mjs"]) {
     assert.ok(!fs.readFileSync(new URL(r, RAIZ), "utf8").includes("\u2014"), `${r} tiene el guion largo`);
   }
 });

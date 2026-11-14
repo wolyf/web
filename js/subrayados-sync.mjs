@@ -17,6 +17,13 @@
 // se mezcla y se reintenta. La mezcla es por id (gana el mayor t), así que
 // ningún dispositivo pisa a otro.
 //
+// Ahorro de peticiones: la consulta sin cambios lleva If-None-Match (un 304 casi
+// no pesa ni cuenta contra el límite de GitHub), una escritura pendiente se
+// intenta directo con el `sha` conocido (si hay 409 se relee y mezcla), y con
+// varias pestañas solo la líder consulta (js/subrayados-coord.mjs). Las lápidas
+// con más de 90 días se podan; un equipo estancado más de 60 días descarta lo
+// que el remoto ya no tiene (ver js/subrayados-nucleo.mjs).
+//
 // Local: lo último conocido se guarda CIFRADO en IndexedDB (sin la sesión es
 // ilegible), junto con la marca de «cambios pendientes». Sin red se sigue
 // trabajando y se sincroniza al volver.
@@ -25,7 +32,7 @@
 // en Node sin red.
 
 import * as L from "./llaves.mjs";
-import { cifrarDatos, descifrarDatos, mezclar, iguales, canonico } from "./subrayados-nucleo.mjs";
+import { cifrarDatos, descifrarDatos, mezclar, iguales, canonico, podar, sinBorradosPodados } from "./subrayados-nucleo.mjs";
 
 export const REPO = "wolyf/web";
 export const RAMA = "subrayados";
@@ -74,14 +81,21 @@ export function clienteGitHub({ token, repo = REPO, rama = RAMA, ruta = RUTA, fe
     return r;
   }
 
+  let etag = null; // ETag de la última lectura completa y el sha al que corresponde
+  let etagSha = null;
+
   return {
     // → { sha, bytes } o { sha: null, bytes: null } si el archivo no existe.
     // Con `shaConocida` igual a la actual no baja el contenido (bytes: null, sinCambios).
     async leer(shaConocida = null) {
-      const r = await llamar(`${url}?ref=${encodeURIComponent(rama)}`, { headers: cabeceras() });
+      const extra = shaConocida && etag && etagSha === shaConocida ? { "If-None-Match": etag } : {};
+      const r = await llamar(`${url}?ref=${encodeURIComponent(rama)}`, { headers: cabeceras(extra) });
+      if (r.status === 304) return { sha: shaConocida, bytes: null, sinCambios: true };
       if (r.status === 404) return { sha: null, bytes: null };
       if (!r.ok) throw errorHttp(r.status);
+      etag = r.headers?.get?.("etag") ?? null;
       const { sha } = await r.json();
+      etagSha = sha;
       if (!sha) throw new ErrorSync("GitHub no devolvió el sha de subrayados.enc");
       if (shaConocida && sha === shaConocida) return { sha, bytes: null, sinCambios: true };
       const b = await llamar(`${API}/repos/${repo}/git/blobs/${sha}`, { headers: cabeceras() });
@@ -106,6 +120,7 @@ export function clienteGitHub({ token, repo = REPO, rama = RAMA, ruta = RUTA, fe
       }
       if (!r.ok) throw errorHttp(r.status);
       const json = await r.json();
+      etag = null;
       return { sha: json.content?.sha ?? null };
     },
   };
@@ -169,6 +184,9 @@ export function almacenIndexedDB(nombre = "wr-subrayados") {
 
 // ---- Sincronizador ----
 
+const LATIDO = 30_000;
+const MARGEN_LATIDO = 90_000;
+
 export function crearSincronizador({
   llave,
   token,
@@ -176,21 +194,26 @@ export function crearSincronizador({
   cliente = token ? clienteGitHub({ token }) : null,
   ahora = () => Date.now(),
   alCambiar = () => {},
+  coordinador = null,
   espera = ESPERA_ESCRITURA,
   periodo = PERIODO_LECTURA,
+  latido = LATIDO,
   temporizadores = { setTimeout: globalThis.setTimeout?.bind(globalThis), clearTimeout: globalThis.clearTimeout?.bind(globalThis) },
 }) {
   let items = [];
   let sha = null;
   let sucio = false;
+  let ultima = null; // última sincronización completa (ms)
   let estado = cliente ? "sincronizado" : "error";
   let detalle = cliente ? "" : "Falta el token de sincronización";
   let pendiente = null;
   let cola = Promise.resolve();
-  let reloj = null;
   let detenido = false;
+  let quitar = [];
+  let ultimaAjena = 0; // último latido de otra pestaña visible
 
   const avisar = (tipo) => alCambiar(tipo, { estado, detalle, sucio });
+  const difundir = (local = false) => coordinador?.enviar({ t: "items", items, local });
 
   function poner(nuevo, mensaje = "") {
     if (estado === nuevo && detalle === mensaje) return;
@@ -201,7 +224,7 @@ export function crearSincronizador({
 
   async function guardarLocal() {
     try {
-      await almacen.escribir({ cifrado: await cifrarDatos(items, llave), sha, sucio });
+      await almacen.escribir({ cifrado: await cifrarDatos(items, llave), sha, sucio, ultima });
     } catch {
       /* sin almacén local: solo se pierde el trabajo sin red */
     }
@@ -214,22 +237,39 @@ export function crearSincronizador({
       items = mezclar(await descifrarDatos(g.cifrado, llave));
       sha = g.sha ?? null;
       sucio = !!g.sucio;
+      ultima = g.ultima ?? null;
     } catch {
       /* caché de otra llave o dañada: se descarta */
       await almacen.borrar?.();
     }
   }
 
-  // Una ronda: leer, mezclar y, si el remoto no lo tiene todo, escribir.
+  // Una ronda: escribir lo pendiente (directo si se conoce el sha) o leer, mezclar y,
+  // si el remoto no lo tiene todo, escribir.
   async function ronda() {
     if (!cliente || detenido) return;
-    poner("sincronizando");
+    const t0 = ahora();
+    if (sucio || estado !== "sincronizado") poner("sincronizando");
     try {
+      if (sha && sucio) {
+        const r = await cliente.escribir(await cifrarDatos(podar(items, t0), llave), sha);
+        if (!r.conflicto) {
+          items = podar(items, t0);
+          sha = r.sha;
+          sucio = false;
+          ultima = t0;
+          await guardarLocal();
+          poner("sincronizado");
+          return;
+        }
+        sha = null; // el remoto cambió: a leerlo completo
+      }
       for (let intento = 0; intento < MAX_REINTENTOS; intento++) {
         const remoto = await cliente.leer(intento === 0 ? sha : null);
         if (remoto.sinCambios) {
-          // El remoto es justo lo último sincronizado: solo falta escribir lo pendiente
+          // El remoto es justo lo último sincronizado
           if (!sucio) {
+            ultima = t0;
             poner("sincronizado");
             return;
           }
@@ -237,6 +277,7 @@ export function crearSincronizador({
           if (r.conflicto) continue;
           sha = r.sha;
           sucio = false;
+          ultima = t0;
           await guardarLocal();
           poner("sincronizado");
           return;
@@ -249,19 +290,27 @@ export function crearSincronizador({
             throw new ErrorSync("No se pudo descifrar subrayados.enc con la llave del sitio");
           }
         }
-        const mezcla = mezclar(deRemoto, items);
-        const hayCambioLocal = !iguales(mezcla, items);
+        const locales = remoto.bytes ? sinBorradosPodados(items, deRemoto, ultima, t0) : items;
+        const mezcla = podar(mezclar(deRemoto, locales), t0);
+        const cambioLocal = !iguales(mezcla, items);
+        const cambio = cambioLocal || sucio || sha !== remoto.sha;
         items = mezcla;
-        const cambio = hayCambioLocal || sucio || sha !== remoto.sha;
         sha = remoto.sha;
         if (iguales(mezcla, deRemoto) && remoto.sha) {
           sucio = false;
+          ultima = t0;
           if (cambio) await guardarLocal();
-          if (hayCambioLocal) avisar("datos");
+          if (cambioLocal) {
+            avisar("datos");
+            difundir();
+          }
           poner("sincronizado");
           return;
         }
-        if (hayCambioLocal) avisar("datos");
+        if (cambioLocal) {
+          avisar("datos");
+          difundir();
+        }
         const r = await cliente.escribir(await cifrarDatos(mezcla, llave), remoto.sha);
         if (r.conflicto) {
           if (!remoto.sha && intento >= 1) throw new ErrorSync("No se pudo crear subrayados.enc: ¿existe la rama «subrayados»?");
@@ -269,6 +318,7 @@ export function crearSincronizador({
         }
         sha = r.sha;
         sucio = false;
+        ultima = t0;
         await guardarLocal();
         poner("sincronizado");
         return;
@@ -296,6 +346,22 @@ export function crearSincronizador({
     }, espera);
   }
 
+  // Elementos que llegan de otra pestaña: se mezclan; si traen algo nuevo se avisa y se
+  // vuelve a difundir (termina porque la mezcla es idempotente). Si son cambios locales
+  // de esa pestaña (`local`) esta también los escribe, por si la otra se cierra antes;
+  // el remoto lo resuelve (la segunda escritura no encuentra nada que agregar).
+  async function fusionar(lista, local = false) {
+    const mezcla = mezclar(items, lista);
+    if (iguales(mezcla, items)) return false;
+    items = mezcla;
+    if (local) sucio = true;
+    avisar("datos");
+    difundir(local);
+    await guardarLocal();
+    if (local) programar();
+    return true;
+  }
+
   return {
     // Carga la caché local (llámese antes de usar items)
     async iniciar() {
@@ -306,40 +372,73 @@ export function crearSincronizador({
     conectado: () => !!cliente,
     estado: () => ({ estado, detalle, sucio }),
 
-    // Cambio local: mezcla (el mayor t gana), guarda y programa la escritura
+    // Cambio local: mezcla (el mayor t gana), guarda, difunde y programa la escritura
     async aplicar(...nuevos) {
       const validos = nuevos.map(canonico).filter(Boolean);
       if (!validos.length) return;
       items = mezclar(items, validos);
       sucio = true;
       avisar("datos");
+      difundir(true);
       await guardarLocal();
       programar();
     },
 
+    fusionar,
     sincronizar,
 
-    // Lectura periódica con la pestaña visible, al recuperar el foco y al volver la red
+    // Lectura periódica (solo la pestaña líder, y solo si alguna pestaña está visible),
+    // al recuperar el foco y al volver la red
     arrancar(doc = globalThis.document, ventana = globalThis.window) {
-      const si = () => {
-        if (!doc || doc.visibilityState === "visible") sincronizar();
+      const visible = () => !doc || doc.visibilityState === "visible";
+      const lider = () => !coordinador || coordinador.esLider();
+      const hayAlguien = () => visible() || ahora() - ultimaAjena < MARGEN_LATIDO;
+
+      if (coordinador) {
+        quitar.push(
+          coordinador.alMensaje((m) => {
+            if (m?.t === "items" && Array.isArray(m.items)) fusionar(m.items, m.local === true);
+            else if (m?.t === "visible") ultimaAjena = ahora();
+            else if (m?.t === "sondear" && lider()) sincronizar();
+          }),
+        );
+        // Al volverse líder (p. ej. se cerró la líder anterior) se consulta enseguida
+        quitar.push(coordinador.alSerLider(() => hayAlguien() && sincronizar()));
+      }
+
+      const alVolver = () => {
+        if (!visible()) return;
+        if (lider()) sincronizar();
+        else {
+          coordinador?.enviar({ t: "visible" });
+          coordinador?.enviar({ t: "sondear" });
+        }
       };
-      if (!doc) return;
-      doc.addEventListener("visibilitychange", si);
-      ventana?.addEventListener("online", sincronizar);
-      reloj = globalThis.setInterval(si, periodo);
-      this._quitar = () => {
-        doc.removeEventListener("visibilitychange", si);
-        ventana?.removeEventListener("online", sincronizar);
+      const alVolverLaRed = () => {
+        sincronizar();
+      };
+      doc?.addEventListener?.("visibilitychange", alVolver);
+      ventana?.addEventListener?.("online", alVolverLaRed);
+      const reloj = globalThis.setInterval(() => {
+        if (lider() && hayAlguien()) sincronizar();
+      }, periodo);
+      const pulso = globalThis.setInterval(() => {
+        if (!lider() && visible()) coordinador?.enviar({ t: "visible" });
+      }, latido);
+      quitar.push(() => {
+        doc?.removeEventListener?.("visibilitychange", alVolver);
+        ventana?.removeEventListener?.("online", alVolverLaRed);
         globalThis.clearInterval(reloj);
-      };
-      si();
+        globalThis.clearInterval(pulso);
+      });
+      if (!coordinador) alVolver();
+      else if (visible() && !lider()) alVolver();
     },
 
     detener() {
       detenido = true;
       temporizadores.clearTimeout?.(pendiente);
-      this._quitar?.();
+      for (const q of quitar.splice(0)) q();
     },
   };
 }
