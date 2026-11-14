@@ -1,0 +1,61 @@
+/* Graficas interactivas del Libro 5 */
+.grafica05-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.grafica05-tip {
+  position: absolute;
+  pointer-events: none;
+  background: var(--surface);
+  color: var(--text-strong);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
+  font-size: 0.82rem;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14);
+  opacity: 0;
+  transition: opacity 0.12s ease;
+  white-space: nowrap;
+  z-index: 5;
+}
+
+.grafica05-tip.visible {
+  opacity: 1;
+}
+
+.grafica05-punto {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 2;
+  cursor: pointer;
+}
+
+.grafica05-punto:hover,
+.grafica05-punto:focus {
+  fill: var(--accent);
+  outline: none;
+}
+
+.grafica05-linea {
+  fill: none;
+  stroke: var(--text-strong);
+  stroke-width: 2.2;
+}
+
+.grafica05-reticula {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.grafica05-eje {
+  stroke: var(--border-strong);
+  stroke-width: 1.2;
+}
+
+.grafica05-etiq {
+  fill: var(--muted);
+  font-size: 11px;
+  font-family: var(--font-mono);
+}

@@ -1,0 +1,131 @@
+/* Diagramas especificos del Libro 5 (Topografia y Mecanica de Suelos) */
+
+/* Ilustracion 1.1: Actividades principales y divisiones para su estudio */
+.diag05-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 680px;
+}
+
+.diag05-rama {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6rem;
+}
+
+.diag05-rama__raiz {
+  background: var(--surface-2);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 10px;
+  padding: 0.65rem 0.9rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.diag05-rama__hijos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin-left: 1rem;
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--accent);
+}
+
+.diag05-rama__hijo {
+  position: relative;
+  background: var(--surface);
+  border: 1.5px solid var(--accent);
+  border-radius: 10px;
+  padding: 0.55rem 0.85rem;
+  font-size: 0.9rem;
+  color: var(--text);
+}
+
+.diag05-rama__hijo::before {
+  content: "";
+  position: absolute;
+  left: -0.9rem;
+  top: 50%;
+  width: 0.9rem;
+  height: 2px;
+  background: var(--accent);
+}
+
+.diag05-rama__hijo ul {
+  margin: 0.25rem 0 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.diag05-rama__hijo li::before {
+  content: "- ";
+}
+
+/* Ilustracion 1.49: Procesos implicados en el desarrollo de un MDE */
+.diag05-mde {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(150px, 1fr));
+  gap: 0.75rem 1.1rem;
+  align-items: center;
+  width: 100%;
+  max-width: 680px;
+  font-size: 0.88rem;
+}
+
+.diag05-mde__caja {
+  background: var(--surface);
+  border: 1.5px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.5rem 0.7rem;
+  text-align: center;
+  color: var(--text-strong);
+}
+
+.diag05-mde__caja--meta {
+  font-weight: 600;
+  background: var(--surface-2);
+}
+
+.diag05-mde__paso {
+  text-align: center;
+  color: var(--accent);
+  font-style: italic;
+  font-size: 0.84rem;
+}
+
+.diag05-mde__nota {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
+@media (max-width: 560px) {
+  .diag05-mde {
+    grid-template-columns: 1fr;
+    gap: 0.45rem;
+  }
+}
+
+/* Ilustraciones vectoriales del PDF en linea (.svg-pdf) */
+.svg-pdf {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: .35rem auto 0;
+  font-family: inherit;
+}
+
+.svg-pdf text { fill: var(--text-strong); }
+.svg-pdf text.xw { fill: #fff; }
+.svg-pdf .tk { stroke: var(--text-strong); }
+.svg-pdf .tg { stroke: color-mix(in srgb, var(--muted) 65%, transparent); }
+.svg-pdf .tw { stroke: var(--surface); }
+.svg-pdf .rk { fill: var(--text-strong); }
+.svg-pdf .rw { fill: var(--surface); }
+.svg-pdf .rg { fill: color-mix(in srgb, var(--muted) 55%, var(--surface)); }
+.svg-pdf .agua { fill: color-mix(in srgb, #1d8cd1 78%, var(--surface)); }
+

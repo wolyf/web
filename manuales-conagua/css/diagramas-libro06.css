@@ -1,0 +1,234 @@
+/* Diagramas específicos del Libro 6 (Diseño estructural, MAPAS):
+   - Árboles de llaves horizontales (Ilustraciones 1.1, 1.2, 1.3)
+   - Diagramas de flujo de diseño estructural y por viento (Ilustraciones 2.1, 2.2, 4.7, 4.8)
+   - Esquema de tableros de losas perimetralmente apoyadas (Ilustración 5.22) */
+
+/* --- Árboles de llaves horizontales (1.1, 1.2, 1.3) --- */
+.diag06-llaves {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  padding: 0.5rem 0;
+  overflow-x: auto;
+}
+.diag06-rama {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.diag06-nodo {
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-card);
+  background: var(--surface);
+  color: var(--text-strong);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.diag06-nodo--raiz {
+  background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent) 40%, var(--border-card));
+}
+.diag06-nodo--hoja {
+  font-weight: 400;
+  background: var(--surface-2);
+}
+.diag06-nodo--gris {
+  color: var(--muted);
+  border-style: dashed;
+  background: var(--surface-2);
+}
+.diag06-nodo--verde {
+  color: #156d3f;
+  border-color: color-mix(in srgb, #1b8a4b 45%, var(--border-card));
+  background: color-mix(in srgb, #1b8a4b 10%, var(--surface));
+}
+[data-tema="oscuro"] .diag06-nodo--verde {
+  color: #7ee2a8;
+  border-color: color-mix(in srgb, #4ade80 45%, var(--border-card));
+  background: color-mix(in srgb, #22c55e 14%, var(--surface));
+}
+.diag06-hijos {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-left: 0.85rem;
+  border-left: 2px solid var(--border-strong);
+  position: relative;
+}
+.diag06-hijos > .diag06-rama::before,
+.diag06-hijos > .diag06-nodo::before {
+  content: "";
+  display: inline-block;
+  width: 0.65rem;
+  height: 1.5px;
+  background: var(--border-strong);
+  margin-left: -0.85rem;
+  margin-right: 0.2rem;
+  vertical-align: middle;
+}
+
+/* --- Diagramas de flujo (2.1, 2.2, 4.7, 4.8) --- */
+.diag06-flujo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.84rem;
+  line-height: 1.35;
+  padding: 0.5rem 0;
+}
+.diag06-caja {
+  padding: 0.55rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--border-card);
+  background: var(--surface);
+  color: var(--text);
+  max-width: 34rem;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+.diag06-caja strong,
+.diag06-caja .diag06-tit {
+  display: block;
+  color: var(--text-strong);
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+.diag06-caja ul {
+  list-style: none;
+  margin: 0.25rem 0 0;
+  padding: 0;
+  text-align: left;
+  font-size: 0.8rem;
+}
+.diag06-caja--inicio {
+  width: auto;
+  min-width: 8rem;
+  font-weight: 700;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  border-color: color-mix(in srgb, var(--accent) 45%, var(--border-card));
+  color: var(--text-strong);
+}
+.diag06-caja--decision {
+  width: auto;
+  min-width: 14rem;
+  border: 2px solid color-mix(in srgb, var(--accent) 55%, var(--border-strong));
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  font-weight: 600;
+}
+.diag06-caja--formula {
+  background: var(--surface-2);
+  font-family: var(--font-texto);
+}
+.diag06-par {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 44rem;
+}
+.diag06-flecha {
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1;
+  user-select: none;
+}
+.diag06-rama-si-no {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 44rem;
+}
+.diag06-etq {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 4px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text-strong);
+  margin-bottom: 0.25rem;
+}
+.diag06-nota {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 0.25rem 0 0;
+  text-align: center;
+}
+
+/* --- Tableros de losas (Ilustración 5.22) --- */
+.diag06-tableros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.75rem 0;
+}
+.diag06-malla {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(5.2rem, 6.8rem));
+  gap: 3px;
+  background: var(--border-strong);
+  border: 2px solid var(--border-strong);
+  border-radius: 4px;
+}
+.diag06-tablero {
+  background: var(--surface);
+  color: var(--text-strong);
+  padding: 1.15rem 0.35rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+.diag06-tablero--int {
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  font-weight: 600;
+}
+.diag06-tablero--aislado {
+  border: 2px solid var(--border-strong);
+  border-radius: 4px;
+  padding: 1.6rem 1.4rem;
+  background: var(--surface);
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+.diag06-tablero--vacio {
+  background: var(--bg);
+  border: none;
+}
+
+/* --- Ilustraciones vectoriales del PDF en línea (.svg-pdf) --- */
+.svg-pdf {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  margin: 0.25rem auto;
+  font-family: var(--font-texto);
+}
+.svg-pdf text { fill: var(--text-strong); }
+.svg-pdf text.xw { fill: #fff; }
+.svg-pdf .tk { stroke: var(--text-strong); }
+.svg-pdf .tg { stroke: color-mix(in srgb, var(--muted) 65%, transparent); }
+.svg-pdf .tw { stroke: var(--surface); }
+.svg-pdf .rk { fill: var(--text-strong); }
+.svg-pdf .rw { fill: var(--surface); }
+.svg-pdf .rg { fill: color-mix(in srgb, var(--muted) 55%, var(--surface)); }
+.svg-pdf .ta { stroke: var(--accent); }
+.svg-pdf .ra { fill: var(--accent); }
+
+@media (max-width: 600px) {
+  .diag06-par {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,31 @@
+/* Gráficas interactivas del Libro 6 (Ilustraciones 1.5, 1.6, 3.5, 3.10, 6.3, 6.25 y 8.4).
+   Complementa ../css/graficas.css con cinco series para la Ilustración 8.4 y el foco sobre SVG. */
+
+.grafica-libro {
+  --grafica-serie-3: color-mix(in srgb, #2d9d48 85%, var(--text-strong));
+  --grafica-serie-4: color-mix(in srgb, #b84d9e 85%, var(--text-strong));
+  --grafica-serie-5: color-mix(in srgb, #2e5cb8 85%, var(--text-strong));
+}
+
+.grafica-libro .serie-3 { --c: var(--grafica-serie-3); }
+.grafica-libro .serie-4 { --c: var(--grafica-serie-4); }
+.grafica-libro .serie-5 { --c: var(--grafica-serie-5); }
+
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.grafica-svg .punto-activo {
+  stroke: var(--surface);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.grafica-svg .linea-ref {
+  stroke: color-mix(in srgb, #dc5256 75%, var(--text-strong));
+  stroke-width: 1;
+  stroke-dasharray: 4 3;
+}
