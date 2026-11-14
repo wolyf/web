@@ -180,14 +180,10 @@
   border-top: var(--grosor) solid var(--linea);
 }
 
-.diagrama--org .org__ramas > .org__nodo::after,
-.diagrama--org .org__ramas > .org__nodo > .org__tarjeta > .org__caja::before {
-  left: calc(var(--espina) - var(--sangria) - .1rem - var(--orilla));
-}
-
 .diagrama--org .org__ramas > .org__nodo::after { left: calc(var(--espina) - var(--sangria) - .1rem); }
 
 .diagrama--org .org__ramas > .org__nodo > .org__tarjeta > .org__caja::before {
+  left: calc(var(--espina) - var(--sangria) - .1rem - var(--orilla));
   width: calc(var(--sangria) + .1rem - var(--espina) + var(--orilla));
 }
 
@@ -239,19 +235,19 @@
     content: "";
     position: absolute;
     top: 0;
-    left: calc(-1 * var(--entre));
+    left: calc(-50% - var(--entre));
     box-sizing: border-box;
-    width: calc(50% + var(--entre) + var(--grosor) / 2);
+    width: calc(100% + var(--entre) + var(--grosor) / 2);
     height: var(--bajada);
     border-top: var(--grosor) solid var(--linea);
     border-right: var(--grosor) solid var(--linea);
   }
 
-  .diagrama--org .org__lista--columnas > .org__nodo:last-child::after,
-  .diagrama--org .org__lista--columnas > .org__nodo::after { content: none; }
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(n)::after { content: none; }
 
-  .diagrama--org .org__lista--columnas > .org__nodo > .org__caja::before,
-  .diagrama--org .org__lista--columnas > .org__nodo > .org__caja::after { content: none; }
+  /* Sin tramos laterales (:nth-child(n) iguala la especificidad de :last-child) */
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(n) > .org__caja::before,
+  .diagrama--org .org__lista--columnas > .org__nodo:nth-child(n) > .org__caja::after { content: none; }
 }
 
 /* Dos columnas */
