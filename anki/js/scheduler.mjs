@@ -22,6 +22,9 @@
 //   Fácil     I' = max(I_bien + 1, ⌊(I + R)·F/1000·bonoFacil⌉)  F ← F + 150
 //   Otra vez  I' = max(1, ⌊I·mLapso⌉),  F ← F − 200, a reaprender
 // (los tres intervalos usan la F anterior; F ≥ facilidadMin; I ≤ intervaloMax).
+//
+// Repasos duplicados: un repaso de una unidad en repaso, distinto de «Otra vez», que llega
+// a menos de `ventanaDuplicado` (12 h) del último efectivo no mueve la programación.
 
 export const MIN = 60_000;
 export const HORA = 3_600_000;
@@ -43,6 +46,7 @@ export const CONFIG = Object.freeze({
   repasosPorDia: 200,
   horaCorte: 4, // el «día» de estudio cambia a las 4:00 locales
   adelanto: 20 * MIN, // se muestran las de aprendizaje que vencen en menos de esto si no hay otra cosa
+  ventanaDuplicado: 12 * HORA, // ver «Repasos duplicados» en siguiente()
 });
 
 export const FASES = ["nueva", "aprendiendo", "repaso", "reaprendiendo"];
@@ -63,6 +67,12 @@ export function siguiente(e, g, ahora, cfg = CONFIG) {
     case "reaprendiendo":
       return aprender(base, g, ahora, cfg, cfg.pasosRe, true);
     case "repaso":
+      // Repasos duplicados: dos equipos que estudian sin conexión la misma unidad vencida
+      // producen dos repasos con minutos de diferencia. Aplicar ambos multiplicaría el
+      // intervalo dos veces, así que un repaso que no es «Otra vez» llegado poco después
+      // del último efectivo cuenta en el registro pero no mueve la programación. «Otra
+      // vez» siempre se aplica: olvidar es información que no debe ignorarse.
+      if (g !== 1 && e.reps > 0 && ahora - e.ultimo < cfg.ventanaDuplicado) return { ...e, alg: ALGORITMO, reps: e.reps + 1 };
       return repasar(base, g, ahora, cfg);
     default:
       throw new Error(`Fase desconocida: ${e.fase}`);

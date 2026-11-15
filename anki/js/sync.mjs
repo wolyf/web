@@ -258,10 +258,31 @@ export function crearAnki({
       return { estado: peor?.estado ?? "sincronizado", detalle: peor?.detalle ?? "", sucio: a.sucio || b.sucio };
     },
 
-    // Operaciones del dominio
-    guardarTarjeta: (x) => tarjetas.aplicar({ ...x, t: ahora() }),
-    borrarTarjeta: (id) => tarjetas.aplicar(M.lapidaTarjeta({ id }, ahora())),
-    registrarRepaso: (u, g, d) => repasos.aplicar({ u, t: ahora(), g, ...(d != null ? { d } : {}) }),
+    // Operaciones del dominio. Ninguna pierde datos en silencio:
+    //  · una tarjeta o repaso inválido LANZA un error en lugar de ignorarse;
+    //  · con el reloj atrasado, t se sube a «último conocido + 1» para que la edición,
+    //    el borrado o el repaso gane de verdad a lo anterior (en la mezcla gana el mayor t,
+    //    y un repaso con la misma clave (u, t) que otro se descartaría como duplicado).
+    async guardarTarjeta(x) {
+      if (!M.canonicoTarjeta({ ...x, b: false, t: 0 })) throw new Error("Tarjeta inválida: revisa el tipo, el frente, el reverso o los huecos del cloze");
+      const previo = tarjetas.items().find((y) => y.id === x.id);
+      const t = Math.max(ahora(), previo ? previo.t + 1 : 0);
+      await tarjetas.aplicar({ ...x, b: false, t });
+      return t;
+    },
+    async borrarTarjeta(id) {
+      const previo = tarjetas.items().find((y) => y.id === id);
+      const t = Math.max(ahora(), previo ? previo.t + 1 : 0);
+      await tarjetas.aplicar(M.lapidaTarjeta({ id }, t));
+      return t;
+    },
+    async registrarRepaso(u, g, d) {
+      if (!M.canonicoRepaso({ u, t: 0, g })) throw new Error("Repaso inválido: unidad vacía o calificación fuera de 1 a 4");
+      const ultimo = repasos.items().reduce((m, r) => (r.u === u && r.t > m ? r.t : m), -1);
+      const t = Math.max(ahora(), ultimo + 1);
+      await repasos.aplicar({ u, t, g, ...(d != null ? { d } : {}) });
+      return t;
+    },
 
     detener() {
       tarjetas.detener();

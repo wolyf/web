@@ -291,3 +291,51 @@ test("flujo completo: una tarjeta nueva entra a la cola, se repasa y sale", asyn
   await A.vaciar();
   assert.equal(A.estado().estado, "sincronizado");
 });
+
+// ---- Ninguna escritura se pierde en silencio ----
+
+test("guardar una tarjeta inválida lanza un error y no toca nada", async () => {
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), ahora: () => 5, temporizadores: SIN_TEMPORIZADOR });
+  await A.iniciar();
+  await assert.rejects(A.guardarTarjeta({ id: "x", tipo: "cloze", frente: "sin huecos" }), /inválida/);
+  await assert.rejects(A.guardarTarjeta({ id: "x", tipo: "basico", frente: "solo frente" }), /inválida/);
+  await assert.rejects(A.guardarTarjeta({ id: "x", tipo: "raro", frente: "a", reverso: "b" }), /inválida/);
+  assert.deepEqual(A.tarjetas.items(), []);
+  assert.equal(A.estado().sucio, false);
+});
+
+test("registrar un repaso inválido lanza un error", async () => {
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), ahora: () => 5, temporizadores: SIN_TEMPORIZADOR });
+  await A.iniciar();
+  await assert.rejects(A.registrarRepaso("", 3), /inválido/);
+  await assert.rejects(A.registrarRepaso("u", 7), /inválido/);
+  assert.deepEqual(A.repasos.items(), []);
+});
+
+test("con el reloj atrasado, editar y borrar siguen ganando a la versión anterior", async () => {
+  const reloj = { t: 10_000 };
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), ahora: () => reloj.t, temporizadores: SIN_TEMPORIZADOR });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a", { reverso: "v1" }));
+  reloj.t = 3_000; // el reloj retrocedió
+  await A.guardarTarjeta(basica("a", { reverso: "v2" }));
+  const tarjeta = A.tarjetas.items()[0];
+  assert.equal(tarjeta.reverso, "v2", "la edición no se descarta por tener t menor");
+  assert.ok(tarjeta.t > 10_000);
+  reloj.t = 1_000;
+  await A.borrarTarjeta("a");
+  assert.equal(A.tarjetas.items()[0].b, true, "el borrado tampoco");
+});
+
+test("repasos con el mismo reloj o con reloj atrasado no se descartan como duplicados", async () => {
+  const reloj = { t: 50_000 };
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), ahora: () => reloj.t, temporizadores: SIN_TEMPORIZADOR });
+  await A.iniciar();
+  const t1 = await A.registrarRepaso("u", 3);
+  const t2 = await A.registrarRepaso("u", 3); // mismo milisegundo
+  reloj.t = 10;
+  const t3 = await A.registrarRepaso("u", 1); // reloj atrasado
+  assert.ok(t1 < t2 && t2 < t3);
+  assert.equal(A.repasos.items().length, 3);
+  assert.equal((await A.registrarRepaso("otra", 2)) , 10, "otra unidad conserva su propio reloj");
+});
