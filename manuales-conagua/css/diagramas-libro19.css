@@ -1,0 +1,111 @@
+/* Estilos propios de diagramas para el Libro 19 (Drenaje Pluvial Urbano) */
+
+.diag-1-29 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 540px;
+  margin: 0.5rem auto;
+  font-size: 0.92rem;
+}
+
+.diag-1-29__etapa {
+  display: grid;
+  grid-template-columns: 2.2rem 1fr;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.diag-1-29__barra {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  padding: 0.5rem 0.2rem;
+  color: var(--text-strong);
+  border-left: 1px solid var(--border);
+}
+
+.diag-1-29__etapa--hidrografico .diag-1-29__barra,
+.diag-1-29__etapa--hidrografico .diag-1-29__cuerpo {
+  background: color-mix(in srgb, #b89f4d 22%, var(--surface));
+}
+
+.diag-1-29__etapa--hidrologico .diag-1-29__barra,
+.diag-1-29__etapa--hidrologico .diag-1-29__cuerpo {
+  background: color-mix(in srgb, #7fb069 20%, var(--surface));
+}
+
+.diag-1-29__etapa--hidraulico .diag-1-29__barra,
+.diag-1-29__etapa--hidraulico .diag-1-29__cuerpo {
+  background: color-mix(in srgb, #5ea8d6 20%, var(--surface));
+}
+
+.diag-1-29__etapa--ejecutivo .diag-1-29__barra,
+.diag-1-29__etapa--ejecutivo .diag-1-29__cuerpo {
+  background: color-mix(in srgb, #c774a8 20%, var(--surface));
+}
+
+.diag-1-29__cuerpo {
+  padding: 0.65rem 0.9rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  text-align: center;
+}
+
+.diag-1-29__paso {
+  color: var(--text-strong);
+  line-height: 1.3;
+}
+
+.diag-1-29__flecha {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.diag-1-29__ramas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  width: 100%;
+  margin: 0.2rem 0;
+}
+
+.diag-1-29__rama {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  border: 1px dashed var(--border);
+  border-radius: calc(var(--radius) * 0.6);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+}
+
+.diag-1-29__sep {
+  text-align: center;
+  color: var(--muted);
+  font-size: 1.1rem;
+  line-height: 0.8;
+}
+
+@media (max-width: 440px) {
+  .diag-1-29__ramas {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Evita que fórmulas KaTeX (inline-table) dentro de tablas con desplazamiento horizontal inflen scrollWidth en móvil */
+.libro__texto .tabla {
+  contain: layout;
+}
+

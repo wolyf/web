@@ -1,0 +1,77 @@
+/* Gráficas interactivas del Libro 21 (Ilustraciones 3.8, 3.16, 3.23 y 3.30).
+   Complementa ../css/graficas.css respetando claro/oscuro y el acento elegido. */
+
+.grafica-libro .perfil-terreno {
+  fill: none;
+  stroke: #b52b27;
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.grafica-libro .perfil-rasante {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.8;
+  stroke-dasharray: 5 4;
+}
+
+.grafica-libro .perfil-punto {
+  fill: var(--surface);
+  stroke: #b52b27;
+  stroke-width: 1.8;
+  cursor: pointer;
+}
+
+.grafica-libro .perfil-punto.activo,
+.grafica-libro .perfil-punto:hover {
+  fill: #b52b27;
+  r: 5;
+}
+
+.grafica-libro .perfil-etiq {
+  fill: var(--text-strong);
+  font-size: 10.5px;
+  font-weight: 600;
+}
+
+.grafica-libro .grafica-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  margin: 0.35rem 0 0.25rem;
+  font-size: 0.85rem;
+  color: var(--text);
+}
+
+.grafica-libro .leyenda-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+}
+
+.grafica-libro .leyenda-linea {
+  display: inline-block;
+  width: 20px;
+  height: 0;
+  border-top: 2.5px solid #b52b27;
+}
+
+.grafica-libro .leyenda-linea--rasante {
+  border-top: 2px dashed var(--accent);
+}
+
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
