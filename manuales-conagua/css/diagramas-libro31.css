@@ -1,0 +1,171 @@
+/* Estilos específicos para los diagramas recreados del Libro 31 (MAPAS, Conagua) */
+
+.l31-diag {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.9rem;
+  overflow-x: auto;
+}
+
+.l31-fila {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.l31-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.l31-flecha {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 1.1rem;
+  user-select: none;
+  line-height: 1;
+}
+
+.l31-caja {
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-strong);
+  font-size: 0.85rem;
+  line-height: 1.3;
+  text-align: center;
+  min-width: 110px;
+}
+
+.l31-caja--clara {
+  background: color-mix(in srgb, var(--surface) 82%, var(--accent) 18%);
+}
+
+.l31-caja--oscura {
+  background: color-mix(in srgb, var(--surface) 65%, var(--accent) 35%);
+  font-weight: 600;
+}
+
+.l31-caja--verde {
+  background: color-mix(in srgb, var(--surface) 80%, #2e7d32 20%);
+  border-color: color-mix(in srgb, var(--border-strong) 60%, #2e7d32 40%);
+}
+
+.l31-caja--azul {
+  background: color-mix(in srgb, var(--surface) 80%, #0277bd 20%);
+  border-color: color-mix(in srgb, var(--border-strong) 60%, #0277bd 40%);
+}
+
+.l31-caja--ambar {
+  background: color-mix(in srgb, var(--surface) 80%, #c77c14 20%);
+  border-color: color-mix(in srgb, var(--border-strong) 60%, #c77c14 40%);
+}
+
+/* Tren de tratamiento (Ilustración 3.1 y 3.11) */
+.l31-tren {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
+  gap: 0.7rem;
+  width: 100%;
+}
+
+.l31-etapa {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.6rem;
+  border: 1px solid var(--border-card);
+  border-radius: 8px;
+  background: var(--surface-2);
+}
+
+.l31-etapa__titulo {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-strong);
+  text-align: center;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.l31-etapa ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+
+/* Balance de DQO (Ilustración 3.21) */
+.l31-dqo-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(95px, 1fr));
+  gap: 0.55rem;
+  width: 100%;
+  min-width: 520px;
+  align-items: stretch;
+}
+
+.l31-dqo-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.l31-dqo-nota {
+  font-size: 0.78rem;
+  color: var(--muted);
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+/* Equivalencia de biogás (Ilustración A.1) */
+.l31-llave {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem 1rem;
+}
+
+.l31-llave__izq {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--text-strong);
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.l31-llave__der {
+  list-style: none;
+  margin: 0;
+  padding: 0.4rem 0 0.4rem 1rem;
+  border-left: 3px solid var(--accent);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+/* SVG en línea limpio */
+.diagrama--svg svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.diagrama--svg text {
+  fill: var(--text-strong);
+  font-family: var(--font-texto);
+}

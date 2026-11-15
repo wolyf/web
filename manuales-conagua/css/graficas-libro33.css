@@ -1,0 +1,63 @@
+/* Gráficas interactivas del Libro 33 (MAPAS, Conagua).
+   Complementa graficas.css usando únicamente variables del sitio. */
+
+.grafica-libro .serie-3 { --c: #2b8a5a; }
+.grafica-libro .serie-4 { --c: #c96b1f; }
+.grafica-libro .serie-5 { --c: #7b4fb8; }
+
+.grafica-libro .tendencia {
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+
+.grafica-libro .ecuacion-nota {
+  fill: var(--text);
+  font: 500 11.5px var(--font-mono);
+}
+
+.grafica-libro .barra-pie {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: .35rem .75rem;
+  align-items: center;
+  margin-top: .4rem;
+}
+
+.grafica-libro .barra-fondo {
+  height: 16px;
+  background: var(--surface-2);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.grafica-libro .barra-relleno {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--c, var(--accent));
+}
+
+.grafica-libro .subtitulo-graf {
+  margin: .7rem 0 .35rem;
+  font-family: var(--font-titulo);
+  font-size: .9rem;
+  font-weight: 600;
+  color: var(--text-strong);
+}
+
+.grafica-tabla-datos {
+  margin-top: .6rem;
+  font-size: .84rem;
+}
+
+.grafica-tabla-datos > summary {
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: .78rem;
+  color: var(--text-strong);
+}
+
+.grafica-tabla-datos table {
+  margin-top: .45rem;
+}
