@@ -495,3 +495,26 @@ test("las tarjetas se escriben a los 2 s de la última edición (no esperan lote
   await reloj.avanzar(1000, () => A.sincronizar());
   assert.equal(putsDe(estado, "tarjetas.enc"), 1);
 });
+
+// ---- Contrato que usa la interfaz ----
+
+test("registrarRepaso sin esperar ya deja el repaso en memoria (la respuesta no espera al guardado)", async () => {
+  let liberarGuardado;
+  const lento = {
+    async leer() { return null; },
+    async borrar() {},
+    escribir: () => new Promise((ok) => (liberarGuardado = ok)), // el almacén tarda
+  };
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), ahora: () => 100, temporizadores: SIN_TEMPORIZADOR, almacenes: { tarjetas: Y.almacenMemoria(), repasos: lento } });
+  await A.iniciar();
+  const promesa = A.registrarRepaso("u", 3, 1200);
+  assert.deepEqual(A.repasos.items().map((r) => [r.u, r.g, r.d]), [["u", 3, 1200]], "ya está en el registro, sin esperar");
+  assert.equal(A.repasos.estado().sucio, true);
+  const t2 = A.registrarRepaso("u", 4);
+  assert.equal(A.repasos.items().length, 2);
+  await new Promise((ok) => setTimeout(ok, 20));
+  liberarGuardado();
+  await new Promise((ok) => setTimeout(ok, 20));
+  liberarGuardado?.();
+  await Promise.all([promesa, t2]);
+});

@@ -11,21 +11,27 @@
   <title>Anki personal · Wolfgang Reséndiz</title>
 
   <!-- Descripción para buscadores -->
-  <meta name="description" content="Anki personal">
+  <meta name="description" content="Anki personal: tarjetas de estudio con repetición espaciada. Requiere iniciar sesión.">
 
   <!-- Ícono: la cara de Darwin (zona general) -->
   <link rel="icon" href="../img/darwin-cara.svg" type="image/svg+xml">
 
   <!-- Estilos comunes del sitio (zona general: no se editan desde este proyecto) -->
   <link rel="stylesheet" href="../css/styles.css">
+  <!-- KaTeX (copia local del sitio) para las fórmulas de las tarjetas -->
+  <link rel="stylesheet" href="../js/vendor/katex/katex.min.css">
   <!-- Estilos propios del proyecto: aquí van los ajustes y sobrescrituras -->
-  <!-- <link rel="stylesheet" href="css/anki.css"> -->
+  <link rel="stylesheet" href="css/anki.css">
 
   <!-- Tema y color de acento (zona general): sin defer, para aplicarlos antes de pintar -->
   <script src="../js/tema.js"></script>
 
   <!-- Darwin, la gatita del sitio (zona general, no se edita desde aquí) -->
   <script src="../js/darwin.js" defer></script>
+
+  <!-- KaTeX y la aplicación (módulo; mismo origen, sin scripts en línea). KaTeX va antes: ambos se difieren en orden -->
+  <script src="../js/vendor/katex/katex.min.js" defer></script>
+  <script type="module" src="js/main.mjs"></script>
 </head>
 
 <!-- class="ancho": columna de lectura (760 px). Sin ella, columna angosta (480 px). -->
@@ -48,7 +54,10 @@
   <main>
     <a class="back" href="../index.html">← Inicio</a>
 
-    <h1>Anki personal</h1>
+    <div id="anki-raiz" data-no-subrayar>
+      <h1>Anki personal</h1>
+      <noscript><p>Esta página necesita JavaScript.</p></noscript>
+    </div>
   </main>
 </body>
 </html>
