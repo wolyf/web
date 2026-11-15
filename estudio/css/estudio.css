@@ -1,0 +1,79 @@
+/* Espacio de estudio: tablero, ruta de una materia y barra de estado en cada lectura.
+   Solo variables del sitio (tema claro y oscuro, acento elegido por quien visita). */
+
+.e-barra-sup { display: flex; justify-content: flex-end; margin: 0 0 1rem; }
+
+/* Pastilla de sincronización */
+.e-sync {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font: inherit; font-family: var(--font-mono); font-size: 0.78rem;
+  color: var(--muted); background: var(--surface); border: 1px solid var(--border-card);
+  border-radius: 999px; padding: 0.3rem 0.8rem; cursor: pointer;
+}
+.e-sync { width: auto; max-width: 100%; flex: none; }
+.e-sync:hover { border-color: var(--border-strong); color: var(--text); }
+.e-punto { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--border-strong); flex: none; }
+.e-sync[data-estado="sincronizado"] .e-punto { background: #4c9a63; }
+.e-sync[data-estado="sincronizando"] .e-punto { background: var(--accent); animation: e-pulso 1s ease-in-out infinite; }
+.e-sync[data-estado="sin-conexion"] .e-punto { background: #c58a1d; }
+.e-sync[data-estado="error"] .e-punto { background: #c4473a; }
+@keyframes e-pulso { 50% { opacity: 0.35; } }
+@media (prefers-reduced-motion: reduce) { .e-sync[data-estado="sincronizando"] .e-punto { animation: none; } }
+
+/* Resumen */
+.e-resumen { margin: 0 0 2rem; }
+.e-fichas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin: 0 0 1rem; }
+.e-ficha { background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius); padding: 0.7rem 0.8rem; display: grid; gap: 0.1rem; }
+.e-ficha strong { font-family: var(--font-titulo); font-size: 1.6rem; line-height: 1.1; color: var(--text-strong); }
+.e-ficha span { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+.e-ficha[data-estado="leyendo"] strong { color: var(--accent); }
+@media (max-width: 520px) { .e-fichas { grid-template-columns: repeat(2, 1fr); } }
+
+.e-barra { height: 0.5rem; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--border); overflow: hidden; margin: 0.3rem 0; }
+.e-barra__relleno { display: block; height: 100%; background: var(--accent); border-radius: 999px; transition: width 0.3s ease; }
+@media (prefers-reduced-motion: reduce) { .e-barra__relleno { transition: none; } }
+
+.e-nota, .e-meta, .e-alcance { color: var(--muted); font-size: 0.9rem; margin: 0.2rem 0; }
+.e-meta { font-family: var(--font-mono); font-size: 0.76rem; }
+.e-alcance { font-size: 0.86rem; }
+
+/* Secciones y listas */
+.e-area, .e-seccion, .e-sigue { margin: 0 0 2rem; }
+.e-area h2, .e-seccion h2, .e-sigue h2 { font-size: 1.15rem; margin: 0 0 0.8rem; }
+.e-lista { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.5rem; }
+.e-lista li { display: flex; align-items: center; justify-content: space-between; gap: 0.8rem; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius); padding: 0.7rem 0.9rem; }
+.e-lista li > div { display: grid; gap: 0.1rem; min-width: 0; }
+
+/* Materias */
+.e-materias { display: grid; gap: 0.8rem; }
+.e-materia { display: grid; gap: 0.3rem; background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius); padding: 1rem 1.1rem; color: var(--text); text-decoration: none; transition: border-color 0.15s ease, transform 0.15s ease; }
+.e-materia:hover { border-color: var(--accent); transform: translateY(-1px); }
+.e-materia h3 { margin: 0; font-size: 1.05rem; color: var(--text-strong); }
+.e-materia p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+@media (prefers-reduced-motion: reduce) { .e-materia { transition: none; } .e-materia:hover { transform: none; } }
+
+/* Entradas de la ruta */
+.e-entrada { background: var(--surface); border: 1px solid var(--border-card); border-left: 4px solid var(--border-strong); border-radius: var(--radius); padding: 0.9rem 1rem; margin: 0 0 0.7rem; }
+.e-entrada[data-estado="leyendo"] { border-left-color: var(--accent); }
+.e-entrada[data-estado="leida"], .e-entrada[data-estado="apuntada"] { border-left-color: #4c9a63; }
+.e-entrada__cabeza { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+.e-entrada h3 { margin: 0; font-size: 1.05rem; }
+.e-acciones { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin-top: 0.6rem; }
+
+/* Controles */
+.e-estado { font: inherit; font-size: 0.88rem; color: var(--text); background: var(--surface-2); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 0.35rem 0.6rem; }
+.e-estado:disabled { opacity: 0.6; cursor: not-allowed; }
+.e-estado:focus-visible, .e-boton:focus-visible, .e-sync:focus-visible, .e-materia:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.e-boton { display: inline-block; background: var(--accent); color: var(--sobre-acento); text-decoration: none; border-radius: var(--radius); padding: 0.4rem 0.9rem; font-weight: 600; font-size: 0.9rem; }
+.e-boton:hover { filter: brightness(1.08); }
+.e-enlace { font-size: 0.88rem; }
+
+/* Barra de estado de una lectura */
+.e-lectura { margin: 0 0 1.2rem; }
+.e-lectura__titulo { font-weight: 600; color: var(--text-strong); }
+
+/* Título solo para lectores de pantalla (el texto de la lectura trae el suyo) */
+.e-solo-lectores { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.e-texto { margin-top: 1rem; }
+
+.e-progreso + .e-nota { margin-bottom: 1.8rem; }

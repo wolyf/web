@@ -21,6 +21,7 @@ El sitio se divide en **proyectos**, uno por carpeta, registrados en `proyectos.
 | `catalogo` | `catalogo/`, `.catalogo/` (privada) | `catalogo/CLAUDE.md` |
 | `manuales-conagua` | `manuales-conagua/` | `manuales-conagua/CLAUDE.md` |
 | `anki` | `anki/` | `anki/CLAUDE.md` |
+| `estudio` | `estudio/` | `estudio/CLAUDE.md` |
 
 Reglas:
 
@@ -77,7 +78,7 @@ Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la p
 | `codigo: false` | Quita el enlace «Código» a GitHub. |
 | `oculto: true` | Deja el proyecto fuera de la portada (en construcción). |
 
-`areas` (id → `nombre`, `orden`) y `tipos` (lista) se declaran al principio de `proyectos.json`: la portada agrupa menú y tarjetas por área, en su orden. Hoy hay `ingenieria`, `filosofia` y `herramientas`, y los tipos son `herramienta`, `notas`, `biblioteca`, `app` y `estudio`; agregar uno nuevo (por ejemplo para tarjetas de estudio) es solo declararlo ahí.
+`areas` (id → `nombre`, `orden`) y `tipos` (lista) se declaran al principio de `proyectos.json`: la portada agrupa menú y tarjetas por área, en su orden. Hoy hay `ingenieria`, `filosofia`, `estudio` y `herramientas`, y los tipos son `herramienta`, `notas`, `biblioteca`, `app` y `estudio`; agregar uno nuevo (por ejemplo para tarjetas de estudio) es solo declararlo ahí.
 
 `sitio.nombre`, `sitio.url` y `sitio.repositorio` son los datos generales (la URL arma `sitemap.xml`; el repositorio, los enlaces «Código»).
 
@@ -123,6 +124,10 @@ Con la sesión iniciada se puede subrayar texto en **cualquier página de cualqu
 
 - Quitar un usuario no revoca lo que ya descifró: para eso habría que cambiar $K$ y volver a sellar todo.
 - Una prueba revisa que cada `data-privado` apunte a un `.enc` existente y que `.privado/` esté ignorado.
+
+## Ideas pendientes
+
+- **Escuchar (lectura en voz alta), módulo del sitio.** Salió del paquete offline de Historia 2 (que lo traía como `<script>` en línea, algo que la CSP no permite). Hay que hacerlo como módulo de la zona general (`js/escuchar.mjs`, cargado desde `js/tema.js` como los subrayados), con un botón en cada `.ajustes` y una barra fija abajo (▶ Escuchar, ⏸ Pausa, ■ Parar, velocidad 0.75×, 1×, 1.25×, 1.5×, 2×, estado de la voz). Comportamiento del original: usa `speechSynthesis` con la voz del propio equipo (sin red ni servicios externos); prefiere `es-MX`, luego `es-CL` y `es-419`, luego cualquier `es-` que no sea `es-ES`, luego `es-ES` y por último cualquier `es`; recorre los `<p>` de la página (sin la barra ni los `.ajustes`), parte cada uno en frases con `/(?<=[.!?…:;])\s+/`, lee de una en una, marca el párrafo en curso (clase de resaltado) y lo centra con `scrollIntoView`; al terminar o parar quita la marca. Para el sitio: leer también el texto descifrado (esperar `wr:privado` y volver a juntar los párrafos), saltarse `[data-no-subrayar]`, notas al pie y `.katex-mathml`, respetar `prefers-reduced-motion` (sin desplazamiento suave), recordar velocidad y preferencia en `localStorage`, y no cargarse en páginas sin `speechSynthesis`.
 
 ## Estructura de la zona general
 
