@@ -20,6 +20,7 @@ El sitio se divide en **proyectos**, uno por carpeta, registrados en `proyectos.
 | `calculadoras` | `calculadoras/` | `calculadoras/CLAUDE.md` |
 | `catalogo` | `catalogo/`, `.catalogo/` (privada) | `catalogo/CLAUDE.md` |
 | `manuales-conagua` | `manuales-conagua/` | `manuales-conagua/CLAUDE.md` |
+| `anki` | `anki/` | `anki/CLAUDE.md` |
 
 Reglas:
 
@@ -76,7 +77,7 @@ Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la p
 | `codigo: false` | Quita el enlace «Código» a GitHub. |
 | `oculto: true` | Deja el proyecto fuera de la portada (en construcción). |
 
-`areas` (id → `nombre`, `orden`) y `tipos` (lista) se declaran al principio de `proyectos.json`: la portada agrupa menú y tarjetas por área, en su orden. Hoy hay `ingenieria`, `filosofia` y `herramientas`, y los tipos son `herramienta`, `notas`, `biblioteca` y `app`; agregar uno nuevo (por ejemplo para tarjetas de estudio) es solo declararlo ahí.
+`areas` (id → `nombre`, `orden`) y `tipos` (lista) se declaran al principio de `proyectos.json`: la portada agrupa menú y tarjetas por área, en su orden. Hoy hay `ingenieria`, `filosofia` y `herramientas`, y los tipos son `herramienta`, `notas`, `biblioteca`, `app` y `estudio`; agregar uno nuevo (por ejemplo para tarjetas de estudio) es solo declararlo ahí.
 
 `sitio.nombre`, `sitio.url` y `sitio.repositorio` son los datos generales (la URL arma `sitemap.xml`; el repositorio, los enlaces «Código»).
 
