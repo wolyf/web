@@ -1,0 +1,293 @@
+// Pruebas de la sincronización cifrada de Anki personal (anki/js/sync.mjs) con una API de GitHub simulada
+import test from "node:test";
+import assert from "node:assert/strict";
+import * as Y from "../../js/sync.mjs";
+import * as M from "../../js/modelo.mjs";
+import * as S from "../../js/scheduler.mjs";
+import * as L from "../../../js/llaves.mjs";
+
+const SIN_TEMPORIZADOR = { setTimeout: () => 0, clearTimeout: () => {} };
+
+// GitHub falso con varios archivos: contenidos (solo sha), blobs (bytes exactos) y PUT con conflicto
+function githubFalso({ rama = true, alAntesDeEscribir } = {}) {
+  const archivos = new Map(); // ruta → { bytes, sha }
+  const blobs = new Map();
+  const estado = { archivos, escrituras: [], llamadas: [], rama, enLinea: true };
+  let version = 0;
+  const res = (cuerpo, status = 200, cabeceras = {}) => ({
+    status,
+    ok: status >= 200 && status < 300,
+    json: async () => cuerpo,
+    headers: { get: (n) => cabeceras[n.toLowerCase()] ?? null },
+  });
+  const f = async (url, o = {}) => {
+    if (!estado.enLinea) throw new TypeError("Failed to fetch");
+    const metodo = o.method ?? "GET";
+    const u = new URL(url);
+    estado.llamadas.push({ metodo, ruta: u.pathname });
+    if (metodo === "GET" && u.pathname.includes("/git/blobs/")) {
+      const sha = u.pathname.split("/").pop();
+      const bytes = blobs.get(sha);
+      if (!bytes) return res({ message: "Not Found" }, 404);
+      return res({ sha, encoding: "base64", content: Buffer.from(bytes).toString("base64") });
+    }
+    const ruta = decodeURIComponent(u.pathname.split("/contents/")[1]);
+    if (metodo === "GET") {
+      const a = archivos.get(ruta);
+      if (!a) return res({ message: "Not Found" }, 404);
+      const etag = `W/"${a.sha}"`;
+      if (o.headers?.["If-None-Match"] === etag) return res({}, 304, { etag });
+      return res({ sha: a.sha }, 200, { etag });
+    }
+    if (alAntesDeEscribir) await alAntesDeEscribir(estado, ruta);
+    const cuerpo = JSON.parse(o.body);
+    if (!estado.rama) return res({ message: "Branch not found" }, 404);
+    const a = archivos.get(ruta);
+    if (a && cuerpo.sha !== a.sha) return res({ message: "conflict" }, 409);
+    if (!a && cuerpo.sha) return res({ message: "invalid" }, 422);
+    const bytes = new Uint8Array(Buffer.from(cuerpo.content, "base64"));
+    const sha = `sha${++version}`;
+    archivos.set(ruta, { bytes, sha });
+    blobs.set(sha, bytes);
+    estado.escrituras.push({ ruta, mensaje: cuerpo.message, rama: cuerpo.branch });
+    return res({ content: { sha } });
+  };
+  return { f, estado };
+}
+
+const basica = (id, extra = {}) => ({ id, tipo: "basico", frente: `¿${id}?`, reverso: `R-${id}`, ...extra });
+const dispositivo = (llave, f, reloj, extra = {}) =>
+  Y.crearAnki({ llave, token: "token-falso", fetch: f, ahora: () => reloj.t, temporizadores: SIN_TEMPORIZADOR, ...extra });
+const ids = (lista) => lista.map((x) => x.id);
+
+test("dos dispositivos convergen: tarjetas y repasos viajan cifrados por la rama anki", async () => {
+  const { f, estado } = githubFalso();
+  const llave = L.nuevaLlave();
+  const relojA = { t: 1000 };
+  const relojB = { t: 2000 };
+  const A = dispositivo(llave, f, relojA);
+  const B = dispositivo(llave, f, relojB);
+  await Promise.all([A.iniciar(), B.iniciar()]);
+
+  await A.guardarTarjeta(basica("a1", { frente: "SECRETO-A" }));
+  await A.registrarRepaso("a1", 3);
+  await A.vaciar();
+  assert.equal(A.estado().estado, "sincronizado");
+  assert.equal(A.estado().sucio, false);
+
+  await B.sincronizar();
+  assert.deepEqual(ids(B.tarjetas.items()), ["a1"]);
+  assert.equal(B.repasos.items().length, 1);
+
+  relojB.t = 5000;
+  await B.guardarTarjeta(basica("b1"));
+  await B.registrarRepaso("a1", 4);
+  await B.vaciar();
+  await A.sincronizar();
+  assert.deepEqual(ids(A.tarjetas.items()), ["a1", "b1"]);
+  assert.deepEqual(A.repasos.items().map((r) => r.g), [3, 4]);
+
+  // Nada en claro en el remoto, mensajes y rama propios
+  for (const { bytes } of estado.archivos.values()) assert.equal(Buffer.from(bytes).includes("SECRETO-A"), false);
+  assert.deepEqual([...estado.archivos.keys()].sort(), ["repasos.enc", "tarjetas.enc"]);
+  assert.ok(estado.escrituras.every((e) => e.rama === "anki"));
+  assert.ok(estado.escrituras.some((e) => e.ruta === "tarjetas.enc" && e.mensaje === "Actualiza tarjetas"));
+  assert.ok(estado.escrituras.some((e) => e.ruta === "repasos.enc" && e.mensaje === "Actualiza repasos"));
+});
+
+test("conflicto: dos equipos que estudian sin conexión no se pisan y el estado coincide", async () => {
+  const { f } = githubFalso();
+  const llave = L.nuevaLlave();
+  const relojA = { t: 1_000_000 };
+  const relojB = { t: 1_000_500 };
+  const A = dispositivo(llave, f, relojA);
+  const B = dispositivo(llave, f, relojB);
+  await Promise.all([A.iniciar(), B.iniciar()]);
+  await A.guardarTarjeta(basica("x"));
+  await A.vaciar();
+  await B.sincronizar();
+
+  // Ambos repasan la misma unidad «sin conexión» y luego sincronizan en cruz
+  relojA.t += S.DIA;
+  relojB.t += S.DIA + 60_000;
+  await A.registrarRepaso("x", 3);
+  await B.registrarRepaso("x", 1);
+  await A.vaciar();
+  await B.vaciar(); // PUT con sha viejo: 409, relee, mezcla y reintenta
+  await A.sincronizar();
+
+  assert.equal(A.repasos.items().length, 2);
+  assert.deepEqual(A.repasos.items(), B.repasos.items());
+  const a = S.reproducir(A.repasos.items());
+  const b = S.reproducir(B.repasos.items());
+  assert.deepEqual([...a.estados], [...b.estados]);
+});
+
+test("un conflicto en mitad de la escritura se resuelve sin perder el cambio ajeno", async () => {
+  let intruso;
+  const { f, estado } = githubFalso({
+    alAntesDeEscribir: async (st, ruta) => {
+      if (intruso && ruta === "repasos.enc") {
+        const hacer = intruso;
+        intruso = null;
+        await hacer();
+      }
+    },
+  });
+  const llave = L.nuevaLlave();
+  const A = dispositivo(llave, f, { t: 10 });
+  const B = dispositivo(llave, f, { t: 20 });
+  await Promise.all([A.iniciar(), B.iniciar()]);
+  await A.registrarRepaso("u", 3);
+  await A.vaciar();
+  await B.sincronizar();
+  await A.registrarRepaso("v", 2);
+  await B.registrarRepaso("w", 4);
+  intruso = async () => {
+    await B.vaciar(); // B escribe justo antes que A: el PUT de A choca
+  };
+  await A.vaciar();
+  const remotoFinal = await M.descifrarRepasos(estado.archivos.get("repasos.enc").bytes, llave);
+  assert.deepEqual(remotoFinal.map((r) => r.u).sort(), ["u", "v", "w"]);
+  assert.equal(A.estado().estado, "sincronizado");
+});
+
+test("sin conexión: lo estudiado se conserva cifrado en local y sube al volver la red", async () => {
+  const { f, estado } = githubFalso();
+  const llave = L.nuevaLlave();
+  const almacenes = { tarjetas: Y.almacenMemoria(), repasos: Y.almacenMemoria() };
+  const reloj = { t: 100 };
+  const A = dispositivo(llave, f, reloj, { almacenes });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a"));
+  await A.vaciar();
+
+  estado.enLinea = false;
+  reloj.t = 200;
+  await A.registrarRepaso("a", 3);
+  await A.vaciar();
+  assert.equal(A.estado().estado, "sin-conexion");
+  assert.equal(A.estado().sucio, true);
+
+  // La pestaña se cierra y se reabre sin red: el repaso sigue ahí
+  const A2 = dispositivo(llave, f, reloj, { almacenes });
+  await A2.iniciar();
+  assert.equal(A2.repasos.items().length, 1);
+  assert.equal(A2.estado().sucio, true);
+
+  estado.enLinea = true;
+  await A2.sincronizar();
+  assert.equal(A2.estado().estado, "sincronizado");
+  assert.equal(A2.estado().sucio, false);
+  const remoto = await M.descifrarRepasos(estado.archivos.get("repasos.enc").bytes, llave);
+  assert.equal(remoto.length, 1);
+});
+
+test("el almacén local está cifrado: otra llave lo descarta y no lo lee", async () => {
+  const { f } = githubFalso();
+  const almacenes = { tarjetas: Y.almacenMemoria(), repasos: Y.almacenMemoria() };
+  const A = dispositivo(L.nuevaLlave(), f, { t: 1 }, { almacenes, token: null, clientes: {} });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a", { frente: "SECRETO-LOCAL" }));
+  const guardado = await almacenes.tarjetas.leer();
+  assert.equal(Buffer.from(guardado.cifrado).includes("SECRETO-LOCAL"), false);
+  const otra = dispositivo(L.nuevaLlave(), f, { t: 2 }, { almacenes, token: null });
+  await otra.iniciar();
+  assert.deepEqual(otra.tarjetas.items(), [], "con otra llave se descarta");
+  assert.equal(await almacenes.tarjetas.leer(), null);
+});
+
+test("rama inexistente: error claro con el nombre de la rama, sin perder lo local", async () => {
+  const { f } = githubFalso({ rama: false });
+  const A = dispositivo(L.nuevaLlave(), f, { t: 1 });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a"));
+  await A.vaciar();
+  const e = A.estado();
+  assert.equal(e.estado, "error");
+  assert.match(e.detalle, /anki/);
+  assert.equal(e.sucio, true);
+  assert.deepEqual(ids(A.tarjetas.items()), ["a"]);
+});
+
+test("una llave distinta no puede leer el remoto y no lo sobrescribe", async () => {
+  const { f, estado } = githubFalso();
+  const A = dispositivo(L.nuevaLlave(), f, { t: 1 });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a"));
+  await A.vaciar();
+  const antes = estado.archivos.get("tarjetas.enc").sha;
+  const intruso = dispositivo(L.nuevaLlave(), f, { t: 2 });
+  await intruso.iniciar();
+  await intruso.guardarTarjeta(basica("z"));
+  await intruso.vaciar();
+  assert.equal(intruso.estado().estado, "error");
+  assert.match(intruso.estado().detalle, /descifrar/);
+  assert.equal(estado.archivos.get("tarjetas.enc").sha, antes, "el archivo remoto no cambió");
+});
+
+test("sin token: estado de error explícito y todo sigue funcionando en local", async () => {
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), ahora: () => 5, temporizadores: SIN_TEMPORIZADOR });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a"));
+  await A.sincronizar();
+  assert.equal(A.estado().estado, "error");
+  assert.match(A.estado().detalle, /token/);
+  assert.equal(A.tarjetas.items().length, 1);
+});
+
+test("borrar deja lápida que gana a la versión anterior en otros equipos", async () => {
+  const { f } = githubFalso();
+  const llave = L.nuevaLlave();
+  const relojA = { t: 10 };
+  const relojB = { t: 10 };
+  const A = dispositivo(llave, f, relojA);
+  const B = dispositivo(llave, f, relojB);
+  await Promise.all([A.iniciar(), B.iniciar()]);
+  await A.guardarTarjeta(basica("a"));
+  await A.vaciar();
+  await B.sincronizar();
+  relojA.t = 50;
+  await A.borrarTarjeta("a");
+  await A.vaciar();
+  await B.sincronizar();
+  assert.equal(B.tarjetas.items()[0].b, true);
+  assert.deepEqual(M.unidadesDeTodas(B.tarjetas.items()), []);
+});
+
+test("las lecturas sin cambios usan If-None-Match (304) y no bajan el blob", async () => {
+  const { f, estado } = githubFalso();
+  const llave = L.nuevaLlave();
+  const A = dispositivo(llave, f, { t: 1 });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a"));
+  await A.vaciar();
+  await A.sincronizar();
+  const blobsAntes = estado.llamadas.filter((c) => c.ruta.includes("/git/blobs/")).length;
+  await A.sincronizar();
+  await A.sincronizar();
+  assert.equal(estado.llamadas.filter((c) => c.ruta.includes("/git/blobs/")).length, blobsAntes);
+});
+
+test("flujo completo: una tarjeta nueva entra a la cola, se repasa y sale", async () => {
+  const { f } = githubFalso();
+  const llave = L.nuevaLlave();
+  const reloj = { t: Date.UTC(2026, 10, 15, 12) };
+  const A = dispositivo(llave, f, reloj);
+  await A.iniciar();
+  await A.guardarTarjeta({ id: M.idNuevo(reloj.t), tipo: "cloze", frente: "La {{c1::UNAM}} se fundó en {{c2::1910}}", etiquetas: ["historia::mexico"] });
+  const unidades = () => M.unidadesDeTodas(A.tarjetas.items()).map((u) => u.uid);
+  const cola = () => {
+    const { estados, eventos } = S.reproducir(A.repasos.items());
+    return S.cola({ unidades: unidades(), estados, eventos, ahora: reloj.t });
+  };
+  assert.equal(cola().nuevas.length, 2);
+  const primera = cola().orden[0];
+  await A.registrarRepaso(primera, 3);
+  reloj.t += 10 * S.MIN;
+  await A.registrarRepaso(primera, 3);
+  assert.equal(cola().orden.includes(primera), false, "graduada a 1 día: ya no toca hoy");
+  assert.equal(cola().nuevas.length, 1);
+  await A.vaciar();
+  assert.equal(A.estado().estado, "sincronizado");
+});

@@ -20,6 +20,7 @@ El sitio se divide en **proyectos**, uno por carpeta, registrados en `proyectos.
 | `calculadoras` | `calculadoras/` | `calculadoras/CLAUDE.md` |
 | `catalogo` | `catalogo/`, `.catalogo/` (privada) | `catalogo/CLAUDE.md` |
 | `manuales-conagua` | `manuales-conagua/` | `manuales-conagua/CLAUDE.md` |
+| `anki` | `anki/` | `anki/CLAUDE.md` |
 
 Reglas:
 

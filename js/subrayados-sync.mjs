@@ -62,7 +62,7 @@ const deBase64 = (texto) => Uint8Array.from(atob(texto.replace(/\s+/g, "")), (c)
 
 // ---- Cliente de la API ----
 
-export function clienteGitHub({ token, repo = REPO, rama = RAMA, ruta = RUTA, fetch: f = globalThis.fetch.bind(globalThis) }) {
+export function clienteGitHub({ token, repo = REPO, rama = RAMA, ruta = RUTA, mensaje = "Actualiza subrayados", fetch: f = globalThis.fetch.bind(globalThis) }) {
   const url = `${API}/repos/${repo}/contents/${ruta}`;
   const cabeceras = (extra = {}) => ({
     Accept: "application/vnd.github+json",
@@ -92,14 +92,14 @@ export function clienteGitHub({ token, repo = REPO, rama = RAMA, ruta = RUTA, fe
       const r = await llamar(`${url}?ref=${encodeURIComponent(rama)}`, { headers: cabeceras(extra) });
       if (r.status === 304) return { sha: shaConocida, bytes: null, sinCambios: true };
       if (r.status === 404) return { sha: null, bytes: null };
-      if (!r.ok) throw errorHttp(r.status);
+      if (!r.ok) throw errorHttp(r.status, rama);
       etag = r.headers?.get?.("etag") ?? null;
       const { sha } = await r.json();
       etagSha = sha;
-      if (!sha) throw new ErrorSync("GitHub no devolvió el sha de subrayados.enc");
+      if (!sha) throw new ErrorSync(`GitHub no devolvió el sha de ${ruta}`);
       if (shaConocida && sha === shaConocida) return { sha, bytes: null, sinCambios: true };
       const b = await llamar(`${API}/repos/${repo}/git/blobs/${sha}`, { headers: cabeceras() });
-      if (!b.ok) throw errorHttp(b.status);
+      if (!b.ok) throw errorHttp(b.status, rama);
       const blob = await b.json();
       if (blob.encoding !== "base64" || typeof blob.content !== "string") throw new ErrorSync("Respuesta inesperada de GitHub al leer el blob");
       return { sha, bytes: deBase64(blob.content) };
@@ -107,7 +107,7 @@ export function clienteGitHub({ token, repo = REPO, rama = RAMA, ruta = RUTA, fe
 
     // → { conflicto: true } si hay que releer; si no, { sha } nuevo
     async escribir(bytes, sha) {
-      const cuerpo = { message: "Actualiza subrayados", content: aBase64(bytes), branch: rama };
+      const cuerpo = { message: mensaje, content: aBase64(bytes), branch: rama };
       if (sha) cuerpo.sha = sha;
       const r = await llamar(url, {
         method: "PUT",
@@ -118,7 +118,7 @@ export function clienteGitHub({ token, repo = REPO, rama = RAMA, ruta = RUTA, fe
         // 422 también es «la rama no existe»: se distingue al reintentar (la lectura da 404)
         return { conflicto: true, estado: r.status };
       }
-      if (!r.ok) throw errorHttp(r.status);
+      if (!r.ok) throw errorHttp(r.status, rama);
       const json = await r.json();
       etag = null;
       return { sha: json.content?.sha ?? null };
@@ -126,10 +126,10 @@ export function clienteGitHub({ token, repo = REPO, rama = RAMA, ruta = RUTA, fe
   };
 }
 
-function errorHttp(estado) {
+function errorHttp(estado, rama = RAMA) {
   if (estado === 401) return new ErrorSync("El token de GitHub no es válido o venció (401)");
   if (estado === 403) return new ErrorSync("GitHub rechazó la petición: permisos o límite de uso (403)");
-  if (estado === 404) return new ErrorSync("No se encontró la rama «subrayados» o el repositorio (404)");
+  if (estado === 404) return new ErrorSync(`No se encontró la rama «${rama}» o el repositorio (404)`);
   return new ErrorSync(`GitHub respondió ${estado}`);
 }
 

@@ -23,7 +23,8 @@
     "herramienta",
     "notas",
     "biblioteca",
-    "app"
+    "app",
+    "estudio"
   ],
   "proyectos": {
     "calculadoras": {
@@ -79,6 +80,25 @@
         "normativa",
         "biblioteca"
       ]
+    },
+    "anki": {
+      "nombre": "Anki personal",
+      "carpetas": [
+        "anki"
+      ],
+      "corto": "Anki",
+      "inicio": "anki/",
+      "descripcion": "Tarjetas de estudio con repetición espaciada, creadas desde mis subrayados. Requiere usuario y contraseña; los datos se publican cifrados.",
+      "anio": 2026,
+      "icono": "🧠",
+      "area": "herramientas",
+      "tipo": "estudio",
+      "etiquetas": [
+        "estudio",
+        "repetición espaciada"
+      ],
+      "oculto": true,
+      "privado": true
     }
   }
 }
