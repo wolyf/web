@@ -88,6 +88,7 @@ export function crearArchivo({
       try {
         do {
           repetir = false;
+          if (detenido) break; // pestaña sin el control o sesión cerrada: la caché es de quien siga activo
           try {
             const foto = { lista: items, sha, sucio, ultima };
             await almacen.escribir({ cifrado: await cifrar(foto.lista, llave), sha: foto.sha, sucio: foto.sucio, ultima: foto.ultima });
@@ -119,6 +120,7 @@ export function crearArchivo({
 
   // `v` es la versión que llevaba la escritura: si llegó algo después, sigue pendiente
   async function confirmar(r, t0, v) {
+    if (detenido) return;
     sha = r.sha;
     sucio = version !== v;
     sucioDesde = sucio ? ahora() : 0;
@@ -218,6 +220,7 @@ export function crearArchivo({
 
     // Cambio local: se mezcla al instante, se guarda y se programa la escritura
     async aplicar(...nuevos) {
+      if (detenido) throw new Error("La sincronización está detenida (otra pestaña tiene el control o se cerró la sesión): el cambio no se guardó");
       const { lista, cambio } = incorporar(items, nuevos);
       if (!cambio) return;
       items = lista;

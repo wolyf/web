@@ -518,3 +518,70 @@ test("registrarRepaso sin esperar ya deja el repaso en memoria (la respuesta no 
   liberarGuardado?.();
   await Promise.all([promesa, t2]);
 });
+
+// ---- Una pestaña detenida no escribe más ----
+
+test("tras detener(), el guardado en cola no escribe en la caché compartida", async () => {
+  let liberar;
+  const puerta = new Promise((ok) => (liberar = ok));
+  let escrituras = 0;
+  const almacen = {
+    async leer() { return null; },
+    async borrar() {},
+    async escribir() {
+      escrituras++;
+      await puerta;
+    },
+  };
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), ahora: () => 5, temporizadores: SIN_TEMPORIZADOR, almacenes: { tarjetas: Y.almacenMemoria(), repasos: almacen } });
+  await A.iniciar();
+  const p1 = A.registrarRepaso("a", 3); // empieza a escribir y se queda en la puerta
+  await new Promise((ok) => setTimeout(ok, 20));
+  const p2 = A.registrarRepaso("b", 3); // queda en cola para una segunda copia
+  A.detener(); // la pestaña pierde el control o se cierra la sesión
+  liberar();
+  await Promise.all([p1, p2]);
+  assert.equal(escrituras, 1, "solo la que ya estaba en curso: la segunda copia no debe escribirse");
+});
+
+test("tras detener(), una escritura en vuelo no toca la caché ni cambia el estado", async () => {
+  let liberar;
+  let avisarEnVuelo;
+  const enVuelo = new Promise((ok) => (avisarEnVuelo = ok));
+  const puerta = new Promise((ok) => (liberar = ok));
+  let armada = false;
+  const { f } = githubFalso({
+    alAntesDeEscribir: async (st, ruta) => {
+      if (armada && ruta === "repasos.enc") {
+        armada = false;
+        avisarEnVuelo();
+        await puerta;
+      }
+    },
+  });
+  let escriturasLocales = 0;
+  const base = Y.almacenMemoria();
+  const almacen = { leer: () => base.leer(), borrar: () => base.borrar(), escribir: async (v) => { escriturasLocales++; return base.escribir(v); } };
+  const A = dispositivo(L.nuevaLlave(), f, { t: 1000 }, { almacenes: { tarjetas: Y.almacenMemoria(), repasos: almacen } });
+  await A.iniciar();
+  await A.registrarRepaso("u", 3);
+  await A.repasos.sincronizar(); // deja el sha conocido
+  await A.registrarRepaso("v", 3);
+  armada = true;
+  const subida = A.repasos.sincronizar();
+  await enVuelo;
+  const antes = escriturasLocales;
+  A.detener();
+  liberar();
+  await subida;
+  assert.equal(escriturasLocales, antes, "no debe escribir la caché tras detener()");
+});
+
+test("tras detener(), aplicar avisa con un error en lugar de perder el cambio en silencio", async () => {
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), ahora: () => 5, temporizadores: SIN_TEMPORIZADOR });
+  await A.iniciar();
+  A.detener();
+  await assert.rejects(A.registrarRepaso("a", 3), /detenida/);
+  await assert.rejects(A.guardarTarjeta(basica("a")), /detenida/);
+  assert.deepEqual(A.repasos.items(), []);
+});

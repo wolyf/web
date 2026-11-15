@@ -246,6 +246,7 @@ async function escenario(chromium, base, nombre, ventana, acceso) {
     igual(await cuenta(p, "nuevas"), 3, "nuevas = 1 básica + 2 huecos");
     afirmar((await texto(p, ".anki-aviso")).includes("guardada"), "falta el aviso de guardado");
     await sinBasura(p, "inicio con tarjetas");
+    await guardar(p, "05-inicio-con-tarjetas");
   });
 
   let repasosAntes = 0; // commits de repasos.enc antes de estudiar (incluye la creación inicial del archivo vacío)
@@ -316,6 +317,14 @@ async function escenario(chromium, base, nombre, ventana, acceso) {
     afirmar((await texto(p, ".anki-acciones")).includes("Tarjetas (4)"), `esperaba 4 tarjetas: ${await texto(p, ".anki-acciones")}`);
   });
 
+  await paso("un segundo aviso de sesión activa no deja la pestaña bloqueada por sí misma", async () => {
+    // sesion.entrar() avisa siempre: la interfaz recibe «activa» de nuevo estando ya conectada
+    await p.evaluate(([u, c]) => window.WRSesion.entrar(u, c, true), [USUARIO, CONTRASENA]);
+    await p.waitForTimeout(600);
+    igual(await p.locator(".anki-vista").getAttribute("data-vista"), "inicio", "vista tras un segundo «activa»");
+    afirmar((await texto(p, ".anki-acciones")).includes("Tarjetas (4)"), "las tarjetas deben seguir visibles");
+  });
+
   await paso("un equipo nuevo recibe lo sincronizado desde la API", async () => {
     await p.locator("button", { hasText: "Sincronizar" }).click();
     await p.waitForFunction(() => document.querySelector(".anki-estado")?.dataset.estado === "sincronizado");
@@ -338,8 +347,24 @@ async function escenario(chromium, base, nombre, ventana, acceso) {
     await p.waitForFunction(() => document.querySelector(".anki-estado")?.dataset.estado === "sincronizado" && !/pendientes/.test(document.querySelector(".anki-estado").textContent), null, { timeout: 15000 });
   });
 
-  await paso("buscar sin acentos, editar y eliminar con confirmación", async () => {
+  await paso("editar: el tipo queda fijo y quitar un hueco con historial pide confirmación", async () => {
     await p.locator("button", { hasText: /^Tarjetas \(/ }).click();
+    await p.locator("#anki-buscador").fill("razón");
+    await p.waitForFunction(() => document.querySelectorAll(".anki-fila").length === 1);
+    await guardar(p, "06-lista");
+    await p.locator(".anki-fila-boton").first().click();
+    afirmar(await p.locator("#anki-tipo").isDisabled(), "el tipo debe estar fijo al editar");
+    await p.locator("#anki-frente").fill("La {{c1::$\\frac{a}{b}$}} razón");
+    await p.locator('.anki-formulario button[type="submit"]').click();
+    afirmar((await texto(p, ".anki-error")).includes("historial"), "falta el aviso al quitar el hueco c2");
+    igual(await p.locator(".anki-vista").getAttribute("data-vista"), "editor", "sigue en el editor hasta confirmar");
+    await p.locator('.anki-formulario button[type="submit"]').click();
+    await p.locator('.anki-vista[data-vista="tarjetas"]').waitFor();
+    await p.locator("#anki-buscador").fill("");
+    await p.waitForFunction(() => document.querySelectorAll(".anki-fila").length === 5);
+  });
+
+  await paso("buscar sin acentos, editar y eliminar con confirmación", async () => {
     const filas = (n) => p.waitForFunction((esperadas) => document.querySelectorAll(".anki-fila").length === esperadas, n);
     await filas(5); // cloze, básica, uno, dos y la creada sin conexión
     await p.locator("#anki-buscador").fill("POTENCIA");
@@ -359,13 +384,28 @@ async function escenario(chromium, base, nombre, ventana, acceso) {
     await filas(4); // era 5: la eliminada ya no aparece
   });
 
-  await paso("una sola pestaña activa: la segunda avisa y puede tomar el control", async () => {
+  await paso("una sola pestaña activa: no se bloquea sola, la segunda avisa, toma el control y se recupera", async () => {
     await p.locator("button", { hasText: "Volver" }).first().click();
+    const vistaDe = (pagina) => pagina.locator(".anki-vista").getAttribute("data-vista");
     const q = await abrirPagina(contexto, base, vigilancia);
     await q.locator('.anki-vista[data-vista="bloqueada"]').waitFor({ timeout: 10_000 });
+    await guardar(q, "07-bloqueada");
+    igual(await vistaDe(p), "inicio", "la pestaña activa no debe bloquearse al abrir otra");
+    // otra página del sitio con la sesión recordada: tampoco debe afectarle
+    const portada = await contexto.newPage();
+    await portada.goto(`${base}/index.html`);
+    await portada.locator('html[data-sesion="activa"]').waitFor();
+    await portada.waitForTimeout(500);
+    igual(await vistaDe(p), "inicio", "abrir la portada con sesión no debe bloquear la pestaña activa");
+    await portada.close();
+    // q toma el control; p queda bloqueada
     await q.locator("button", { hasText: "Usar aquí" }).click();
     await q.locator('.anki-vista[data-vista="inicio"]').waitFor({ timeout: 10_000 });
     await p.locator('.anki-vista[data-vista="bloqueada"]').waitFor({ timeout: 10_000 });
+    // y p lo recupera
+    await p.locator("button", { hasText: "Usar aquí" }).click();
+    await p.locator('.anki-vista[data-vista="inicio"]').waitFor({ timeout: 10_000 });
+    await q.locator('.anki-vista[data-vista="bloqueada"]').waitFor({ timeout: 10_000 });
     await q.close();
   });
 

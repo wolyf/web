@@ -57,6 +57,7 @@ export function montar(raiz, deps = {}) {
   let vista = "sin-sesion";
   let soltarBloqueo = null;
   let tengoBloqueo = false;
+  let epocaBloqueo = 0; // cada adquisición tiene la suya: un rechazo viejo no puede afectar a la actual
   let reloj = null;
   const est = { filtro: "", prep: null, uid: null, revelada: false, desde: 0, reveladaEn: 0, ultimoId: null, hechas: 0 };
   const ed = { id: null, tipo: "basico", retorno: "inicio" };
@@ -336,7 +337,7 @@ export function montar(raiz, deps = {}) {
     const lista = h("datalist", { id: "anki-lista-etiquetas" }, etiquetasUsadas.map((e) => h("option", { value: e })));
     const tipo = h(
       "select",
-      { id: "anki-tipo", clase: "anki-select", "aria-label": "Tipo de tarjeta" },
+      { id: "anki-tipo", clase: "anki-select", "aria-label": "Tipo de tarjeta", disabled: !!t, title: t ? "El tipo no se puede cambiar al editar: se perdería el historial de repaso" : null },
       h("option", { value: "basico", selected: ed.tipo === "basico" }, "Básica (frente y reverso)"),
       h("option", { value: "cloze", selected: ed.tipo === "cloze" }, "Cloze (huecos)"),
     );
@@ -345,8 +346,10 @@ export function montar(raiz, deps = {}) {
     const previa = h("div", { clase: "anki-previa", "aria-label": "Vista previa", "aria-live": "off" });
     const error = h("p", { clase: "anki-error", role: "alert", hidden: true });
 
+    let confirmaQuitar = false;
     const actualizar = () => {
       error.hidden = true; // el aviso de error se va en cuanto se corrige algo
+      confirmaQuitar = false;
       const esCloze = tipo.value === "cloze";
       ed.tipo = tipo.value;
       etiquetaFrente.textContent = esCloze ? "Texto con huecos" : "Frente";
@@ -379,6 +382,17 @@ export function montar(raiz, deps = {}) {
       error.hidden = !problema;
       error.textContent = problema;
       if (problema) return;
+      // Quitar un hueco de un cloze deja sin uso el historial de esa unidad: se pide confirmación
+      if (t?.tipo === "cloze" && !confirmaQuitar) {
+        const quedan = new Set(M.numerosCloze(datos.frente));
+        const quitados = M.numerosCloze(t.frente).filter((n) => !quedan.has(n) && anki.repasos.items().some((r) => r.u === M.uidDe(t.id, n)));
+        if (quitados.length) {
+          confirmaQuitar = true;
+          error.hidden = false;
+          error.textContent = `Quitas ${quitados.length === 1 ? "el hueco" : "los huecos"} ${quitados.map((n) => `c${n}`).join(", ")}: su historial de repaso quedará sin uso. Pulsa Guardar otra vez para confirmar.`;
+          return;
+        }
+      }
       const base = t ?? { id: M.idNuevo(ahora()) };
       try {
         await anki.guardarTarjeta({ ...base, ...datos, reverso: datos.reverso, etiquetas: E.parsearEtiquetas(etiquetas.value) });
@@ -499,8 +513,11 @@ export function montar(raiz, deps = {}) {
     }
   }
 
-  const resumenTexto = (t) => {
-    const plano = R.partirMath(t).map((s) => s.v).join("").replace(/\{\{c\d+::(.*?)(?:::.*?)?\}\}/gs, "[$1]").replace(/\s+/g, " ").trim();
+  // Una línea para la lista: el texto como se escribió, con cada hueco cloze como [respuesta]
+  const resumenTexto = (texto) => {
+    let plano = String(texto);
+    for (const h of M.huecosCloze(plano).reverse()) plano = `${plano.slice(0, h.inicio)}[${h.respuesta}]${plano.slice(h.fin)}`;
+    plano = plano.replace(/\s+/g, " ").trim();
     return plano.length > 140 ? `${plano.slice(0, 140)}…` : plano;
   };
 
@@ -541,6 +558,7 @@ export function montar(raiz, deps = {}) {
       tengoBloqueo = true;
       return Promise.resolve(true);
     }
+    const mia = ++epocaBloqueo;
     return new Promise((resolver) => {
       const opciones = robar ? { steal: true } : { ifAvailable: true };
       locks
@@ -559,8 +577,8 @@ export function montar(raiz, deps = {}) {
           });
         })
         .catch(() => {
-          // Nos lo robó otra pestaña: dejamos de escribir
-          if (tengoBloqueo) perderBloqueo();
+          // Nos lo robó otra pestaña: dejamos de escribir (solo si este rechazo es de la adquisición vigente)
+          if (mia === epocaBloqueo && tengoBloqueo) perderBloqueo();
         });
     }).then((ok) => {
       if (ok && robar) conectarDatos();
@@ -630,9 +648,19 @@ export function montar(raiz, deps = {}) {
     }, periodoSync);
   }
 
-  async function conectar() {
+  // Las conexiones se encadenan: sesion.entrar() avisa siempre, así que puede llegar un segundo
+  // «activa» estando ya conectados, o dos seguidos. Cada una espera a la anterior y, si esta
+  // pestaña ya tiene el bloqueo, no lo vuelve a pedir (se bloquearía a sí misma).
+  let conectando = Promise.resolve();
+  function conectar() {
+    conectando = conectando.then(hacerConexion, hacerConexion);
+    return conectando;
+  }
+
+  async function hacerConexion() {
+    if (!sesion.activa()) return;
     pararDatos();
-    const ok = await tomarBloqueo(false);
+    const ok = tengoBloqueo || (await tomarBloqueo(false));
     if (!sesion.activa()) {
       // La sesión se cerró mientras esperábamos el bloqueo
       soltarBloqueo?.();
@@ -645,6 +673,7 @@ export function montar(raiz, deps = {}) {
 
   function desconectar() {
     pararDatos();
+    epocaBloqueo++;
     soltarBloqueo?.();
     tengoBloqueo = false;
     est.prep = null;
