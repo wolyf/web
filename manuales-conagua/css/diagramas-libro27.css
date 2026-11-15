@@ -1,0 +1,195 @@
+/* Diagramas y planos del Libro 27 (MAPAS, Conagua). */
+
+.l27-diag {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.l27-diag svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0 auto;
+}
+
+.l27-diag svg text {
+  fill: var(--text-strong);
+  font-family: var(--font-texto);
+}
+
+.l27-diag svg .l27-muted {
+  fill: var(--muted);
+}
+
+.l27-diag svg .l27-stroke {
+  stroke: var(--text-strong);
+  fill: none;
+}
+
+.l27-diag svg .l27-soft {
+  stroke: var(--border-strong);
+  fill: none;
+}
+
+/* Ilustración 5.2: árbol metodológico */
+.l27-arbol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 540px;
+  padding: 0.5rem 0.25rem;
+}
+
+.l27-nodo {
+  padding: 0.35rem 0.7rem;
+  border-radius: 6px;
+  border: 1.5px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-strong);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-align: center;
+  line-height: 1.25;
+}
+
+.l27-nodo--morado { background: color-mix(in srgb, #9d4edd 22%, var(--surface)); border-color: color-mix(in srgb, #9d4edd 55%, var(--border-strong)); }
+.l27-nodo--azul { background: color-mix(in srgb, #0284c7 22%, var(--surface)); border-color: color-mix(in srgb, #0284c7 55%, var(--border-strong)); }
+.l27-nodo--azul2 { background: color-mix(in srgb, #0284c7 14%, var(--surface)); border-color: color-mix(in srgb, #0284c7 45%, var(--border-strong)); font-weight: 500; }
+.l27-nodo--verde { background: color-mix(in srgb, #16a34a 22%, var(--surface)); border-color: color-mix(in srgb, #16a34a 55%, var(--border-strong)); }
+.l27-nodo--verde2 { background: color-mix(in srgb, #16a34a 14%, var(--surface)); border-color: color-mix(in srgb, #16a34a 45%, var(--border-strong)); font-weight: 500; }
+
+.l27-rama {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+}
+
+.l27-metodo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding-top: 0.4rem;
+  border-top: 2px solid var(--border-strong);
+}
+
+.l27-opciones {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.45rem;
+  width: 100%;
+}
+
+.l27-opcion {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.35rem;
+}
+
+.l27-opcion .l27-nodo + .l27-nodo {
+  position: relative;
+}
+
+/* Ilustración 2.3: digestión anaerobia */
+.l27-flujo-v {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0;
+}
+
+.l27-caja {
+  padding: 0.45rem 0.85rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-strong);
+  text-align: center;
+  font-size: 0.86rem;
+  max-width: 520px;
+}
+
+.l27-caja small {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-top: 0.15rem;
+}
+
+.l27-flecha-v {
+  font-size: 0.8rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.l27-dos-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Ilustraciones 5.3 y 5.4: trenes de lagunas */
+.l27-trenes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-width: 520px;
+}
+
+.l27-tren {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.l27-tren__titulo {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-strong);
+}
+
+.l27-tren__bloques {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.l27-cotas {
+  display: grid;
+  gap: 2px;
+  font-size: 0.74rem;
+  font-family: var(--font-mono);
+  color: var(--muted);
+  text-align: center;
+}
+
+.l27-celdas {
+  display: grid;
+  gap: 2px;
+}
+
+.l27-celda {
+  padding: 0.38rem 0.25rem;
+  background: color-mix(in srgb, #0891b2 24%, var(--surface));
+  border: 1.5px solid var(--text-strong);
+  color: var(--text-strong);
+  font-size: 0.75rem;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.l27-celda--fac {
+  background: color-mix(in srgb, #0d9488 26%, var(--surface));
+}
+
+.l27-celda--pre {
+  background: color-mix(in srgb, #0f766e 32%, var(--surface));
+}

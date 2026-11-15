@@ -1,0 +1,152 @@
+/* Diagramas recreados en HTML/CSS para el Libro 25 (MAPAS, Conagua). */
+
+.d25-flujo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  overflow-x: auto;
+}
+
+.d25-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.d25-nowrap {
+  flex-wrap: nowrap;
+}
+
+.d25-caja {
+  padding: 0.45rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-strong);
+  font-size: 0.85rem;
+  line-height: 1.3;
+  text-align: center;
+}
+
+.d25-caja--gris {
+  background: linear-gradient(to right,
+    var(--surface) 0%,
+    color-mix(in srgb, var(--muted) 15%, var(--surface)) 50%,
+    color-mix(in srgb, var(--muted) 35%, var(--surface)) 100%);
+  border-color: color-mix(in srgb, var(--muted) 55%, var(--surface));
+}
+
+.d25-caja--azul {
+  background: color-mix(in srgb, #1d70b8 22%, var(--surface));
+  border-color: color-mix(in srgb, #1d70b8 55%, var(--border-strong));
+}
+
+.d25-caja--verde {
+  background: color-mix(in srgb, #15803d 18%, var(--surface));
+  border-color: color-mix(in srgb, #15803d 50%, var(--border-strong));
+}
+
+.d25-flecha {
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.95rem;
+  user-select: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.d25-etq {
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-align: center;
+  font-style: italic;
+}
+
+.d25-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+/* Ilustración 1.4: Clasificación de los procesos */
+.d25-grid14 {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+  gap: 0.6rem 0.8rem;
+  align-items: center;
+  width: 100%;
+  max-width: 660px;
+}
+
+.d25-leyenda {
+  margin-top: 0.6rem;
+  padding: 0.5rem 0.75rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.78rem;
+  color: var(--muted);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.2rem 1rem;
+  width: 100%;
+  max-width: 640px;
+}
+
+/* Ilustración 2.6: Régimen de funcionamiento hidráulico */
+.d25-regimen {
+  position: relative;
+  width: 100%;
+  max-width: 580px;
+  padding: 1.4rem 0.5rem 0.5rem;
+}
+
+.d25-regimen__pista {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  height: 76px;
+  border-left: 2px solid var(--text-strong);
+  border-bottom: 2px solid var(--text-strong);
+  position: relative;
+}
+
+.d25-regimen__pulso {
+  grid-column: 2;
+  background: color-mix(in srgb, #4f46e5 35%, var(--surface));
+  border: 1.5px solid color-mix(in srgb, #4f46e5 70%, var(--text-strong));
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: var(--text-strong);
+}
+
+.d25-regimen__media {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 44%;
+  border-top: 2px dashed #dc2626;
+}
+
+.d25-regimen__media-lbl {
+  position: absolute;
+  left: 0.4rem;
+  top: calc(44% - 1.35rem);
+  font-size: 0.76rem;
+  color: var(--text-strong);
+}
+
+.d25-regimen__pie {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  text-align: center;
+  font-size: 0.76rem;
+  color: var(--muted);
+  margin-top: 0.35rem;
+}
