@@ -16,6 +16,10 @@
     },
     "herramientas": {
       "nombre": "Herramientas",
+      "orden": 4
+    },
+    "estudio": {
+      "nombre": "Estudio",
       "orden": 3
     }
   },
@@ -98,6 +102,45 @@
         "repetición espaciada"
       ],
       "privado": true
+    },
+    "estudio": {
+      "nombre": "Espacio de estudio",
+      "carpetas": [
+        "estudio"
+      ],
+      "corto": "Estudio",
+      "inicio": "estudio/",
+      "descripcion": "Lecturas, apuntes y progreso por materia (filosofía, matemáticas, economía). Las lecturas se publican cifradas y el estado de lectura se sincroniza cifrado; requiere usuario y contraseña.",
+      "anio": 2026,
+      "icono": "📖",
+      "area": "estudio",
+      "tipo": "estudio",
+      "etiquetas": [
+        "lecturas",
+        "apuntes",
+        "estudio"
+      ],
+      "privado": true,
+      "oculto": true
+    },
+    "tablero": {
+      "nombre": "Ideas y pendientes del sitio",
+      "carpetas": [
+        "tablero"
+      ],
+      "corto": "Pendientes",
+      "inicio": "tablero/",
+      "descripcion": "Tablero sencillo de ideas, pendientes y avances de todo el sitio, filtrable por proyecto.",
+      "anio": 2026,
+      "icono": "🗒️",
+      "area": "herramientas",
+      "tipo": "app",
+      "etiquetas": [
+        "ideas",
+        "pendientes",
+        "sitio"
+      ],
+      "oculto": true
     }
   }
 }

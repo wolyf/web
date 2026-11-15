@@ -1,0 +1,9 @@
+{
+  "descripcion": "Índice del Espacio de estudio: áreas de estudio y materias (una por archivo en materias/). Público: solo estructura y datos bibliográficos; los textos de las lecturas van cifrados (.enc) y el estado de lectura vive cifrado en la rama «estudio». Una prueba valida estos archivos.",
+  "areas": {
+    "filosofia": { "nombre": "Filosofía", "orden": 1 },
+    "matematicas": { "nombre": "Matemáticas", "orden": 2 },
+    "economia": { "nombre": "Economía", "orden": 3 }
+  },
+  "materias": ["historia-2"]
+}

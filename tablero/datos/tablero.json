@@ -1,0 +1,158 @@
+{
+  "descripcion": "Ideas, pendientes y avances de todo el sitio. Público (el repositorio lo es): nada privado aquí. Se edita a mano o con Claude Code; una prueba valida estados, zonas y enlaces. Orden: dentro de cada columna manda la prioridad y luego el orden de este archivo.",
+  "items": [
+    {
+      "id": "escuchar",
+      "titulo": "Escuchar: lectura en voz alta en todo el sitio",
+      "detalle": "Módulo del sitio con la voz del propio equipo (speechSynthesis), barra con pausa y velocidad, y que lea también el texto descifrado. El comportamiento del original está en «Ideas pendientes» del CLAUDE.md raíz.",
+      "estado": "idea",
+      "zona": "general",
+      "prioridad": "media",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "mover-anki-a-estudio",
+      "titulo": "Mover el Anki al área «Estudio» de la portada",
+      "detalle": "Hoy está en «Herramientas». Es un cambio de proyectos.json (zona general).",
+      "estado": "pendiente",
+      "zona": "general",
+      "prioridad": "baja",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "ruleset-main",
+      "titulo": "Confirmar la regla (Ruleset) de GitHub que exige pull request en main",
+      "detalle": "Recomendada en «Sesión y partes privadas»: así el token de sincronización solo puede escribir en las ramas de datos (subrayados, anki, estudio) y no en main.",
+      "estado": "pendiente",
+      "zona": "general",
+      "prioridad": "alta",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "mostrar-estudio",
+      "titulo": "Mostrar el Espacio de estudio en la portada",
+      "detalle": "Quitar «oculto» en proyectos.json cuando se haya probado con datos reales y en el celular.",
+      "estado": "pendiente",
+      "zona": "estudio",
+      "prioridad": "media",
+      "fecha": "2026-11-15",
+      "enlace": "https://github.com/wolyf/web/pull/37"
+    },
+    {
+      "id": "estudio-guion-largo",
+      "titulo": "Guion largo en los textos de las lecturas: se conserva",
+      "detalle": "Decisión del dueño: los textos cifrados de las lecturas conservan el guion largo del original, como una excepción más junto con manuales-conagua.",
+      "estado": "hecho",
+      "zona": "estudio",
+      "fecha": "2026-11-15",
+      "hecho": "2026-11-15"
+    },
+    {
+      "id": "estudio-probar-escritura",
+      "titulo": "Probar el Espacio de estudio con la rama real y en el celular",
+      "detalle": "La escritura desde el navegador solo se probó contra una API simulada; falta iPhone o Android.",
+      "estado": "pendiente",
+      "zona": "estudio",
+      "prioridad": "alta",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "estudio-textos-faltantes",
+      "titulo": "Conseguir los textos que faltan de Historia 2",
+      "detalle": "Protágoras (Diálogos I de Gredos), Eutidemo y Hadot, pp. 55 a 92.",
+      "estado": "pendiente",
+      "zona": "estudio",
+      "prioridad": "media",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "estudio-apuntes",
+      "titulo": "Apuntes propios sobre las lecturas",
+      "detalle": "Páginas con la plantilla de notas, ligadas a la entrada de la ruta y a su estado «apuntada».",
+      "estado": "idea",
+      "zona": "estudio",
+      "prioridad": "media",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "estudio-otras-materias",
+      "titulo": "Primera materia de matemáticas o economía",
+      "detalle": "Con fórmulas en LaTeX si hace falta (la fuente lleva latex: true).",
+      "estado": "idea",
+      "zona": "estudio",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "estudio-anki-subrayados",
+      "titulo": "Ligar lecturas, subrayados y tarjetas del Anki",
+      "detalle": "Crear una tarjeta desde un subrayado de una lectura (fase 4 del Anki).",
+      "estado": "idea",
+      "zona": "estudio",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "anki-mostrar",
+      "titulo": "Mostrar el Anki en la portada",
+      "detalle": "Quitar «oculto» en proyectos.json cuando se haya probado con datos reales.",
+      "estado": "pendiente",
+      "zona": "anki",
+      "prioridad": "media",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "anki-dispositivos",
+      "titulo": "Probar el Anki en iPhone y Android",
+      "detalle": "Instalación como app, almacenamiento compartido con Safari, y que GitHub Pages sirva el manifiesto con un tipo MIME aceptado.",
+      "estado": "pendiente",
+      "zona": "anki",
+      "prioridad": "alta",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "anki-compactar",
+      "titulo": "Compactar el registro de repasos del Anki",
+      "detalle": "Cada commit guarda repasos.enc completo: el repositorio crece con cada sesión de estudio. Falta compactar y podar lápidas.",
+      "estado": "pendiente",
+      "zona": "anki",
+      "prioridad": "media",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "anki-deshacer",
+      "titulo": "Deshacer la última respuesta del Anki",
+      "detalle": "El registro es de solo agregado: haría falta un repaso compensatorio.",
+      "estado": "idea",
+      "zona": "anki",
+      "prioridad": "baja",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "anki-fases",
+      "titulo": "Fases 1 a 4 del Anki",
+      "detalle": "Tarjetas generadas con IA desde los subrayados, estadísticas, FSRS, exportación y el botón «crear tarjeta» en el menú de subrayados.",
+      "estado": "idea",
+      "zona": "anki",
+      "fecha": "2026-11-15"
+    },
+    {
+      "id": "espacio-de-estudio",
+      "titulo": "Espacio de estudio: lecturas cifradas y estado de lectura sincronizado",
+      "detalle": "Historia 2 migrada (13 entradas, 10 lecturas con texto cifrado), importador de lecturas y rama «estudio». El pull request sigue en borrador.",
+      "estado": "en-curso",
+      "zona": "estudio",
+      "fecha": "2026-11-15",
+      "enlace": "https://github.com/wolyf/web/pull/37",
+      "prioridad": "alta"
+    },
+    {
+      "id": "tablero",
+      "titulo": "Tablero de ideas y pendientes del sitio",
+      "detalle": "Esta página: ideas, pendientes y avances de todo el sitio, filtrables por proyecto.",
+      "estado": "hecho",
+      "zona": "tablero",
+      "fecha": "2026-11-15",
+      "hecho": "2026-11-15",
+      "enlace": "https://github.com/wolyf/web/pull/37"
+    }
+  ]
+}

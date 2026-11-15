@@ -1,0 +1,39 @@
+/* Base común de los textos de lectura (fragmentos descifrados .lt).
+   Cada lectura trae además su propio CSS, aislado bajo .lt--<fuente> y con los colores en
+   variables del sitio (ver herramientas/importar.mjs). Aquí solo va lo que todas comparten. */
+
+.lt {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.06rem;
+  line-height: 1.75;
+  color: var(--text);
+  overflow-wrap: break-word;
+  scroll-margin-top: 1rem;
+}
+.lt * { box-sizing: border-box; }
+.lt img { max-width: 100%; height: auto; }
+.lt a { color: var(--accent); }
+.lt h1, .lt h2, .lt h3, .lt h4 { font-family: var(--font-titulo); color: var(--text-strong); line-height: 1.25; scroll-margin-top: 1rem; }
+.lt h1 { font-size: 1.7rem; margin: 0.4em 0 0.3em; }
+.lt h2 { font-size: 1.35rem; margin: 1.8em 0 0.6em; }
+.lt h3 { font-size: 1.15rem; margin: 1.5em 0 0.5em; }
+.lt p { margin: 0 0 1em; }
+.lt blockquote { margin: 1.2em 0; padding: 0.2em 1em; border-left: 3px solid var(--border-strong); }
+.lt table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
+.lt hr { border: 0; border-top: 1px solid var(--border); margin: 2em 0; }
+.lt [id] { scroll-margin-top: 1rem; }
+.lt-main { display: block; }
+/* El sitio da a todo <nav> una rejilla de tarjetas: aquí es un párrafo de enlaces o un índice */
+.lt nav { display: block; gap: 0; }
+
+/* Notas y marcas de página: discretas en cualquier lectura */
+.lt sup { line-height: 0; }
+.lt :target { background: var(--accent-soft); border-radius: 3px; }
+
+@media (max-width: 560px) {
+  .lt { font-size: 1.02rem; }
+  .lt ul, .lt ol { padding-left: 1.3em; }
+}
+@media print {
+  .lt { font-size: 11pt; }
+}
