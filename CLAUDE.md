@@ -22,6 +22,7 @@ El sitio se divide en **proyectos**, uno por carpeta, registrados en `proyectos.
 | `manuales-conagua` | `manuales-conagua/` | `manuales-conagua/CLAUDE.md` |
 | `anki` | `anki/` | `anki/CLAUDE.md` |
 | `estudio` | `estudio/` | `estudio/CLAUDE.md` |
+| `tablero` | `tablero/` | `tablero/CLAUDE.md` |
 
 Reglas:
 

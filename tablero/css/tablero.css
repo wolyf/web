@@ -1,0 +1,32 @@
+/* Tablero de ideas y pendientes: solo variables del sitio (tema claro y oscuro, acento elegido). */
+
+.t-fichas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.6rem; margin: 0 0 1.2rem; }
+.t-ficha { background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius); padding: 0.7rem 0.8rem; display: grid; gap: 0.1rem; }
+.t-ficha strong { font-family: var(--font-titulo); font-size: 1.6rem; line-height: 1.1; color: var(--text-strong); }
+.t-ficha span { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); }
+.t-ficha[data-estado="en-curso"] strong { color: var(--accent); }
+@media (max-width: 520px) { .t-fichas { grid-template-columns: repeat(2, 1fr); } }
+
+.t-controles { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0 0 0.5rem; }
+.t-buscar, .t-select { font: inherit; font-size: 0.92rem; color: var(--text); background: var(--surface); border: 1px solid var(--border-strong); border-radius: var(--radius); padding: 0.45rem 0.7rem; }
+.t-buscar { flex: 1 1 12rem; min-width: 0; }
+.t-select { flex: 0 1 auto; max-width: 100%; }
+.t-buscar:focus-visible, .t-select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.t-nota { color: var(--muted); font-size: 0.88rem; margin: 0 0 1.4rem; }
+
+.t-columna { margin: 0 0 2rem; }
+.t-columna h2, .t-columna summary { font-size: 1.1rem; margin: 0 0 0.8rem; }
+.t-columna summary { font-family: var(--font-titulo); font-weight: 600; color: var(--text-strong); cursor: pointer; }
+.t-vacio { color: var(--muted); font-size: 0.9rem; margin: 0; }
+.t-lista { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
+
+.t-item { background: var(--surface); border: 1px solid var(--border-card); border-left: 4px solid var(--border-strong); border-radius: var(--radius); padding: 0.8rem 0.95rem; }
+.t-item[data-estado="en-curso"] { border-left-color: var(--accent); }
+.t-item[data-estado="hecho"] { border-left-color: #4c9a63; opacity: 0.85; }
+.t-item[data-prioridad="alta"]:not([data-estado="hecho"]) { border-left-color: #c4473a; }
+.t-item__cabeza { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; flex-wrap: wrap; }
+.t-item strong { color: var(--text-strong); }
+.t-item p { margin: 0.35rem 0 0; color: var(--text); font-size: 0.92rem; }
+.t-pie { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin-top: 0.6rem; font-size: 0.85rem; }
+.t-fecha { font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); }
+.t-prio { font-size: 0.72rem; }

@@ -122,6 +122,25 @@
       ],
       "privado": true,
       "oculto": true
+    },
+    "tablero": {
+      "nombre": "Ideas y pendientes del sitio",
+      "carpetas": [
+        "tablero"
+      ],
+      "corto": "Pendientes",
+      "inicio": "tablero/",
+      "descripcion": "Tablero sencillo de ideas, pendientes y avances de todo el sitio, filtrable por proyecto.",
+      "anio": 2026,
+      "icono": "🗒️",
+      "area": "herramientas",
+      "tipo": "app",
+      "etiquetas": [
+        "ideas",
+        "pendientes",
+        "sitio"
+      ],
+      "oculto": true
     }
   }
 }
