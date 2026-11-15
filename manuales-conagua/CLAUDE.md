@@ -1,6 +1,6 @@
 # Manuales de agua potable, alcantarillado y saneamiento
 
-Proyecto `manuales-conagua` del sitio de Wolfgang Resendiz. Entorno de Claude Code: `WEB_PROYECTO=manuales-conagua`.
+Proyecto `manuales-conagua` del sitio de Wolfgang Reséndiz. Entorno de Claude Code: `WEB_PROYECTO=manuales-conagua`.
 
 ## Zona
 
@@ -25,7 +25,7 @@ Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneam
 - Cada libro es un HTML autocontenido (su propio CSS; algunas páginas del original van como imagen JPEG en base64). Se conservan tal como se convirtieron; el sitio solo les agrega en el `<head>` el ícono, `darwin.js` y `<script type="module" src="../js/libro.js">` (búsqueda dentro del libro), una barra de navegación al inicio del `<body>`, y cambia el guion largo del `<title>` por «·».
 - **Edición de lectura continua** (libros **1 al 24**; cada uno puede tener `css/diagramas-libroNN.css`, `css/graficas-libroNN.css` y `js/graficas-libroNN.js` propios): usa `css/libro.css` y `js/lectura.js` en lugar del CSS propio del libro (además de `js/libro.js` para la búsqueda). Los renglones del PDF se unieron en párrafos (sin guion de fin de renglón), las ilustraciones y tablas que cortaban una frase van al terminar el párrafo, los rótulos de esquemas y organigramas están dentro de su `<figure>` (`<details class="rotulos">`), las marcas de página son `.pag` con `data-p` (bloque `div` o en línea `span`, id `pdf-N`) y el índice y las referencias («Ilustración 2.3», «Tabla 2.9», «ecuación 2.1») son enlaces (`ilustracion-2-3`, `tabla-2-9`, `ecuacion-2-1`). Negritas y cursivas salen de las fuentes del PDF. Ilustraciones (meta: el libro completo pesa menos de 0.2 MB): los diagramas y organigramas están recreados en HTML (`css/diagramas.css` y `diagramas-2/3/4.css`, `<div class="diagrama …">`), las gráficas son interactivas (`js/graficas.js` o `graficas-libroNN.js`, `<div class="grafica-libro" data-grafica="…">`; no usar la clase `grafica`, que es de las calculadoras), y las fotos y mapas van a pedido (`<div class="a-pedido" data-base=…>` con botón; `js/lectura.js` carga `-400`/`-760` en AVIF con respaldo WebP desde `libros/img/libro-NN/`). Ecuaciones en LaTeX con KaTeX (`data-latex` y `data-display`, copia local en `../../js/vendor/katex/`, 0.16.11; `../../js/tema.js` las renderiza automáticamente al cargar); los posibles errores del original van en `.posible-error` (rojo). La barra de lectura (progreso, sección actual, panel del índice, botón «Páginas», enlaces a inicio y manuales) la arma `js/lectura.js` dentro de un `<nav class="lectura-raiz">`: la búsqueda ignora los `nav`, así que el texto que la barra pone al vuelo no cambia la numeración de bloques. Las palabras del texto no cambian; la nota de transcripción del libro detalla las correcciones.
 - **Reflujo automático** (los demás libros): `node manuales-conagua/herramientas/reflujo.mjs [NN …] [--revisar]` une los `<p>` sin atributos que son renglones partidos de una misma frase (segundo renglón en minúscula, guion de fin de renglón, o coma/palabra de enlace entre renglones largos); una marca de página entre ellos pasa a quedar después del párrafo. Ya se aplicó a todos (unas 35 000 uniones); no cambia caracteres, solo espacios y guiones de corte. Lo demás (rótulos sueltos, figuras que cortan frases, pies con texto ajeno) queda para revisión libro por libro, como se hizo con el Libro 1. Después de aplicarlo, regenera el índice de búsqueda.
-- Falta el **Libro 35** (no venía en la conversión). Para agregarlo: copiar el HTML como `libros/libro-35.html`, aplicar los mismos agregados, sumarlo a la lista y al grupo correspondiente en `index.html` y regenerar el índice de búsqueda (`node manuales-conagua/herramientas/indice.mjs`).
+- Falta el **Libro 35** (no venía en la conversión). Para agregarlo: copiar el HTML como `libros/libro-35.html`, aplicar los mismos agregados, sumarlo a la lista y al grupo correspondiente en `index.html` y regenerar el índice de búsqueda (`node manuales-conagua/herramientas/indice.mjs`) y los datos para buscadores (`node manuales-conagua/herramientas/seo.mjs`).
 - El cuerpo de los libros conserva el guion largo de la transcripción (fidelidad al texto); la interfaz propia del proyecto no lo usa.
 - `index.html` agrupa los libros por tema y tiene la búsqueda (ver abajo).
 
@@ -36,6 +36,16 @@ Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneam
 - **Lenguaje** (`js/consulta.js`, compartido): palabras en el mismo bloque, desde el inicio de palabra y sin acentos; `"frase exacta"`; `a|b`; `-excluir`; `libro:20,26`. Los números van completos; un número solo, sin comillas, busca el libro con ese número.
 - **Bloques** (`js/texto.js`): párrafo, renglón de tabla, encabezado, elemento de lista, etc., numerados en postorden y saltando los vacíos. `herramientas/bloques.mjs` (lector de HTML sin dependencias) y `bloquesDOM()` de `js/libro.js` aplican las mismas reglas: si cambias una, cambia la otra y comprueba en Chromium que coincidan los 54 libros.
 - **Datos** (`datos/`, generados, no se editan a mano): `vocabulario.json` (palabra → libros, para descargar solo los libros que pueden coincidir) y `libros/libro-NN.json` (bloques y encabezados). Tras cambiar un libro o las reglas: `node manuales-conagua/herramientas/indice.mjs`. La prueba `herramientas/pruebas/busqueda.test.mjs` (en `npm test`) falla si no están al día.
+
+## Buscadores (SEO)
+
+`node manuales-conagua/herramientas/seo.mjs` (con `--revisar` solo revisa) mantiene, a partir de la lista de `index.html` (número, nombre y grupo de cada libro) y de `sitio.url` de `proyectos.json`:
+
+- En cada libro: el `<title>` (si no sigue ya el patrón `Libro N · … (MAPAS, Conagua)`, lo arma con el nombre de la lista), el nombre del sitio con acento (en la `<nav class="ajustes-barra">` o en la marca `.brand` del encabezado) y un bloque al final del `<head>` entre `<!-- seo:inicio … -->` y `<!-- seo:fin -->` con la descripción (solo si el libro no trae la suya), `canonical` (neutraliza las URL con `?q=&b=`), Open Graph y JSON-LD (`Book` de la serie MAPAS, con la Conagua como autora y editora, Wolfgang Reséndiz como editor de la edición HTML con el `@id` de la portada, y `BreadcrumbList`).
+- En `index.html`: el mismo tipo de bloque (`CollectionPage` + `BookSeries` con los 54 libros).
+- `manuales-conagua/sitemap.xml`: índice y libros (se envía aparte en Search Console).
+
+No toca el cuerpo, así que la numeración de bloques y los subrayados no cambian. **Al reconstruir o agregar un libro, vuelve a correrla**: la prueba `herramientas/pruebas/seo.test.mjs` falla si algo no está al día. El bloque no se edita a mano.
 
 ## Estructura
 
@@ -49,7 +59,8 @@ Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneam
 | `manuales-conagua/libros/libro-NN.html` | Cada libro convertido (NN = número de libro, dos dígitos) |
 | `manuales-conagua/js/` | Búsqueda: `texto.js` (reglas de texto y bloques), `consulta.js` (lenguaje), `buscador.js` (índice), `libro.js` (dentro del libro) |
 | `manuales-conagua/datos/` | Índice de búsqueda generado |
-| `manuales-conagua/herramientas/` | `indice.mjs` (genera `datos/`), `bloques.mjs`, `reflujo.mjs` (une renglones partidos) y pruebas |
+| `manuales-conagua/herramientas/` | `indice.mjs` (genera `datos/`), `bloques.mjs`, `reflujo.mjs` (une renglones partidos), `seo.mjs` (datos para buscadores y `sitemap.xml`) y pruebas |
+| `manuales-conagua/sitemap.xml` | Mapa del sitio de los manuales (generado por `seo.mjs`) |
 
 ## Reglas heredadas del sitio
 

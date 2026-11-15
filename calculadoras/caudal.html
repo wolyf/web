@@ -8,13 +8,50 @@
   <!-- Ajuste para celular -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Calculadora de caudal en tuberías · Wolfgang Resendiz</title>
+  <title>Calculadora de caudal en tuberías (Q = A·v) · Wolfgang Reséndiz</title>
 
   <!-- Descripción para buscadores -->
   <meta
     name="description"
-    content="Calcula el caudal en litros por segundo a partir del diámetro de una tubería y la velocidad del agua."
+    content="Calcula el caudal en tuberías a partir del diámetro y la velocidad del agua (Q = A·v), con unidades configurables, la ecuación en LaTeX y una gráfica con los límites de velocidad recomendados."
   >
+
+  <!-- Buscadores: dirección principal, vista previa al compartir y datos estructurados -->
+  <link rel="canonical" href="https://wolyf.github.io/web/calculadoras/caudal.html">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="es_MX">
+  <meta property="og:site_name" content="Wolfgang Reséndiz">
+  <meta property="og:title" content="Calculadora de caudal en tuberías (Q = A·v)">
+  <meta property="og:description" content="Caudal a partir del diámetro y la velocidad, con unidades configurables, ecuación y gráfica con límites de velocidad.">
+  <meta property="og:url" content="https://wolyf.github.io/web/calculadoras/caudal.html">
+  <meta property="og:image" content="https://wolyf.github.io/web/img/vista-previa.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://wolyf.github.io/web/calculadoras/caudal.html#calculadora",
+        "name": "Calculadora de caudal en tuberías",
+        "url": "https://wolyf.github.io/web/calculadoras/caudal.html",
+        "description": "Calcula el caudal en tuberías a partir del diámetro y la velocidad del agua (Q = A·v), con unidades configurables y límites de velocidad recomendados.",
+        "applicationCategory": "EngineeringApplication",
+        "operatingSystem": "Cualquiera (navegador web)",
+        "inLanguage": "es-MX",
+        "isAccessibleForFree": true,
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" },
+        "author": { "@type": "Person", "@id": "https://wolyf.github.io/web/#persona", "name": "Wolfgang Reséndiz", "url": "https://wolyf.github.io/web/" }
+      },
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          { "@type": "ListItem", "position": 1, "name": "Wolfgang Reséndiz", "item": "https://wolyf.github.io/web/" },
+          { "@type": "ListItem", "position": 2, "name": "Calculadora de caudal", "item": "https://wolyf.github.io/web/calculadoras/caudal.html" }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <!-- Ícono: la cara de Darwin (zona general) -->
   <link rel="icon" href="../img/darwin-cara.svg" type="image/svg+xml">
@@ -40,7 +77,7 @@
 <body>
   <!-- Encabezado con la marca del sitio (lleva a inicio) y los botones de tema -->
   <header class="site-header">
-    <a class="brand" href="../index.html">Wolfgang Resendiz</a>
+    <a class="brand" href="../index.html">Wolfgang Reséndiz</a>
 
     <div class="ajustes">
       <button class="ajuste" type="button" data-tema-accion="acento" aria-label="Cambiar color de acento">

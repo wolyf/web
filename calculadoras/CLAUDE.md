@@ -1,6 +1,6 @@
 # Calculadoras de ingeniería
 
-Proyecto `calculadoras` del sitio Wolfgang Resendiz. Entorno de Claude Code: `WEB_PROYECTO=calculadoras`.
+Proyecto `calculadoras` del sitio Wolfgang Reséndiz. Entorno de Claude Code: `WEB_PROYECTO=calculadoras`.
 
 ## Zona
 
@@ -26,7 +26,7 @@ Proyecto `calculadoras` del sitio Wolfgang Resendiz. Entorno de Claude Code: `WE
 - Las ecuaciones se escriben en LaTeX (`data-latex`, con `data-display` en bloque) y las renderiza KaTeX (copia local en `../js/vendor/katex/`, 0.16.11; `../js/tema.js` y `units.js` las renderizan automáticamente), con texto de respaldo.
 - Los scripts son clásicos (IIFE y `window`), no módulos, para que la página funcione también abierta como archivo (`file://`).
 - Al terminar, abre la página en el navegador (Playwright) y comprueba un cálculo conocido, p. ej. $d = 100\ \text{mm}$, $v = 1\ \text{m/s} \Rightarrow Q \approx 7.85\ \text{L/s}$.
-- Cada página HTML sigue el encabezado de `../herramientas/plantilla/index.html`: marca «Wolfgang Resendiz», bloque `.ajustes` (botones de acento y tema), favicon `../img/darwin-cara.svg` y enlace `← Inicio`. Las fuentes las trae `../css/styles.css` (autoalojadas; sin `preconnect`).
+- Cada página HTML sigue el encabezado de `../herramientas/plantilla/index.html`: marca «Wolfgang Reséndiz», bloque `.ajustes` (botones de acento y tema), favicon `../img/darwin-cara.svg` y enlace `← Inicio`. Las fuentes las trae `../css/styles.css` (autoalojadas; sin `preconnect`).
 - Cada página HTML carga `<script src="../js/tema.js"></script>` en el `<head>`, **sin** `defer` y antes de los demás scripts, para aplicar tema y acento antes de pintar (script de la zona general). Fuera de la gráfica, los colores salen de las variables del sitio (`--accent`, `--text`, …); la gráfica se queda en tema claro a propósito.
 - Cada página HTML incluye a Darwin, la gatita del sitio, con `<script src="../js/darwin.js" defer></script>` en el `<head>` (script de la zona general, no se edita desde aquí).
 
