@@ -1,6 +1,6 @@
 # {{NOMBRE}}
 
-Proyecto `{{ID}}` del sitio de Wolfgang Resendiz. Entorno de Claude Code: `WEB_PROYECTO={{ID}}`.
+Proyecto `{{ID}}` del sitio de Wolfgang Reséndiz. Entorno de Claude Code: `WEB_PROYECTO={{ID}}`.
 
 ## Reglas heredadas del sitio
 
