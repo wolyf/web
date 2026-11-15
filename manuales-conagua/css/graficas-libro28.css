@@ -1,0 +1,59 @@
+/* Gráficas interactivas del Libro 28 (Ilustraciones 2.3 a 2.8). */
+
+.grafica-libro[data-grafica^="l28-"] {
+  --grafica-serie-1: color-mix(in srgb, #1d4ed8 85%, var(--text-strong));
+  --grafica-serie-2: color-mix(in srgb, #0f766e 85%, var(--text-strong));
+  --grafica-serie-3: color-mix(in srgb, #c2410c 85%, var(--text-strong));
+  --grafica-serie-4: color-mix(in srgb, #7e22ce 85%, var(--text-strong));
+  --grafica-serie-5: color-mix(in srgb, #dc2626 85%, var(--text-strong));
+  --grafica-serie-6: color-mix(in srgb, #15803d 85%, var(--text-strong));
+  --grafica-serie-7: color-mix(in srgb, #ca8a04 85%, var(--text-strong));
+  --grafica-serie-8: color-mix(in srgb, #0284c7 85%, var(--text-strong));
+}
+
+.grafica-libro[data-grafica^="l28-"] .grafica-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.grafica-libro[data-grafica^="l28-"] .grafica-svg:focus { outline: none; }
+.grafica-libro[data-grafica^="l28-"] .grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.grafica-libro[data-grafica^="l28-"] .grafica-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.45rem;
+}
+
+.grafica-libro[data-grafica^="l28-"] .grafica-leyenda button {
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.78rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-strong);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  cursor: pointer;
+}
+
+.grafica-libro[data-grafica^="l28-"] .grafica-leyenda button[aria-pressed="false"] {
+  opacity: 0.45;
+}
+
+.grafica-libro[data-grafica^="l28-"] .grafica-leyenda .muestra {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+}

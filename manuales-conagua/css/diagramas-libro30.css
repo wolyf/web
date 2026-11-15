@@ -1,0 +1,156 @@
+/* Diagramas y formatos del Libro 30 (Humedales Artificiales) */
+
+/* Trenes de tratamiento (Ilustraciones 2.1, 2.2, 2.3, 2.38, 2.39) */
+.tren-30 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: .45rem .35rem;
+  padding: .75rem .5rem;
+}
+
+.tren-30__etapa {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .35rem;
+  min-width: 5.5rem;
+}
+
+.tren-30__titulo {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  text-align: center;
+}
+
+.tren-30__caja {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 4.8rem;
+  min-height: 2.9rem;
+  padding: .4rem .65rem;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--surface));
+  color: var(--text-strong);
+  font-weight: 600;
+  font-size: .82rem;
+  text-align: center;
+}
+
+.tren-30__caja--entrada {
+  background: color-mix(in srgb, var(--muted) 16%, var(--surface));
+  border-style: dashed;
+}
+
+.tren-30__caja--humedal {
+  background: color-mix(in srgb, #2e7d32 14%, var(--surface));
+  border-color: color-mix(in srgb, #2e7d32 55%, var(--border-strong));
+}
+
+.tren-30__caja--salida {
+  background: color-mix(in srgb, #0288d1 14%, var(--surface));
+  border-color: color-mix(in srgb, #0288d1 55%, var(--border-strong));
+}
+
+.tren-30__flecha {
+  color: var(--muted);
+  font-size: 1.15rem;
+  line-height: 1;
+  padding-top: 1.15rem;
+  user-select: none;
+}
+
+/* Ilustracion 2.21: Esquema del flujo con mamparas */
+.mamparas-30 {
+  max-width: 340px;
+  margin: .3rem auto;
+  text-align: center;
+}
+
+.mamparas-30__cab {
+  font-weight: 600;
+  font-size: .85rem;
+  margin-bottom: .35rem;
+  color: var(--text-strong);
+}
+
+.mamparas-30 svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Ilustracion 2.35: Esquema de la distancia de siembra */
+.siembra-30 {
+  max-width: 580px;
+  margin: .3rem auto;
+}
+
+.siembra-30__cab {
+  text-align: center;
+  font-weight: 600;
+  font-size: .85rem;
+  color: var(--text-strong);
+  margin-bottom: .35rem;
+}
+
+.siembra-30__malla {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(1.5rem, 1fr));
+  grid-template-rows: repeat(4, 2rem);
+  border: 1.5px solid var(--border-strong);
+  background: color-mix(in srgb, #c89d7c 18%, var(--surface));
+  position: relative;
+}
+
+.siembra-30__celda {
+  border-right: 1px dashed color-mix(in srgb, var(--muted) 40%, transparent);
+  border-bottom: 1px dashed color-mix(in srgb, var(--muted) 40%, transparent);
+  position: relative;
+}
+
+.siembra-30__celda:nth-child(12n) { border-right: none; }
+.siembra-30__celda:nth-child(n+37) { border-bottom: none; }
+
+.siembra-30__planta {
+  position: absolute;
+  right: -0.45rem;
+  bottom: -0.55rem;
+  font-size: .95rem;
+  line-height: 1;
+  color: #2e7d32;
+  z-index: 1;
+}
+
+.siembra-30__cota-x,
+.siembra-30__cota-y {
+  position: absolute;
+  font-size: .7rem;
+  color: #1565c0;
+  font-weight: 600;
+}
+
+.siembra-30__cota-x {
+  left: .25rem;
+  bottom: .1rem;
+}
+
+.siembra-30__cota-y {
+  right: .2rem;
+  top: .2rem;
+}
+
+.siembra-30__pie {
+  margin-top: .35rem;
+  font-size: .8rem;
+  color: var(--text-strong);
+}
+
+.siembra-30__pie span {
+  color: #2e7d32;
+  font-size: 1rem;
+}
