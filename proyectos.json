@@ -88,7 +88,7 @@
       ],
       "corto": "Anki",
       "inicio": "anki/",
-      "descripcion": "Tarjetas de estudio con repetición espaciada, creadas desde mis subrayados. Requiere usuario y contraseña; los datos se publican cifrados.",
+      "descripcion": "Tarjetas de estudio con repetición espaciada: básicas y cloze, con fórmulas en LaTeX. Se instala en el celular y funciona sin conexión. Requiere usuario y contraseña; los datos se publican cifrados.",
       "anio": 2026,
       "icono": "🧠",
       "area": "herramientas",
@@ -97,7 +97,6 @@
         "estudio",
         "repetición espaciada"
       ],
-      "oculto": true,
       "privado": true
     }
   }
