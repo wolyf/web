@@ -31,7 +31,7 @@ Un lugar para organizar lecturas y apuntes de lo que se estudia: filosofía, mat
 | **Entrada de ruta** | Un ítem del curso: apunta a una fuente (y a un ancla), con rol `principal` o `apoyo` | `ruta` de la materia |
 | **Apunte** | Escritura propia sobre una lectura | `apuntes` de la materia (aún no hay; ver «Apuntes») |
 
-Varias entradas pueden apuntar a la misma fuente: el volumen 4 de Platón sirve a Banquete, Fedro y República VII, cada uno con su estado y su ancla.
+Varias entradas pueden apuntar a la misma fuente: la fuente `platon-dialogos-4` reúne Banquete, Fedro y República VII, cada uno con su estado y su ancla. Ojo con el nombre: es solo un identificador (de él depende la ruta de los subrayados, así que no se cambia); Banquete y Fedro salen del PDF de Diálogos III y solo República VII, de Diálogos IV.
 
 **Estado de lectura** (por entrada): `pendiente`, `leyendo`, `leida`, `apuntada`, con nota opcional. Es **privado**: se guarda cifrado en la rama `estudio` y solo se ve con sesión. El tablero muestra estadísticas (por estado, progreso general y por materia) y «Sigue con» (lo que se está leyendo y la primera pendiente de cada materia).
 
@@ -43,7 +43,7 @@ El repositorio es público:
 - **Cifrado** con la llave del sitio $K$: el **texto de las lecturas** (`<materia>/<fuente>.enc`; son ediciones con derechos de autor) y el **estado de lectura** (rama `estudio`).
 - Texto de trabajo en claro: `.privado/estudio/<materia>/<fuente>.html` (ignorado por git). `npm run sesion -- sellar estudio` genera los `.enc`. Requiere `SITIO_USUARIO` y `SITIO_CONTRASENA` en el entorno de Claude Code (nunca en el chat).
 - Una prueba comprueba que cada `.enc` publicado es un fragmento cifrado, sin texto en claro, y que `.privado/` sigue ignorado.
-- El **cuerpo de las lecturas conserva el guion largo** de la transcripción (fidelidad al texto, igual que `manuales-conagua`); la interfaz propia del proyecto no lo usa, y una prueba lo comprueba en todos los archivos de `estudio/`.
+- **Guion largo (U+2014) en el cuerpo de las lecturas: pendiente de decisión del dueño.** La regla del sitio solo exceptúa el cuerpo transcrito de `manuales-conagua`. Los textos cifrados de aquí conservan el guion largo tal como vienen de la transcripción (y algún encabezado puesto por el conversor), porque no se ha pedido cambiarlos. Mientras no se decida, no se publica en claro nada con él: la interfaz, el CSS, los datos y los comentarios del proyecto no lo usan, y una prueba lo comprueba en todos los archivos de `estudio/` (los `.enc` no se leen).
 
 ## Agregar una materia
 
@@ -100,7 +100,7 @@ Aún no hay. Cuando haya, cada apunte será una página con la plantilla de nota
 ## Notas de la migración de Historia 2
 
 - La ruta original tenía 14 entradas; son **13**: «Diálogos I» y «Apología de Sócrates» eran el mismo texto (Apología, 17a–42a) y se unieron en una (`apologia`).
-- Los avisos de los propios archivos corrigieron el índice original: el **Protágoras no está transcrito** (está en Diálogos I de Gredos y solo se cargó la Apología), y el **Fedón** está en `platon-dialogos-3`, mientras que Banquete, Fedro y República VII están en `platon-dialogos-4`. El Protágoras y el Eutidemo quedan como «Texto pendiente». El texto de Hadot llega hasta la p. 54 del libro.
+- Los avisos de los propios archivos corrigieron el índice original: el **Protágoras no está transcrito** (está en Diálogos I de Gredos y solo se cargó la Apología), y el **Fedón** está en `platon-dialogos-3` (Diálogos III), mientras que Banquete, Fedro y República VII están reunidos en `platon-dialogos-4`. El Protágoras y el Eutidemo quedan como «Texto pendiente». El texto de Hadot llega hasta la p. 54 del libro.
 - No se migraron `subrayados.html` (vacío; el sitio ya tiene subrayados sincronizados) ni la barra «Escuchar» (idea pendiente para el sitio: ver «Ideas pendientes» en el `CLAUDE.md` de la raíz).
 
 ## Pendiente

@@ -4,10 +4,22 @@
   "area": "filosofia",
   "descripcion": "De los presocráticos a Aristóteles: la ruta de lecturas del curso, con el texto de cada una cifrado.",
   "secciones": [
-    { "id": "primera", "nombre": "Primera parte del curso" },
-    { "id": "socrates", "nombre": "Sócrates en escena y en testimonio" },
-    { "id": "apoyo", "nombre": "Lecturas de apoyo" },
-    { "id": "dialogos", "nombre": "Los grandes diálogos" }
+    {
+      "id": "primera",
+      "nombre": "Primera parte del curso"
+    },
+    {
+      "id": "socrates",
+      "nombre": "Sócrates en escena y en testimonio"
+    },
+    {
+      "id": "apoyo",
+      "nombre": "Lecturas de apoyo"
+    },
+    {
+      "id": "dialogos",
+      "nombre": "Los grandes diálogos"
+    }
   ],
   "fuentes": {
     "presocraticos-filolao": {
@@ -46,17 +58,17 @@
       "texto": true
     },
     "platon-dialogos-3": {
-      "titulo": "Diálogos III: Fedón",
+      "titulo": "Fedón (Diálogos III)",
       "autor": "Platón",
       "edicion": "Gredos (Biblioteca Clásica Gredos, 93)",
       "alcance": "Fedón completo, 57a–118c. El volumen también trae Banquete y Fedro, que aquí no se transcribieron.",
       "texto": true
     },
     "platon-dialogos-4": {
-      "titulo": "Diálogos: Banquete, Fedro y República VII",
+      "titulo": "Banquete, Fedro y República VII",
       "autor": "Platón",
-      "edicion": "Gredos (Biblioteca Clásica Gredos, 94)",
-      "alcance": "Banquete 172a–223d, Fedro 227a–279c y República, libro VII, 514a–541b.",
+      "edicion": "Gredos: Banquete y Fedro de Diálogos III (Biblioteca Clásica Gredos, 93); República VII de Diálogos IV (BCG, 94, traducción de Conrado Eggers Lan)",
+      "alcance": "Banquete 172a–223d, Fedro 227a–279c y República, libro VII, 514a–541b. El archivo se llama «dialogos-4» pero Banquete y Fedro salen del PDF de Diálogos III.",
       "texto": true
     },
     "republica-vi": {
@@ -96,19 +108,108 @@
     }
   },
   "ruta": [
-    { "id": "presocraticos", "titulo": "Los filósofos presocráticos", "seccion": "primera", "rol": "principal", "fuente": "presocraticos-filolao", "nota": "Solo el capítulo seis." },
-    { "id": "paideia", "titulo": "Paideia: los ideales de la cultura griega", "seccion": "primera", "rol": "principal", "fuente": "paideia" },
-    { "id": "nubes", "titulo": "Las nubes", "seccion": "socrates", "rol": "principal", "fuente": "las-nubes" },
-    { "id": "recuerdos", "titulo": "Recuerdos de Sócrates", "seccion": "socrates", "rol": "principal", "fuente": "recuerdos-de-socrates" },
-    { "id": "apologia", "titulo": "Apología de Sócrates", "seccion": "socrates", "rol": "principal", "fuente": "platon-dialogos-1", "nota": "En la ruta original figuraba dos veces (Diálogos I y Apología de Sócrates): es el mismo texto." },
-    { "id": "eutidemo", "titulo": "Eutidemo", "seccion": "socrates", "rol": "principal", "fuente": "eutidemo" },
-    { "id": "brun", "titulo": "Platón y la Academia", "seccion": "apoyo", "rol": "apoyo", "fuente": "platon-y-la-academia" },
-    { "id": "hadot", "titulo": "Elogio de Sócrates", "seccion": "apoyo", "rol": "apoyo", "fuente": "elogio-de-socrates", "nota": "Texto incompleto: el PDF de Classroom termina en la p. 54 del libro." },
-    { "id": "protagoras", "titulo": "Protágoras", "seccion": "dialogos", "rol": "principal", "fuente": "protagoras" },
-    { "id": "banquete", "titulo": "El banquete (Simposio)", "seccion": "dialogos", "rol": "principal", "fuente": "platon-dialogos-4", "ancla": "banquete", "nota": "El Banquete y el Simposio son el mismo diálogo." },
-    { "id": "fedon", "titulo": "Fedón", "seccion": "dialogos", "rol": "principal", "fuente": "platon-dialogos-3" },
-    { "id": "fedro", "titulo": "Fedro", "seccion": "dialogos", "rol": "principal", "fuente": "platon-dialogos-4", "ancla": "fedro" },
-    { "id": "republica-vii", "titulo": "La República, libro VII", "seccion": "dialogos", "rol": "principal", "fuente": "platon-dialogos-4", "ancla": "republica-vii", "nota": "Libro VII de la República.", "complementos": ["republica-vi"] }
+    {
+      "id": "presocraticos",
+      "titulo": "Los filósofos presocráticos",
+      "seccion": "primera",
+      "rol": "principal",
+      "fuente": "presocraticos-filolao",
+      "nota": "Solo el capítulo seis."
+    },
+    {
+      "id": "paideia",
+      "titulo": "Paideia: los ideales de la cultura griega",
+      "seccion": "primera",
+      "rol": "principal",
+      "fuente": "paideia"
+    },
+    {
+      "id": "nubes",
+      "titulo": "Las nubes",
+      "seccion": "socrates",
+      "rol": "principal",
+      "fuente": "las-nubes"
+    },
+    {
+      "id": "recuerdos",
+      "titulo": "Recuerdos de Sócrates",
+      "seccion": "socrates",
+      "rol": "principal",
+      "fuente": "recuerdos-de-socrates"
+    },
+    {
+      "id": "apologia",
+      "titulo": "Apología de Sócrates",
+      "seccion": "socrates",
+      "rol": "principal",
+      "fuente": "platon-dialogos-1",
+      "nota": "En la ruta original figuraba dos veces (Diálogos I y Apología de Sócrates): es el mismo texto."
+    },
+    {
+      "id": "eutidemo",
+      "titulo": "Eutidemo",
+      "seccion": "socrates",
+      "rol": "principal",
+      "fuente": "eutidemo"
+    },
+    {
+      "id": "brun",
+      "titulo": "Platón y la Academia",
+      "seccion": "apoyo",
+      "rol": "apoyo",
+      "fuente": "platon-y-la-academia"
+    },
+    {
+      "id": "hadot",
+      "titulo": "Elogio de Sócrates",
+      "seccion": "apoyo",
+      "rol": "apoyo",
+      "fuente": "elogio-de-socrates",
+      "nota": "Texto incompleto: el PDF de Classroom termina en la p. 54 del libro."
+    },
+    {
+      "id": "protagoras",
+      "titulo": "Protágoras",
+      "seccion": "dialogos",
+      "rol": "principal",
+      "fuente": "protagoras"
+    },
+    {
+      "id": "banquete",
+      "titulo": "El banquete (Simposio)",
+      "seccion": "dialogos",
+      "rol": "principal",
+      "fuente": "platon-dialogos-4",
+      "ancla": "banquete",
+      "nota": "El Banquete y el Simposio son el mismo diálogo."
+    },
+    {
+      "id": "fedon",
+      "titulo": "Fedón",
+      "seccion": "dialogos",
+      "rol": "principal",
+      "fuente": "platon-dialogos-3"
+    },
+    {
+      "id": "fedro",
+      "titulo": "Fedro",
+      "seccion": "dialogos",
+      "rol": "principal",
+      "fuente": "platon-dialogos-4",
+      "ancla": "fedro"
+    },
+    {
+      "id": "republica-vii",
+      "titulo": "La República, libro VII",
+      "seccion": "dialogos",
+      "rol": "principal",
+      "fuente": "platon-dialogos-4",
+      "ancla": "republica-vii",
+      "nota": "Libro VII de la República.",
+      "complementos": [
+        "republica-vi"
+      ]
+    }
   ],
   "apuntes": []
 }

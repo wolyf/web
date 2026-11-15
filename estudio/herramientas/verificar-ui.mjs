@@ -24,6 +24,7 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import * as L from "../../js/llaves.mjs";
 import * as N from "../js/nucleo.mjs";
+import { cifrarDatos } from "../../js/subrayados-nucleo.mjs";
 
 const RAIZ = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const args = process.argv.slice(2);
@@ -63,9 +64,13 @@ function servir() {
 }
 
 // API de GitHub falsa con la rama «estudio» ya creada (estado.enc inicial vacío y cifrado)
-function githubFalso(inicial) {
+function githubFalso(inicial, subrayados) {
   const archivos = new Map([[`estudio:estado.enc`, { bytes: inicial, sha: "sha0" }]]);
   const blobs = new Map([["sha0", inicial]]);
+  if (subrayados) {
+    archivos.set("subrayados:subrayados.enc", { bytes: subrayados, sha: "shaS" });
+    blobs.set("shaS", subrayados);
+  }
   const estado = { archivos, escrituras: [], version: 0 };
   const cors = { "access-control-allow-origin": "*", "access-control-allow-headers": "*", "access-control-allow-methods": "*", "access-control-expose-headers": "etag" };
   const responder = (ruta, status, cuerpo, extra = {}) => ruta.fulfill({ status, headers: { ...cors, "content-type": "application/json", ...extra }, body: JSON.stringify(cuerpo) });
@@ -153,7 +158,7 @@ try {
   ]) {
     console.log(`\n== ${nombreVista} (${tema}) ==`);
     const errores = [];
-    const api = githubFalso(await N.cifrar([], llave)); // estado limpio en cada vista
+    const api = githubFalso(await N.cifrar([], llave), await cifrarDatos([], llave)); // estado limpio en cada vista
     const contexto = await navegador.newContext({ viewport, deviceScaleFactor: 1 });
     await contexto.route("https://api.github.com/**", api.manejar);
     await contexto.addInitScript((t) => {
@@ -245,6 +250,38 @@ try {
     await foto(p, `${nombreVista}-lectura-fedro`);
     const desborde = await p.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
     comprobar(desborde <= 1, "sin desbordamiento horizontal", `${desborde}px`);
+
+    // 5b. Subrayar sobre un texto descifrado: se guarda y reancla tras recargar (una página por fuente)
+    if (nombreVista === "escritorio") {
+      await p.goto(`${base}/historia-2/platon-dialogos-1.html`);
+      await p.waitForSelector(".lt p");
+      await p.waitForFunction(() => document.documentElement.dataset.subrayados === "activos", null, { timeout: 15_000 });
+      const frase = await p.evaluate(() => {
+        const ps = [...document.querySelectorAll(".lt p")].filter((x) => x.textContent.trim().length > 120);
+        const nodo = document.createTreeWalker(ps[3], NodeFilter.SHOW_TEXT).nextNode();
+        const r = document.createRange();
+        r.setStart(nodo, 0);
+        r.setEnd(nodo, Math.min(60, nodo.length));
+        getSelection().removeAllRanges();
+        getSelection().addRange(r);
+        nodo.parentElement.dispatchEvent(new PointerEvent("pointerup", { bubbles: true }));
+        return r.toString();
+      });
+      await p.waitForSelector(".sub-menu:not([hidden]) .sub-color");
+      await p.locator(".sub-menu .sub-color").first().click();
+      const hayResaltado = () => p.evaluate(() => [...CSS.highlights.keys()].some((k) => k.startsWith("wr-sub-") && CSS.highlights.get(k).size > 0));
+      await p.waitForFunction(() => [...CSS.highlights.keys()].some((k) => k.startsWith("wr-sub-") && CSS.highlights.get(k).size > 0), null, { timeout: 10_000 });
+      comprobar(await hayResaltado(), `se pinta un subrayado sobre el texto descifrado («${frase.slice(0, 24)}…»)`);
+      await p.waitForFunction(() => document.querySelector(".sub-estado")?.dataset.estado === "sincronizado" || true);
+      await esperar(3500);
+      comprobar(api.estado.escrituras.some((x) => x.rama === "subrayados"), "el subrayado se escribe cifrado en la rama «subrayados»");
+      await p.reload();
+      await p.waitForSelector(".lt p");
+      await p.waitForFunction(() => [...CSS.highlights.keys()].some((k) => k.startsWith("wr-sub-") && CSS.highlights.get(k).size > 0), null, { timeout: 15_000 }).catch(() => {});
+      comprobar(await hayResaltado(), "tras recargar, el subrayado se reancla cuando el texto se descifra");
+      // El texto de la barra de estado (títulos repetidos) no se puede subrayar
+      comprobar((await p.locator("#estudio-raiz[data-no-subrayar]").count()) === 1, "la barra de estado queda fuera de los subrayados");
+    }
 
     // 6. Cerrar sesión: el texto desaparece del DOM
     await p.locator(".sesion-boton").first().click();

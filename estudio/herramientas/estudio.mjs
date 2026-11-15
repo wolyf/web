@@ -97,7 +97,7 @@ export function paginaInicio() {
     <p class="subtitulo">Lecturas, apuntes y progreso por materia.</p>
 
     <!-- Lo llena js/app.mjs: tablero (estructura pública; el progreso solo con sesión) -->
-    <div id="estudio-raiz"><noscript>Esta página necesita JavaScript.</noscript></div>`,
+    <div id="estudio-raiz" data-no-subrayar><noscript>Esta página necesita JavaScript.</noscript></div>`,
   });
 }
 
@@ -109,7 +109,7 @@ export function paginaMateria() {
     cuerpo: `    <a class="back" href="index.html">← Espacio de estudio</a>
 
     <!-- Lo llena js/app.mjs según ?m=<materia> -->
-    <div id="estudio-raiz"><noscript>Esta página necesita JavaScript.</noscript></div>`,
+    <div id="estudio-raiz" data-no-subrayar><noscript>Esta página necesita JavaScript.</noscript></div>`,
   });
 }
 
@@ -129,7 +129,7 @@ export function paginaLectura(materiaId, materia, fuenteId, fuente) {
     <p class="e-meta">${escapar(autor)}</p>
 
     <!-- Estado de lectura de las entradas de la ruta que usan este texto (js/app.mjs) -->
-    <div id="estudio-raiz"></div>
+    <div id="estudio-raiz" data-no-subrayar></div>
 
     <!-- El texto de la lectura está cifrado: se descifra con la sesión del sitio -->
     <div class="e-texto" data-privado="${escapar(fuenteId)}.enc" data-lineas="14"></div>`,
