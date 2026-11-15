@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import * as S from "../../js/scheduler.mjs";
 import * as M from "../../js/modelo.mjs";
 
-const { MIN, DIA } = S;
+const { MIN, HORA, DIA } = S;
 const T0 = Date.UTC(2026, 10, 15, 12, 0, 0);
 
 function prng(semilla) {
@@ -94,15 +94,18 @@ test("el retraso suma bonificación; adelantarse no resta", () => {
   const e = enRepaso({ intervalo: 10, facilidad: 2500, vence: T0  });
   const tarde = S.siguiente(e, 3, T0 + 4 * DIA);
   assert.equal(tarde.intervalo, Math.round(((10 + 2) * 2500) / 1000));
-  const temprano = S.siguiente(e, 3, T0 - 3 * DIA);
-  assert.equal(temprano.intervalo, 25, "sin retraso negativo");
+  const temprano = S.siguiente(e, 3, T0 - 12 * HORA);
+  assert.equal(temprano.intervalo, 25, "adelantarse menos de un día no resta: sin retraso negativo");
+  const muyTemprano = S.siguiente(e, 3, T0 - 3 * DIA);
+  assert.equal(muyTemprano.intervalo, 10, "más de un día antes no mueve la programación (ver «Repasos duplicados»)");
+  assert.equal(muyTemprano.vence, e.vence);
 });
 
 test("monotonía: para cualquier estado de repaso, Difícil ≤ Bien < Fácil y respeta el tope", () => {
   const azar = prng(3);
   for (let i = 0; i < 300; i++) {
     const e = enRepaso({ intervalo: 1 + Math.floor(azar() * 400), facilidad: 1300 + Math.floor(azar() * 2000), vence: T0 + Math.floor(azar() * 20 - 5) * DIA  });
-    const ahora = Math.max(T0 + Math.floor(azar() * 30) * DIA, e.ultimo + S.CONFIG.ventanaDuplicado + MIN);
+    const ahora = Math.max(T0 + Math.floor(azar() * 30) * DIA, e.vence - S.CONFIG.margenAdelanto + MIN);
     const [d, b, f] = [2, 3, 4].map((g) => S.siguiente(e, g, ahora).intervalo);
     const tope = S.CONFIG.intervaloMax;
     assert.ok(f <= tope);
@@ -266,15 +269,18 @@ test("cola: una tarjeta cloze aporta una unidad por hueco y un repaso no afecta 
 // ---- Repasos duplicados entre equipos ----
 
 test("dos «Bien» con un minuto de diferencia (dos equipos sin conexión) no duplican el intervalo", () => {
+  // Intervalo largo: una unidad de 10 días vencida; el celular y el escritorio la repasan sin conexión
   const preparar = [
-    { u: "a", t: T0, g: 3 },
-    { u: "a", t: T0 + 10 * MIN, g: 3 }, // gradúa a 1 día
+    { u: "a", t: T0 - 30 * DIA, g: 3 },
+    { u: "a", t: T0 - 30 * DIA + 10 * MIN, g: 3 },
   ];
-  const venceUnDia = T0 + 10 * MIN + DIA;
-  const ya = { u: "a", t: venceUnDia + MIN, g: 3 };
+  const base = S.reproducir(preparar).estados.get("a");
+  const venceBase = base.vence;
+  const ya = { u: "a", t: venceBase + MIN, g: 3 };
   const solo = S.reproducir([...preparar, ya]).estados.get("a");
-  const doble = S.reproducir([...preparar, ya, { u: "a", t: venceUnDia + 2 * MIN, g: 3 }]).estados.get("a");
-  assert.equal(solo.intervalo, 3, "un solo Bien: 1 d × 2,5 redondeado");
+  const doble = S.reproducir([...preparar, ya, { u: "a", t: venceBase + 2 * MIN, g: 3 }]).estados.get("a");
+  // el primer «Bien» saca la unidad del intervalo de 1 día: el segundo llega a más de un día de vencer
+  assert.ok(solo.intervalo >= 3);
   assert.equal(doble.intervalo, solo.intervalo, "el repaso duplicado no vuelve a multiplicar");
   assert.equal(doble.vence, solo.vence);
   assert.equal(doble.facilidad, solo.facilidad);
@@ -282,24 +288,81 @@ test("dos «Bien» con un minuto de diferencia (dos equipos sin conexión) no du
 });
 
 test("el duplicado no acorta ni alarga con Difícil o Fácil, pero «Otra vez» siempre se aplica", () => {
-  const e = enRepaso({ intervalo: 20, facilidad: 2500, vence: T0, ultimo: T0  });
+  // Acaba de repasarse: vence dentro de 20 días; otro equipo la repasa 30 min después
+  const e = enRepaso({ intervalo: 20, facilidad: 2500, vence: T0 + 20 * DIA, ultimo: T0 });
   for (const g of [2, 3, 4]) {
     const r = S.siguiente(e, g, T0 + 30 * MIN, S.CONFIG);
-    assert.equal(r.intervalo, 20, `g=${g} dentro de la ventana no cambia el intervalo`);
+    assert.equal(r.intervalo, 20, `g=${g} muy antes de vencer no cambia el intervalo`);
     assert.equal(r.vence, e.vence);
-    assert.equal(r.ultimo, e.ultimo, "la ventana no se corre con los duplicados");
+    assert.equal(r.ultimo, e.ultimo);
   }
   const lapso = S.siguiente(e, 1, T0 + 30 * MIN);
   assert.equal(lapso.fase, "reaprendiendo");
   assert.equal(lapso.lapsos, 1);
-  // pasada la ventana vuelve a aplicarse con normalidad
-  assert.equal(S.siguiente(e, 3, T0 + S.CONFIG.ventanaDuplicado + MIN).intervalo, 50);
+  // a menos de un día de vencer se aplica con normalidad
+  assert.equal(S.siguiente(e, 3, e.vence - DIA + MIN).intervalo, 50);
 });
 
-test("la regla no afecta al aprendizaje por pasos ni a una unidad sin repasos previos", () => {
+test("la regla no afecta al aprendizaje por pasos ni a las unidades que vencen", () => {
   const a = S.siguiente(S.estadoNuevo(), 3, T0);
   const b = S.siguiente(a, 3, T0 + MIN);
   assert.equal(b.fase, "repaso", "dos Bien seguidos en aprendizaje siguen graduando");
-  const c = S.siguiente({ ...graduada(), reps: 0, ultimo: 0, intervalo: 10, facilidad: 2500, vence: T0 }, 3, T0);
+  const c = S.siguiente(enRepaso({ intervalo: 10, facilidad: 2500, vence: T0 }), 3, T0);
   assert.equal(c.intervalo, 25);
+});
+
+// ---- Invariante: responder a lo que la cola presenta siempre reprograma ----
+
+test("la tarjeta graduada por la tarde y presentada de madrugada no se queda atascada", () => {
+  // Caso real: zona UTC-6, se gradúa a las 20:10 y el día siguiente la cola la presenta desde las 04:00
+  const desfase = -360;
+  const local = (d, h, m = 0) => Date.UTC(2026, 10, d, h, m) - desfase * MIN;
+  const repasos = [
+    { u: "a", t: local(14, 20, 0), g: 3 },
+    { u: "a", t: local(14, 20, 10), g: 3 },
+  ];
+  const { estados, eventos } = S.reproducir(repasos);
+  const ahora = local(15, 5, 0);
+  assert.deepEqual(S.cola({ unidades: ["a"], estados, eventos, ahora, desfaseMin: desfase }).repaso, ["a"]);
+  const respondida = S.reproducir([...repasos, { u: "a", t: ahora, g: 3 }]);
+  assert.notEqual(respondida.estados.get("a").vence, estados.get("a").vence, "Bien debe mover el vencimiento");
+  const despues = S.cola({ unidades: ["a"], estados: respondida.estados, eventos: respondida.eventos, ahora: ahora + MIN, desfaseMin: desfase });
+  assert.deepEqual(despues.repaso, [], "ya no vuelve a salir hoy");
+});
+
+test("propiedad: toda unidad que la cola presenta, al responder 2, 3 o 4, sale de la cola de hoy", () => {
+  const azar = prng(99);
+  let probadas = 0;
+  for (const desfase of [-420, -360, 0, 60, 330, 540]) {
+    for (let caso = 0; caso < 60; caso++) {
+      // Historia aleatoria: 2 a 6 repasos de una unidad, a cualquier hora del día
+      const repasos = [];
+      let t = Date.UTC(2026, 10, 1) + Math.floor(azar() * DIA);
+      for (let i = 0, n = 2 + Math.floor(azar() * 5); i < n; i++) {
+        repasos.push({ u: "u", t, g: 1 + Math.floor(azar() * 4) });
+        t += Math.floor(azar() * 6 * DIA) + 10 * MIN;
+      }
+      const { estados, eventos } = S.reproducir(repasos);
+      const e = estados.get("u");
+      // Se mira a distintas horas alrededor del vencimiento, incluida la madrugada
+      for (let delta = -2; delta <= 2; delta++) {
+        for (const hora of [0, 3, 4, 5, 8, 12, 17, 22]) {
+          const base = Math.floor((e.vence + delta * DIA) / DIA) * DIA + hora * HORA - desfase * MIN;
+          if (base <= repasos.at(-1).t) continue;
+          const c = S.cola({ unidades: ["u"], estados, eventos, ahora: base, desfaseMin: desfase });
+          if (!c.repaso.includes("u")) continue;
+          for (const g of [2, 3, 4]) {
+            const r = S.reproducir([...repasos, { u: "u", t: base, g }]);
+            const fin = S.finDelDia(base, desfase);
+            assert.ok(r.estados.get("u").vence >= fin, `g=${g} desfase=${desfase}: sigue en la cola de hoy`);
+            assert.notEqual(r.estados.get("u").vence, e.vence, `g=${g} no movió el vencimiento`);
+            const otra = S.cola({ unidades: ["u"], estados: r.estados, eventos: r.eventos, ahora: base + MIN, desfaseMin: desfase });
+            assert.ok(!otra.repaso.includes("u"), `g=${g} reaparece`);
+            probadas++;
+          }
+        }
+      }
+    }
+  }
+  assert.ok(probadas > 200, `la propiedad se probó solo ${probadas} veces`);
 });

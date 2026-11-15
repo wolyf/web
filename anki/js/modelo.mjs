@@ -50,7 +50,6 @@ export const idNuevo = (ahora = Date.now()) => Math.max(0, Math.trunc(ahora)).to
 // ---- Texto ----
 
 const texto = (x) => (typeof x === "string" ? x.normalize("NFC") : "");
-const REGEX_CLOZE = /\{\{c(\d+)::/;
 
 export function normalizarEtiqueta(e) {
   return texto(String(e ?? ""))
@@ -90,7 +89,7 @@ export function canonicoTarjeta(x) {
   const reverso = texto(x.reverso);
   if (!frente.trim() || frente.length > MAX_TEXTO || reverso.length > MAX_TEXTO) return null;
   if (x.tipo === "basico" && !reverso.trim()) return null;
-  if (x.tipo === "cloze" && !REGEX_CLOZE.test(frente)) return null;
+  if (x.tipo === "cloze" && !huecosCloze(frente).length) return null;
   const salida = { id: x.id, tipo: x.tipo, frente };
   if (reverso.trim()) salida.reverso = reverso;
   const etiquetas = etiquetasCanonicas(x.etiquetas);
@@ -129,12 +128,43 @@ export const igualesTarjetas = (a, b) => clave(mezclarTarjetas(a)) === clave(mez
 
 // ---- Cloze ----
 
-// Huecos de un texto: [{ n, inicio, fin, respuesta, pista }] (sin anidar).
+// Cuerpo de un hueco que empieza en `i` (justo después de «{{cN::»). Cuenta llaves para que
+// el LaTeX de la respuesta (\frac{a}{b^{2}}) no cierre el hueco antes de tiempo: el hueco
+// termina en el primer «}}» con profundidad 0. «\» salta el carácter siguiente (\{, \}), y
+// el primer «::» con profundidad 0 separa la respuesta de la pista. null si no cierra.
+function leerHueco(texto, i) {
+  let profundidad = 0;
+  let separador = -1;
+  for (let j = i; j < texto.length; j++) {
+    const c = texto[j];
+    if (c === "\\") j++;
+    else if (c === "{") profundidad++;
+    else if (c === "}") {
+      if (profundidad > 0) profundidad--;
+      else if (texto[j + 1] === "}") {
+        const finRespuesta = separador < 0 ? j : separador;
+        return { fin: j + 2, respuesta: texto.slice(i, finRespuesta), pista: separador < 0 ? "" : texto.slice(separador + 2, j) };
+      }
+    } else if (c === ":" && profundidad === 0 && separador < 0 && texto[j + 1] === ":") {
+      separador = j;
+      j++;
+    }
+  }
+  return null;
+}
+
+// Huecos de un texto: [{ n, inicio, fin, respuesta, pista }] (sin anidar huecos).
+// Un hueco sin cerrar se deja como texto normal.
 export function huecosCloze(frente) {
+  const texto = String(frente);
   const huecos = [];
-  const re = /\{\{c(\d+)::(.*?)(?:::(.*?))?\}\}/gs;
-  for (const m of String(frente).matchAll(re)) {
-    huecos.push({ n: Number(m[1]), inicio: m.index, fin: m.index + m[0].length, respuesta: m[2], pista: m[3] ?? "" });
+  const abre = /\{\{c(\d+)::/g;
+  let m;
+  while ((m = abre.exec(texto))) {
+    const cuerpo = leerHueco(texto, m.index + m[0].length);
+    if (!cuerpo) continue;
+    huecos.push({ n: Number(m[1]), inicio: m.index, fin: cuerpo.fin, respuesta: cuerpo.respuesta, pista: cuerpo.pista });
+    abre.lastIndex = cuerpo.fin;
   }
   return huecos;
 }
@@ -200,6 +230,29 @@ export function mezclarRepasos(...listas) {
     }
   }
   return [...mapa.values()].sort(ordenRepasos);
+}
+
+// Vía rápida para añadir pocos repasos a una lista que ya es canónica y está ordenada (la que
+// devuelve mezclarRepasos): solo canoniza los nuevos y busca duplicados por clave, sin volver a
+// mezclar los miles que ya están. Da exactamente lo mismo que mezclarRepasos(lista, nuevos).
+// → { lista, cambio }; si no hay nada nuevo devuelve la MISMA lista.
+export function agregarRepasos(lista, nuevos) {
+  const candidatos = mezclarRepasos(nuevos);
+  if (!candidatos.length) return { lista, cambio: false };
+  const claves = new Map();
+  for (const r of lista) claves.set(`${r.u}\u0000${r.t}`, r);
+  const aAgregar = [];
+  for (const r of candidatos) {
+    const previo = claves.get(`${r.u}\u0000${r.t}`);
+    if (!previo) aAgregar.push(r);
+    else if (clave(previo) !== clave(r)) {
+      // Misma clave (u, t) con otro contenido: casi imposible; lo decide la mezcla completa
+      const completa = mezclarRepasos(lista, candidatos);
+      return { lista: completa, cambio: clave(completa) !== clave(lista) };
+    }
+  }
+  if (!aAgregar.length) return { lista, cambio: false };
+  return { lista: [...lista, ...aAgregar].sort(ordenRepasos), cambio: true };
 }
 
 export const igualesRepasos = (a, b) => clave(mezclarRepasos(a)) === clave(mezclarRepasos(b));

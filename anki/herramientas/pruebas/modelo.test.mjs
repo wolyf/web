@@ -199,3 +199,23 @@ test("descifrado ignora elementos inválidos y rechaza versiones desconocidas", 
   const futura = await L.cifrarFragmento(JSON.stringify({ v: 2, tarjetas: [] }), llave, M.INFO_TARJETAS);
   await assert.rejects(M.descifrarTarjetas(futura, llave), /desconocido/);
 });
+
+test("agregarRepasos da exactamente lo mismo que mezclarRepasos y no copia si no hay nada nuevo", () => {
+  const azar = prng(5);
+  const crear = () => ({ u: `u${Math.floor(azar() * 8)}`, t: Math.floor(azar() * 400), g: 1 + Math.floor(azar() * 4) });
+  for (let k = 0; k < 60; k++) {
+    const base = M.mezclarRepasos(Array.from({ length: Math.floor(azar() * 60) }, crear));
+    const nuevos = Array.from({ length: Math.floor(azar() * 6) }, crear);
+    if (azar() < 0.3 && base.length) nuevos.push(base[Math.floor(azar() * base.length)]); // un duplicado exacto
+    if (azar() < 0.2 && base.length) nuevos.push({ ...base[0], g: base[0].g === 4 ? 1 : base[0].g + 1 }); // misma clave, otro contenido
+    nuevos.push({ u: "inválido", t: -5, g: 9 }); // se descarta
+    const { lista, cambio } = M.agregarRepasos(base, nuevos);
+    const esperado = M.mezclarRepasos(base, nuevos);
+    assert.deepEqual(lista, esperado, `caso ${k}`);
+    assert.equal(cambio, JSON.stringify(esperado) !== JSON.stringify(base), `cambio en el caso ${k}`);
+  }
+  const base = M.mezclarRepasos([{ u: "a", t: 5, g: 3 }]);
+  assert.equal(M.agregarRepasos(base, [{ u: "a", t: 5, g: 3 }]).lista, base, "devuelve la misma lista");
+  assert.equal(M.agregarRepasos(base, []).cambio, false);
+  assert.equal(M.agregarRepasos(base, [{ u: "b", t: 1, g: 3 }]).lista[0].u, "b", "inserta en orden por t aunque llegue antes");
+});

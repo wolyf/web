@@ -45,7 +45,13 @@ Plan por fases (el estado real está en «Estado» al final):
 - **Tarjeta frente a unidad.** Una *tarjeta* (nota) es lo que se escribe; una *unidad* es lo que se repasa. `basico` produce una unidad (`uid = id`); `cloze` una por cada número `cN` (`uid = id#cN`).
 - **Repasos de solo agregado.** El estado de cada unidad **nunca se guarda**: se deriva reproduciendo su registro de repasos ordenado por $(t, u, g)$. La unión de repasos (clave $(u, t)$) es conmutativa, asociativa e idempotente, así que estudiar sin conexión en dos equipos no pierde nada y cambiar de algoritmo no exige migrar datos.
 - **Algoritmo detrás de una interfaz estable:** `siguiente(estado, g, ahora, config) → estado`. Hoy SM-2 determinista (sin «fuzz»). FSRS se acopla después portando la implementación de referencia con versión fija; no se reconstruyen fórmulas ni parámetros de memoria.
-- **Repasos duplicados.** Un repaso que no es «Otra vez» llegado a menos de 12 h del último efectivo cuenta en el registro pero no mueve la programación (dos equipos que repasan sin conexión la misma unidad no multiplican el intervalo dos veces). «Otra vez» siempre se aplica.
+- **Repasos duplicados.** Un repaso que no es «Otra vez» hecho más de **un día antes** de que la unidad venza cuenta en el registro pero no mueve la programación: es lo que pasa con el segundo de dos equipos que repasan sin conexión la misma unidad (llega con la unidad ya reprogramada a días de distancia). «Otra vez» siempre se aplica. Invariante probada como propiedad: la cola solo presenta unidades con `vence < fin del día de estudio ≤ ahora + 1 día`, así que responder a lo que se presenta SIEMPRE la reprograma (una versión anterior con ventana de 12 h atascaba tarjetas graduadas por la tarde). Costo asumido: con intervalos de 1 día un duplicado sí se aplica.
+- **Texto de tarjeta con fórmulas** (formato persistente, no cambia sin migración): texto plano con `$…$` en línea (reglas de pandoc: sin espacio tras la apertura, sin espacio antes ni dígito después del cierre, así «cuesta $5 y $10» sigue siendo texto), `$$…$$` en bloque, `\(…\)` y `\[…\]` (los de Anki) y `\$` para un dólar literal. Dentro de un hueco cloze las fórmulas van delimitadas: `{{c1::$\frac{a}{b}$}}`. El analizador de huecos cuenta llaves, así que el LaTeX no cierra el hueco antes de tiempo. `aDelimitadoresAnki` convierte al formato de Anki para exportar.
+- **Una sola pestaña activa** (Web Lock exclusivo `wr-anki:activa`): la segunda avisa y ofrece «Usar aquí», que le quita el control a la primera, y esta puede recuperarlo igual. Las conexiones se encadenan y no se vuelve a pedir un bloqueo que la pestaña ya tiene (`sesion.entrar()` avisa siempre, y un segundo «activa» la dejaba bloqueada por sí misma). Una pestaña detenida (sin el control o con la sesión cerrada) no escribe más en la caché local compartida y `aplicar` lanza un error en vez de perder el cambio. Sin Web Locks se asume una pestaña.
+- **Editar no rompe el historial:** el tipo de una tarjeta queda fijo al editar (cambiarlo cambia los `uid` y dejaría el historial huérfano) y quitar un hueco cloze con historial pide confirmación.
+- **Respuestas sin esperar:** `registrarRepaso` deja el repaso en memoria de forma síncrona (contrato probado) y el guardado local y la subida siguen en segundo plano. Con 20 000 repasos, la parte síncrona de una respuesta cuesta unos 7 ms.
+- **Lotes de escritura:** las tarjetas se suben 2 s tras el último cambio; los repasos 2 min tras el último (máximo 5 min con cambios pendientes) y al terminar o salir de una sesión de estudio, al ocultar la pestaña y al cerrarla. Cada commit guarda el archivo completo (crecimiento del repositorio: pendiente, ver «Estado»). La marca de pendiente usa un contador de versión: un cambio que llega con un PUT en vuelo no se pierde.
+- **Seguridad de la interfaz:** el texto de las tarjetas entra SOLO con `textContent`; las fórmulas con `katex.render` sin `trust`. No hay `innerHTML` ni manejadores en línea (la CSP lo impediría).
 - **Origen opcional y tipado:** `subrayado` (id, ruta `p`, cita), `externo` (fuente, `url` solo http o https) o ninguno (manual). La tarjeta sobrevive si el subrayado se borra o queda huérfano.
 - **Identificadores** `id = <fecha en ms, 12 hex><3 bytes aleatorios>`: ordenar por id es ordenar por creación (orden de las nuevas).
 - **Nada se pierde en silencio.** `guardarTarjeta` y `registrarRepaso` lanzan error si el dato es inválido; con el reloj atrasado, `t` sube a «último conocido + 1» para que la edición, el borrado o el repaso gane de verdad.
@@ -55,11 +61,16 @@ Plan por fases (el estado real está en «Estado» al final):
 
 | Ruta | Qué es |
 |---|---|
-| `anki/index.html` | Página principal (aún sin interfaz) |
-| `anki/js/modelo.mjs` | Núcleo puro: tarjetas, cloze, unidades, repasos, mezcla y formato cifrado |
+| `anki/index.html`, `anki/css/anki.css` | Página (KaTeX local, sin scripts en línea) y estilos propios |
+| `anki/js/main.mjs` | Arranque: pasa a la interfaz la sesión real del sitio |
+| `anki/js/app.mjs` | Interfaz (`montar(raiz, deps)`, con sesión, `fetch`, reloj, bloqueos y KaTeX inyectables): inicio, estudio, editor, explorador, pestaña única |
+| `anki/js/estudio.mjs` | Núcleo puro: foto de lo que toca estudiar, siguiente unidad (sin hermanos cloze seguidos), búsqueda, validación |
+| `anki/js/render.mjs` | Núcleo puro: separa texto y fórmulas; conversión al formato de Anki |
+| `anki/js/modelo.mjs` | Núcleo puro: tarjetas, cloze (con llaves de LaTeX), unidades, repasos, mezcla, adición incremental y formato cifrado |
 | `anki/js/scheduler.mjs` | Núcleo puro: SM-2, reproducción del registro, día de estudio (corte a las 4:00) y cola con topes diarios |
 | `anki/js/sync.mjs` | Sincronización cifrada con la rama `anki` (`crearArchivo` genérico y `crearAnki`); reutiliza `clienteGitHub` de `../js/subrayados-sync.mjs` |
-| `anki/herramientas/pruebas/` | `modelo`, `scheduler` y `sync` (con una API de GitHub simulada) |
+| `anki/herramientas/pruebas/` | `modelo`, `render`, `scheduler`, `estudio` y `sync` (con una API de GitHub simulada): corren con `npm test` |
+| `anki/herramientas/verificar-ui.mjs` | Verificación en un navegador real (Playwright) sobre el `index.html` real, con acceso desechable y API de GitHub falsa; NO forma parte de `npm test`: `node anki/herramientas/verificar-ui.mjs [--salida dir]` |
 
 ## Datos cifrados
 
@@ -70,12 +81,13 @@ Plan por fases (el estado real está en «Estado» al final):
 
 ## Estado
 
-Hecho (fase 0, pasos 1 a 3): modelo, programación y sincronización, con pruebas.
+Hecho (fase 0): modelo, programación, sincronización, interfaz de estudio y creación manual (tarjetas básicas y cloze con LaTeX, etiquetas jerárquicas, explorador con búsqueda, editar y eliminar), pestaña única y verificación en navegador real (celular, escritorio y tema oscuro; 38 comprobaciones, incluidas pestañas, edición y la rama ausente).
 
 Pendiente:
 
-1. **Crear la rama `anki`.** `npm run sesion -- rama` solo crea `subrayados`; sin la rama, la sincronización real falla con «No se encontró la rama «anki»». Hace falta un comando (sin historial, con archivos iniciales cifrados) o que el dueño la cree.
-2. Interfaz de estudio y creación manual (tarjetas básicas y cloze, con LaTeX), y coordinación entre pestañas con Web Locks.
-3. PWA: `manifest` y `service worker` dentro de `anki/` (alcance `anki/`; la CSP no cambia). En iPhone conviene instalarla en la pantalla de inicio por la política de borrado de Safari.
-4. Poda o compactación del registro de repasos y de las lápidas (hoy se conserva todo).
-5. Fases 1 a 4.
+1. **Crear la rama `anki`.** `npm run sesion -- rama` solo crea `subrayados`; sin la rama, la sincronización real muestra «No se encontró la rama «anki»» y todo se guarda en el equipo. Hace falta un comando (sin historial, con archivos iniciales cifrados) o que el dueño la cree.
+2. **Quitar `oculto` de `proyectos.json`** (zona general) cuando la rama exista y se haya probado con datos reales.
+3. PWA: `manifest` y `service worker` dentro de `anki/` (alcance `anki/`; la CSP no cambia). En iPhone conviene instalarla en la pantalla de inicio por la política de borrado de Safari. Hasta entonces, sin red la página no carga aunque los datos estén en la caché local.
+4. Crecimiento del repositorio: cada commit guarda `repasos.enc` completo; falta compactar el registro (y podar lápidas).
+5. Deshacer la última respuesta (el registro es de solo agregado: haría falta un repaso compensatorio).
+6. Fases 1 a 4 del plan.

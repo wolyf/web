@@ -7,8 +7,13 @@
 // los subrayados (js/subrayados-sync.mjs: sha por contenidos, bytes exactos por blobs,
 // If-None-Match, 409 y 422 como conflicto) y su mismo esquema:
 //
-//   · Los cambios se mezclan localmente al instante (aplicar) y se escriben con
-//     debounce, por lotes: cada PUT es un commit y reescribe el archivo entero.
+//   · Los cambios se mezclan localmente al instante (aplicar) y se escriben por lotes: cada
+//     PUT es un commit y reescribe el archivo ENTERO. Las tarjetas esperan 2 s tras el último
+//     cambio; los repasos, 2 min (con un máximo de 5 min sin escribir mientras haya cambios) y
+//     se vacían al terminar de estudiar o al ocultar la pestaña. Cada commit guarda el archivo
+//     completo: el crecimiento del repositorio con los repasos queda pendiente (compactación).
+//   · Una escritura en vuelo solo cubre lo que llevaba: si llega otro cambio mientras tanto, la
+//     marca de pendiente se conserva (contador de versión) y se vuelve a programar.
 //   · Si el remoto cambió, se relee, se mezcla (unión: nada se pierde) y se reintenta.
 //   · Lo último conocido y la marca de «cambios pendientes» se guardan CIFRADOS en
 //     IndexedDB: sin red se sigue estudiando y se sincroniza al volver.
@@ -24,7 +29,9 @@ export { almacenMemoria, almacenIndexedDB, ErrorSync };
 export const RAMA = "anki";
 export const ARCHIVOS = { tarjetas: "tarjetas.enc", repasos: "repasos.enc" };
 const MAX_REINTENTOS = 5;
-const ESPERA_ESCRITURA = 2000;
+const ESPERA_TARJETAS = 2000;
+const ESPERA_REPASOS = 120_000;
+const ESPERA_MAX_REPASOS = 300_000;
 
 // ---- Un archivo cifrado ----
 
@@ -37,14 +44,21 @@ export function crearArchivo({
   descifrar,
   mezclar,
   iguales,
+  incorporar = (items, nuevos) => {
+    const mezcla = mezclar(items, nuevos);
+    return { lista: mezcla, cambio: !iguales(mezcla, items) };
+  },
   ahora = () => Date.now(),
   alCambiar = () => {},
-  espera = ESPERA_ESCRITURA,
+  espera = ESPERA_TARJETAS,
+  esperaMax = 5 * espera,
   temporizadores = { setTimeout: globalThis.setTimeout?.bind(globalThis), clearTimeout: globalThis.clearTimeout?.bind(globalThis) },
 }) {
   let items = [];
   let sha = null;
   let sucio = false;
+  let version = 0; // sube con cada cambio local: permite saber si una escritura cubría todo
+  let sucioDesde = 0;
   let ultima = null;
   let estado = cliente ? "sincronizado" : "error";
   let detalle = cliente ? "" : "Falta el token de sincronización";
@@ -60,12 +74,33 @@ export function crearArchivo({
     avisar("estado");
   }
 
-  async function guardarLocal() {
-    try {
-      await almacen.escribir({ cifrado: await cifrar(items, llave), sha, sucio, ultima });
-    } catch {
-      /* sin almacén local: solo se pierde el trabajo sin red */
+  // Un solo escritor local: las copias se hacen en orden y las que se piden mientras otra está en
+  // curso se funden en UNA más, tomada con el estado más reciente. Así nunca termina de escribirse
+  // una versión vieja después de una nueva, y 50 respuestas seguidas no cifran el archivo 50 veces.
+  let guardando = null;
+  let repetir = false;
+  function guardarLocal() {
+    if (guardando) {
+      repetir = true;
+      return guardando;
     }
+    guardando = (async () => {
+      try {
+        do {
+          repetir = false;
+          if (detenido) break; // pestaña sin el control o sesión cerrada: la caché es de quien siga activo
+          try {
+            const foto = { lista: items, sha, sucio, ultima };
+            await almacen.escribir({ cifrado: await cifrar(foto.lista, llave), sha: foto.sha, sucio: foto.sucio, ultima: foto.ultima });
+          } catch {
+            /* sin almacén local: solo se pierde el trabajo sin red */
+          }
+        } while (repetir);
+      } finally {
+        guardando = null;
+      }
+    })();
+    return guardando;
   }
 
   async function cargarLocal() {
@@ -75,6 +110,7 @@ export function crearArchivo({
       items = mezclar(await descifrar(g.cifrado, llave));
       sha = g.sha ?? null;
       sucio = !!g.sucio;
+      if (sucio) sucioDesde = ahora();
       ultima = g.ultima ?? null;
     } catch {
       /* caché de otra llave o dañada: se descarta */
@@ -82,12 +118,16 @@ export function crearArchivo({
     }
   }
 
-  async function confirmar(r, t0) {
+  // `v` es la versión que llevaba la escritura: si llegó algo después, sigue pendiente
+  async function confirmar(r, t0, v) {
+    if (detenido) return;
     sha = r.sha;
-    sucio = false;
+    sucio = version !== v;
+    sucioDesde = sucio ? ahora() : 0;
     ultima = t0;
     await guardarLocal();
     poner("sincronizado");
+    if (sucio) programar();
   }
 
   async function ronda() {
@@ -97,8 +137,9 @@ export function crearArchivo({
     try {
       // Escritura pendiente: directa con el sha conocido
       if (sha && sucio) {
+        const v = version;
         const r = await cliente.escribir(await cifrar(items, llave), sha);
-        if (!r.conflicto) return await confirmar(r, t0);
+        if (!r.conflicto) return await confirmar(r, t0, v);
         sha = null; // el remoto cambió: a leerlo completo
       }
       for (let intento = 0; intento < MAX_REINTENTOS; intento++) {
@@ -127,18 +168,20 @@ export function crearArchivo({
         sha = remoto.sha;
         if (remoto.sha && iguales(mezcla, deRemoto)) {
           sucio = false;
+          sucioDesde = 0;
           ultima = t0;
           await guardarLocal();
           if (cambioLocal) avisar("datos");
           return poner("sincronizado");
         }
         if (cambioLocal) avisar("datos");
+        const v = version;
         const r = await cliente.escribir(await cifrar(mezcla, llave), remoto.sha);
         if (r.conflicto) {
           if (!remoto.sha && intento >= 1) throw new ErrorSync(`No se pudo crear ${nombre}: ¿existe la rama «${RAMA}»?`);
           continue;
         }
-        return await confirmar(r, t0);
+        return await confirmar(r, t0, v);
       }
       throw new ErrorSync("No se pudo sincronizar tras varios intentos");
     } catch (e) {
@@ -154,13 +197,16 @@ export function crearArchivo({
     return cola;
   };
 
+  // Espera `espera` tras el último cambio, pero nunca más de `esperaMax` desde que empezó a haber
+  // cambios pendientes: una sesión larga de estudio también se escribe de vez en cuando.
   function programar() {
     if (detenido) return;
     temporizadores.clearTimeout?.(pendiente);
+    const retraso = Math.max(0, Math.min(espera, sucioDesde + esperaMax - ahora()));
     pendiente = temporizadores.setTimeout?.(() => {
       pendiente = null;
       sincronizar();
-    }, espera);
+    }, retraso);
   }
 
   return {
@@ -174,13 +220,16 @@ export function crearArchivo({
 
     // Cambio local: se mezcla al instante, se guarda y se programa la escritura
     async aplicar(...nuevos) {
-      const mezcla = mezclar(items, nuevos);
-      if (iguales(mezcla, items)) return;
-      items = mezcla;
+      if (detenido) throw new Error("La sincronización está detenida (otra pestaña tiene el control o se cerró la sesión): el cambio no se guardó");
+      const { lista, cambio } = incorporar(items, nuevos);
+      if (!cambio) return;
+      items = lista;
+      version++;
+      if (!sucio) sucioDesde = ahora();
       sucio = true;
       avisar("datos");
-      await guardarLocal();
       programar();
+      await guardarLocal();
     },
 
     sincronizar,
@@ -209,15 +258,19 @@ export function crearAnki({
   clientes = {},
   ahora = () => Date.now(),
   alCambiar = () => {},
-  espera,
+  esperaTarjetas = ESPERA_TARJETAS,
+  esperaRepasos = ESPERA_REPASOS,
+  esperaMaxRepasos = ESPERA_MAX_REPASOS,
   temporizadores,
 }) {
   const cliente = (clave, mensaje) =>
     clientes[clave] ?? (token ? clienteGitHub({ token, repo, rama, ruta: ARCHIVOS[clave], mensaje, ...(f ? { fetch: f } : {}) }) : null);
-  const comun = { llave, ahora, alCambiar, ...(espera != null ? { espera } : {}), ...(temporizadores ? { temporizadores } : {}) };
+  const comun = { llave, ahora, alCambiar, ...(temporizadores ? { temporizadores } : {}) };
   const tarjetas = crearArchivo({
     ...comun,
     nombre: ARCHIVOS.tarjetas,
+    espera: esperaTarjetas,
+    esperaMax: 5 * esperaTarjetas,
     cliente: cliente("tarjetas", "Actualiza tarjetas"),
     almacen: almacenes.tarjetas ?? almacenMemoria(),
     cifrar: M.cifrarTarjetas,
@@ -228,12 +281,15 @@ export function crearAnki({
   const repasos = crearArchivo({
     ...comun,
     nombre: ARCHIVOS.repasos,
+    espera: esperaRepasos,
+    esperaMax: esperaMaxRepasos,
     cliente: cliente("repasos", "Actualiza repasos"),
     almacen: almacenes.repasos ?? almacenMemoria(),
     cifrar: M.cifrarRepasos,
     descifrar: M.descifrarRepasos,
     mezclar: M.mezclarRepasos,
     iguales: M.igualesRepasos,
+    incorporar: M.agregarRepasos,
   });
 
   return {
