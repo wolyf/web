@@ -1,0 +1,80 @@
+/* Gráficas interactivas del Libro 23 (Ilustraciones 4.1, 5.6, 5.14, 5.15, 5.16, 5.17, 6.11, 6.13).
+   Complementa ../css/graficas.css respetando claro/oscuro. */
+
+.grafica-libro .l23-leyenda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.9rem;
+  margin: 0.4rem 0 0.35rem;
+  font-size: 0.85rem;
+}
+
+.grafica-libro .l23-leyenda button {
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+}
+
+.grafica-libro .l23-leyenda button[aria-pressed="false"] {
+  opacity: 0.45;
+  text-decoration: line-through;
+}
+
+.grafica-libro .l23-muestra {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: 50%;
+  display: inline-block;
+  flex: none;
+}
+
+.grafica-libro .l23-globo {
+  min-height: 1.4rem;
+  font-size: 0.86rem;
+  color: var(--text-strong);
+  margin: 0.25rem 0 0.4rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.grafica-libro .l23-ejes {
+  stroke: var(--text);
+  stroke-width: 1.2;
+}
+
+.grafica-libro .l23-reticula {
+  stroke: var(--border);
+  stroke-width: 0.8;
+  stroke-dasharray: 3 3;
+}
+
+.grafica-libro .l23-etiq {
+  fill: var(--muted);
+  font-size: 10.5px;
+}
+
+.grafica-libro .l23-titulo-eje {
+  fill: var(--text);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.grafica-libro .l23-punto {
+  cursor: pointer;
+  transition: r 0.12s ease;
+}
+
+.grafica-libro .l23-punto:hover,
+.grafica-libro .l23-punto:focus-visible {
+  outline: none;
+}

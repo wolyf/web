@@ -1,0 +1,75 @@
+/* Diagramas de flujo de tratamiento de biogás del Libro 22 (Ilustraciones 3.2 a 3.5).
+   Usa las variables de tema del sitio para claro/oscuro. */
+
+.diagrama-l22 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 0.5rem;
+  overflow-x: auto;
+}
+
+.diagrama-l22__fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.diagrama-l22__caja {
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.25;
+  color: var(--text-strong);
+  min-width: 105px;
+  max-width: 155px;
+}
+
+.diagrama-l22__caja--dest {
+  background: color-mix(in srgb, var(--accent) 14%, var(--surface));
+  border-color: var(--accent);
+}
+
+.diagrama-l22__flecha {
+  color: var(--muted);
+  font-size: 1.1rem;
+  font-weight: 700;
+  user-select: none;
+}
+
+.diagrama-l22__retorno {
+  font-size: 0.8rem;
+  color: var(--muted);
+  border-top: 1.5px dashed var(--border-strong);
+  padding-top: 0.35rem;
+  width: 80%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.diagrama-l22__ramas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+.diagrama-l22__col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.diagrama-l22__etiqueta {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--muted);
+}

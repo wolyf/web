@@ -1,0 +1,25 @@
+/* Gráficas interactivas del Libro 24 (Ilustraciones D.1 y H.5 a H.9). */
+
+.grafica-libro[data-grafica^="l24-"] {
+  --grafica-serie-1: color-mix(in srgb, #1d4ed8 85%, var(--text-strong));
+  --grafica-serie-2: color-mix(in srgb, #be123c 85%, var(--text-strong));
+  --grafica-serie-3: color-mix(in srgb, #15803d 85%, var(--text-strong));
+}
+
+.grafica-svg .aro {
+  fill: var(--surface);
+  stroke: var(--c);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.grafica-svg [hidden] {
+  display: none;
+}
