@@ -41,7 +41,7 @@ Recopilación de los libros del *Manual de Agua Potable, Alcantarillado y Saneam
 
 `node manuales-conagua/herramientas/seo.mjs` (con `--revisar` solo revisa) mantiene, a partir de la lista de `index.html` (número, nombre y grupo de cada libro) y de `sitio.url` de `proyectos.json`:
 
-- En cada libro: el `<title>` (`Libro N · Nombre (MAPAS, Conagua)`), el nombre del sitio con acento en la `<nav class="ajustes-barra">` y un bloque al final del `<head>` entre `<!-- seo:inicio … -->` y `<!-- seo:fin -->` con la descripción (solo si el libro no trae la suya), `canonical` (neutraliza las URL con `?q=&b=`), Open Graph y JSON-LD (`Book` de la serie MAPAS, con la Conagua como autora y editora, Wolfgang Reséndiz como editor de la edición HTML con el `@id` de la portada, y `BreadcrumbList`).
+- En cada libro: el `<title>` (si no sigue ya el patrón `Libro N · … (MAPAS, Conagua)`, lo arma con el nombre de la lista), el nombre del sitio con acento (en la `<nav class="ajustes-barra">` o en la marca `.brand` del encabezado) y un bloque al final del `<head>` entre `<!-- seo:inicio … -->` y `<!-- seo:fin -->` con la descripción (solo si el libro no trae la suya), `canonical` (neutraliza las URL con `?q=&b=`), Open Graph y JSON-LD (`Book` de la serie MAPAS, con la Conagua como autora y editora, Wolfgang Reséndiz como editor de la edición HTML con el `@id` de la portada, y `BreadcrumbList`).
 - En `index.html`: el mismo tipo de bloque (`CollectionPage` + `BookSeries` con los 54 libros).
 - `manuales-conagua/sitemap.xml`: índice y libros (se envía aparte en Search Console).
 

@@ -5,7 +5,7 @@
 //   node manuales-conagua/herramientas/seo.mjs --revisar  # solo revisa (código 1 si algo no está al día)
 //
 // Solo toca el <head> (un bloque entre marcadores), el <title> y el nombre del sitio
-// dentro del <nav class="ajustes-barra">. El cuerpo de los libros no cambia, así que
+// en la <nav class="ajustes-barra"> o en la marca (.brand) del encabezado. El cuerpo de los libros no cambia, así que
 // la numeración de bloques de la búsqueda y los subrayados siguen igual.
 // Nombres y número de cada libro: la lista de manuales-conagua/index.html.
 // Si se reconstruye un libro, vuelve a correr esta herramienta (una prueba lo exige).
@@ -44,11 +44,13 @@ export function leerLibros(indiceHtml) {
 }
 
 const tituloDe = (l) => `Libro ${l.num} · ${l.nombre} (MAPAS, Conagua)`;
+// Un título ya curado con el patrón «Libro N · … (MAPAS, Conagua)» se conserva.
+const tituloCurado = (actual, l) => new RegExp(`^Libro ${l.num} · .+ \\(MAPAS, Conagua\\)$`).test(actual);
 const descripcionDe = (l) =>
   `Libro ${l.num} del Manual de Agua Potable, Alcantarillado y Saneamiento (MAPAS) de la Conagua: ${l.nombre}. Texto completo en HTML con búsqueda, tablas y ecuaciones.`;
 
 // Bloque del <head> de un libro. `conDescripcion`: si el libro no trae la suya.
-export function bloqueLibro(l, base, { conDescripcion = true } = {}) {
+export function bloqueLibro(l, base, { conDescripcion = true, tituloHtml = escapar(tituloDe(l)) } = {}) {
   const url = new URL(`manuales-conagua/libros/${l.archivo}`, base).href;
   const manuales = new URL("manuales-conagua/", base).href;
   const descripcion = descripcionDe(l);
@@ -88,7 +90,7 @@ export function bloqueLibro(l, base, { conDescripcion = true } = {}) {
     `<meta property="og:type" content="book">`,
     `<meta property="og:locale" content="es_MX">`,
     `<meta property="og:site_name" content="Wolfgang Reséndiz">`,
-    `<meta property="og:title" content="${escapar(tituloDe(l))}">`,
+    `<meta property="og:title" content="${tituloHtml.replace(/"/g, "&#34;")}">`,
     `<meta property="og:description" content="${escapar(descripcion)}">`,
     `<meta property="og:url" content="${escapar(url)}">`,
     `<meta property="og:image" content="${escapar(new URL("img/vista-previa.png", base).href)}">`,
@@ -112,14 +114,19 @@ const quitarBloque = (html) => {
 // Devuelve el libro con su <head> al día. Idempotente.
 export function actualizarLibro(html, l, base) {
   let nuevo = quitarBloque(html);
-  if (!/<title>[^<]*<\/title>/.test(nuevo)) throw new Error(`${l.archivo}: no tiene <title>.`);
-  nuevo = nuevo.replace(/<title>[^<]*<\/title>/, `<title>${escapar(tituloDe(l))}</title>`);
+  const actual = nuevo.match(/<title>([^<]*)<\/title>/);
+  if (!actual) throw new Error(`${l.archivo}: no tiene <title>.`);
+  // El curado ya es HTML (puede traer entidades): se deja tal cual; el generado se escapa.
+  const tituloHtml = tituloCurado(actual[1], l) ? actual[1] : escapar(tituloDe(l));
+  nuevo = nuevo.replace(/<title>[^<]*<\/title>/, () => `<title>${tituloHtml}</title>`);
   const conDescripcion = !/<meta name="description"/.test(nuevo);
   const fin = nuevo.indexOf("</head>");
   if (fin < 0) throw new Error(`${l.archivo}: no tiene </head>.`);
-  nuevo = `${nuevo.slice(0, fin)}${bloqueLibro(l, base, { conDescripcion })}\n${nuevo.slice(fin)}`;
+  nuevo = `${nuevo.slice(0, fin)}${bloqueLibro(l, base, { conDescripcion, tituloHtml })}\n${nuevo.slice(fin)}`;
   // El nombre del sitio en la barra (es un <nav>: la búsqueda no lo cuenta)
-  return nuevo.replace(/(<nav class="ajustes-barra">.*?>)Wolfgang Resendiz(<\/a>)/, "$1Wolfgang Reséndiz$2");
+  return nuevo
+    .replace(/(<nav class="ajustes-barra">.*?>)Wolfgang Resendiz(<\/a>)/, "$1Wolfgang Reséndiz$2")
+    .replace(/(<a class="brand" href="[^"]*">)Wolfgang Resendiz(<\/a>)/, "$1Wolfgang Reséndiz$2");
 }
 
 // Bloque del <head> del índice de los manuales: canonical, Open Graph y la colección.
