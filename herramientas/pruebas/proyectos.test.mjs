@@ -235,3 +235,32 @@ test("cada página HTML lleva la política de contenido y no carga recursos exte
     assert.doesNotMatch(html, /<(?:script|link)\b[^>]*(?:src|href)="https?:\/\/(?!(?:www\.)?(?:linkedin|researchgate|github))[^"]*"[^>]*(?:rel="stylesheet"|<script)/, `${nombre} carga un recurso externo.`);
   }
 });
+
+test("cada canonical apunta a su propia página (sitio.url + ruta) y está en el <head>", () => {
+  const base = leerSitio().url;
+  const paginas = [];
+  const recorrer = (dir) => {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      if ([".git", "node_modules", ".catalogo", ".privado"].includes(e.name)) continue;
+      const ruta = path.join(dir, e.name);
+      if (e.isDirectory()) recorrer(ruta);
+      else if (e.name.endsWith(".html")) paginas.push(ruta);
+    }
+  };
+  recorrer(RAIZ_REAL);
+  let con = 0;
+  for (const ruta of paginas) {
+    const html = fs.readFileSync(ruta, "utf8");
+    const nombre = path.relative(RAIZ_REAL, ruta).split(path.sep).join("/");
+    const todos = [...html.matchAll(/<link rel="canonical" href="([^"]+)">/g)].map((m) => m[1]);
+    if (!todos.length) continue;
+    con++;
+    // Las plantillas se copian a varias páginas: un canonical fijo las marcaría como duplicadas
+    assert.ok(!nombre.startsWith("herramientas/plantilla"), `${nombre}: las plantillas no llevan canonical.`);
+    assert.equal(todos.length, 1, `${nombre}: más de un canonical.`);
+    const propia = new URL(nombre.replace(/(^|\/)index\.html$/, "$1"), base).href;
+    assert.equal(todos[0], propia, `${nombre}: el canonical debe ser ${propia} (¿cambió sitio.url?).`);
+    assert.ok(html.indexOf("rel=\"canonical\"") < html.indexOf("</head>"), `${nombre}: el canonical va en el <head>.`);
+  }
+  assert.ok(con >= 3, "Se esperaban páginas con canonical (portada, manuales, calculadora).");
+});

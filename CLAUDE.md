@@ -87,7 +87,9 @@ Meta: que al buscar «Wolfgang Reséndiz» o «Wolfgang Resendiz» salga primero
 - La portada trata de él: `<title>`, descripción, `<h1>` y la sección «Sobre mí» llevan su nombre completo (con y sin acento), profesión, UNAM y tesis. Darwin se queda, pero no en el título ni en la descripción.
 - `index.html` tiene en el `<head>` `canonical`, Open Graph (imagen `img/vista-previa.png`, 1200 × 630), `rel="me"` y un JSON-LD (`ProfilePage` + `Person` + `Thesis`) con `sameAs` a LinkedIn, ResearchGate y GitHub, y a la tesis en el Repositorio UNAM y Ptolomeo. Si hay un perfil nuevo, agrégalo en los tres lugares (JSON-LD, `rel="me"` y «Sobre mí»).
 - `sitemap.xml` se genera con `npm run proyectos -- portada` (portada y página de inicio de cada proyecto público); una prueba revisa que esté al día. `robots.txt` solo sirve en la raíz del dominio, así que no hay.
-- Si el sitio cambia de dominio, cambia `sitio.url`, el `canonical`, `og:url`, `og:image` y los `@id`/`url` del JSON-LD, y regenera la imagen de vista previa.
+- Si el sitio cambia de dominio, cambia `sitio.url`, el `canonical`, `og:url`, `og:image` y los `@id`/`url` del JSON-LD de la portada y de `calculadoras/caudal.html`, corre `npm run proyectos -- portada` y `node manuales-conagua/herramientas/seo.mjs`, y regenera la imagen de vista previa. Una prueba exige que cada `canonical` apunte a su propia página según `sitio.url`.
+- Las plantillas de proyecto no llevan `canonical` (sus copias lo tendrían repetido); cada página lo agrega con su propia URL.
+- `manuales-conagua/sitemap.xml` es aparte (lo genera ese proyecto) y también se envía en Search Console.
 - Cada página de proyecto debería enlazar a la portada con el nombre completo (eso se hace desde el entorno del proyecto).
 
 ## Sesión y partes privadas
