@@ -339,3 +339,159 @@ test("repasos con el mismo reloj o con reloj atrasado no se descartan como dupli
   assert.equal(A.repasos.items().length, 3);
   assert.equal((await A.registrarRepaso("otra", 2)) , 10, "otra unidad conserva su propio reloj");
 });
+
+// ---- Carreras: cambios que llegan con una escritura en vuelo ----
+
+test("un repaso aplicado mientras otro PUT está en vuelo no pierde su marca de pendiente", async () => {
+  let liberar;
+  let avisarEnVuelo;
+  const enVuelo = new Promise((ok) => (avisarEnVuelo = ok));
+  const puerta = new Promise((ok) => (liberar = ok));
+  let armada = false;
+  const { f, estado } = githubFalso({
+    alAntesDeEscribir: async (st, ruta) => {
+      if (armada && ruta === "repasos.enc") {
+        armada = false;
+        avisarEnVuelo();
+        await puerta;
+      }
+    },
+  });
+  const llave = L.nuevaLlave();
+  const A = dispositivo(llave, f, { t: 1000 });
+  await A.iniciar();
+  await A.registrarRepaso("u", 3);
+  await A.repasos.sincronizar(); // crea el archivo y deja el sha conocido
+  await A.registrarRepaso("v", 3);
+  armada = true;
+  const primera = A.repasos.sincronizar(); // el PUT queda detenido en la puerta
+  await enVuelo;
+  await A.registrarRepaso("w", 3); // llega mientras el PUT lleva solo u y v
+  liberar();
+  await primera;
+  assert.equal(A.repasos.estado().sucio, true, "w sigue pendiente: el PUT no lo llevaba");
+  await A.vaciar();
+  assert.equal(A.repasos.estado().sucio, false);
+  const remoto = await M.descifrarRepasos(estado.archivos.get("repasos.enc").bytes, llave);
+  assert.deepEqual(remoto.map((r) => r.u).sort(), ["u", "v", "w"], "w llegó al remoto");
+});
+
+test("las copias locales se escriben en orden: nunca queda en caché una versión vieja", async () => {
+  // Un almacén cuya primera escritura es lenta y las siguientes rápidas: si las copias no se
+  // encadenan, la más vieja termina de escribirse la última y se queda como caché.
+  let escrituras = 0;
+  const terminadas = [];
+  const almacen = {
+    async leer() {
+      return null;
+    },
+    async borrar() {},
+    async escribir(valor) {
+      const n = ++escrituras;
+      await new Promise((ok) => setTimeout(ok, n === 1 ? 30 : 1));
+      terminadas.push(valor);
+    },
+  };
+  const llave = L.nuevaLlave();
+  const A = Y.crearAnki({ llave, ahora: () => 5, temporizadores: SIN_TEMPORIZADOR, almacenes: { tarjetas: Y.almacenMemoria(), repasos: almacen } });
+  await A.iniciar();
+  // Cambios espaciados: la copia 1 toma su foto (1 repaso) y se queda escribiendo despacio; la
+  // copia 2 (2 repasos) llega después y su escritura es rápida.
+  const pausa = () => new Promise((ok) => setTimeout(ok, 8));
+  const p1 = A.registrarRepaso("a", 3);
+  await pausa();
+  const p2 = A.registrarRepaso("b", 3);
+  await pausa();
+  const p3 = A.registrarRepaso("c", 3);
+  await Promise.all([p1, p2, p3]);
+  const ultima = terminadas.at(-1);
+  assert.ok(ultima, "hubo escrituras");
+  const lista = await M.descifrarRepasos(ultima.cifrado, llave);
+  assert.equal(lista.length, 3, "la última copia que terminó de escribirse contiene los tres repasos");
+  assert.equal(terminadas.length, escrituras, "todas las escrituras terminaron");
+  assert.equal(ultima.sucio, true);
+});
+
+// ---- Lotes: pocos commits por sesión de estudio ----
+
+function relojFalso(inicio = 1_000_000) {
+  const r = { t: inicio, timers: new Set(), ultimo: 0 };
+  r.ahora = () => r.t;
+  r.T = {
+    setTimeout: (fn, ms) => {
+      const x = { id: ++r.ultimo, en: r.t + ms, fn };
+      r.timers.add(x);
+      return x;
+    },
+    clearTimeout: (x) => r.timers.delete(x),
+  };
+  // Avanza el reloj disparando los temporizadores que vencen, y espera a que terminen las escrituras
+  r.avanzar = async (ms, esperar) => {
+    const fin = r.t + ms;
+    for (;;) {
+      const p = [...r.timers].filter((x) => x.en <= fin).sort((a, b) => a.en - b.en)[0];
+      if (!p) break;
+      r.timers.delete(p);
+      r.t = p.en;
+      await p.fn();
+      await esperar();
+    }
+    r.t = fin;
+  };
+  return r;
+}
+
+const putsDe = (estado, ruta) => estado.escrituras.filter((e) => e.ruta === ruta).length;
+
+test("50 repasos, uno cada 5 s, hacen un solo commit de repasos al terminar", async () => {
+  const { f, estado } = githubFalso();
+  const llave = L.nuevaLlave();
+  const reloj = relojFalso();
+  const A = Y.crearAnki({ llave, token: "t", fetch: f, ahora: reloj.ahora, temporizadores: reloj.T });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a"));
+  await reloj.avanzar(3000, () => A.sincronizar());
+  const antes = putsDe(estado, "repasos.enc");
+  for (let i = 0; i < 50; i++) {
+    await A.registrarRepaso(`u${i % 10}`, 3);
+    await reloj.avanzar(5000, () => A.sincronizar());
+  }
+  assert.equal(putsDe(estado, "repasos.enc") - antes, 0, "durante la sesión no se escribe: cada respuesta reinicia la espera");
+  await A.vaciar();
+  assert.equal(putsDe(estado, "repasos.enc") - antes, 1, "al terminar, un único commit");
+  const remoto = await M.descifrarRepasos(estado.archivos.get("repasos.enc").bytes, llave);
+  assert.equal(remoto.length, 50);
+  assert.equal(A.estado().sucio, false);
+});
+
+test("una sesión de 20 minutos escribe cada 5 minutos como máximo y no pierde ningún repaso", async () => {
+  const { f, estado } = githubFalso();
+  const llave = L.nuevaLlave();
+  const reloj = relojFalso();
+  const A = Y.crearAnki({ llave, token: "t", fetch: f, ahora: reloj.ahora, temporizadores: reloj.T });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a"));
+  await reloj.avanzar(3000, () => A.sincronizar());
+  const antes = putsDe(estado, "repasos.enc");
+  for (let i = 0; i < 240; i++) {
+    await A.registrarRepaso(`u${i % 30}`, 3);
+    await reloj.avanzar(5000, () => A.sincronizar());
+  }
+  const durante = putsDe(estado, "repasos.enc") - antes;
+  assert.ok(durante >= 3 && durante <= 5, `${durante} commits en 20 min (esperaba entre 3 y 5)`);
+  await A.vaciar();
+  const remoto = await M.descifrarRepasos(estado.archivos.get("repasos.enc").bytes, llave);
+  assert.equal(remoto.length, 240, "todos los repasos llegaron");
+});
+
+test("las tarjetas se escriben a los 2 s de la última edición (no esperan lotes largos)", async () => {
+  const { f, estado } = githubFalso();
+  const reloj = relojFalso();
+  const A = Y.crearAnki({ llave: L.nuevaLlave(), token: "t", fetch: f, ahora: reloj.ahora, temporizadores: reloj.T });
+  await A.iniciar();
+  await A.guardarTarjeta(basica("a"));
+  await reloj.avanzar(1500, () => A.sincronizar());
+  assert.equal(putsDe(estado, "tarjetas.enc"), 0);
+  await reloj.avanzar(1000, () => A.sincronizar());
+  assert.equal(putsDe(estado, "tarjetas.enc"), 1);
+});

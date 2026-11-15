@@ -23,8 +23,8 @@
 //   Otra vez  I' = max(1, ⌊I·mLapso⌉),  F ← F − 200, a reaprender
 // (los tres intervalos usan la F anterior; F ≥ facilidadMin; I ≤ intervaloMax).
 //
-// Repasos duplicados: un repaso de una unidad en repaso, distinto de «Otra vez», que llega
-// a menos de `ventanaDuplicado` (12 h) del último efectivo no mueve la programación.
+// Repasos duplicados: un repaso de una unidad en repaso, distinto de «Otra vez», hecho más
+// de `margenAdelanto` (1 día) antes de que venza no mueve la programación (ver siguiente()).
 
 export const MIN = 60_000;
 export const HORA = 3_600_000;
@@ -46,7 +46,7 @@ export const CONFIG = Object.freeze({
   repasosPorDia: 200,
   horaCorte: 4, // el «día» de estudio cambia a las 4:00 locales
   adelanto: 20 * MIN, // se muestran las de aprendizaje que vencen en menos de esto si no hay otra cosa
-  ventanaDuplicado: 12 * HORA, // ver «Repasos duplicados» en siguiente()
+  margenAdelanto: DIA, // ver «Repasos duplicados» en siguiente()
 });
 
 export const FASES = ["nueva", "aprendiendo", "repaso", "reaprendiendo"];
@@ -69,10 +69,17 @@ export function siguiente(e, g, ahora, cfg = CONFIG) {
     case "repaso":
       // Repasos duplicados: dos equipos que estudian sin conexión la misma unidad vencida
       // producen dos repasos con minutos de diferencia. Aplicar ambos multiplicaría el
-      // intervalo dos veces, así que un repaso que no es «Otra vez» llegado poco después
-      // del último efectivo cuenta en el registro pero no mueve la programación. «Otra
-      // vez» siempre se aplica: olvidar es información que no debe ignorarse.
-      if (g !== 1 && e.reps > 0 && ahora - e.ultimo < cfg.ventanaDuplicado) return { ...e, alg: ALGORITMO, reps: e.reps + 1 };
+      // intervalo dos veces. El segundo llega con la unidad ya reprogramada a más de un
+      // día de distancia, así que un repaso que no es «Otra vez» hecho más de
+      // `margenAdelanto` (1 día) antes de que venza cuenta en el registro pero no mueve la
+      // programación. «Otra vez» siempre se aplica: olvidar es información que no debe
+      // ignorarse.
+      //
+      // Invariante (probada): la cola solo presenta unidades con vence < fin del día de
+      // estudio ≤ ahora + 1 día, y esta regla solo ignora si ahora ≤ vence − 1 día; nunca
+      // coinciden, así que responder a una unidad presentada SIEMPRE la reprograma.
+      // Costo asumido: con intervalos de 1 día un duplicado sí se aplica (1 → 3 días).
+      if (g !== 1 && ahora <= e.vence - cfg.margenAdelanto) return { ...e, alg: ALGORITMO, reps: e.reps + 1 };
       return repasar(base, g, ahora, cfg);
     default:
       throw new Error(`Fase desconocida: ${e.fase}`);
