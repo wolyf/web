@@ -51,6 +51,7 @@ Plan por fases (el estado real está en «Estado» al final):
 - **Editar no rompe el historial:** el tipo de una tarjeta queda fijo al editar (cambiarlo cambia los `uid` y dejaría el historial huérfano) y quitar un hueco cloze con historial pide confirmación.
 - **Respuestas sin esperar:** `registrarRepaso` deja el repaso en memoria de forma síncrona (contrato probado) y el guardado local y la subida siguen en segundo plano. Con 20 000 repasos, la parte síncrona de una respuesta cuesta unos 7 ms.
 - **Lotes de escritura:** las tarjetas se suben 2 s tras el último cambio; los repasos 2 min tras el último (máximo 5 min con cambios pendientes) y al terminar o salir de una sesión de estudio, al ocultar la pestaña y al cerrarla. Cada commit guarda el archivo completo (crecimiento del repositorio: pendiente, ver «Estado»). La marca de pendiente usa un contador de versión: un cambio que llega con un PUT en vuelo no se pierde.
+- **PWA (abrir sin red):** `manifest.webmanifest` + `sw.js` (alcance `anki/`, registrado desde `main.mjs` solo en contextos seguros). Estrategia «red primero con respaldo en caché»: con red se pide siempre lo más reciente (`cache: "no-cache"` revalida con ETag) y se guarda copia, así nunca se mezclan módulos nuevos con viejos tras un cambio; sin red, o si la red tarda más de 4 s y hay copia, se usa la última guardada. Solo GET del mismo origen; la API de GitHub y los `.enc` pasan directo. La lista `PRECARGA` de `sw.js` se mantiene al día con una prueba (`pwa.test.mjs`: cada módulo del Anki, los `@import` de `styles.css`, las fuentes y las de KaTeX). Los datos NO pasan por el worker: viven cifrados en IndexedDB. Si la página arranca sin poder leer el token, al volver la red se reconecta sola. Los iconos salen de `img/darwin-cara.svg` con `node anki/herramientas/iconos.mjs`. En iPhone se instala con Compartir > Añadir a pantalla de inicio (y conviene instalarla por la política de borrado de Safari).
 - **Seguridad de la interfaz:** el texto de las tarjetas entra SOLO con `textContent`; las fórmulas con `katex.render` sin `trust`. No hay `innerHTML` ni manejadores en línea (la CSP lo impediría).
 - **Origen opcional y tipado:** `subrayado` (id, ruta `p`, cita), `externo` (fuente, `url` solo http o https) o ninguno (manual). La tarjeta sobrevive si el subrayado se borra o queda huérfano.
 - **Identificadores** `id = <fecha en ms, 12 hex><3 bytes aleatorios>`: ordenar por id es ordenar por creación (orden de las nuevas).
@@ -62,6 +63,7 @@ Plan por fases (el estado real está en «Estado» al final):
 | Ruta | Qué es |
 |---|---|
 | `anki/index.html`, `anki/css/anki.css` | Página (KaTeX local, sin scripts en línea) y estilos propios |
+| `anki/manifest.webmanifest`, `anki/sw.js`, `anki/img/` | PWA: manifiesto, service worker e iconos (generados) |
 | `anki/js/main.mjs` | Arranque: pasa a la interfaz la sesión real del sitio |
 | `anki/js/app.mjs` | Interfaz (`montar(raiz, deps)`, con sesión, `fetch`, reloj, bloqueos y KaTeX inyectables): inicio, estudio, editor, explorador, pestaña única |
 | `anki/js/estudio.mjs` | Núcleo puro: foto de lo que toca estudiar, siguiente unidad (sin hermanos cloze seguidos), búsqueda, validación |
@@ -69,7 +71,9 @@ Plan por fases (el estado real está en «Estado» al final):
 | `anki/js/modelo.mjs` | Núcleo puro: tarjetas, cloze (con llaves de LaTeX), unidades, repasos, mezcla, adición incremental y formato cifrado |
 | `anki/js/scheduler.mjs` | Núcleo puro: SM-2, reproducción del registro, día de estudio (corte a las 4:00) y cola con topes diarios |
 | `anki/js/sync.mjs` | Sincronización cifrada con la rama `anki` (`crearArchivo` genérico y `crearAnki`); reutiliza `clienteGitHub` de `../js/subrayados-sync.mjs` |
-| `anki/herramientas/pruebas/` | `modelo`, `render`, `scheduler`, `estudio` y `sync` (con una API de GitHub simulada): corren con `npm test` |
+| `anki/herramientas/pruebas/` | `modelo`, `render`, `scheduler`, `estudio` y `sync` (con una API de GitHub simulada), `rama` y `pwa`: corren con `npm test` |
+| `anki/herramientas/anki.mjs` | Comandos: `node anki/herramientas/anki.mjs rama` (crea la rama «anki», idempotente) y `estado` (lee y descifra la rama, solo lectura). Necesita `SITIO_TOKEN_GITHUB`, `SITIO_USUARIO` y `SITIO_CONTRASENA` |
+| `anki/herramientas/iconos.mjs` | Genera los iconos de la PWA desde la cara de Darwin (Playwright) |
 | `anki/herramientas/verificar-ui.mjs` | Verificación en un navegador real (Playwright) sobre el `index.html` real, con acceso desechable y API de GitHub falsa; NO forma parte de `npm test`: `node anki/herramientas/verificar-ui.mjs [--salida dir]` |
 
 ## Datos cifrados
@@ -81,13 +85,14 @@ Plan por fases (el estado real está en «Estado» al final):
 
 ## Estado
 
-Hecho (fase 0): modelo, programación, sincronización, interfaz de estudio y creación manual (tarjetas básicas y cloze con LaTeX, etiquetas jerárquicas, explorador con búsqueda, editar y eliminar), pestaña única y verificación en navegador real (celular, escritorio y tema oscuro; 38 comprobaciones, incluidas pestañas, edición y la rama ausente).
+Hecho (fase 0 completa): modelo, programación, sincronización, interfaz de estudio y creación manual (tarjetas básicas y cloze con LaTeX, etiquetas jerárquicas, explorador con búsqueda, editar y eliminar), pestaña única, PWA, y la **rama `anki` creada en GitHub** (commit sin padres con `tarjetas.enc` y `repasos.enc` vacíos y cifrados).
+
+Verificado contra la **API real de GitHub** en una rama desechable (ya borrada): creación de la rama, subida, bajada con bytes exactos, un conflicto real (409) resuelto sin perder nada y lecturas condicionales (304). La verificación en navegador (celular, escritorio, tema oscuro, sin rama, sin service worker; 42 comprobaciones) usa una API falsa.
 
 Pendiente:
 
-1. **Crear la rama `anki`.** `npm run sesion -- rama` solo crea `subrayados`; sin la rama, la sincronización real muestra «No se encontró la rama «anki»» y todo se guarda en el equipo. Hace falta un comando (sin historial, con archivos iniciales cifrados) o que el dueño la cree.
-2. **Quitar `oculto` de `proyectos.json`** (zona general) cuando la rama exista y se haya probado con datos reales.
-3. PWA: `manifest` y `service worker` dentro de `anki/` (alcance `anki/`; la CSP no cambia). En iPhone conviene instalarla en la pantalla de inicio por la política de borrado de Safari. Hasta entonces, sin red la página no carga aunque los datos estén en la caché local.
-4. Crecimiento del repositorio: cada commit guarda `repasos.enc` completo; falta compactar el registro (y podar lápidas).
-5. Deshacer la última respuesta (el registro es de solo agregado: haría falta un repaso compensatorio).
-6. Fases 1 a 4 del plan.
+1. **Quitar `oculto` de `proyectos.json`** (zona general) para mostrar el Anki en la portada, cuando se haya probado con datos reales.
+2. No verificado en dispositivos reales: la instalación en iPhone y Android, y que GitHub Pages sirva el manifiesto con un tipo MIME aceptado (Chrome no lo exige estricto).
+3. Crecimiento del repositorio: cada commit guarda `repasos.enc` completo; falta compactar el registro (y podar lápidas).
+4. Deshacer la última respuesta (el registro es de solo agregado: haría falta un repaso compensatorio).
+5. Fases 1 a 4 del plan (IA, estadísticas, FSRS, exportación, botón en subrayados).
