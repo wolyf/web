@@ -47,7 +47,7 @@ npm run proyectos -- portada [--revisar]         # regenera (o revisa) la portad
 
 Cada `CLAUDE.md` de proyecto las repite, pero valen siempre:
 
-- Responder en español y no usar el guion largo (U+2014) en textos, interfaz, comentarios ni mensajes (el cuerpo transcrito de los libros de `manuales-conagua` es la única excepción, por fidelidad al original). Notación formal cuando aporte.
+- Responder en español y no usar el guion largo (U+2014) en textos, interfaz, comentarios ni mensajes (las únicas excepciones, por fidelidad al original, son el cuerpo transcrito de los libros de `manuales-conagua` y el de las lecturas cifradas de `estudio`). Notación formal cuando aporte.
 - El repositorio es **público**: nada privado en claro, nunca contraseñas ni llaves en el chat. Lo privado se publica cifrado con la sesión del sitio (ver «Sesión y partes privadas»).
 - Solo HTML, CSS y JavaScript sin build ni gestor de paquetes; librerías externas solo si se copian al repo (`js/vendor/`) o con versión fija.
 - **Ecuaciones**: siempre en LaTeX con KaTeX (copia local en `js/vendor/katex/`, 0.16.11). Enlazar `katex.min.css` y `katex.min.js` (`defer`) y usar `data-latex="…"` (con `data-display` para bloque, o sin él en línea) y texto de respaldo; `js/tema.js` las renderiza automáticamente al cargar el DOM y al descifrar partes privadas.

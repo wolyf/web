@@ -43,7 +43,7 @@ El repositorio es público:
 - **Cifrado** con la llave del sitio $K$: el **texto de las lecturas** (`<materia>/<fuente>.enc`; son ediciones con derechos de autor) y el **estado de lectura** (rama `estudio`).
 - Texto de trabajo en claro: `.privado/estudio/<materia>/<fuente>.html` (ignorado por git). `npm run sesion -- sellar estudio` genera los `.enc`. Requiere `SITIO_USUARIO` y `SITIO_CONTRASENA` en el entorno de Claude Code (nunca en el chat).
 - Una prueba comprueba que cada `.enc` publicado es un fragmento cifrado, sin texto en claro, y que `.privado/` sigue ignorado.
-- **Guion largo (U+2014) en el cuerpo de las lecturas: pendiente de decisión del dueño.** La regla del sitio solo exceptúa el cuerpo transcrito de `manuales-conagua`. Los textos cifrados de aquí conservan el guion largo tal como vienen de la transcripción (y algún encabezado puesto por el conversor), porque no se ha pedido cambiarlos. Mientras no se decida, no se publica en claro nada con él: la interfaz, el CSS, los datos y los comentarios del proyecto no lo usan, y una prueba lo comprueba en todos los archivos de `estudio/` (los `.enc` no se leen).
+- **Guion largo (U+2014) en el cuerpo de las lecturas: se conserva (decisión del dueño).** Es una excepción más a la regla del sitio, junto con `manuales-conagua`, por fidelidad a la transcripción. Solo vale para el texto de las lecturas, que va cifrado en los `.enc`: la interfaz, el CSS, los datos, los comentarios y los mensajes del proyecto no lo usan, y una prueba lo comprueba en todos los archivos de `estudio/` (los `.enc` no se leen).
 
 ## Agregar una materia
 

@@ -40,12 +40,12 @@
     },
     {
       "id": "estudio-guion-largo",
-      "titulo": "Decidir qué hacer con el guion largo en los textos de las lecturas",
-      "detalle": "La regla del sitio solo exceptúa los libros de manuales-conagua. Opciones: dejar el original, quitarlo o añadir la excepción. Algunos guiones los puso el conversor, no el original.",
-      "estado": "pendiente",
+      "titulo": "Guion largo en los textos de las lecturas: se conserva",
+      "detalle": "Decisión del dueño: los textos cifrados de las lecturas conservan el guion largo del original, como una excepción más junto con manuales-conagua.",
+      "estado": "hecho",
       "zona": "estudio",
-      "prioridad": "media",
-      "fecha": "2026-11-15"
+      "fecha": "2026-11-15",
+      "hecho": "2026-11-15"
     },
     {
       "id": "estudio-probar-escritura",
