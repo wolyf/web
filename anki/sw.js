@@ -10,12 +10,21 @@
 //   · Con red se pide SIEMPRE lo más reciente (cache: "no-cache" revalida con ETag, casi gratis) y
 //     se guarda copia. Así nunca se mezclan módulos nuevos con viejos tras un cambio del sitio.
 //   · Si la red falla, o tarda más de LIMITE_RED_MS y hay copia, se usa la última copia guardada.
+//   · Red lenta: la página se carga en cascada (HTML, main, app, sync…) y un tope por petición se
+//     acumularía nivel tras nivel (medido: 28 s con respuestas de 10 s). Al primer tope se activa un
+//     «modo lento» de VENTANA_LENTA_MS: las demás peticiones sirven primero la copia y se refrescan
+//     en segundo plano. Costo asumido: en esa ventana puede quedar una mezcla de archivos de dos
+//     versiones si el sitio cambió justo entonces; se corrige sola con la siguiente carga normal.
+//   · La vida del evento se extiende de forma SÍNCRONA en el manejador (waitUntil con toda la
+//     petición): llamarla después de responder lanza InvalidStateError y se perdería la copia.
 //   · Solo mismo origen y solo GET. Nada de api.github.com ni de los fragmentos cifrados (.enc).
 // La lista PRECARGA se guarda al instalar (mejor esfuerzo) para que la primera visita ya sirva sin
 // red; una prueba (anki/herramientas/pruebas/pwa.test.mjs) la mantiene al día con los archivos.
 
 const CACHE = "wr-anki-v1";
 const LIMITE_RED_MS = 4000;
+const VENTANA_LENTA_MS = 30_000;
+let lentaHasta = 0; // marca de tiempo hasta la que dura el modo lento (se pierde si el navegador apaga el worker: no importa)
 
 const PRECARGA = [
   // propios
@@ -96,26 +105,40 @@ self.addEventListener("activate", (evento) => {
 
 const esperar = (ms) => new Promise((ok) => setTimeout(ok, ms));
 
-async function redPrimero(pedido, evento) {
-  const cache = await caches.open(CACHE);
+// → { respuesta, fin }: `respuesta` es lo que ve la página; `fin` termina cuando la red respondió y la
+// copia se guardó (no rechaza nunca), para extender con ella la vida del evento.
+function atender(pedido) {
   const red = fetch(pedido, { cache: "no-cache" }).then((respuesta) => {
     // Solo respuestas completas y del propio origen (basic): nada de errores ni parciales
-    if (respuesta.ok && respuesta.status === 200 && respuesta.type === "basic") evento.waitUntil(cache.put(pedido, respuesta.clone()));
-    return respuesta;
+    const copia = respuesta.ok && respuesta.status === 200 && respuesta.type === "basic" ? respuesta.clone() : null;
+    return { respuesta, copia };
   });
-  const buscar = () => cache.match(pedido, { ignoreSearch: pedido.mode === "navigate" });
-  try {
-    const rapida = await Promise.race([red, esperar(LIMITE_RED_MS).then(() => null)]);
-    if (rapida) return rapida;
-    // La red tarda: si hay copia se usa; si no, se espera a la red
-    return (await buscar()) ?? (await red);
-  } catch {
-    const copia = await buscar();
-    if (copia) return copia;
-    // Navegación sin red y sin esa URL guardada: la página principal del Anki
-    if (pedido.mode === "navigate") return (await cache.match("./index.html")) ?? Response.error();
-    return Response.error();
-  }
+  const fin = red
+    .then(async ({ copia }) => {
+      if (copia) await (await caches.open(CACHE)).put(pedido, copia);
+    })
+    .catch(() => {});
+  const buscar = async () => (await caches.open(CACHE)).match(pedido, { ignoreSearch: pedido.mode === "navigate" });
+
+  const respuesta = (async () => {
+    if (Date.now() < lentaHasta) {
+      const copia = await buscar();
+      if (copia) return copia; // modo lento: primero la copia; la red sigue en `fin` y la refresca
+    }
+    try {
+      const rapida = await Promise.race([red, esperar(LIMITE_RED_MS).then(() => null)]);
+      if (rapida) return rapida.respuesta;
+      lentaHasta = Date.now() + VENTANA_LENTA_MS; // la red tarda: las siguientes peticiones no esperan
+      return (await buscar()) ?? (await red).respuesta;
+    } catch {
+      const copia = await buscar();
+      if (copia) return copia;
+      // Navegación sin red y sin esa URL guardada: la página principal del Anki
+      if (pedido.mode === "navigate") return (await (await caches.open(CACHE)).match("./index.html")) ?? Response.error();
+      return Response.error();
+    }
+  })();
+  return { respuesta, fin };
 }
 
 self.addEventListener("fetch", (evento) => {
@@ -124,5 +147,7 @@ self.addEventListener("fetch", (evento) => {
   const url = new URL(pedido.url);
   if (url.origin !== self.location.origin) return; // api.github.com y demás: directo a la red
   if (url.pathname.endsWith(".enc")) return; // fragmentos cifrados: no se guardan aquí
-  evento.respondWith(redPrimero(pedido, evento));
+  const { respuesta, fin } = atender(pedido);
+  evento.respondWith(respuesta);
+  evento.waitUntil(fin); // síncrono: el evento sigue vivo hasta guardar la copia aunque la respuesta ya salió
 });

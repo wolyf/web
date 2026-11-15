@@ -86,6 +86,15 @@ test("el service worker solo atiende GET del mismo origen y deja pasar la API y 
   assert.match(sw, /startsWith\("wr-anki-"\) && nombre !== CACHE/, "al actualizar se borran las cachés viejas del Anki");
 });
 
+test("el manejador de fetch extiende la vida del evento de forma síncrona y hay modo lento", () => {
+  const manejador = sw.slice(sw.indexOf('addEventListener("fetch"'));
+  assert.match(manejador, /evento\.respondWith\(respuesta\);\s*evento\.waitUntil\(fin\)/, "waitUntil junto a respondWith");
+  assert.ok(!manejador.includes("await"), "nada asíncrono antes de extender el evento: waitUntil tardío lanza InvalidStateError");
+  assert.match(sw, /const VENTANA_LENTA_MS = \d/);
+  assert.match(sw, /lentaHasta = Date\.now\(\) \+ VENTANA_LENTA_MS/, "el primer tope activa el modo lento");
+  assert.match(sw, /Date\.now\(\) < lentaHasta/, "en modo lento se sirve primero la copia");
+});
+
 test("main.mjs registra el worker solo en contextos seguros y sin romper si falla", () => {
   const main = leer("js/main.mjs");
   assert.match(main, /serviceWorker\.register\("sw\.js", \{ scope: "\.\/" \}\)/);

@@ -9,7 +9,7 @@
 // otra pestaña, buscar, editar, borrar y cerrar sesión; en ancho de celular y de escritorio, y
 // comprueba que no haya violaciones de la política de contenido (CSP) ni errores de la página.
 //
-// Uso: node anki/herramientas/verificar-ui.mjs [--salida dir]   (ANKI_SOLO=celular|escritorio|rama|sin-sw, ANKI_OSCURO=1)
+// Uso: node anki/herramientas/verificar-ui.mjs [--salida dir]   (ANKI_SOLO=celular|escritorio|rama|sin-sw|instalada, ANKI_OSCURO=1)
 // Requiere Playwright (global o en el proyecto). No usa credenciales reales ni la red.
 
 import http from "node:http";
@@ -37,9 +37,17 @@ function cargarPlaywright() {
 
 const TIPOS = { ".html": "text/html; charset=utf-8", ".js": "text/javascript; charset=utf-8", ".mjs": "text/javascript; charset=utf-8", ".css": "text/css; charset=utf-8", ".json": "application/json; charset=utf-8", ".svg": "image/svg+xml", ".woff2": "font/woff2", ".woff": "font/woff", ".ttf": "font/ttf", ".png": "image/png" };
 
+// Control del servidor local para simular una red lenta o un archivo que cambia durante la respuesta
+const control = { retardo: 0, retardos: {}, reemplazos: {} };
+
 function servir(acceso) {
   const servidor = http.createServer((pedido, respuesta) => {
     const ruta = decodeURIComponent(new URL(pedido.url, "http://x").pathname);
+    const espera = control.retardos[ruta] ?? control.retardo;
+    if (espera > 0) return setTimeout(() => atender(pedido, respuesta, ruta), espera);
+    return atender(pedido, respuesta, ruta);
+  });
+  const atender = (pedido, respuesta, ruta) => {
     // El acceso desechable se sirve desde aquí: con un service worker activo, un route de Playwright no lo vería
     if (ruta === "/datos/acceso.json") return respuesta.writeHead(200, { "Content-Type": "application/json; charset=utf-8" }).end(JSON.stringify(acceso));
     let archivo = path.join(RAIZ, ruta);
@@ -47,8 +55,9 @@ function servir(acceso) {
     if (fs.existsSync(archivo) && fs.statSync(archivo).isDirectory()) archivo = path.join(archivo, "index.html");
     if (!fs.existsSync(archivo)) return respuesta.writeHead(404).end("no encontrado");
     respuesta.writeHead(200, { "Content-Type": TIPOS[path.extname(archivo)] ?? "application/octet-stream" });
+    if (control.reemplazos[ruta]) return respuesta.end(control.reemplazos[ruta](fs.readFileSync(archivo, "utf8")));
     fs.createReadStream(archivo).pipe(respuesta);
-  });
+  };
   return new Promise((ok) => servidor.listen(0, "127.0.0.1", () => ok(servidor)));
 }
 
@@ -154,6 +163,17 @@ async function abrirPagina(contexto, base, vigilancia) {
   });
   await pagina.goto(`${base}/anki/index.html`);
   return pagina;
+}
+
+// Espera a que una función ASÍNCRONA devuelva algo verdadero. page.waitForFunction NO sirve para esto:
+// con una función async recibe una promesa (siempre «verdadera») y se da por cumplida al instante.
+async function esperarEn(pagina, funcion, arg = null, { timeout = 15_000, cada = 250 } = {}) {
+  const t0 = Date.now();
+  for (;;) {
+    if (await pagina.evaluate(funcion, arg)) return;
+    if (Date.now() - t0 > timeout) throw new Error(`la condición no se cumplió en ${timeout} ms: ${funcion.toString().replace(/\s+/g, " ").slice(0, 140)}`);
+    await pagina.waitForTimeout(cada);
+  }
 }
 
 // Ninguna vista debe mostrar «null», «undefined» o «NaN» (replaceChildren(null), un campo vacío…)
@@ -367,7 +387,7 @@ async function escenario(chromium, base, nombre, ventana, acceso) {
   await paso("PWA: manifiesto válido y, tras una visita en línea, abre sin red desde la caché y permite estudiar", async () => {
     // El worker toma el control y llena la caché
     await p.waitForFunction(() => navigator.serviceWorker?.controller, null, { timeout: 15_000 });
-    await p.waitForFunction(async () => (await caches.keys()).includes("wr-anki-v1") && (await (await caches.open("wr-anki-v1")).keys()).length > 40, null, { timeout: 15_000 });
+    await esperarEn(p, async () => (await caches.keys()).includes("wr-anki-v1") && (await (await caches.open("wr-anki-v1")).keys()).length > 40, null, { timeout: 15_000 });
     const manifiesto = await p.evaluate(() => fetch(document.querySelector('link[rel="manifest"]').href).then((r) => r.json()));
     igual([manifiesto.short_name, manifiesto.display], ["Anki", "standalone"], "manifiesto");
     const iconos = await p.evaluate((lista) => Promise.all(lista.map((i) => fetch(new URL(i.src, document.baseURI)).then((r) => r.status))), manifiesto.icons);
@@ -506,6 +526,71 @@ async function ramaAusente(chromium, base, acceso) {
   await navegador.close();
 }
 
+async function instalada(chromium, base, acceso) {
+  console.log("\n=== app instalada: red lenta, copia que se actualiza tarde y sesión sin red ===");
+  abortado = false;
+  const vigilancia = { errores: [], csp: [] };
+  const navegador = await chromium.launch();
+  const contexto = await navegador.newContext({ viewport: { width: 390, height: 844 } });
+  contexto.setDefaultTimeout(12_000);
+  const api = githubFalso();
+  await contexto.route("https://api.github.com/**", api.manejar);
+  let p = await abrirPagina(contexto, base, vigilancia);
+  const alInicio = () => p.locator('.anki-vista[data-vista="inicio"]').waitFor({ timeout: 60_000 });
+
+  await paso("preparación: sesión sin «Recordarme», una tarjeta y la caché del worker llena", async () => {
+    await iniciarSesion(p);
+    await nuevaTarjeta(p, { frente: "instalada $x^2$", reverso: "ok" });
+    await p.waitForFunction(() => document.querySelector(".anki-estado")?.dataset.estado === "sincronizado" && !/pendientes/.test(document.querySelector(".anki-estado").textContent), null, { timeout: 10_000 });
+    await esperarEn(p, async () => (await caches.keys()).includes("wr-anki-v1") && (await (await caches.open("wr-anki-v1")).keys()).length > 40, null, { timeout: 15_000 });
+    await p.reload();
+    await alInicio();
+  });
+
+  await paso("red lenta (cada respuesta tarda 10 s): carga en un solo tope, no en cascada", async () => {
+    control.retardo = 10_000;
+    const t0 = Date.now();
+    await p.reload({ waitUntil: "commit" }); // sin esperar al evento load: se mide cuándo aparece el inicio
+    await alInicio();
+    const ms = Date.now() - t0;
+    control.retardo = 0;
+    console.log(`      tiempo hasta «inicio» con red lenta: ${(ms / 1000).toFixed(1)} s`);
+    afirmar(ms < 9_000, `tardó ${(ms / 1000).toFixed(1)} s: el tope se está acumulando por nivel de carga`);
+  });
+
+  await paso("una copia que llega tarde (tras el tope) igual se guarda en la caché", async () => {
+    await p.waitForTimeout(11_000); // deja terminar las peticiones lentas de la prueba anterior
+    control.reemplazos["/anki/css/anki.css"] = (css) => `${css}\n/* version-nueva-tardia */`;
+    control.retardos["/anki/css/anki.css"] = 7_000;
+    await p.reload({ waitUntil: "commit" });
+    await alInicio();
+    await esperarEn(p, async () => {
+      const respuesta = await (await caches.open("wr-anki-v1")).match("css/anki.css");
+      return respuesta && (await respuesta.text()).includes("version-nueva-tardia");
+    }, null, { timeout: 15_000 });
+    delete control.reemplazos["/anki/css/anki.css"];
+    delete control.retardos["/anki/css/anki.css"];
+  });
+
+  await paso("app instalada sin red y sin sesión guardada: entra con el formulario usando el acceso en caché", async () => {
+    await p.close(); // libera la pestaña única y el estado de sesión de esa pestaña
+    await contexto.setOffline(true);
+    api.estado.enLinea = false;
+    p = await abrirPagina(contexto, base, vigilancia);
+    await p.locator(".anki-primario", { hasText: "Iniciar sesión" }).waitFor();
+    await iniciarSesion(p);
+    afirmar((await texto(p, ".anki-acciones")).includes("Tarjetas (1)"), "la tarjeta guardada en el equipo debe verse sin red");
+    await contexto.setOffline(false);
+    api.estado.enLinea = true;
+  });
+
+  await paso("sin violaciones de CSP ni errores", async () => {
+    igual([...(await p.evaluate(() => window.__csp)), ...vigilancia.csp], [], "CSP");
+    igual(vigilancia.errores, [], "errores");
+  }, { siempre: true });
+  await navegador.close();
+}
+
 async function sinServiceWorker(chromium, base, acceso) {
   console.log("\n=== sin service worker: la página arranca sin poder leer el token ===");
   abortado = false;
@@ -548,12 +633,13 @@ const acceso = await accesoDesechable();
 const servidor = await servir(acceso);
 const base = `http://127.0.0.1:${servidor.address().port}`;
 try {
-  // ANKI_SOLO=celular|escritorio|rama|sin-sw limita la corrida; ANKI_OSCURO=1 usa el tema oscuro del sistema
+  // ANKI_SOLO=celular|escritorio|rama|sin-sw|instalada limita la corrida; ANKI_OSCURO=1 usa el tema oscuro del sistema
   const solo = process.env.ANKI_SOLO;
   if (!solo || solo === "celular") await escenario(chromium, base, "celular", { width: 390, height: 844 }, acceso);
   if (!solo || solo === "escritorio") await escenario(chromium, base, "escritorio", { width: 1100, height: 800 }, acceso);
   if (!solo || solo === "rama") await ramaAusente(chromium, base, acceso);
   if (!solo || solo === "sin-sw") await sinServiceWorker(chromium, base, acceso);
+  if (!solo || solo === "instalada") await instalada(chromium, base, acceso);
 } finally {
   servidor.close();
 }
