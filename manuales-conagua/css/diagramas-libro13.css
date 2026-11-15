@@ -1,0 +1,325 @@
+/* Diagramas en HTML+CSS del Libro 13 (Ilustraciones 2.1, 2.2, 2.3, 3.18, 3.19, 6.1). */
+
+.diag13 {
+  font-family: var(--font-sans, system-ui, sans-serif);
+  font-size: 0.88rem;
+  line-height: 1.38;
+  color: var(--text);
+  margin: 0.5rem 0;
+}
+
+/* ---- 2.1: Línea de tiempo ---- */
+.diag13-tl {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 0.9rem;
+  background: var(--surface);
+  overflow-x: auto;
+}
+.diag13-tl__conf {
+  text-align: right;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  margin-bottom: 0.35rem;
+  padding-right: 1.5rem;
+}
+.diag13-tl__pista {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(110px, 1fr));
+  gap: 0.65rem;
+  position: relative;
+  padding-top: 2.1rem;
+}
+.diag13-tl__pista::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0.4rem;
+  top: 1.45rem;
+  height: 2px;
+  background: color-mix(in srgb, #c94a29 85%, var(--text-strong));
+}
+.diag13-tl__hito {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  position: relative;
+}
+.diag13-tl__anio {
+  position: absolute;
+  top: -2.05rem;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--text-strong);
+  background: var(--surface);
+  padding: 0 0.25rem;
+}
+.diag13-tl__hito::before {
+  content: "";
+  position: absolute;
+  top: -0.78rem;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: color-mix(in srgb, #c94a29 85%, var(--text-strong));
+}
+.diag13-tl__desc {
+  margin-top: 0.25rem;
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+/* ---- 2.2 y 2.3: Flujo de datos -> modelo -> resultados ---- */
+.diag13-flujo {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.diag13-flujo__fila {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.65rem;
+  align-items: center;
+}
+.diag13-flujo__cajas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  gap: 0.5rem;
+}
+.diag13-caja {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.55rem 0.65rem;
+  background: var(--surface-alt, var(--surface));
+}
+.diag13-caja h4, .diag13-caja strong {
+  display: block;
+  margin: 0 0 0.3rem;
+  font-size: 0.85rem;
+  color: var(--text-strong);
+}
+.diag13-caja ul {
+  margin: 0;
+  padding-left: 1rem;
+  font-size: 0.8rem;
+}
+.diag13-caja li { margin: 0.15rem 0; }
+.diag13-etiqueta-der {
+  font-weight: 700;
+  font-size: 0.84rem;
+  color: color-mix(in srgb, #c94a29 85%, var(--text-strong));
+  writing-mode: horizontal-tb;
+  min-width: 5.2rem;
+  text-align: center;
+}
+.diag13-conector {
+  text-align: center;
+  color: color-mix(in srgb, #2e5d38 80%, var(--text-strong));
+  font-weight: 700;
+  font-size: 1rem;
+  line-height: 1;
+}
+.diag13-modelo {
+  border: 1.5px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface-alt, var(--surface));
+}
+.diag13-modelo__cab, .diag13-modelo__pie {
+  text-align: center;
+  font-weight: 600;
+  padding: 0.45rem 0.6rem;
+  color: var(--text-strong);
+}
+.diag13-modelo__cab { border-bottom: 1px solid var(--border); }
+.diag13-modelo__pie { border-top: 1px solid var(--border); }
+.diag13-modelo__cuerpo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  text-align: center;
+  font-size: 0.82rem;
+}
+.diag13-modelo__cuerpo > div + div {
+  border-left: 1px solid var(--border);
+  padding-left: 0.5rem;
+}
+.diag13-resultado {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.55rem 0.85rem;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-strong);
+  background: var(--surface-alt, var(--surface));
+}
+.diag13-resultado__sub {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.3rem;
+  margin-bottom: 0.3rem;
+  font-weight: 500;
+  font-size: 0.82rem;
+}
+
+/* ---- 3.18 y 3.19: Asignación de demanda (arriba-abajo / abajo-arriba) ---- */
+.diag13-jer {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.9rem;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.diag13-jer__nivel {
+  display: grid;
+  grid-template-columns: 1fr minmax(140px, 34%);
+  gap: 0.85rem;
+  align-items: center;
+}
+.diag13-jer__nodos {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.diag13-nodo {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.3rem 0.6rem;
+  background: var(--surface-alt, var(--surface));
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-strong);
+  text-align: center;
+}
+.diag13-nodo--suave {
+  font-weight: 500;
+  font-size: 0.78rem;
+  padding: 0.22rem 0.45rem;
+}
+.diag13-jer__anot {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: color-mix(in srgb, #c9332b 85%, var(--text-strong));
+  border-left: 2px solid color-mix(in srgb, #c9332b 45%, var(--border));
+  padding-left: 0.6rem;
+}
+.diag13-jer__flecha {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  letter-spacing: 0.35rem;
+}
+
+/* ---- 6.1: Modelo de simulación hidráulica y de calidad del agua ---- */
+.diag13-m6 {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem;
+  background: var(--surface);
+}
+.diag13-m6__raiz {
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.92rem;
+  color: var(--text-strong);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.45rem 0.8rem;
+  margin: 0 auto 0.85rem;
+  max-width: 24rem;
+  background: var(--surface-alt, var(--surface));
+}
+.diag13-m6__cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.diag13-m6__col {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.75rem;
+  background: var(--surface-alt, var(--surface));
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+.diag13-m6__col > h4 {
+  margin: 0;
+  text-align: center;
+  font-size: 0.88rem;
+  color: var(--text-strong);
+}
+.diag13-m6__banda {
+  background: color-mix(in srgb, #f5e67a 42%, var(--surface));
+  color: var(--text-strong);
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.25rem 0.55rem;
+  border-radius: 4px;
+  border: 1px solid color-mix(in srgb, #d4bc38 45%, var(--border));
+}
+.diag13-m6__col ul {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.82rem;
+}
+.diag13-m6__col li { margin: 0.18rem 0; }
+.diag13-m6__flecha {
+  text-align: center;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: color-mix(in srgb, #7a3b96 85%, var(--text-strong));
+}
+.diag13-m6__enlace {
+  margin-top: 0.65rem;
+  text-align: center;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--muted);
+  border-top: 1px dashed var(--border);
+  padding-top: 0.45rem;
+}
+
+main.libro__texto {
+  overflow-x: clip;
+}
+
+.formula,
+.formula .ecuacion,
+.formula .katex-display {
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+@media (max-width: 640px) {
+  .diag13-tl__conf { text-align: left; padding-right: 0; }
+  .diag13-tl__pista {
+    grid-template-columns: 1fr;
+    padding-top: 0;
+    padding-left: 1rem;
+    border-left: 2px solid color-mix(in srgb, #c94a29 85%, var(--text-strong));
+    gap: 0.75rem;
+  }
+  .diag13-tl__pista::before { display: none; }
+  .diag13-tl__hito { align-items: flex-start; text-align: left; }
+  .diag13-tl__hito::before { left: -1.32rem; top: 0.3rem; }
+  .diag13-tl__anio { position: static; padding: 0; }
+  .diag13-flujo__fila { grid-template-columns: 1fr; }
+  .diag13-etiqueta-der { text-align: left; min-width: 0; }
+  .diag13-modelo__cuerpo { grid-template-columns: 1fr; }
+  .diag13-modelo__cuerpo > div + div { border-left: 0; border-top: 1px solid var(--border); padding-left: 0; padding-top: 0.4rem; }
+  .diag13-jer__nivel { grid-template-columns: 1fr; }
+  .diag13-jer__anot { border-left: 0; border-top: 2px solid color-mix(in srgb, #c9332b 45%, var(--border)); padding-left: 0; padding-top: 0.3rem; }
+  .diag13-m6__cols { grid-template-columns: 1fr; }
+}
