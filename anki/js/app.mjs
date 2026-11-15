@@ -689,7 +689,12 @@ export function montar(raiz, deps = {}) {
     else if (tengoBloqueo) anki.sincronizar();
   });
   ventana.addEventListener("pagehide", () => anki?.vaciar().catch(() => {}));
-  ventana.addEventListener("online", () => anki && tengoBloqueo && anki.sincronizar());
+  ventana.addEventListener("online", () => {
+    if (!anki || !tengoBloqueo) return;
+    // Si la página arrancó sin red no se pudo leer el token: se vuelve a pedir y se reconecta
+    if (!anki.tarjetas.conectado()) conectar();
+    else anki.sincronizar();
+  });
   const dejarDeEscuchar = sesion.alCambiar(({ activa }) => (activa ? conectar() : desconectar()));
 
   if (sesion.activa()) conectar();
