@@ -1,0 +1,19 @@
+/* Libro 18: estilos para ilustraciones vectoriales del PDF en línea (.svg-pdf). */
+
+.svg-pdf {
+  display: block;
+  width: 100%;
+  max-width: 680px;
+  height: auto;
+  margin: 0.4rem auto;
+}
+.svg-pdf text { fill: var(--text-strong); font-family: var(--font-texto); }
+.svg-pdf text.xw { fill: #fff; }
+.svg-pdf .tk { stroke: var(--text-strong); }
+.svg-pdf .tg { stroke: color-mix(in srgb, var(--muted) 65%, transparent); }
+.svg-pdf .tw { stroke: var(--surface); }
+.svg-pdf .rk { fill: var(--text-strong); }
+.svg-pdf .rw { fill: var(--surface); }
+.svg-pdf .rg { fill: color-mix(in srgb, var(--muted) 55%, var(--surface)); }
+.svg-pdf .ta { stroke: var(--accent); }
+.svg-pdf .ra { fill: var(--accent); }

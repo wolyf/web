@@ -1,0 +1,37 @@
+/* Gráficas interactivas del Libro 16 (Ilustraciones 9.3, 9.4 y 9.5).
+   Complementa ../css/graficas.css con colores de serie y foco de teclado. */
+
+.grafica-libro[data-grafica="l16-9-3"],
+.grafica-libro[data-grafica="l16-9-4"] {
+  --grafica-serie-1: color-mix(in srgb, #2396d4 85%, var(--text-strong));
+}
+
+.grafica-libro[data-grafica="l16-9-5"] {
+  --grafica-serie-1: color-mix(in srgb, #2396d4 85%, var(--text-strong));
+  --grafica-serie-2: color-mix(in srgb, #1a8a4a 85%, var(--text-strong));
+  --grafica-serie-3: color-mix(in srgb, #d97706 85%, var(--text-strong));
+  --grafica-serie-4: color-mix(in srgb, #cc2d14 85%, var(--text-strong));
+  --grafica-serie-5: color-mix(in srgb, #7c3aed 85%, var(--text-strong));
+}
+
+.grafica-libro .serie-3 { --c: var(--grafica-serie-3); }
+.grafica-libro .serie-4 { --c: var(--grafica-serie-4); }
+.grafica-libro .serie-5 { --c: var(--grafica-serie-5); }
+
+.grafica-svg .aro {
+  fill: var(--surface);
+  stroke: var(--c);
+  stroke-width: 1.5;
+  pointer-events: none;
+}
+
+.grafica-svg:focus { outline: none; }
+.grafica-svg:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.grafica-svg [hidden] {
+  display: none;
+}
