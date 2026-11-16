@@ -30,13 +30,12 @@
     },
     {
       "id": "mostrar-estudio",
-      "titulo": "Mostrar el Espacio de estudio en la portada",
-      "detalle": "Quitar «oculto» en proyectos.json cuando se haya probado con datos reales y en el celular.",
-      "estado": "pendiente",
+      "titulo": "Espacio de estudio visible en la portada",
+      "detalle": "Estudio y el tablero ya aparecen en la portada. Falta probar el Estudio con la rama real y en el celular.",
+      "estado": "hecho",
       "zona": "estudio",
-      "prioridad": "media",
       "fecha": "2026-11-15",
-      "enlace": "https://github.com/wolyf/web/pull/37"
+      "hecho": "2026-11-16"
     },
     {
       "id": "estudio-guion-largo",
@@ -147,7 +146,7 @@
     {
       "id": "tablero",
       "titulo": "Tablero de ideas y pendientes del sitio",
-      "detalle": "Esta página: ideas, pendientes y avances de todo el sitio, filtrables por proyecto.",
+      "detalle": "Esta página: ideas, pendientes y avances de todo el sitio, filtrables por proyecto. Visible en la portada.",
       "estado": "hecho",
       "zona": "tablero",
       "fecha": "2026-11-15",
