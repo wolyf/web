@@ -11,7 +11,7 @@ Español; sin guion largo (U+2014) en textos, interfaz, comentarios ni mensajes;
 - Este proyecto solo edita `estudio/`. Todo lo demás se puede leer, pero no se modifica desde aquí.
 - Lo común (`../css/styles.css`, `../js/tema.js`, `../js/darwin.js`, `../img/`, el `index.html` de la raíz, `herramientas/`, `proyectos.json`) es de la zona general. Si algo de ahí no sirve, se sobrescribe en el CSS propio (`estudio/css/`) o se le pide el cambio al entorno general.
 - Rutas relativas: los recursos propios van en `estudio/css/`, `estudio/js/`, etc.; los comunes con `../`.
-- La tarjeta del proyecto en la portada (descripción, icono, etiquetas, página de inicio) sale de `proyectos.json`: si cambia, pídele al entorno general que la actualice. Mientras se construye está `oculto` y `privado`.
+- La tarjeta del proyecto en la portada (descripción, icono, etiquetas, página de inicio) sale de `proyectos.json`: si cambia, pídele al entorno general que la actualice. Está visible en la portada y marcado `privado`.
 
 ## Diseño
 
@@ -105,7 +105,7 @@ Aún no hay. Cuando haya, cada apunte será una página con la plantilla de nota
 
 ## Pendiente
 
-1. Quitar `oculto` de `proyectos.json` (zona general) cuando se haya probado con datos reales en el celular.
+1. Probar con datos reales y en el celular (la escritura del estado desde el navegador solo se verificó contra una API simulada).
 2. Apuntes (ver arriba) y, si se quiere, enlace con el Anki (`filosofia::…`) y con los subrayados.
 3. Reubicar el Anki en el área «Estudio» (hoy está en «Herramientas»; cambio de zona general).
 4. Probar con las primeras lecturas reales de matemáticas o economía: si necesitan fórmulas, la fuente lleva `"latex": true` en su manifiesto: la página generada enlaza KaTeX local y el fragmento usa `data-latex` (se renderiza al descifrar).

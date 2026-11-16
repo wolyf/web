@@ -10,7 +10,7 @@ Español; sin guion largo (U+2014) en textos, interfaz, comentarios ni mensajes;
 
 - Este proyecto solo edita `tablero/`. Todo lo demás se puede leer, pero no se modifica desde aquí.
 - Lo común (`../css/styles.css`, `../js/tema.js`, `../js/darwin.js`, `../img/`, el `index.html` de la raíz, `herramientas/`, `proyectos.json`) es de la zona general. Si algo de ahí no sirve, se sobrescribe en el CSS propio (`tablero/css/`) o se le pide el cambio al entorno general.
-- La tarjeta del proyecto en la portada sale de `proyectos.json`: si cambia, pídele al entorno general que la actualice. Mientras se construye está `oculto`.
+- La tarjeta del proyecto en la portada sale de `proyectos.json`: si cambia, pídele al entorno general que la actualice. Está visible en la portada.
 - Rutas relativas: los recursos propios en `tablero/css/`, `tablero/js/`; los comunes con `../`.
 
 ## Diseño
@@ -59,5 +59,5 @@ Los nombres de las zonas salen de `../proyectos.json` en el navegador (campo `co
 
 ## Pendiente
 
-1. Quitar `oculto` de `proyectos.json` (zona general) si se quiere mostrar en la portada.
+1. Elegir si los pendientes que siguen en los `CLAUDE.md` de otros proyectos pasan solo al tablero.
 2. Origen de los primeros elementos: los pendientes que ya estaban anotados en los `CLAUDE.md` de Anki y Espacio de estudio y la idea de «Escuchar» (ver «Ideas pendientes» del `CLAUDE.md` raíz). Conviene dejar el tablero como único lugar de pendientes y que los `CLAUDE.md` solo describan cómo funciona cada proyecto.
