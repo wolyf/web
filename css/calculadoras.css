@@ -250,14 +250,13 @@
   font-weight: 600;
   color: var(--text-strong);
   background: var(--bg);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-control);
   border-radius: var(--radius);
   cursor: pointer;
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
 .unit-bar select:focus {
-  outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }

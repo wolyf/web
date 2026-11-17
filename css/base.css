@@ -19,6 +19,7 @@
   --border: #e5dcbd;
   --border-card: #ded4b2;
   --border-strong: #c6ba93;
+  --border-control: #857a55;   /* borde de campos: 3:1 como mínimo (WCAG 1.4.11) */
   --accent: var(--acento-claro);
   --accent-soft: color-mix(in srgb, var(--accent) 12%, var(--bg));
   --sobre-acento: #ffffff;     /* texto encima del acento */
@@ -35,10 +36,10 @@
 }
 
 /* Paletas de acento */
-:root[data-acento="azul"] { --acento-claro: #2a67a5; --acento-oscuro: #6db3f5; }
-:root[data-acento="verde"] { --acento-claro: #2b7f66; --acento-oscuro: #94d294; }
+:root[data-acento="azul"] { --acento-claro: #2a66a3; --acento-oscuro: #6db3f5; }
+:root[data-acento="verde"] { --acento-claro: #26705a; --acento-oscuro: #94d294; }
 :root[data-acento="lavanda"] { --acento-claro: #6a3eba; --acento-oscuro: #e5aaf5; }
-:root[data-acento="ambar"] { --acento-claro: #a35f2c; --acento-oscuro: #fede91; }
+:root[data-acento="ambar"] { --acento-claro: #915527; --acento-oscuro: #fede91; }
 
 /* ---- Variables: tema oscuro (del sistema o elegido) ----
    El bloque se repite: una vez para el sistema y otra para la elección manual. */
@@ -54,6 +55,7 @@
     --border: #323239;
     --border-card: #323239;
     --border-strong: #4e4e55;
+    --border-control: #7a7a82;
     --accent: var(--acento-oscuro);
     --sobre-acento: #1d1d22;
     --shadow: 0 4px 7px rgba(0, 1, 2, 0.3), 0 2px 2px rgba(0, 1, 2, 0.3), 0 1px 1px rgba(0, 1, 2, 0.3);
@@ -72,6 +74,7 @@
   --border: #323239;
   --border-card: #323239;
   --border-strong: #4e4e55;
+  --border-control: #7a7a82;
   --accent: var(--acento-oscuro);
   --sobre-acento: #1d1d22;
   --shadow: 0 4px 7px rgba(0, 1, 2, 0.3), 0 2px 2px rgba(0, 1, 2, 0.3), 0 1px 1px rgba(0, 1, 2, 0.3);
@@ -150,6 +153,7 @@ samp,
 .brand {
   display: inline-flex;
   align-items: center;
+  min-height: 32px;            /* objetivo táctil mínimo (WCAG 2.5.8) */
   gap: 10px;
   font-family: var(--font-mono);
   font-size: 1rem;
@@ -176,6 +180,36 @@ samp,
 
 .brand:hover::before {
   transform: rotate(-8deg) scale(1.08);
+}
+
+/* Enlace de salto al contenido: solo se ve al recibir el foco del teclado */
+.saltar {
+  position: absolute;
+  left: 12px;
+  top: -64px;
+  z-index: 1000;
+  padding: 10px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--sobre-acento);
+  background: var(--accent);
+  border-radius: var(--radius);
+}
+
+.saltar:focus {
+  top: 12px;
+}
+
+/* Sin animaciones ni transiciones para quien pide menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /* Botones de ajustes y sesión: ver ajustes.css */

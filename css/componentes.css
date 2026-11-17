@@ -96,7 +96,8 @@ nav {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  margin-bottom: 20px;
+  min-height: 32px;            /* objetivo táctil mínimo (WCAG 2.5.8) */
+  margin-bottom: 12px;
   font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 500;
@@ -136,7 +137,7 @@ a.pastilla:hover {
   display: inline-block;
   padding: 1px 6px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   color: var(--muted);
   background: var(--surface-2);
   border-radius: 4px;
@@ -231,7 +232,7 @@ button {
 input {
   color: var(--text-strong);
   background: var(--bg);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-control);
   transition: border-color 0.18s ease, box-shadow 0.18s ease;
 }
 
@@ -239,8 +240,8 @@ input:hover {
   border-color: var(--muted);
 }
 
+/* El anillo de :focus-visible (base.css) se conserva; el halo es refuerzo */
 input:focus {
-  outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-soft);
 }
