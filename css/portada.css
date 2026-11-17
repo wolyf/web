@@ -73,7 +73,7 @@ body.con-lateral {
 .lateral__titulo {
   margin: 12px 0 4px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
@@ -124,6 +124,7 @@ body.con-lateral {
 }
 
 .lateral__pie a {
+  padding: 4px 0;              /* objetivo táctil: 24 px de alto como mínimo */
   color: var(--muted);
   text-decoration: none;
 }
@@ -274,9 +275,15 @@ body.con-lateral {
 .sobre-mi__enlaces {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 20px;
+  gap: 0 20px;
   font-size: 0.9rem;
   font-weight: 600;
+}
+
+/* Objetivo táctil: 24 px de alto como mínimo (WCAG 2.5.8) */
+.sobre-mi__enlaces a,
+.proyecto__enlaces a {
+  padding: 3px 0;
 }
 
 /* ---- Bitácora (línea de tiempo) ---- */
@@ -375,7 +382,7 @@ body.con-lateral {
   display: flex;
   gap: 16px;
   margin: auto 0 0;
-  padding-top: 10px;
+  padding-top: 7px;
   font-size: 0.85rem;
   font-weight: 600;
 }
