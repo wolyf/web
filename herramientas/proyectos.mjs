@@ -212,12 +212,12 @@ export function actualizarPortada(html, proyectos, sitio = {}, areas = {}) {
 }
 
 // sitemap.xml para buscadores: la portada y la página de inicio de cada proyecto
-// visible y no privado. Lo demás (p. ej. cada libro de los manuales) lo encuentra
+// visible y no privado, más las páginas generales de sitio.paginas (p. ej. «Sobre mí»). Lo demás (p. ej. cada libro de los manuales) lo encuentra
 // Google siguiendo los enlaces de esas páginas.
 export function generarSitemap(proyectos, sitio = {}) {
   if (!sitio.url) throw new Error("Falta sitio.url en proyectos.json (p. ej. https://wolyf.github.io/web/).");
   const base = sitio.url.endsWith("/") ? sitio.url : `${sitio.url}/`;
-  const rutas = ["", ...visibles(proyectos).filter(([, p]) => !p.privado).map(([id, p]) => inicioDe(id, p))];
+  const rutas = ["", ...(sitio.paginas ?? []), ...visibles(proyectos).filter(([, p]) => !p.privado).map(([id, p]) => inicioDe(id, p))];
   return [
     `<?xml version="1.0" encoding="UTF-8"?>`,
     `<!-- Generado desde proyectos.json: npm run proyectos -- portada -->`,

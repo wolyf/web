@@ -16,7 +16,7 @@ El sitio se divide en **proyectos**, uno por carpeta, registrados en `proyectos.
 
 | Zona | Carpetas | Instrucciones |
 |---|---|---|
-| `general` | `index.html`, `css/`, `js/`, `img/`, `herramientas/`, `.claude/`, `.github/`, `proyectos.json`, `package.json`, `README.md` | Este archivo |
+| `general` | `index.html`, `sobre-mi.html`, `css/`, `js/`, `img/`, `herramientas/`, `.claude/`, `.github/`, `proyectos.json`, `package.json`, `README.md` | Este archivo |
 | `calculadoras` | `calculadoras/` | `calculadoras/CLAUDE.md` |
 | `catalogo` | `catalogo/`, `.catalogo/` (privada) | `catalogo/CLAUDE.md` |
 | `manuales-conagua` | `manuales-conagua/` | `manuales-conagua/CLAUDE.md` |
@@ -64,7 +64,7 @@ Para quitar o renombrar un proyecto, edita `proyectos.json`, corre `npm run proy
 
 ### La portada sale de `proyectos.json`
 
-La portada va en este orden: nombre y una línea de identidad, Proyectos (por áreas), Sobre mí, Bitácora y el pie, donde se menciona a Darwin. En `index.html`, el menú lateral, las tarjetas de la sección «Proyectos» y el total están entre marcadores (`<!-- proyectos:menu -->`, `<!-- proyectos:tarjetas -->`, `<!-- proyectos:total -->`) y **no se editan a mano**: se generan con `npm run proyectos -- portada`. Una prueba (`npm test`, también en la revisión «Pruebas» de GitHub) falla si la portada no está al día.
+La portada va directo a Proyectos (por áreas, con «Proyectos» como `<h1>`) y el pie. No lleva el nombre en grande ni presentación: el dueño no quiere una portada centrada en él. «Sobre mí» y la Bitácora viven en `sobre-mi.html`, enlazadas solo desde el pie (no desde la barra lateral). En `index.html`, el menú lateral, las tarjetas de la sección «Proyectos» y el total están entre marcadores (`<!-- proyectos:menu -->`, `<!-- proyectos:tarjetas -->`, `<!-- proyectos:total -->`) y **no se editan a mano**: se generan con `npm run proyectos -- portada`. Una prueba (`npm test`, también en la revisión «Pruebas» de GitHub) falla si la portada no está al día.
 
 Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la portada):
 
@@ -87,9 +87,9 @@ Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la p
 
 Meta: que al buscar «Wolfgang Reséndiz» o «Wolfgang Resendiz» salga primero este sitio, por encima de LinkedIn y de la tesis.
 
-- La portada trata de él: `<title>`, descripción, `<h1>` y la sección «Sobre mí» llevan su nombre completo (con y sin acento), profesión, UNAM y tesis. Darwin se queda, pero no en el título ni en la descripción.
-- `index.html` tiene en el `<head>` `canonical`, Open Graph (imagen `img/vista-previa.png`, 1200 × 630), `rel="me"` y un JSON-LD (`ProfilePage` + `Person` + `Thesis`) con `sameAs` a LinkedIn, ResearchGate y GitHub, y a la tesis en el Repositorio UNAM y Ptolomeo. Si hay un perfil nuevo, agrégalo en los tres lugares (JSON-LD, `rel="me"` y «Sobre mí»).
-- `sitemap.xml` se genera con `npm run proyectos -- portada` (portada y página de inicio de cada proyecto público); una prueba revisa que esté al día. `robots.txt` solo sirve en la raíz del dominio, así que no hay.
+- El nombre va donde lo lee Google, no en grande en la portada: `<title>`, descripción y JSON-LD de `index.html`, la marca y el pie. La página de perfil es `sobre-mi.html` (título «Wolfgang Reséndiz · Sobre mí», nombre completo con y sin acento, profesión, UNAM, tesis, foto y bitácora). Darwin no va en títulos ni descripciones.
+- `index.html` tiene en el `<head>` `canonical`, Open Graph (imagen `img/vista-previa.png`, 1200 × 630), `rel="me"` y un JSON-LD (`WebSite` + `Person` + `Thesis`); `sobre-mi.html` lleva `ProfilePage` + los mismos `Person` y `Thesis` (una prueba exige que sean iguales) con `sameAs` a LinkedIn, ResearchGate y GitHub, y a la tesis en el Repositorio UNAM y Ptolomeo. Si hay un perfil nuevo, agrégalo en el JSON-LD y `rel="me"` de ambas páginas y en «Sobre mí».
+- `sitemap.xml` se genera con `npm run proyectos -- portada` (portada, las páginas generales de `sitio.paginas` como `sobre-mi.html` y la página de inicio de cada proyecto público); una prueba revisa que esté al día. `robots.txt` solo sirve en la raíz del dominio, así que no hay.
 - Si el sitio cambia de dominio, cambia `sitio.url`, el `canonical`, `og:url`, `og:image` y los `@id`/`url` del JSON-LD de la portada y de `calculadoras/caudal.html`, corre `npm run proyectos -- portada` y `node manuales-conagua/herramientas/seo.mjs`, y regenera la imagen de vista previa. Una prueba exige que cada `canonical` apunte a su propia página según `sitio.url`.
 - Las plantillas de proyecto no llevan `canonical` (sus copias lo tendrían repetido); cada página lo agrega con su propia URL.
 - `manuales-conagua/sitemap.xml` es aparte (lo genera ese proyecto) y también se envía en Search Console.
@@ -134,7 +134,8 @@ Con la sesión iniciada se puede subrayar texto en **cualquier página de cualqu
 
 | Ruta | Qué es |
 |---|---|
-| `index.html` | Portada: barra lateral (en celular, barra superior), presentación con bitácora y retrato de Darwin, y tarjetas de proyectos (generadas). |
+| `index.html` | Portada: barra lateral (en celular, barra superior) y tarjetas de proyectos (generadas), directo, sin presentación. |
+| `sobre-mi.html` | «Sobre mí» (foto, formación, tesis, perfiles) y Bitácora; página de perfil para buscadores. Enlazada desde el pie de la portada. |
 | `css/styles.css` | Reúne con `@import` las partes: `fuentes.css`, `base.css` (variables, tipografía, encabezado), `ajustes.css` (botones de `.ajustes` y panel de sesión; `ajustes-aislado.css` lo da a páginas sin `styles.css`), `componentes.css`, `portada.css` y `calculadoras.css`. Los proyectos solo enlazan `styles.css`. |
 | `css/fuentes/`, `js/vendor/katex/` | Fuentes y KaTeX copiados al repo (ver «Endurecimiento del sitio»). |
 | `js/tema.js` | Tema claro/oscuro y color de acento elegidos por quien visita (se guardan en `localStorage`), botón para quitar a Darwin. También carga la sesión, los subrayados y renderiza `[data-latex]` si la página cargó KaTeX. |

@@ -135,9 +135,9 @@ test("el sitemap lleva la portada y los proyectos públicos y visibles", () => {
     c: { nombre: "C", carpetas: ["c"], oculto: true },
     d: { nombre: "D", carpetas: ["d"] },
   };
-  const xml = generarSitemap(varios, { url: "https://x.github.io/web" });
+  const xml = generarSitemap(varios, { url: "https://x.github.io/web", paginas: ["sobre-mi.html"] });
   const urls = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.deepEqual(urls, ["https://x.github.io/web/", "https://x.github.io/web/a/x.html", "https://x.github.io/web/d/"]);
+  assert.deepEqual(urls, ["https://x.github.io/web/", "https://x.github.io/web/sobre-mi.html", "https://x.github.io/web/a/x.html", "https://x.github.io/web/d/"]);
   assert.throws(() => generarSitemap(varios, {}), /sitio.url/);
 });
 
@@ -263,4 +263,19 @@ test("cada canonical apunta a su propia página (sitio.url + ruta) y está en el
     assert.ok(html.indexOf("rel=\"canonical\"") < html.indexOf("</head>"), `${nombre}: el canonical va en el <head>.`);
   }
   assert.ok(con >= 3, "Se esperaban páginas con canonical (portada, manuales, calculadora).");
+});
+
+test("Person y Thesis son iguales en la portada y en «Sobre mí» (ProfilePage solo en «Sobre mí»)", () => {
+  const nodos = (archivo) => {
+    const html = fs.readFileSync(path.join(RAIZ_REAL, archivo), "utf8");
+    const ld = html.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+    assert.ok(ld, `${archivo}: falta JSON-LD`);
+    return Object.fromEntries(JSON.parse(ld[1])["@graph"].map((n) => [n["@type"], n]));
+  };
+  const portada = nodos("index.html");
+  const perfil = nodos("sobre-mi.html");
+  assert.deepEqual(perfil.Person, portada.Person, "Actualiza Person en los dos archivos.");
+  assert.deepEqual(perfil.Thesis, portada.Thesis, "Actualiza Thesis en los dos archivos.");
+  assert.equal(perfil.ProfilePage.mainEntity["@id"], portada.Person["@id"]);
+  assert.equal(portada.ProfilePage, undefined, "La página de perfil es sobre-mi.html.");
 });

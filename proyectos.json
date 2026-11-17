@@ -3,6 +3,7 @@
   "sitio": {
     "nombre": "Wolfgang Reséndiz",
     "url": "https://wolyf.github.io/web/",
+    "paginas": ["sobre-mi.html"],
     "repositorio": "https://github.com/wolyf/web"
   },
   "areas": {

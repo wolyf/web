@@ -26,7 +26,7 @@
   <link rel="sitemap" type="application/xml" href="sitemap.xml">
 
   <!-- Vista previa al compartir el enlace (Open Graph y X/Twitter) -->
-  <meta property="og:type" content="profile">
+  <meta property="og:type" content="website">
   <meta property="og:locale" content="es_MX">
   <meta property="og:site_name" content="Wolfgang Reséndiz">
   <meta property="og:title" content="Wolfgang Reséndiz · Ingeniero civil y estudiante de Filosofía">
@@ -36,8 +36,6 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Wolfgang Reséndiz, ingeniero civil y estudiante de Filosofía">
-  <meta property="profile:first_name" content="Wolfgang">
-  <meta property="profile:last_name" content="Reséndiz">
   <meta name="twitter:card" content="summary_large_image">
 
   <!-- Perfiles que son míos: le dicen a Google que son la misma persona -->
@@ -57,16 +55,9 @@
         "name": "Wolfgang Reséndiz",
         "alternateName": "Wolfgang Resendiz",
         "inLanguage": "es-MX",
-        "publisher": { "@id": "https://wolyf.github.io/web/#persona" }
-      },
-      {
-        "@type": "ProfilePage",
-        "@id": "https://wolyf.github.io/web/#pagina",
-        "url": "https://wolyf.github.io/web/",
-        "name": "Wolfgang Reséndiz · Ingeniero civil y estudiante de Filosofía",
-        "inLanguage": "es-MX",
-        "isPartOf": { "@id": "https://wolyf.github.io/web/#sitio" },
-        "mainEntity": { "@id": "https://wolyf.github.io/web/#persona" }
+        "publisher": {
+          "@id": "https://wolyf.github.io/web/#persona"
+        }
       },
       {
         "@type": "Person",
@@ -86,7 +77,14 @@
         "jobTitle": "Ingeniero civil y estudiante de Filosofía",
         "image": "https://wolyf.github.io/web/img/wolfgang-resendiz.jpg",
         "description": "Ingeniero civil y estudiante de Filosofía. Egresado de la Facultad de Ingeniería de la UNAM (especialidad en hidráulica) y estudiante en la Facultad de Filosofía y Letras de la UNAM.",
-        "knowsAbout": ["Ingeniería civil", "Hidráulica", "Agua potable", "Aprovechamiento de agua de lluvia", "Captación pluvial", "Filosofía"],
+        "knowsAbout": [
+          "Ingeniería civil",
+          "Hidráulica",
+          "Agua potable",
+          "Aprovechamiento de agua de lluvia",
+          "Captación pluvial",
+          "Filosofía"
+        ],
         "alumniOf": {
           "@type": "CollegeOrUniversity",
           "name": "Facultad de Ingeniería, Universidad Nacional Autónoma de México",
@@ -101,7 +99,10 @@
           "@type": "EducationalOccupationalCredential",
           "credentialCategory": "degree",
           "name": "Ingeniería Civil",
-          "recognizedBy": { "@type": "CollegeOrUniversity", "name": "Universidad Nacional Autónoma de México" }
+          "recognizedBy": {
+            "@type": "CollegeOrUniversity",
+            "name": "Universidad Nacional Autónoma de México"
+          }
         },
         "award": "Primer lugar en licenciatura, Premio Rotoplas-FUNAM (2022)",
         "sameAs": [
@@ -110,13 +111,18 @@
           "https://github.com/wolyf"
         ],
         "subjectOf": [
-          { "@id": "https://wolyf.github.io/web/#tesis" },
+          {
+            "@id": "https://wolyf.github.io/web/#tesis"
+          },
           {
             "@type": "NewsArticle",
             "headline": "Reconocen tesis de egresado de la FI",
             "datePublished": "2022-06-01",
             "url": "https://www.comunicacionfi.unam.mx/mostrar_nota.php?id_noticia=2444",
-            "publisher": { "@type": "Organization", "name": "Facultad de Ingeniería, UNAM" }
+            "publisher": {
+              "@type": "Organization",
+              "name": "Facultad de Ingeniería, UNAM"
+            }
           }
         ]
       },
@@ -124,11 +130,16 @@
         "@type": "Thesis",
         "@id": "https://wolyf.github.io/web/#tesis",
         "name": "Diseño y construcción de un dispositivo inteligente para la separación de primeras lluvias con fines de aprovechamiento en casa habitación",
-        "author": { "@id": "https://wolyf.github.io/web/#persona" },
+        "author": {
+          "@id": "https://wolyf.github.io/web/#persona"
+        },
         "datePublished": "2019",
         "inLanguage": "es",
         "inSupportOf": "Licenciatura en Ingeniería Civil",
-        "sourceOrganization": { "@type": "CollegeOrUniversity", "name": "Universidad Nacional Autónoma de México" },
+        "sourceOrganization": {
+          "@type": "CollegeOrUniversity",
+          "name": "Universidad Nacional Autónoma de México"
+        },
         "url": "https://repositorio.unam.mx/contenidos/ficha/diseno-y-construccion-de-un-dispositivo-inteligente-para-la-separacion-de-primeras-lluvias-con-fines-de-aprovechamie-3449904",
         "sameAs": [
           "http://www.ptolomeo.unam.mx:8080/xmlui/handle/132.248.52.100/16671"
@@ -157,7 +168,6 @@
 
 <body class="con-lateral">
   <a class="saltar" href="#inicio">Saltar al contenido</a>
-  <a class="saltar" href="#inicio">Saltar al contenido</a>
   <div class="marco">
     <!-- Barra lateral (en celular, barra superior) -->
     <aside class="lateral">
@@ -176,25 +186,12 @@
         </div>
       </div>
 
-      <div class="lateral__seccion lateral__intro">
-        <p><a href="#sobre-mi">Wolfgang Reséndiz</a>. Ingeniero civil y estudiante de Filosofía. Proyectos, herramientas y notas.</p>
-      </div>
 
       <nav class="lateral__seccion lateral__nav" aria-label="Secciones del sitio">
         <a href="#proyectos">
           <span class="lateral__icono" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
           </span>Proyectos
-        </a>
-        <a href="#sobre-mi">
-          <span class="lateral__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
-          </span>Sobre mí
-        </a>
-        <a href="#bitacora">
-          <span class="lateral__icono" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-          </span>Bitácora
         </a>
 
         <!-- Generado desde proyectos.json: npm run proyectos -- portada -->
@@ -222,16 +219,10 @@
       <!-- Sesión del sitio en escritorio (js/sesion.mjs); en celular va en la barra superior -->
       <div class="sesion-esquina" data-sesion-lugar></div>
       <main id="inicio">
-        <!-- Presentación -->
-        <section class="seccion presentacion" aria-labelledby="titulo-inicio">
-          <h1 class="hero" id="titulo-inicio">Wolfgang Reséndiz</h1>
-          <p class="subtitulo">Ingeniero civil y estudiante de Filosofía. Egresado de la Facultad de Ingeniería de la UNAM, con especialidad en hidráulica.</p>
-        </section>
-
         <!-- Proyectos -->
         <section class="seccion" id="proyectos" aria-labelledby="titulo-proyectos">
           <div class="seccion__cabeza">
-            <h2 id="titulo-proyectos">Proyectos</h2>
+            <h1 id="titulo-proyectos">Proyectos</h1>
             <span class="pastilla"><!-- proyectos:total -->6 proyectos<!-- /proyectos:total --></span>
           </div>
           <p class="seccion__desc">Trabajo de ingeniería, herramientas y, más adelante, notas de estudio.</p>
@@ -297,99 +288,18 @@
             </div>
             <!-- /proyectos:tarjetas -->
         </section>
-
-        <!-- Sobre mí: quién soy, con mi nombre completo y mis perfiles -->
-        <section class="seccion sobre-mi" id="sobre-mi" aria-labelledby="titulo-sobre-mi">
-          <div class="seccion__cabeza">
-            <h2 id="titulo-sobre-mi">Sobre mí</h2>
-          </div>
-          <div class="sobre-mi__intro">
-            <img class="sobre-mi__foto" src="img/wolfgang-resendiz.jpg" alt="Wolfgang Reséndiz" width="64" height="64" loading="lazy">
-            <p>
-              Soy <strong>Wolfgang Antonio Reséndiz Martínez</strong> (también escrito Wolfgang Resendiz),
-              ingeniero civil con especialidad en hidráulica, egresado de la Facultad de Ingeniería de la
-              Universidad Nacional Autónoma de México (UNAM), y estudiante de Filosofía en la Facultad de
-              Filosofía y Letras (FFyL) de la UNAM. Me interesan el agua potable, el aprovechamiento del agua
-              de lluvia y las herramientas que hacen más sencillo el cálculo hidráulico.
-            </p>
-          </div>
-
-          <h3>Tesis</h3>
-          <p>
-            <cite>Diseño y construcción de un dispositivo inteligente para la separación de primeras lluvias
-            con fines de aprovechamiento en casa habitación</cite> (UNAM, 2019), asesorada por el M. I. Cristian
-            Emmanuel González Reyes. El dispositivo, DISPLU, separa el agua de las primeras lluvias para
-            almacenar agua limpia y obtuvo el primer lugar en licenciatura del Premio Rotoplas-FUNAM (2022).
-          </p>
-          <p class="sobre-mi__enlaces">
-            <a href="https://repositorio.unam.mx/contenidos/ficha/diseno-y-construccion-de-un-dispositivo-inteligente-para-la-separacion-de-primeras-lluvias-con-fines-de-aprovechamie-3449904">Repositorio UNAM</a>
-            <a href="http://www.ptolomeo.unam.mx:8080/xmlui/handle/132.248.52.100/16671">Ptolomeo (texto completo)</a>
-            <a href="https://www.comunicacionfi.unam.mx/mostrar_nota.php?id_noticia=2444">Nota de la Facultad de Ingeniería</a>
-          </p>
-
-          <h3>En otros sitios</h3>
-          <p class="sobre-mi__enlaces">
-            <a href="https://mx.linkedin.com/in/wolfgangresendiz" rel="me">LinkedIn</a>
-            <a href="https://www.researchgate.net/profile/Wolfgang-Resendiz" rel="me">ResearchGate</a>
-            <a href="https://github.com/wolyf" rel="me">GitHub</a>
-          </p>
-        </section>
-
-        <!-- Bitácora: trayectoria y cambios del sitio -->
-        <section class="seccion" id="bitacora" aria-labelledby="titulo-bitacora">
-          <div class="seccion__cabeza">
-            <h2 id="titulo-bitacora">Bitácora</h2>
-          </div>
-
-          <h3>Trayectoria</h3>
-          <ol class="bitacora" reversed>
-            <li>
-              <time datetime="2022-06">jun 2022</time>
-              <span>Mi tesis obtiene el <a href="https://www.comunicacionfi.unam.mx/mostrar_nota.php?id_noticia=2444">primer lugar en licenciatura del Premio Rotoplas-FUNAM</a>.</span>
-            </li>
-            <li>
-              <time datetime="2019">2019</time>
-              <span>Me titulo de Ingeniería Civil en la Facultad de Ingeniería de la UNAM.</span>
-            </li>
-          </ol>
-
-          <h3>Cambios del sitio</h3>
-          <ol class="bitacora" reversed>
-            <li>
-              <time datetime="2026-11">nov 2026</time>
-              <span>El sitio se organiza por proyectos y áreas, y estrena este diseño.</span>
-            </li>
-            <li>
-              <time datetime="2026-10">oct 2026</time>
-              <span><a href="catalogo/">Catálogo de cotizaciones</a> de agua potable: privado y con los datos cifrados.</span>
-            </li>
-            <li>
-              <time datetime="2026-07">jul 2026</time>
-              <span><a href="calculadoras/caudal.html">Calculadora de caudal</a> con unidades configurables, ecuación en LaTeX y gráfica interactiva.</span>
-            </li>
-            <li>
-              <time datetime="2022-05">may 2022</time>
-              <span>Primera versión del sitio, hecha a mano en HTML y CSS.</span>
-            </li>
-          </ol>
-        </section>
       </main>
 
       <footer class="pie">
         <ul class="pie__enlaces">
           <li><a href="#proyectos">Proyectos</a></li>
-          <li><a href="#sobre-mi">Sobre mí</a></li>
-          <li><a href="#bitacora">Bitácora</a></li>
+          <li><a href="sobre-mi.html">Sobre mí</a></li>
+          <li><a href="sobre-mi.html#bitacora">Bitácora</a></li>
           <li><a href="https://mx.linkedin.com/in/wolfgangresendiz" rel="me">LinkedIn</a></li>
           <li><a href="https://www.researchgate.net/profile/Wolfgang-Resendiz" rel="me">ResearchGate</a></li>
           <li><a href="https://github.com/wolyf/web">Código del sitio</a></li>
         </ul>
         <p>Wolfgang Reséndiz. Sitio hecho con HTML, CSS y JavaScript, sin dependencias.</p>
-        <!-- Darwin (js/darwin.js) vive en la orilla de la página; el botón de ajustes la quita -->
-        <p class="pie__darwin">
-          <img src="img/darwin-cara.svg" alt="" width="20" height="20">
-          Darwin, la gatita del sitio, vive en la orilla de la página. Se quita con el botón del gato en los ajustes.
-        </p>
       </footer>
     </div>
   </div>
