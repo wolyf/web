@@ -58,12 +58,6 @@ body.con-lateral {
   font-size: 0.9rem;
 }
 
-.lateral__intro p {
-  margin: 0;
-  font-size: 0.92rem;
-  line-height: 1.55;
-}
-
 .lateral__nav {
   display: flex;
   flex-direction: column;
@@ -167,8 +161,16 @@ body.con-lateral {
   margin-bottom: 4px;
 }
 
+.seccion__cabeza h1,
 .seccion__cabeza h2 {
   margin: 0;
+}
+
+/* En la portada, «Proyectos» es el título principal (h1) con tamaño de sección */
+.seccion__cabeza h1 {
+  font-size: 1.6rem;
+  font-weight: 600;
+  line-height: 1.25;
 }
 
 .seccion__desc {
@@ -176,16 +178,8 @@ body.con-lateral {
   color: var(--muted);
 }
 
-/* ---- Presentación: nombre y una línea de identidad ---- */
-.presentacion {
-  padding: 56px 0 40px;
-}
-
-.presentacion .subtitulo {
-  max-width: 34em;
-}
-
-.contenido > main h3 {
+.contenido > main h3,
+#bitacora h3 {
   margin: 28px 0 14px;
   font-size: 1.1rem;
 }
@@ -418,18 +412,6 @@ body.con-lateral {
   margin: 0;
 }
 
-.pie__darwin {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 10px !important;
-  font-size: 0.8rem;
-}
-
-.pie__darwin img {
-  image-rendering: pixelated;
-}
-
 /* ---- Portada en celular: la barra lateral se vuelve barra superior ---- */
 @media (max-width: 800px) {
   .marco {
@@ -455,7 +437,6 @@ body.con-lateral {
     border-bottom: 0;
   }
 
-  .lateral__intro,
   .lateral__pie,
   .lateral__titulo {
     display: none;
@@ -478,10 +459,6 @@ body.con-lateral {
     white-space: nowrap;
     background: var(--surface);
     border: 1px solid var(--border-card);
-  }
-
-  .presentacion {
-    padding-top: 36px;
   }
 
   .seccion {
