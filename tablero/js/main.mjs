@@ -89,20 +89,57 @@ export function montar(raiz, { doc, datos, nombres, ventana = globalThis.window 
   pintar();
 }
 
+// Invitación a iniciar sesión (sin ella no hay nada del tablero a la vista)
+export function invitacion(doc) {
+  return h(
+    doc,
+    "div",
+    { clase: "t-privado" },
+    h(doc, "p", {}, "Este tablero es privado: se publica cifrado y se abre con tu sesión."),
+    h(doc, "button", { type: "button", clase: "t-boton", "data-sesion-accion": "abrir" }, "Iniciar sesión"),
+  );
+}
+
+// Abre datos/tablero.enc con la sesión del sitio → datos (lanza si no se puede)
+export async function abrirDatos({ sesion, fetchf = globalThis.fetch.bind(globalThis), url }) {
+  const r = await fetchf(url, { cache: "no-cache" });
+  if (!r.ok) throw new Error(`tablero.enc: ${r.status}`);
+  return JSON.parse(await sesion.descifrar(new Uint8Array(await r.arrayBuffer())));
+}
+
 // Arranque en la página
 if (typeof document !== "undefined") {
   const raiz = document.getElementById("tablero-raiz");
   if (raiz) {
+    const { sesion } = await import("../../js/sesion.mjs");
+    let generacion = 0;
     try {
-      const leer = async (ruta) => {
-        const r = await fetch(new URL(ruta, import.meta.url), { cache: "no-cache" });
-        if (!r.ok) throw new Error(`${ruta}: ${r.status}`);
-        return r.json();
-      };
-      const [datos, proyectos] = await Promise.all([leer("../datos/tablero.json"), leer("../../proyectos.json")]);
+      // Solo los nombres de los proyectos (público): los elementos del tablero van cifrados
+      const r = await fetch(new URL("../../proyectos.json", import.meta.url), { cache: "no-cache" });
+      if (!r.ok) throw new Error(`proyectos.json: ${r.status}`);
+      const proyectos = await r.json();
       const nombres = { [N.GENERAL]: "General" };
       for (const [id, p] of Object.entries(proyectos.proyectos)) nombres[id] = p.corto ?? p.nombre;
-      montar(raiz, { doc: document, datos, nombres });
+
+      const pintar = async () => {
+        const mia = ++generacion;
+        if (!sesion.activa()) return raiz.replaceChildren(invitacion(document));
+        raiz.replaceChildren(h(document, "p", { clase: "t-nota" }, "Abriendo el tablero"));
+        try {
+          const datos = await abrirDatos({ sesion, url: new URL("../datos/tablero.enc", import.meta.url) });
+          if (mia !== generacion) return;
+          const errores = N.validar(datos, Object.keys(nombres));
+          if (errores.length) console.warn("Tablero: datos con errores:", errores);
+          montar(raiz, { doc: document, datos, nombres });
+          if (errores.length) raiz.prepend(h(document, "p", { clase: "t-nota" }, `Ojo: los datos tienen ${errores.length} error(es): ${errores.slice(0, 2).join("; ")}`));
+        } catch (e) {
+          if (mia !== generacion) return;
+          console.warn("Tablero:", e);
+          raiz.replaceChildren(h(document, "p", { clase: "t-nota" }, "No se pudo abrir el tablero."));
+        }
+      };
+      sesion.alCambiar(() => pintar());
+      pintar();
     } catch (e) {
       console.warn("Tablero:", e);
       raiz.textContent = "No se pudo cargar el tablero.";

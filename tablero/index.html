@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ideas y pendientes del sitio · Wolfgang Reséndiz</title>
-  <meta name="description" content="Tablero de ideas, pendientes y avances del sitio, filtrable por proyecto.">
+  <meta name="description" content="Tablero privado de ideas, pendientes y avances del sitio.">
   <link rel="icon" href="../img/darwin-cara.svg" type="image/svg+xml">
 
   <!-- Estilos comunes del sitio (zona general) y propios del proyecto -->
@@ -40,9 +40,9 @@
     <a class="back" href="../index.html">← Inicio</a>
 
     <h1>Ideas y pendientes</h1>
-    <p class="subtitulo">Lo que sigue en el sitio: ideas, pendientes y avances, por proyecto.</p>
+    <p class="subtitulo">Lo que sigue en el sitio. Privado: se abre con tu sesión.</p>
 
-    <!-- Lo llena js/main.mjs desde datos/tablero.json. Público: nada privado aquí. -->
+    <!-- Lo llena js/main.mjs: abre datos/tablero.enc (cifrado) con la sesión del sitio. -->
     <div id="tablero-raiz" data-no-subrayar><noscript>Esta página necesita JavaScript.</noscript></div>
   </main>
 </body>

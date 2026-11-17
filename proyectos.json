@@ -129,7 +129,7 @@
       ],
       "corto": "Pendientes",
       "inicio": "tablero/",
-      "descripcion": "Tablero sencillo de ideas, pendientes y avances de todo el sitio, filtrable por proyecto.",
+      "descripcion": "Tablero de ideas, pendientes y avances de todo el sitio, filtrable por proyecto. Requiere usuario y contraseña; los datos se publican cifrados.",
       "anio": 2026,
       "icono": "🗒️",
       "area": "herramientas",
@@ -138,7 +138,8 @@
         "ideas",
         "pendientes",
         "sitio"
-      ]
+      ],
+      "privado": true
     }
   }
 }

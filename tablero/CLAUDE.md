@@ -10,7 +10,7 @@ Español; sin guion largo (U+2014) en textos, interfaz, comentarios ni mensajes;
 
 - Este proyecto solo edita `tablero/`. Todo lo demás se puede leer, pero no se modifica desde aquí.
 - Lo común (`../css/styles.css`, `../js/tema.js`, `../js/darwin.js`, `../img/`, el `index.html` de la raíz, `herramientas/`, `proyectos.json`) es de la zona general. Si algo de ahí no sirve, se sobrescribe en el CSS propio (`tablero/css/`) o se le pide el cambio al entorno general.
-- La tarjeta del proyecto en la portada sale de `proyectos.json`: si cambia, pídele al entorno general que la actualice. Está visible en la portada.
+- La tarjeta del proyecto en la portada sale de `proyectos.json`: si cambia, pídele al entorno general que la actualice. Está visible en la portada y marcado `privado`.
 - Rutas relativas: los recursos propios en `tablero/css/`, `tablero/js/`; los comunes con `../`.
 
 ## Diseño
@@ -19,13 +19,24 @@ Usa los estilos comunes (papel beige, un color de acento, Outfit, Inter y monoes
 
 ## Qué es
 
-Un tablero sencillo de **ideas, pendientes y avances de todo el sitio** (no de las lecturas: eso es el Espacio de estudio). Cada elemento pertenece a una zona (un proyecto de `proyectos.json` o `general`) y se filtra por proyecto, prioridad o texto.
+Un tablero sencillo y **privado** de **ideas, pendientes y avances de todo el sitio** (no de las lecturas: eso es el Espacio de estudio). Cada elemento pertenece a una zona (un proyecto de `proyectos.json` o `general`) y se filtra por proyecto, prioridad o texto.
 
 Columnas: **Ideas** (algo que podría hacerse), **Pendientes** (decidido, falta hacerlo), **En curso** y **Hechas** (plegada). Arriba, un resumen con el conteo de cada una.
 
-## Datos (públicos)
+## Datos (privados, cifrados)
 
-El repositorio es público, así que `datos/tablero.json` también: **nada privado ahí** (ni contraseñas, ni contactos, ni datos de terceros). Si algún día hace falta algo privado, se publicaría cifrado con la sesión del sitio, como el estado del Espacio de estudio.
+El repositorio es público, así que los elementos **no se publican en claro**: viven en `.privado/tablero/datos/tablero.html` (JSON; ignorado por git) y se publican cifrados con la llave del sitio $K$ en `tablero/datos/tablero.enc` (formato de fragmento: `"WRF1" ‖ iv ‖ AES-256-GCM(HKDF(K, "wr-fragmentos"), gzip(JSON))`). Sin sesión, la página solo muestra una invitación a iniciar sesión: no hay nada del contenido a la vista, ni descargado. Con sesión, `js/main.mjs` baja el `.enc`, lo descifra con `sesion.descifrar` y pinta el tablero; al cerrar sesión el contenido se va de la página.
+
+**Lo que sigue siendo público:** el código, los nombres de los proyectos (salen de `../proyectos.json`) y el historial de git. El tablero se publicó un tiempo en claro (PR #37 a #38): esas versiones siguen en el historial. Su contenido era lo que ya estaba anotado en los `CLAUDE.md` de los proyectos, que son públicos, así que no se reescribió la historia.
+
+**Cómo se edita:**
+
+1. En una sesión nueva el texto de trabajo no existe: `npm run sesion -- abrir tablero` lo recupera en `.privado/tablero/datos/tablero.html` (necesita `SITIO_USUARIO` y `SITIO_CONTRASENA` en el entorno de Claude Code, nunca en el chat).
+2. Editar ese archivo (a mano o pidiéndoselo a Claude Code: «agrega la idea X», «marca como hecho Y»).
+3. `node tablero/herramientas/validar.mjs` (no necesita credenciales) comprueba estados, zonas, fechas, ids únicos y enlaces.
+4. `npm run sesion -- sellar tablero` regenera `tablero/datos/tablero.enc`, que es lo que se sube en el commit.
+
+No hay edición desde el navegador (v1). Si se quisiera, se haría como el estado del Espacio de estudio (rama propia, cifrada, con la sesión).
 
 Cada elemento de `items`:
 
@@ -41,21 +52,20 @@ Cada elemento de `items`:
 | `hecho` | Solo en `hecho`: cuándo se cerró (AAAA-MM-DD). |
 | `enlace` | Opcional: `https://…` o una ruta del sitio (p. ej. un PR). Nada de `javascript:` ni `..`. |
 
-**Cómo se edita:** a mano o pidiéndoselo a Claude Code («agrega la idea X», «marca como hecho Y»); el cambio es un commit en `tablero/datos/tablero.json`. No hay edición desde el navegador (v1): el repositorio es público y escribir desde la página exigiría un token en el navegador. Si se quisiera, se haría como el estado del Espacio de estudio (rama propia, cifrada, con la sesión del sitio).
-
-Los nombres de las zonas salen de `../proyectos.json` en el navegador (campo `corto`, si no `nombre`), así que un proyecto nuevo aparece solo en el filtro. Una prueba valida estados, zonas existentes, fechas, ids únicos y enlaces seguros.
+Los nombres de las zonas salen de `../proyectos.json` en el navegador (campo `corto`, si no `nombre`), así que un proyecto nuevo aparece solo en el filtro. Las pruebas comprueban que `datos/` solo tenga el `.enc` (un fragmento cifrado, sin texto en claro y sin `tablero.json`), que el proyecto figure como `privado` y, si existe el texto de trabajo, que sea válido.
 
 ## Estructura
 
 | Ruta | Qué es |
 |---|---|
-| `tablero/index.html` | Página (CSP exacta del sitio, sin scripts en línea; la raíz lleva `data-no-subrayar`) |
+| `tablero/index.html` | Página (CSP exacta del sitio, sin scripts en línea; la raíz lleva `data-no-subrayar`, así que lo descifrado no se puede subrayar) |
 | `tablero/css/tablero.css` | Estilos propios |
-| `tablero/js/main.mjs` | Interfaz: resumen, filtros y columnas (todo texto con `textContent`; `?zona=<id>` y `?q=<texto>` preseleccionan el filtro) |
+| `tablero/js/main.mjs` | Invitación sin sesión; con sesión, abre el `.enc` y pinta resumen, filtros y columnas (todo texto con `textContent`; `?zona=<id>` y `?q=<texto>` preseleccionan el filtro) |
 | `tablero/js/nucleo.mjs` | Núcleo puro: estados, validación, enlaces seguros, filtrado, orden y conteos |
-| `tablero/datos/tablero.json` | Los elementos |
+| `tablero/datos/tablero.enc` | Los elementos, cifrados (el texto de trabajo está en `.privado/`) |
+| `tablero/herramientas/validar.mjs` | Valida el texto de trabajo antes de sellar (sin credenciales) |
 | `tablero/herramientas/pruebas/` | Pruebas (`npm test`) |
-| `tablero/herramientas/verificar-ui.mjs` | Verificación en navegador real (Playwright), no forma parte de `npm test`: `node tablero/herramientas/verificar-ui.mjs [--salida dir]` |
+| `tablero/herramientas/verificar-ui.mjs` | Verificación en navegador real (Playwright) con la sesión del sitio: sin sesión no se ve nada, con sesión se pinta y filtra, y al cerrar sesión se va. No forma parte de `npm test`: `node tablero/herramientas/verificar-ui.mjs [--salida dir]` |
 
 ## Pendiente
 

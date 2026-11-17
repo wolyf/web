@@ -4,13 +4,33 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import * as N from "../../js/nucleo.mjs";
+import { validarArchivo } from "../validar.mjs";
 
 const RAIZ = new URL("../../../", import.meta.url);
 const leerJSON = (r) => JSON.parse(fs.readFileSync(new URL(r, RAIZ), "utf8"));
-const zonasReales = () => [N.GENERAL, ...Object.keys(leerJSON("proyectos.json").proyectos)];
 
-test("los datos reales del tablero son válidos (estados, zonas, fechas y enlaces)", () => {
-  assert.deepEqual(N.validar(leerJSON("tablero/datos/tablero.json"), zonasReales()), []);
+test("el tablero es privado: solo se publica cifrado y no queda JSON en claro", () => {
+  const dir = new URL("tablero/datos/", RAIZ);
+  assert.deepEqual(fs.readdirSync(dir), ["tablero.enc"], "en datos/ solo debe haber el archivo cifrado");
+  const bytes = fs.readFileSync(new URL("tablero.enc", dir));
+  assert.equal(bytes.subarray(0, 4).toString(), "WRF1", "no es un fragmento cifrado del sitio");
+  // Cadenas largas: en bytes al azar no aparecen
+  for (const marca of ['"items"', '"estado"', "pendiente", "Escuchar", "Anki"]) assert.equal(bytes.includes(Buffer.from(marca)), false, `«${marca}» aparece en claro`);
+  const archivos = [];
+  const recorrer = (d) => fs.readdirSync(d, { withFileTypes: true }).forEach((e) => (e.isDirectory() ? recorrer(new URL(`${e.name}/`, d)) : archivos.push(e.name)));
+  recorrer(new URL("tablero/", RAIZ));
+  assert.ok(!archivos.some((a) => /tablero\.json$/.test(a)), "no debe haber un tablero.json en claro");
+  assert.ok(fs.readFileSync(new URL(".gitignore", RAIZ), "utf8").split("\n").includes(".privado/"));
+});
+
+test("si hay texto de trabajo en .privado/, es válido (en CI no existe y se omite)", () => {
+  const r = validarArchivo();
+  if (!r) return;
+  assert.deepEqual(r.errores, []);
+});
+
+test("el tablero figura como privado en proyectos.json", () => {
+  assert.equal(leerJSON("proyectos.json").proyectos.tablero.privado, true);
 });
 
 test("validar detecta los errores típicos", () => {

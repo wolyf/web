@@ -30,3 +30,10 @@
 .t-pie { display: flex; align-items: center; gap: 0.7rem; flex-wrap: wrap; margin-top: 0.6rem; font-size: 0.85rem; }
 .t-fecha { font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); }
 .t-prio { font-size: 0.72rem; }
+
+/* Sin sesión: el tablero es privado */
+.t-privado { display: grid; justify-items: start; gap: 0.8rem; background: var(--surface); border: 1px solid var(--border-card); border-radius: var(--radius); padding: 1.2rem 1.3rem; }
+.t-privado p { margin: 0; color: var(--text); }
+.t-boton { font: inherit; font-weight: 600; font-size: 0.9rem; color: var(--sobre-acento); background: var(--accent); border: 0; border-radius: var(--radius); padding: 0.45rem 1rem; cursor: pointer; }
+.t-boton:hover { filter: brightness(1.08); }
+.t-boton:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
