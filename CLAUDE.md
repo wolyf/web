@@ -76,6 +76,7 @@ Campos de cada proyecto en `proyectos.json` (en el orden en que aparecen en la p
 | `inicio` | Página a la que lleva la tarjeta (por defecto `<carpeta>/`). |
 | `descripcion`, `anio`, `icono`, `etiquetas` | Texto, año, emoji y etiquetas de la tarjeta. |
 | `privado` | Marca la tarjeta como privada (p. ej. requiere contraseña). |
+| `visibleSinSesion: true` | Un proyecto `privado` solo aparece en la portada (tarjeta, menú, su área si queda vacía y el total) con la sesión del sitio iniciada (`data-solo-sesion`); este campo lo deja visible para todos. Hoy solo el catálogo lo lleva. Es cosmético: la tarjeta sigue en el HTML y `proyectos.json` es público. |
 | `codigo: false` | Quita el enlace «Código» a GitHub. |
 | `oculto: true` | Deja el proyecto fuera de la portada (en construcción). |
 
