@@ -161,6 +161,26 @@ test("la portada agrupa por área en el orden declarado", () => {
   assert.equal(actualizarPortada(html, varios, {}, areas), html);
 });
 
+test("los proyectos privados solo se muestran con sesión, salvo visibleSinSesion", () => {
+  const areas = { a: { nombre: "Abierta", orden: 1 }, p: { nombre: "Privada", orden: 2 } };
+  const varios = {
+    pub: { nombre: "Pub", carpetas: ["pub"], area: "a" },
+    vis: { nombre: "Vis", carpetas: ["vis"], area: "a", privado: true, visibleSinSesion: true },
+    pri: { nombre: "Pri", carpetas: ["pri"], area: "p", privado: true },
+  };
+  const html = actualizarPortada(BASE, varios, {}, areas);
+  assert.match(html, /<article class="proyecto" data-solo-sesion>[\s\S]*?Pri</);
+  assert.match(html, /<a href="pri\/" data-solo-sesion>/);
+  assert.match(html, /<a href="vis\/">/);
+  assert.match(html, /<a href="pub\/">/);
+  // El área con solo proyectos ocultos se oculta; la que tiene alguno visible, no
+  assert.match(html, /<div class="area" data-area="p" data-solo-sesion>/);
+  assert.match(html, /<div class="area" data-area="a">/);
+  assert.match(html, /<p class="lateral__titulo" data-solo-sesion>Privada<\/p>/);
+  assert.match(html, /<span data-sin-sesion>2 proyectos<\/span><span data-solo-sesion>3 proyectos<\/span>/);
+  assert.equal(actualizarPortada(html, varios, {}, areas), html);
+});
+
 test("cada proyecto usa un area y un tipo declarados", () => {
   const registro = JSON.parse(fs.readFileSync(path.join(RAIZ_REAL, "proyectos.json"), "utf8"));
   const areas = Object.keys(registro.areas ?? {});

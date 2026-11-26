@@ -200,11 +200,11 @@
         <a href="calculadoras/caudal.html"><span class="lateral__icono" aria-hidden="true">🧮</span>Calculadoras</a>
         <a href="catalogo/"><span class="lateral__icono" aria-hidden="true">💧</span>Catálogo</a>
         <a href="manuales-conagua/"><span class="lateral__icono" aria-hidden="true">📚</span>Manuales Conagua</a>
-        <p class="lateral__titulo">Estudio</p>
-        <a href="estudio/"><span class="lateral__icono" aria-hidden="true">📖</span>Estudio</a>
-        <p class="lateral__titulo">Herramientas</p>
-        <a href="anki/"><span class="lateral__icono" aria-hidden="true">🧠</span>Anki</a>
-        <a href="tablero/"><span class="lateral__icono" aria-hidden="true">🗒️</span>Pendientes</a>
+        <p class="lateral__titulo" data-solo-sesion>Estudio</p>
+        <a href="estudio/" data-solo-sesion><span class="lateral__icono" aria-hidden="true">📖</span>Estudio</a>
+        <p class="lateral__titulo" data-solo-sesion>Herramientas</p>
+        <a href="anki/" data-solo-sesion><span class="lateral__icono" aria-hidden="true">🧠</span>Anki</a>
+        <a href="tablero/" data-solo-sesion><span class="lateral__icono" aria-hidden="true">🗒️</span>Pendientes</a>
         <!-- /proyectos:menu -->
       </nav>
 
@@ -223,7 +223,7 @@
         <section class="seccion" id="proyectos" aria-labelledby="titulo-proyectos">
           <div class="seccion__cabeza">
             <h1 id="titulo-proyectos">Proyectos</h1>
-            <span class="pastilla"><!-- proyectos:total -->6 proyectos<!-- /proyectos:total --></span>
+            <span class="pastilla"><!-- proyectos:total --><span data-sin-sesion>3 proyectos</span><span data-solo-sesion>6 proyectos</span><!-- /proyectos:total --></span>
           </div>
           <p class="seccion__desc">Trabajo de ingeniería, herramientas y, más adelante, notas de estudio.</p>
 
@@ -255,10 +255,10 @@
                 </article>
               </div>
             </div>
-            <div class="area" data-area="estudio">
+            <div class="area" data-area="estudio" data-solo-sesion>
               <h3 class="area__titulo">Estudio</h3>
               <div class="proyectos">
-                <article class="proyecto">
+                <article class="proyecto" data-solo-sesion>
                   <p class="proyecto__meta"><span>2026 · privado</span><span class="proyecto__icono" aria-hidden="true">📖</span></p>
                   <h3 class="proyecto__titulo"><a href="estudio/">Espacio de estudio</a></h3>
                   <p class="proyecto__desc">Lecturas, apuntes y progreso por materia (filosofía, matemáticas, economía). Las lecturas se publican cifradas y el estado de lectura se sincroniza cifrado; requiere usuario y contraseña.</p>
@@ -267,17 +267,17 @@
                 </article>
               </div>
             </div>
-            <div class="area" data-area="herramientas">
+            <div class="area" data-area="herramientas" data-solo-sesion>
               <h3 class="area__titulo">Herramientas</h3>
               <div class="proyectos">
-                <article class="proyecto">
+                <article class="proyecto" data-solo-sesion>
                   <p class="proyecto__meta"><span>2026 · privado</span><span class="proyecto__icono" aria-hidden="true">🧠</span></p>
                   <h3 class="proyecto__titulo"><a href="anki/">Anki personal</a></h3>
                   <p class="proyecto__desc">Tarjetas de estudio con repetición espaciada: básicas y cloze, con fórmulas en LaTeX. Se instala en el celular y funciona sin conexión. Requiere usuario y contraseña; los datos se publican cifrados.</p>
                   <p class="proyecto__etiquetas"><span class="etiqueta">#estudio</span> <span class="etiqueta">#repetición espaciada</span></p>
                   <p class="proyecto__enlaces"><a href="anki/">Abrir</a> <a href="https://github.com/wolyf/web/tree/main/anki">Código</a></p>
                 </article>
-                <article class="proyecto">
+                <article class="proyecto" data-solo-sesion>
                   <p class="proyecto__meta"><span>2026 · privado</span><span class="proyecto__icono" aria-hidden="true">🗒️</span></p>
                   <h3 class="proyecto__titulo"><a href="tablero/">Ideas y pendientes del sitio</a></h3>
                   <p class="proyecto__desc">Tablero de ideas, pendientes y avances de todo el sitio, filtrable por proyecto. Requiere usuario y contraseña; los datos se publican cifrados.</p>

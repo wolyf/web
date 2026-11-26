@@ -130,11 +130,18 @@ export function revisarCambio(archivos, proyectos, { rama = "", varias = false, 
 // Campos de cada proyecto (además de nombre y carpetas): corto, inicio,
 // descripcion, anio, icono, area, tipo, etiquetas, privado, codigo (false oculta el
 // enlace al código) y oculto (true lo deja fuera de la portada).
+//
+// Un proyecto `privado` solo se muestra con la sesión del sitio iniciada
+// (data-solo-sesion, cosmético: la tarjeta sigue en el HTML), salvo que lleve
+// `visibleSinSesion: true`. Un área cuyos proyectos están todos ocultos se oculta
+// igual, y el total sale en dos versiones (con y sin sesión).
 
 export const escaparHTML = (texto) => String(texto).replace(/[&<>"]/g, (c) => `&#${c.charCodeAt(0)};`);
 
 const visibles = (proyectos) => Object.entries(proyectos).filter(([, p]) => !p.oculto);
 const inicioDe = (id, p) => p.inicio || `${(p.carpetas ?? [id])[0]}/`;
+export const soloConSesion = (p) => Boolean(p.privado && !p.visibleSinSesion);
+const atributoSesion = (oculto) => (oculto ? " data-solo-sesion" : "");
 
 export function tarjetaProyecto(id, p, { repositorio = "" } = {}) {
   const e = escaparHTML;
@@ -143,7 +150,7 @@ export function tarjetaProyecto(id, p, { repositorio = "" } = {}) {
   const enlaces = [`<a href="${e(inicioDe(id, p))}">Abrir</a>`];
   if (repositorio && p.codigo !== false) enlaces.push(`<a href="${e(`${repositorio}/tree/main/${(p.carpetas ?? [id])[0]}`)}">Código</a>`);
   return [
-    `<article class="proyecto">`,
+    `<article class="proyecto"${atributoSesion(soloConSesion(p))}>`,
     `  <p class="proyecto__meta"><span>${meta}</span><span class="proyecto__icono" aria-hidden="true">${e(p.icono || "📁")}</span></p>`,
     `  <h3 class="proyecto__titulo"><a href="${e(inicioDe(id, p))}">${e(p.nombre)}</a></h3>`,
     ...(p.descripcion ? [`  <p class="proyecto__desc">${e(p.descripcion)}</p>`] : []),
@@ -167,7 +174,7 @@ export function agruparPorArea(proyectos, areas = {}) {
 
 export function enlaceMenu(id, p) {
   const e = escaparHTML;
-  return `<a href="${e(inicioDe(id, p))}"><span class="lateral__icono" aria-hidden="true">${e(p.icono || "📁")}</span>${e(p.corto || p.nombre)}</a>`;
+  return `<a href="${e(inicioDe(id, p))}"${atributoSesion(soloConSesion(p))}><span class="lateral__icono" aria-hidden="true">${e(p.icono || "📁")}</span>${e(p.corto || p.nombre)}</a>`;
 }
 
 // Sustituye lo que hay entre <!-- proyectos:nombre --> y <!-- /proyectos:nombre -->.
@@ -192,12 +199,13 @@ export function actualizarPortada(html, proyectos, sitio = {}, areas = {}) {
   const lista = visibles(proyectos);
   const grupos = agruparPorArea(proyectos, areas);
   const agrupado = grupos.some((g) => g.nombre);
+  const areaOculta = (g) => atributoSesion(g.items.every(([, p]) => soloConSesion(p)));
   const menu = agrupado
-    ? grupos.flatMap((g) => [`<p class="lateral__titulo">${escaparHTML(g.nombre)}</p>`, ...g.items.map(([id, p]) => enlaceMenu(id, p))])
+    ? grupos.flatMap((g) => [`<p class="lateral__titulo"${areaOculta(g)}>${escaparHTML(g.nombre)}</p>`, ...g.items.map(([id, p]) => enlaceMenu(id, p))])
     : lista.map(([id, p]) => enlaceMenu(id, p));
   const tarjetas = agrupado
     ? grupos.flatMap((g) => [
-        `<div class="area" data-area="${escaparHTML(g.id)}">`,
+        `<div class="area" data-area="${escaparHTML(g.id)}"${areaOculta(g)}>`,
         `  <h3 class="area__titulo">${escaparHTML(g.nombre)}</h3>`,
         `  <div class="proyectos">`,
         ...g.items.flatMap(([id, p]) => tarjetaProyecto(id, p, sitio).map((l) => `    ${l}`)),
@@ -207,7 +215,13 @@ export function actualizarPortada(html, proyectos, sitio = {}, areas = {}) {
     : lista.flatMap(([id, p]) => tarjetaProyecto(id, p, sitio));
   let nuevo = reemplazarMarcador(html, "menu", menu);
   nuevo = reemplazarMarcador(nuevo, "tarjetas", tarjetas);
-  nuevo = reemplazarMarcador(nuevo, "total", `${lista.length} ${lista.length === 1 ? "proyecto" : "proyectos"}`);
+  const cuenta = (n) => `${n} ${n === 1 ? "proyecto" : "proyectos"}`;
+  const publicos = lista.filter(([, p]) => !soloConSesion(p)).length;
+  const total =
+    publicos === lista.length
+      ? cuenta(lista.length)
+      : `<span data-sin-sesion>${cuenta(publicos)}</span><span data-solo-sesion>${cuenta(lista.length)}</span>`;
+  nuevo = reemplazarMarcador(nuevo, "total", total);
   return nuevo;
 }
 
