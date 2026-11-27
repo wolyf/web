@@ -213,6 +213,7 @@ async function entrar(usuario, contrasena, recordar = false) {
   bytes.fill(0);
   await guardar(actual, recordar);
   avisar();
+  document.dispatchEvent(new CustomEvent("wr:inicio-sesion", { detail: { usuario: actual.usuario, recordar: !!recordar } }));
 }
 
 function cerrar() {
