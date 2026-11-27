@@ -69,6 +69,7 @@
   if (origen) {
     import(new URL("sesion.mjs", origen).href).catch((e) => console.warn("Sesión no disponible", e));
     import(new URL("subrayados.mjs", origen).href).catch((e) => console.warn("Subrayados no disponibles", e));
+    import(new URL("accesos.mjs", origen).href).catch((e) => console.warn("Accesos no disponibles", e));
   }
 
   const sistemaOscuro = window.matchMedia("(prefers-color-scheme: dark)");
